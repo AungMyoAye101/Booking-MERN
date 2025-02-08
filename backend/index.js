@@ -1,15 +1,15 @@
 const express = require("express");
 const dotenv = require("dotenv");
+const authRouter = require("./routes/auth");
+const app = express();
 dotenv.config();
 const port = process.env.PORT || 8080;
-const app = express();
 
 app.get("/", (req, res) => {
   res.send("hello Elizbeth Olsen");
 });
-app.get("/name", (req, res) => {
-  res.send(`<h1>Your name is Elizbeth </h1>`);
-});
+
+app.use("/auth", authRouter);
 app.listen(port, () => {
   console.log("server is listening on port " + port);
 });
