@@ -1,6 +1,9 @@
 const express = require("express");
 const dotenv = require("dotenv");
 const authRouter = require("./routes/auth");
+const userRouter = require("./routes/user");
+const hotelRouter = require("./routes/hotel");
+const roomRouter = require("./routes/room");
 const { default: mongoose } = require("mongoose");
 const app = express();
 dotenv.config();
@@ -25,7 +28,12 @@ app.get("/", (req, res) => {
   res.send("hello Elizbeth Olsen");
 });
 
+//Middleware for route handler
+
 app.use("/auth", authRouter);
+app.use("/user", userRouter);
+app.use("/hotel", hotelRouter);
+app.use("/room", roomRouter);
 app.listen(port, () => {
   connectToDb();
   console.log("server is listening on port " + port);
