@@ -6,7 +6,7 @@ router.get("/", (req, res) => {
   res.send("This is hotel route");
 });
 router.post("/", async (req, res) => {
-  const newHotel = new Hotel(req.json());
+  const newHotel = new Hotel(req.body);
   try {
     const savedHotel = await newHotel.save();
     res.status(201).json(savedHotel);

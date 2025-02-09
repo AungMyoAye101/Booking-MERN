@@ -29,12 +29,12 @@ app.get("/", (req, res) => {
 });
 
 //Middleware for route handler
-app.use(express.json);
+app.use(express.json());
 
-app.use("/auth", authRouter);
-app.use("/user", userRouter);
-app.use("/hotel", hotelRouter);
-app.use("/room", roomRouter);
+app.use("/api/auth", authRouter);
+app.use("/api/user", userRouter);
+app.use("/api/hotel", hotelRouter);
+app.use("/api/room", roomRouter);
 app.listen(port, () => {
   connectToDb();
   console.log("server is listening on port " + port);
