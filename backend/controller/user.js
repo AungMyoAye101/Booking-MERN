@@ -1,18 +1,18 @@
 const User = require("../models/user.model");
 
 //create user
-const createUser = async (req, res) => {
+const createUser = async (req, res, next) => {
   const newUser = new User(req.body);
   try {
     const savedUser = await newUser.save();
     res.status(201).json(savedUser);
   } catch (error) {
-    res.status(500).json(error);
+    next(error);
   }
 };
 
 //update User
-const updateUser = async (req, res) => {
+const updateUser = async (req, res, next) => {
   try {
     const updatedUser = await User.findByIdAndUpdate(
       req.params.id,
@@ -21,17 +21,17 @@ const updateUser = async (req, res) => {
     );
     res.status(201).json(updatedUser);
   } catch (error) {
-    res.status(500).json(error);
+    next(error);
   }
 };
 
 //delete user
-const deleteUser = async (req, res) => {
+const deleteUser = async (req, res, next) => {
   try {
     await User.findByIdAndDelete(req.params.id);
     res.status(200).json("User is successfully deleted.");
   } catch (error) {
-    res.status(500).jsq(error);
+    next(error);
   }
 };
 
@@ -45,12 +45,12 @@ const getAllUsers = async (req, res, next) => {
   }
 };
 //get user by id
-const getUserById = async (req, res) => {
+const getUserById = async (req, res, next) => {
   try {
     const user = await User.findById(req.params.id);
     res.status(200).json(user);
   } catch (error) {
-    res.status(500).json(error);
+    next(error);
   }
 };
 

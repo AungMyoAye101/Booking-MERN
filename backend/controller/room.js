@@ -1,17 +1,17 @@
 const Room = require("../models/room.model");
 
 //Create Room
-const createRoom = async (req, res) => {
+const createRoom = async (req, res, next) => {
   const newRoom = new Room(req.body);
   try {
     const savedRoom = await newRoom.save();
     res.status(201).json(savedRoom);
   } catch (error) {
-    res.status(500).json(error);
+    next(error);
   }
 };
 //update room
-const updateRoom = async (req, res) => {
+const updateRoom = async (req, res, next) => {
   try {
     const updatedRoom = await Room.findByIdAndUpdate(
       req.params.id,
@@ -24,16 +24,16 @@ const updateRoom = async (req, res) => {
     );
     res.status(201).json(updatedRoom);
   } catch (error) {
-    res.status(500).json(error);
+    next(error);
   }
 };
 //Delete room
-const deleteRoom = async (req, res) => {
+const deleteRoom = async (req, res, next) => {
   try {
     await Room.findByIdAndDelete(req.params.id);
     res.status(200).json("Room is succeffully deleted.");
   } catch (error) {
-    res.status(500).json(error);
+    next(error);
   }
 };
 
@@ -49,12 +49,12 @@ const getAllRooms = async (req, res, next) => {
 };
 
 //Get room by id
-const getRoomById = async (req, res) => {
+const getRoomById = async (req, res, next) => {
   try {
     const room = await Room.findById(req.params.id);
     res.status(200).json(room);
   } catch (error) {
-    res.status(500).json(error);
+    next(error);
   }
 };
 module.exports = {

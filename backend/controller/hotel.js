@@ -45,12 +45,12 @@ const getAllHotels = async (req, res, next) => {
 };
 
 //get hotel by specific id
-const getHotelById = async (req, res) => {
+const getHotelById = async (req, res, next) => {
   try {
     const hotel = await Hotel.findById(req.params.id);
     res.status(200).json(hotel);
   } catch (error) {
-    res.status(500).json(error);
+    next(error);
   }
 };
 
