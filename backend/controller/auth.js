@@ -1,6 +1,7 @@
 const User = require("../models/user.model");
 const bcrypt = require("bcrypt");
 const { createError } = require("../utils/error");
+const jwt = require("jsonwebtoken");
 const register = async (req, res, next) => {
   try {
     const salt = bcrypt.genSaltSync(10);
@@ -31,7 +32,17 @@ const login = async (req, res, next) => {
       return next(createError(400, "Worng username or password"));
     }
 
-    res.status(201).json(user);
+    const token = jwt.sign(
+      { id: user._id, isAdmin: user.isAdmin },
+      process.env.SECRET_KEY
+    );
+    const { password, isAdmin, ...otherDetail } = user._doc;
+    res
+      .cookie("access_token", token, {
+        httpOnly: true,
+      })
+      .status(201)
+      .json(otherDetail);
   } catch (error) {
     next(error);
   }

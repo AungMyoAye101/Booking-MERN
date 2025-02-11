@@ -5,6 +5,7 @@ const userRouter = require("./routes/user");
 const hotelRouter = require("./routes/hotel");
 const roomRouter = require("./routes/room");
 const { default: mongoose } = require("mongoose");
+const cookieParser = require("cookie-parser");
 const app = express();
 dotenv.config();
 const port = process.env.PORT || 8080;
@@ -29,6 +30,7 @@ app.get("/", (req, res) => {
 });
 
 //Middleware for route handler
+app.use(cookieParser());
 app.use(express.json());
 
 app.use("/api/auth", authRouter);
