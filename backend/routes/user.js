@@ -10,7 +10,6 @@ const { register } = require("../controller/auth");
 const router = express.Router();
 
 router.get("/", getAllUsers);
-router.post("/", register);
 router.put("/:id", updateUser);
 router.delete("/:id", deleteUser);
 router.get("/:id", getUserById);
