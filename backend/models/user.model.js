@@ -27,11 +27,11 @@ const UserSchema = new mongoose.Schema(
     },
     phone: {
       type: String,
-      required: true,
     },
     isAdmin: {
       type: Boolean,
       required: true,
+      default: false,
     },
   },
   { timestamps: true }

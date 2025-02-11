@@ -1,16 +1,5 @@
 const User = require("../models/user.model");
 
-//create user
-const createUser = async (req, res, next) => {
-  const newUser = new User(req.body);
-  try {
-    const savedUser = await newUser.save();
-    res.status(201).json(savedUser);
-  } catch (error) {
-    next(error);
-  }
-};
-
 //update User
 const updateUser = async (req, res, next) => {
   try {
@@ -55,7 +44,6 @@ const getUserById = async (req, res, next) => {
 };
 
 module.exports = {
-  createUser,
   updateUser,
   deleteUser,
   getAllUsers,
