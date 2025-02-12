@@ -38,8 +38,23 @@ const updateRoom = async (req, res, next) => {
 };
 //Delete room
 const deleteRoom = async (req, res, next) => {
+  const roomId = req.params.id;
+  const hotelId = req.params.hotelId.trim().replace(/\s/g, "");
+  console.log("hotel id is " + hotelId + "room id " + roomId);
   try {
-    await Room.findByIdAndDelete(req.params.id);
+    if (
+      !mongoose.Types.ObjectId.isValid(roomId) ||
+      !mongoose.Types.ObjectId.isValid(hotelId)
+    ) {
+      return res.status(400).json(" room or hotel id is not valid");
+    }
+
+    await Room.findByIdAndDelete(roomId);
+    await Hotel.findByIdAndUpdate(
+      hotelId,
+      { $pull: { rooms: roomId } },
+      { new: true }
+    );
     res.status(200).json("Room is succeffully deleted.");
   } catch (error) {
     next(error);

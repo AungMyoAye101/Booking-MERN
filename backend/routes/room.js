@@ -12,7 +12,7 @@ const router = express.Router();
 router.get("/", getAllRooms);
 router.post("/:hotelId", createRoom);
 router.put("/:id", updateRoom);
-router.delete("/:id", deleteRoom);
+router.delete("/:id/:hotelId", deleteRoom);
 router.get("/:id", getRoomById);
 
 module.exports = router;
