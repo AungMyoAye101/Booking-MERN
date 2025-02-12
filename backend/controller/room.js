@@ -1,10 +1,19 @@
 const Room = require("../models/room.model");
-
+const Hotel = require("../models/hotel.model");
+const { default: mongoose } = require("mongoose");
 //Create Room
 const createRoom = async (req, res, next) => {
   const newRoom = new Room(req.body);
+  const hotelId = req.params.hotelId;
+
   try {
+    if (!mongoose.Types.ObjectId.isValid(hotelId)) {
+      return res.status(400).json("Hotel id is not valid!");
+    }
     const savedRoom = await newRoom.save();
+
+    await Hotel.findByIdAndUpdate(hotelId, { $push: { rooms: savedRoom._id } });
+
     res.status(201).json(savedRoom);
   } catch (error) {
     next(error);
