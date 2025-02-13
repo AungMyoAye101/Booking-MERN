@@ -1,6 +1,10 @@
 import "./home.css";
-const home = () => {
-  return <div>home</div>;
+const Home = () => {
+  return (
+    <section className="home-container">
+      <div>Hello</div>
+    </section>
+  );
 };
 
-export default home;
+export default Home;

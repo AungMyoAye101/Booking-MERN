@@ -1,0 +1,9 @@
+.nav_container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 4px;
+  height: 60px;
+  padding: 4px;
+  background-color: aquamarine;
+}

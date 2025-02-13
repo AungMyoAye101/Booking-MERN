@@ -1,7 +1,7 @@
 import "./hotel.css";
 
-const hotel = () => {
+const Hotel = () => {
   return <div>hotel</div>;
 };
 
-export default hotel;
+export default Hotel;

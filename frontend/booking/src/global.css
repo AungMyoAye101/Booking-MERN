@@ -9,3 +9,14 @@ body {
   font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
   background-color: #f7f7f7;
 }
+.flex-center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 4px;
+}
+.justify-between {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
