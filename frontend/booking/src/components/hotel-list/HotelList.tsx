@@ -31,9 +31,9 @@ const HotelList = () => {
   return (
     <section>
       <h1 className="title">Browse by property type</h1>
-      <div className="room-container">
+      <div className="hotel-container">
         {list.map((item, i) => (
-          <div key={i} className="room-card">
+          <div key={i} className="hotel-card">
             <img src={item.url} alt={"photo of " + item.city} />
 
             <h1>{item.city}</h1>
