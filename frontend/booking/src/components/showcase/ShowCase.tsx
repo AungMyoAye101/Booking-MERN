@@ -1,5 +1,5 @@
-import "./hotelList.css";
-const HotelList = () => {
+import "./showcase.css";
+const Showcase = () => {
   const list = [
     {
       url: "https://img.freepik.com/free-photo/spa-pool-sky-leisure-background_1203-4946.jpg?t=st=1739537710~exp=1739541310~hmac=422cd13ece996d0295ebf1d2af53809f31269de4f541577d495722e423c484c6&w=740",
@@ -34,4 +34,4 @@ const HotelList = () => {
   );
 };
 
-export default HotelList;
+export default Showcase;

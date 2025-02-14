@@ -8,6 +8,12 @@ body {
   font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
   background-color: #f7f7f7;
 }
+.container {
+  max-width: 1024px;
+  margin: 0 auto;
+  padding: 10px 24px;
+}
+
 button {
   cursor: pointer;
   border: none;

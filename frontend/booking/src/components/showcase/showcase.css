@@ -6,11 +6,14 @@
 .flex-container {
   display: flex;
   flex-direction: row;
+  flex-wrap: wrap;
   gap: 14px;
   align-items: center;
 }
 .card {
   position: relative;
+  min-width: 200px;
+  flex: 1;
 }
 .card img {
   object-fit: cover;

@@ -1,11 +1,17 @@
-import Hero from "../../components/hero/hero";
-import HotelList from "../../components/hotelList/HotelList";
-
+import Hero from "../../components/hero/Hero";
+import HotelList from "../../components/hotel-list/HotelList";
+import RoomList from "../../components/room/RoomList";
+import Showcase from "../../components/showcase/ShowCase";
+import "../../global.css";
 const Home = () => {
   return (
     <section>
       <Hero />
-      <HotelList />
+      <section className="container">
+        <Showcase />
+        <HotelList />
+        <RoomList />
+      </section>
     </section>
   );
 };
