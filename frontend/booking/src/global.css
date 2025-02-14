@@ -11,8 +11,12 @@ body {
 button {
   cursor: pointer;
   border: none;
-  border-radius: 8px;
+  padding: 10px 12px;
+  border-radius: 6px;
   font-family: Arial, Helvetica, sans-serif;
+}
+button:hover {
+  background-color: blue;
 }
 .flex-center {
   display: flex;
