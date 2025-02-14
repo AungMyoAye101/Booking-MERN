@@ -3,6 +3,7 @@ import Home from "./pages/home/Home";
 import Hotel from "./pages/hotel/hotel";
 import List from "./pages/list/list";
 import NavBar from "./components/navbar/NavBar";
+import Footer from "./components/footer/Footer";
 
 function App() {
   return (
@@ -13,6 +14,7 @@ function App() {
         <Route path="/hotel" element={<Hotel />} />
         <Route path="/list" element={<List />} />
       </Routes>
+      <Footer />
     </BrowserRouter>
   );
 }

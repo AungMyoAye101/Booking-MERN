@@ -1,0 +1,12 @@
+.footer-container {
+  padding: 12px;
+}
+.link-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+.link-container p {
+  width: 200px;
+  font-size: 14px;
+}

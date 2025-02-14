@@ -7,23 +7,28 @@
   margin-bottom: 20px;
 }
 
-.content-container {
+.text-container {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 16px;
+  gap: 14px;
+}
+.text-container h1 {
+  font-size: 36px;
+  font-weight: 800;
   color: white;
 }
-.content-container h1 {
-  font-family: Arial, Helvetica, sans-serif;
-  font-size: 34px;
-  font-weight: 800;
-}
-.content-container p {
+.text-container p {
   font-size: 20px;
   font-weight: 600;
+  color: white;
 }
-.content-container div input {
+.input-con {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.input-con input {
   padding: 9px;
   border-radius: 6px;
   flex: 1;
