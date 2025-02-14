@@ -1,13 +1,18 @@
 * {
   margin: 0;
   padding: 0;
-  list-style: none;
+  box-sizing: border-box;
   text-decoration: none;
 }
-
 body {
   font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
   background-color: #f7f7f7;
+}
+button {
+  cursor: pointer;
+  border: none;
+  border-radius: 8px;
+  font-family: Arial, Helvetica, sans-serif;
 }
 .flex-center {
   display: flex;

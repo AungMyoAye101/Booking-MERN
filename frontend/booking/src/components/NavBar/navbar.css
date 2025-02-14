@@ -3,7 +3,31 @@
   align-items: center;
   justify-content: space-between;
   gap: 4px;
-  height: 60px;
-  padding: 4px;
-  background-color: aquamarine;
+  padding: 8px 12px;
+  background-color: #fff;
+  border-bottom: 1px solid #f1f1f1;
+  box-shadow: 1px 1px 4px #727171;
+}
+.logo_title {
+  font-size: 26px;
+  font-weight: 800;
+  text-transform: uppercase;
+  color: blue;
+}
+.link_container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 6px;
+}
+
+.link_btn {
+  background-color: blue;
+  color: white;
+  padding: 10px 20px;
+  border-radius: 6px;
+  font-size: 14px;
+}
+.link_btn:hover {
+  background-color: #9430f8;
 }
