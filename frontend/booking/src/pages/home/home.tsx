@@ -1,3 +1,4 @@
+import Contact from "../../components/contact/Contact";
 import Hero from "../../components/hero/Hero";
 import HotelList from "../../components/hotel-list/HotelList";
 import RoomList from "../../components/room/RoomList";
@@ -12,6 +13,7 @@ const Home = () => {
         <HotelList />
         <RoomList />
       </section>
+      <Contact />
     </section>
   );
 };
