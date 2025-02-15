@@ -34,10 +34,12 @@ const Footer = () => {
   ];
   return (
     <section className="footer-container">
-      <div className="link-container">
-        {links.map((item, i) => (
-          <p key={i}>{item}</p>
-        ))}
+      <div className="footer-content-con">
+        <div className="link-container">
+          {links.map((item, i) => (
+            <p key={i}>{item}</p>
+          ))}
+        </div>
       </div>
     </section>
   );
