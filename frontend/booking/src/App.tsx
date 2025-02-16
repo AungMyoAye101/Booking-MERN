@@ -5,6 +5,7 @@ import List from "./pages/list/list";
 import NavBar from "./components/navbar/NavBar";
 import Footer from "./components/footer/Footer";
 import Login from "./pages/login/Login";
+import Signup from "./pages/signup/Signup";
 
 function App() {
   return (
@@ -15,7 +16,7 @@ function App() {
         <Route path="/hotel" element={<Hotel />} />
         <Route path="/list" element={<List />} />
         <Route path="/login" element={<Login />} />
-        <Route path="/singup" element={<List />} />
+        <Route path="/signup" element={<Signup />} />
       </Routes>
       <Footer />
     </BrowserRouter>
