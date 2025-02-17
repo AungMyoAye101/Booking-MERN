@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 import "../login/login.css";
 import { useState } from "react";
+import { signUpUserValidation } from "../../lib/formValidation";
 const Signup = () => {
   const [user, setUser] = useState({
     username: "",
@@ -8,22 +9,24 @@ const Signup = () => {
     email: "",
   });
   const [error, setError] = useState(false);
+  const [errorMesasage, setErrorMesage] = useState("");
   const [loading, setLoading] = useState(false);
 
   const handleChange = (e: { target: { name: string; value: string } }) => {
     setUser((pre) => ({ ...pre, [e.target.name]: e.target.value }));
-    console.log(user);
   };
   const onSubmitHandle = (e: any) => {
     e.preventDefault();
     setLoading(true);
     try {
-    } catch (error) {
+      signUpUserValidation.parse(user);
+      console.log(user);
+    } catch (error: any) {
       setError(true);
+      setErrorMesage(error.errors[0].message);
       console.log(error);
     } finally {
       setLoading(false);
-      setError(false);
     }
     setUser({ username: "", password: "", email: "" });
   };
@@ -64,7 +67,7 @@ const Signup = () => {
         >
           Submit
         </button>
-        {error && <p className="error-message">Username does't match</p>}
+        {error && <p className="error-message">{errorMesasage}</p>}
       </form>
     </section>
   );

@@ -2,17 +2,8 @@ import { Link } from "react-router-dom";
 import "./login.css";
 import { useState } from "react";
 import { z } from "zod";
+import { loginUserValidation } from "../../lib/formValidation";
 
-const userValidation = z.object({
-  username: z
-    .string()
-    .min(3, { message: "username contain at least 6 character" })
-    .max(12, { message: "username doesn't exceed 12 character" }),
-  password: z
-    .string()
-    .min(6, { message: "password contain at least 6 character" })
-    .max(12, { message: "password doesn't exceed 12 character" }),
-});
 const Login = () => {
   const [user, setUser] = useState({
     username: "",
@@ -29,7 +20,7 @@ const Login = () => {
     e.preventDefault();
     setLoading(true);
     try {
-      userValidation.parse(user);
+      loginUserValidation.parse(user);
       console.log(user);
     } catch (error: any) {
       setError(true);
