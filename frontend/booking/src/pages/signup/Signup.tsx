@@ -7,6 +7,8 @@ const Signup = () => {
     password: "",
     email: "",
   });
+  const [error, setError] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   const handleChange = (e: { target: { name: string; value: string } }) => {
     setUser((pre) => ({ ...pre, [e.target.name]: e.target.value }));
@@ -14,7 +16,15 @@ const Signup = () => {
   };
   const onSubmitHandle = (e: any) => {
     e.preventDefault();
-    console.log(user);
+    setLoading(true);
+    try {
+    } catch (error) {
+      setError(true);
+      console.log(error);
+    } finally {
+      setLoading(false);
+      setError(false);
+    }
     setUser({ username: "", password: "", email: "" });
   };
 
@@ -47,7 +57,14 @@ const Signup = () => {
           <p>Already have an account?</p>
           <Link to={"/login"}>Login</Link>
         </div>
-        <button onClick={(e) => onSubmitHandle(e)}>Submit</button>
+        <button
+          onClick={(e) => onSubmitHandle(e)}
+          disabled={loading}
+          style={{ cursor: loading ? "not-allowed" : "pointer" }}
+        >
+          Submit
+        </button>
+        {error && <p className="error-message">Username does't match</p>}
       </form>
     </section>
   );

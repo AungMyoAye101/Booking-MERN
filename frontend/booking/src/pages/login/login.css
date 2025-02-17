@@ -12,7 +12,7 @@
   box-shadow: 1px 2px 3px #666;
   display: flex;
   flex-direction: column;
-  gap: 20px;
+  gap: 16px;
   background: #fff;
 }
 .form-container h1 {
@@ -39,4 +39,11 @@
 .form-container .link-con p {
   font-size: 13px;
   font-weight: 400;
+}
+.form-container .error-message {
+  background-color: red;
+  padding: 10px 6px;
+  font-size: 14px;
+  color: white;
+  border-radius: 6px;
 }
