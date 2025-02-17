@@ -12,7 +12,7 @@
   box-shadow: 1px 2px 3px #666;
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 20px;
   background: #fff;
 }
 .form-container h1 {
