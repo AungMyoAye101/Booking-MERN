@@ -26,12 +26,17 @@ const Login = () => {
           headers: { "Content-type": "application/json" },
           body: JSON.stringify(user),
         });
+        if (!res.ok) {
+          throw new Error("Something went wrong");
+        }
         const data = await res.json();
         console.log(data);
+      } else {
+        throw new Error();
       }
     } catch (error: any) {
       setError(true);
-      setErrorMEssage(error.errors[0].message);
+      setErrorMEssage(error.message);
       console.log(error);
     } finally {
       setLoading(false);
