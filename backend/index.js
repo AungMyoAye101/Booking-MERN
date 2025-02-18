@@ -6,7 +6,9 @@ const hotelRouter = require("./routes/hotel");
 const roomRouter = require("./routes/room");
 const { default: mongoose } = require("mongoose");
 const cookieParser = require("cookie-parser");
+const cors = require("cors");
 const app = express();
+
 dotenv.config();
 const port = process.env.PORT || 8080;
 const DB_URI = process.env.MONGODB_URI;
@@ -30,6 +32,7 @@ app.get("/", (req, res) => {
 });
 
 //Middleware for route handler
+app.use(cors());
 app.use(cookieParser());
 app.use(express.json());
 

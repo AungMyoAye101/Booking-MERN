@@ -1,7 +1,6 @@
 import { Link } from "react-router-dom";
 import "./login.css";
 import { useState } from "react";
-import { z } from "zod";
 import { loginUserValidation } from "../../lib/formValidation";
 
 const Login = () => {
@@ -16,12 +15,16 @@ const Login = () => {
   const handleChange = (e: { target: { name: string; value: string } }) => {
     setUser((pre) => ({ ...pre, [e.target.name]: e.target.value }));
   };
-  const onSubmitHandle = (e: any) => {
+  const onSubmitHandle = async (e: any) => {
     e.preventDefault();
     setLoading(true);
     try {
-      loginUserValidation.parse(user);
-      console.log(user);
+      const validatedUser = loginUserValidation.parse(user);
+      if (validatedUser) {
+        const res = await fetch("http://localhost:5000/api/auth/login");
+        const data = await res.json();
+        console.log(data);
+      }
     } catch (error: any) {
       setError(true);
       setErrorMEssage(error.errors[0].message);
@@ -31,6 +34,7 @@ const Login = () => {
     }
     setUser({ username: "", password: "" });
   };
+
   return (
     <section className="container">
       <form className="form-container">

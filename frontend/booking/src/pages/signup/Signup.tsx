@@ -15,12 +15,22 @@ const Signup = () => {
   const handleChange = (e: { target: { name: string; value: string } }) => {
     setUser((pre) => ({ ...pre, [e.target.name]: e.target.value }));
   };
-  const onSubmitHandle = (e: any) => {
+  const onSubmitHandle = async (e: any) => {
     e.preventDefault();
     setLoading(true);
     try {
-      signUpUserValidation.parse(user);
-      console.log(user);
+      const validatedUser = signUpUserValidation.parse(user);
+      if (validatedUser) {
+        const res = await fetch("http://localhost:5000/api/auth/register", {
+          method: "POST",
+          headers: {
+            "Content-type": "application/json",
+          },
+          body: JSON.stringify(user),
+        });
+        const data = await res.json();
+        console.log(data);
+      }
     } catch (error: any) {
       setError(true);
       setErrorMesage(error.errors[0].message);
