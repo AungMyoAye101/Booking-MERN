@@ -21,7 +21,11 @@ const Login = () => {
     try {
       const validatedUser = loginUserValidation.parse(user);
       if (validatedUser) {
-        const res = await fetch("http://localhost:5000/api/auth/login");
+        const res = await fetch("http://localhost:5000/api/auth/login", {
+          method: "POST",
+          headers: { "Content-type": "application/json" },
+          body: JSON.stringify(user),
+        });
         const data = await res.json();
         console.log(data);
       }
