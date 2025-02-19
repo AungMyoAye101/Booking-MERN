@@ -8,7 +8,7 @@ const useFetch = (url: string) => {
   const fetchUrl = async () => {
     setLoading(true);
     try {
-      const res = await fetch(url);
+      const res = await fetch(`http://localhost:5000/${url}`);
       const data = await res.json();
       setData(data);
     } catch (error) {
@@ -23,7 +23,20 @@ const useFetch = (url: string) => {
     fetchUrl();
   }, [url]);
 
-  return { data, loading, error };
+  const reFetch = async () => {
+    setLoading(true);
+    try {
+      const res = await fetch(`http://localhost:5000/${url}`);
+      const data = await res.json();
+      setData(data);
+    } catch (error) {
+      setError(true);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  return { data, loading, error, reFetch };
 };
 
 export default useFetch;

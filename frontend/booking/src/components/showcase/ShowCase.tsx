@@ -18,19 +18,17 @@ const Showcase = () => {
     },
   ];
   return (
-    <section className="container">
-      <div className="flex-container ">
-        {list.map((item, i) => (
-          <div key={i} className="card">
-            <img src={item.url} alt={"photo of " + item.city} />
-            <div className="label-container">
-              <h1>{item.city}</h1>
-              <p>{item.count}</p>
-            </div>
+    <div className="flex-container ">
+      {list.map((item, i) => (
+        <div key={i} className="card">
+          <img src={item.url} alt={"photo of " + item.city} />
+          <div className="label-container">
+            <h1>{item.city}</h1>
+            <p>{item.count}</p>
           </div>
-        ))}
-      </div>
-    </section>
+        </div>
+      ))}
+    </div>
   );
 };
 

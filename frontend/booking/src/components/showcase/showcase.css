@@ -1,14 +1,10 @@
-.container {
-  max-width: 1024px;
-  margin: 0 auto;
-  padding: 40px 4px;
-}
 .flex-container {
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
   gap: 14px;
   align-items: center;
+  padding: 20px 0;
 }
 .card {
   position: relative;
