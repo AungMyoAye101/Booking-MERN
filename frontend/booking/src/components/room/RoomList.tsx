@@ -1,6 +1,10 @@
+import { Link } from "react-router-dom";
+import useFetch from "../../hooks/usefetch";
 import "./roomList.css";
 
 const RoomList = () => {
+  const { data, loading, error } = useFetch("api/hotel?featured=true&limit=4");
+  console.log(data);
   const list = [
     {
       url: "https://img.freepik.com/free-photo/spa-pool-sky-leisure-background_1203-4946.jpg?t=st=1739537710~exp=1739541310~hmac=422cd13ece996d0295ebf1d2af53809f31269de4f541577d495722e423c484c6&w=740",
@@ -63,22 +67,34 @@ const RoomList = () => {
     <section className="section-container">
       <h1 className="title">Homes guests love</h1>
       <div className="room-container">
-        {list.map((item, i) => (
-          <div key={i} className="room-card">
-            <img src={item.url} alt={"photo of " + item.city} />
-            <div className="content-container">
-              <h1>{item.title}</h1>
-              <h2>{item.city}</h2>
-              <div className="justify-between">
-                <div className="rating-container">
-                  <div>{item.rating}</div>
-                  <span>Excellent</span>
+        {loading
+          ? Array(9)
+              .fill(null)
+              .map((item, i) => (
+                <div key={i} className="room-card">
+                  <div
+                    style={{ height: 400, width: 200, backgroundColor: "gray" }}
+                  ></div>
                 </div>
-                <p> ${item.price}</p>
+              ))
+          : data.map((item, i) => (
+              <div key={i} className="room-card">
+                <Link to={`/hotel/${item._id}`}>
+                  <img src={list[i].url} alt={"photo of " + item.city} />
+                  <div className="content-container">
+                    <h1>{item.name}</h1>
+                    <h2>{item.city}</h2>
+                    <div className="justify-between">
+                      <div className="rating-container">
+                        <div>{item.rating}</div>
+                        <span>Excellent</span>
+                      </div>
+                      <p> ${item.cheapestPrice}</p>
+                    </div>
+                  </div>
+                </Link>
               </div>
-            </div>
-          </div>
-        ))}
+            ))}
       </div>
     </section>
   );

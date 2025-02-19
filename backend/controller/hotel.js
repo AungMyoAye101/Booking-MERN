@@ -36,8 +36,14 @@ const deleteHotel = async (req, res) => {
 };
 //Get all hotel
 const getAllHotels = async (req, res, next) => {
+  const { min, max, limit, ...others } = req.query;
+  console.log(min, max, limit, others);
+
   try {
-    const hotels = await Hotel.find();
+    const hotels = await Hotel.find({
+      ...others,
+      cheapestPrice: { $gt: min | 0, $lt: max | 999999 },
+    }).limit(limit);
     res.status(200).json(hotels);
   } catch (error) {
     next(error);
