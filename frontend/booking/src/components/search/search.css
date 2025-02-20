@@ -6,10 +6,12 @@
   border-radius: 6px;
   overflow: hidden;
 }
-.input-container input {
+.input-container input,
+.input-container select {
   flex: 1;
   height: 40px;
   padding: 10px;
+  border: none;
 }
 .input-container button {
   height: 40px;
