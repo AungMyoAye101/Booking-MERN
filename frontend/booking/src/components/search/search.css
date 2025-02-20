@@ -1,0 +1,18 @@
+.input-container {
+  display: flex;
+  align-items: center;
+  background-color: lime;
+  border: 1px solid gray;
+  border-radius: 6px;
+  overflow: hidden;
+}
+.input-container input {
+  flex: 1;
+  height: 40px;
+  padding: 10px;
+}
+.input-container button {
+  height: 40px;
+  border-radius: 0;
+  background-color: skyblue;
+}
