@@ -22,7 +22,7 @@ const reducer = (state: AuthState, action: AuthAction) => {
         loading: true,
         error: null,
       };
-    case "LOGIN_OUT":
+    case "LOGOUT":
       return {
         user: null,
         loading: true,
@@ -46,12 +46,12 @@ const reducer = (state: AuthState, action: AuthAction) => {
   }
 };
 
-type AuthContextType = {
-  user: any;
-  loading: boolean;
-  error: any;
-  dispatch: React.Dispatch<AuthAction>;
-};
+// type AuthContextType = {
+//   user: any;
+//   loading: boolean;
+//   error: any;
+//   dispatch: React.Dispatch<AuthAction>;
+// };
 
 export const authContext = createContext<{
   user: any;

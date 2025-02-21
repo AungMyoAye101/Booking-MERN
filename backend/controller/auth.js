@@ -53,4 +53,9 @@ const login = async (req, res, next) => {
   }
 };
 
-module.exports = { register, login };
+const logout = (req, res, next) => {
+  res.cookie();
+  //logout functionally
+};
+
+module.exports = { register, login, logout };
