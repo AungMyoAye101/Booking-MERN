@@ -1,18 +1,20 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import "../login/login.css";
 import { useState } from "react";
 import { signUpUserValidation } from "../../lib/formValidation";
 const Signup = () => {
   const [user, setUser] = useState({
-    username: "",
+    name: "",
     password: "",
     email: "",
   });
   const [error, setError] = useState(false);
   const [errorMesasage, setErrorMesage] = useState("");
   const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
 
   const handleChange = (e: { target: { name: string; value: string } }) => {
+    console.log(user);
     setUser((pre) => ({ ...pre, [e.target.name]: e.target.value }));
   };
   const onSubmitHandle = async (e: any) => {
@@ -30,6 +32,7 @@ const Signup = () => {
         });
         const data = await res.json();
         console.log(data);
+        navigate("/");
       }
     } catch (error: any) {
       setError(true);
@@ -38,7 +41,7 @@ const Signup = () => {
     } finally {
       setLoading(false);
     }
-    setUser({ username: "", password: "", email: "" });
+    setUser({ name: "", password: "", email: "" });
   };
 
   return (
@@ -47,9 +50,9 @@ const Signup = () => {
         <h1>Signup </h1>
         <input
           type="text"
-          name="username"
-          value={user.username}
-          placeholder="username"
+          name="name"
+          value={user.name}
+          placeholder="name"
           onChange={(e) => handleChange(e)}
         />
         <input
