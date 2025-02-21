@@ -5,7 +5,7 @@ import { loginUserValidation } from "../../lib/formValidation";
 
 const Login = () => {
   const [user, setUser] = useState({
-    username: "",
+    email: "",
     password: "",
   });
   const [error, setError] = useState(false);
@@ -43,7 +43,7 @@ const Login = () => {
     } finally {
       setLoading(false);
     }
-    setUser({ username: "", password: "" });
+    setUser({ email: "", password: "" });
   };
 
   return (
@@ -51,10 +51,10 @@ const Login = () => {
       <form className="form-container">
         <h1>Login </h1>
         <input
-          value={user.username}
-          type="text"
-          name="username"
-          placeholder="username"
+          value={user.email}
+          type="email"
+          name="email"
+          placeholder="email"
           onChange={(e) => handleChange(e)}
         />
         <input
