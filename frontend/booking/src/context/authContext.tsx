@@ -53,7 +53,12 @@ type AuthContextType = {
   dispatch: React.Dispatch<AuthAction>;
 };
 
-const authContext = createContext<AuthContextType | null>({
+export const authContext = createContext<{
+  user: any;
+  loading: boolean;
+  error: any;
+  dispatch: React.Dispatch<AuthAction>;
+}>({
   user: INITIAL_STATE.user,
   loading: INITIAL_STATE.loading,
   error: INITIAL_STATE.error,
