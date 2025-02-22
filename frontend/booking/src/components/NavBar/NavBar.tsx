@@ -6,11 +6,11 @@ import { authContext } from "../../context/authContext";
 
 const NavBar = () => {
   const { user, dispatch } = useContext(authContext);
-  console.log("user" + user.name);
+  console.log("user" + user);
 
   const handleLogout = async () => {
     try {
-      await fetch(`http://localhost:5000/api/logout`);
+      await fetch(`http://localhost:5000/api/auth/logout`);
       dispatch({ type: "LOGOUT" });
     } catch (error) {
       console.log(error);
@@ -23,7 +23,7 @@ const NavBar = () => {
         <h1 className="logo_title">Booking</h1>
       </Link>
       <div className="link_container">
-        {user.name ? (
+        {user ? (
           <button onClick={handleLogout}>Logout</button>
         ) : (
           <>
