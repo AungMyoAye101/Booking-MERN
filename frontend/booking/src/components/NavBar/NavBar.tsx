@@ -10,7 +10,15 @@ const NavBar = () => {
 
   const handleLogout = async () => {
     try {
-      await fetch(`http://localhost:5000/api/auth/logout`);
+      const res = await fetch(`http://localhost:5000/api/auth/logout`, {
+        method: "POST",
+      });
+
+      if (!res.ok) {
+        const errorData = await res.json();
+        throw new Error(errorData.message || "Logout failed");
+      }
+
       dispatch({ type: "LOGOUT" });
     } catch (error) {
       console.log(error);

@@ -36,7 +36,7 @@ const deleteHotel = async (req, res) => {
 };
 //Get all hotel
 const getAllHotels = async (req, res, next) => {
-  const { name, min, max, limit, ...others } = req.query;
+  const { name, min = 0, max = 99999, limit, ...others } = req.query;
   console.log(min, max, limit, others);
   let filter = {};
   if (name) {
