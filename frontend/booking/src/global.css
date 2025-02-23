@@ -15,7 +15,11 @@ body {
   margin: 0 auto;
   padding: 20px;
 }
-
+.fluid-container {
+  width: 100%;
+  max-width: 1024px;
+  margin: 0 auto;
+}
 button {
   cursor: pointer;
   border: none;
