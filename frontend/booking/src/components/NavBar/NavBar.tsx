@@ -6,7 +6,6 @@ import { authContext } from "../../context/authContext";
 
 const NavBar = () => {
   const { user, dispatch } = useContext(authContext);
-  console.log("user" + user);
 
   const handleLogout = async () => {
     try {

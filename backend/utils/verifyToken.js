@@ -6,7 +6,7 @@ const verifyToken = (req, res, next) => {
   if (!token) next(createError(401, "You are not authenicated"));
 
   jwt.verify(token, process.env.SECRET_KEY, (err, user) => {
-    if (err) next(createError(403, "Tokn is not valid"));
+    if (err) next(createError(403, "Token is not valid"));
     req.user = user;
     next();
   });

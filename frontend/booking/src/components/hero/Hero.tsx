@@ -3,13 +3,11 @@ import "./hero.css";
 const Hero = () => {
   return (
     <section className="home-container">
-      <div className="content_container">
-        <h1>A lifetime of discounts? It's Genius.</h1>
-        <p>
-          Get rewarded for your travels – unlock instant savings of 10% or more
-          with a free Lamabooking account
+      <div className="content-container">
+        <h1 className="home-title">Find your next stay</h1>
+        <p className="home-para">
+          Search low prices on hotels, homes and much more...
         </p>
-        <button>Sign Up</button>
       </div>
     </section>
   );
