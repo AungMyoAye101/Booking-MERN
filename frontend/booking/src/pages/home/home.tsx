@@ -10,8 +10,8 @@ const Home = () => {
   return (
     <section>
       <Hero />
-      <div className="con">
-        <Search />
+      <Search />
+      <div className="fluid-container ">
         <Showcase />
         <HotelList />
         <RoomList />

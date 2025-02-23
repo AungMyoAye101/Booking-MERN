@@ -1,6 +1,8 @@
 import { useState } from "react";
 import "./search.css";
-import useFetch from "../../hooks/usefetch";
+
+import "react-date-range/dist/styles.css"; // Main style file
+import "react-date-range/dist/theme/default.css";
 
 const Search = () => {
   const [searchData, setSearchData] = useState({
@@ -26,22 +28,14 @@ const Search = () => {
     }
   };
   return (
-    <form className="input-container">
-      <input
-        type="text"
-        placeholder="search hotel"
-        name="text"
-        value={searchData.text}
-        onChange={(e) => handleChange(e)}
-      />
-      <input type="date" />
-      <select name="" id="">
-        <option value="Adult">Adult</option>
-        <option value="children">children</option>
-        <option value="children">children</option>
-      </select>
-      <button onClick={onSubmit}>Search</button>
-    </form>
+    <section className="search-container">
+      <div>
+        <div>
+          <span>icon</span>
+          <input type="text" />
+        </div>
+      </div>
+    </section>
   );
 };
 

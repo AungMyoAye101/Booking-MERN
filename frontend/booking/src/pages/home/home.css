@@ -1,5 +1,4 @@
-.con {
-  max-width: 1024px;
-  margin: 0 auto;
-  padding: 10px 20px;
+section div {
+  margin-top: 20px;
+  padding: 20px;
 }
