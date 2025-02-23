@@ -1,5 +1,4 @@
 import { useLocation } from "react-router-dom";
-import "./hotel.css";
 import useFetch from "../../hooks/usefetch";
 
 const Hotel = () => {

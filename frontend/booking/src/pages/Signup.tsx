@@ -1,5 +1,4 @@
 import { Link, useNavigate } from "react-router-dom";
-import "../login/login.css";
 import { useState } from "react";
 import { signUpUserValidation } from "../../lib/formValidation";
 const Signup = () => {

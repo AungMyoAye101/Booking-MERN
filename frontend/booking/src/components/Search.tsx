@@ -1,8 +1,4 @@
 import { useState } from "react";
-import "./search.css";
-
-import "react-date-range/dist/styles.css"; // Main style file
-import "react-date-range/dist/theme/default.css";
 
 const Search = () => {
   const [searchData, setSearchData] = useState({

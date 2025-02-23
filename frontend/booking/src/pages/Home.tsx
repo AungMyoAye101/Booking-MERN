@@ -4,7 +4,6 @@ import HotelList from "../components/HotelList";
 import RoomList from "../components/RoomList";
 import Search from "../components/Search";
 import Showcase from "../components/ShowCase";
-import "./home.css";
 
 const Home = () => {
   return (

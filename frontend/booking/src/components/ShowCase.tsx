@@ -1,4 +1,3 @@
-import "./showcase.css";
 const Showcase = () => {
   const list = [
     {
