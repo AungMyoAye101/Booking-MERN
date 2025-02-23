@@ -1,5 +1,5 @@
 import { useLocation } from "react-router-dom";
-import useFetch from "../../hooks/usefetch";
+import useFetch from "../hooks/useFetch";
 
 const Hotel = () => {
   const location = useLocation();
@@ -9,8 +9,8 @@ const Hotel = () => {
   return (
     <section className="hotel-con">
       <div>
-        <h1>{data.name}</h1>
-        <p>{data.description}</p>
+        {/* <h1>{data.name}</h1>
+        <p>{data.description}</p> */}
       </div>
     </section>
   );

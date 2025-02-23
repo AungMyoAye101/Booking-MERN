@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import useFetch from "../../hooks/usefetch";
+import useFetch from "../hooks/useFetch";
 
 const RoomList = () => {
   const { data, loading, error } = useFetch("api/hotel?featured=true&limit=4");

@@ -1,6 +1,6 @@
 import { Link, useNavigate } from "react-router-dom";
 import { useState } from "react";
-import { signUpUserValidation } from "../../lib/formValidation";
+import { signUpUserValidation } from "../lib/formValidation";
 const Signup = () => {
   const [user, setUser] = useState({
     name: "",
