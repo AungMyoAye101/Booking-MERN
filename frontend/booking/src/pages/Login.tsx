@@ -1,8 +1,8 @@
 import { Link, useNavigate } from "react-router-dom";
 import "./login.css";
 import { useContext, useState } from "react";
-import { loginUserValidation } from "../../lib/formValidation";
-import { authContext } from "../../context/authContext";
+import { loginUserValidation } from "../lib/formValidation";
+import { authContext } from "../context/authContext";
 
 const Login = () => {
   const [user, setUser] = useState({
