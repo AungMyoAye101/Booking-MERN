@@ -1,7 +1,18 @@
 import { Link } from "react-router-dom";
 import useFetch from "../hooks/useFetch";
+import { useRef } from "react";
 
-const RoomList = () => {
+const HotelList = () => {
+  const containerRef = useRef<HTMLDivElement>(null);
+
+  const handleSlide = (isRight: boolean) => {
+    if (containerRef.current) {
+      containerRef.current.scrollBy({
+        left: isRight ? 300 : -300,
+        behavior: "smooth",
+      });
+    }
+  };
   const { data, loading, error } = useFetch("api/hotel?featured=true&limit=4");
   console.log(data);
   const list = [
@@ -63,40 +74,59 @@ const RoomList = () => {
     },
   ];
   return (
-    <section className="section-container">
-      <h1 className="title">Homes guests love</h1>
-      <div className="room-container">
-        {loading
-          ? Array(9)
-              .fill(null)
-              .map((item, i) => (
-                <div key={i} className="room-card">
-                  <div
-                    style={{ height: 400, width: 200, backgroundColor: "gray" }}
-                  ></div>
-                </div>
-              ))
-          : data.map((item, i) => (
-              <div key={i} className="room-card">
-                <Link to={`/hotel/${item._id}`}>
-                  <img src={list[i].url} alt={"photo of " + item.city} />
-                  <div className="content-container">
-                    <h1>{item.name}</h1>
-                    <h2>{item.city}</h2>
-                    <div className="justify-between">
-                      <div className="rating-container">
-                        <div>{item.rating}</div>
-                        <span>Excellent</span>
-                      </div>
-                      <p> ${item.cheapestPrice}</p>
-                    </div>
-                  </div>
-                </Link>
+    <section>
+      <h1 className="text-4xl font-semibold font-roboto">Home Guess Love</h1>
+      <div className="relative">
+        <button
+          onClick={() => handleSlide(false)}
+          className="bg-white flex items-center justify-center text-black z-10 rounded-full w-10 h-10 absolute left-0 top-[50%] translate-y-[-50%]"
+        >
+          p
+        </button>
+        <button
+          onClick={() => handleSlide(true)}
+          className="bg-white flex items-center justify-center text-black z-10 rounded-full w-10 h-10 absolute right-0 top-[50%] translate-y-[-50%]"
+        >
+          n
+        </button>
+        <main
+          ref={containerRef}
+          className="flex gap-4 overflow-hidden flex-nowrap  relative py-4"
+        >
+          {list.map((item, i) => (
+            <div
+              key={i}
+              className="min-w-[250px]  relative rounded-lg overflow-hidden shadow-lg cursor-pointer"
+            >
+              <div className=" overflow-hidden">
+                <img
+                  src={item.url}
+                  alt="image"
+                  className="w-full h-auto hover:scale-125 transition-transform ease-in-out "
+                />
               </div>
-            ))}
+              <div className="py-4 px-2 flex flex-col gap-1">
+                <p className="text-sm opacity-90">hotel</p>
+                <h2 className="  font-roboto text-xl font-semibold">
+                  {item.title}
+                </h2>
+                <div className="flex gap-1 items-center">
+                  <div className="bg-blue-800 py-1 px-1.5 text-white text-sm rounded">
+                    {item.rating}
+                  </div>
+                  <span className="text-sm ">144reviews</span>
+                </div>
+                <div className="self-end font-roboto">
+                  <span className="text-sm ">Starting from </span>
+                  <span className="font-semibold ml-1">${item.price}</span>
+                </div>
+              </div>
+            </div>
+          ))}
+        </main>
       </div>
     </section>
   );
 };
 
-export default RoomList;
+export default HotelList;
