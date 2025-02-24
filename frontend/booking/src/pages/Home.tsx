@@ -1,20 +1,21 @@
 import Contact from "../components/Contact";
+import Destination from "../components/Destination";
 import Hero from "../components/Hero";
 import HotelList from "../components/HotelList";
 import RoomList from "../components/RoomList";
 import Search from "../components/Search";
-import Showcase from "../components/ShowCase";
 
 const Home = () => {
   return (
     <section>
       <Hero />
       <Search />
-      <div className="fluid-container ">
-        <Showcase />
+      <div className="py-20 px-4 max-w-6xl m-auto ">
+        <Destination />
         <HotelList />
         <RoomList />
       </div>
+
       <Contact />
     </section>
   );

@@ -23,7 +23,7 @@ const NavBar = () => {
     }
   };
   return (
-    <nav className="bg-white fixed top-0 left-0 w-full shadow-lg">
+    <nav className="bg-white fixed top-0 left-0 w-full shadow-lg z-50">
       <div className="flex justify-between items-center max-w-6xl px-4 py-2 m-auto">
         <Link to="/">
           <h1 className="text-3xl font-bold uppercase text-blue-800 font-roboto">
