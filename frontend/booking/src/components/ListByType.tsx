@@ -1,6 +1,6 @@
 import { useRef } from "react";
 
-const Destination = () => {
+const ListByType = () => {
   const containerRef = useRef<HTMLDivElement>(null);
 
   const handleSlide = (isRight: boolean) => {
@@ -33,15 +33,35 @@ const Destination = () => {
       count: 10,
     },
     {
+      url: "https://img.freepik.com/free-photo/spa-pool-sky-leisure-background_1203-4946.jpg?t=st=1739537710~exp=1739541310~hmac=422cd13ece996d0295ebf1d2af53809f31269de4f541577d495722e423c484c6&w=740",
+      city: "Dublin",
+      count: 0,
+    },
+    {
+      url: "https://img.freepik.com/free-photo/colonial-style-house-night-scene_1150-17925.jpg?t=st=1739537537~exp=1739541137~hmac=4ea038e25fe4731404bfcdd8bc276c05b04c8e65c734e586c23ad03f815409e3&w=740",
+      city: "Austin",
+      count: 10,
+    },
+    {
+      url: "https://img.freepik.com/free-photo/spa-pool-sky-leisure-background_1203-4946.jpg?t=st=1739537710~exp=1739541310~hmac=422cd13ece996d0295ebf1d2af53809f31269de4f541577d495722e423c484c6&w=740",
+      city: "Dublin",
+      count: 0,
+    },
+    {
+      url: "https://img.freepik.com/free-photo/colonial-style-house-night-scene_1150-17925.jpg?t=st=1739537537~exp=1739541137~hmac=4ea038e25fe4731404bfcdd8bc276c05b04c8e65c734e586c23ad03f815409e3&w=740",
+      city: "Austin",
+      count: 10,
+    },
+    {
       url: "https://img.freepik.com/free-photo/colonial-style-house-night-scene_1150-17925.jpg?t=st=1739537537~exp=1739541137~hmac=4ea038e25fe4731404bfcdd8bc276c05b04c8e65c734e586c23ad03f815409e3&w=740",
       city: "London",
       count: 122,
     },
   ];
   return (
-    <section className="mb-4">
+    <section className="my-4 py-10">
       <h1 className="text-4xl font-roboto font-semibold mb-2 ">
-        Trending destination
+        Broswes by property type
       </h1>
       <div className="relative">
         <button
@@ -58,21 +78,26 @@ const Destination = () => {
         </button>
         <main
           ref={containerRef}
-          className="flex gap-4 overflow-hidden flex-nowrap  relative"
+          className="flex gap-4 overflow-hidden flex-nowrap  relative py-4"
         >
           {list.map((item, i) => (
             <div
               key={i}
-              className="min-w-[300px] aspect-video rounded-lg overflow-hidden relative "
+              className="min-w-[250px]  relative rounded-lg overflow-hidden shadow-lg cursor-pointer"
             >
-              <img
-                src={item.url}
-                alt="image"
-                className="w-full h-auto hover:scale-125 transition-transform ease-in-out "
-              />
-              <h2 className="absolute top-4 left-4 text-white font-roboto text-2xl font-bold">
-                {item.city}
-              </h2>
+              <div className=" overflow-hidden">
+                <img
+                  src={item.url}
+                  alt="image"
+                  className="w-full h-auto hover:scale-125 transition-transform ease-in-out "
+                />
+              </div>
+              <div className="py-4 px-2">
+                <h2 className="  font-roboto text-xl font-semibold">
+                  {item.city}
+                </h2>
+                <p className="text-sm ">{item.count} propertes</p>
+              </div>
             </div>
           ))}
         </main>
@@ -81,4 +106,4 @@ const Destination = () => {
   );
 };
 
-export default Destination;
+export default ListByType;
