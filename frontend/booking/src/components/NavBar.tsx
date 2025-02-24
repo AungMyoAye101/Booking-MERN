@@ -26,7 +26,7 @@ const NavBar = () => {
     <nav className="bg-white fixed top-0 left-0 w-full shadow-lg">
       <div className="flex justify-between items-center max-w-6xl px-4 py-2 m-auto">
         <Link to="/">
-          <h1 className="text-3xl font-bold uppercase text-blue-800">
+          <h1 className="text-3xl font-bold uppercase text-blue-800 font-roboto">
             Booking
           </h1>
         </Link>
@@ -35,16 +35,10 @@ const NavBar = () => {
             <button onClick={handleLogout}>Logout</button>
           ) : (
             <>
-              <Link
-                to={"/login"}
-                className="px-4 py-2 bg-blue-800 rounded text-white text-sm"
-              >
+              <Link to={"/login"} className="btn">
                 Login
               </Link>
-              <Link
-                to={"/signup"}
-                className="px-4 py-2 bg-blue-800 rounded text-white text-sm"
-              >
+              <Link to={"/signup"} className="btn">
                 Signup
               </Link>
             </>
