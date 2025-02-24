@@ -31,11 +31,13 @@ const Footer = () => {
     " Terms & conditions]",
   ];
   return (
-    <section className="footer-container">
-      <div className="footer-content-con">
-        <div className="link-container">
+    <section className="bg-blue-800 text-white">
+      <div className="max-w-6xl m-auto p-4">
+        <div className="flex flex-wrap gap-1 ">
           {links.map((item, i) => (
-            <p key={i}>{item}</p>
+            <p key={i} className="w-60 line-clamp-1">
+              {item}
+            </p>
           ))}
         </div>
       </div>
