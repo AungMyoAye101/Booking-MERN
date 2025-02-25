@@ -11,7 +11,11 @@ const Home = () => {
   return (
     <section>
       <Hero />
-      <Search />
+      <div>
+        <div className="max-w-6xl m-auto w-full  absolute top-[50%] left-[50%] translate-x-[-50%] translate-y-[-50%] ">
+          <Search />
+        </div>
+      </div>
       <div className="py-20 px-4 max-w-6xl m-auto ">
         <Destination />
         <Offer />

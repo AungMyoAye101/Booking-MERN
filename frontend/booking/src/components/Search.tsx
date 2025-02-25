@@ -24,13 +24,13 @@ const Search = () => {
     }
   };
   return (
-    <section className="max-w-6xl m-auto absolute top-[50%] left-[50%] translate-x-[-50%] translate-y-[-50%] w-full p-2  bg-blue-400 flex gap-1 rounded-lg">
+    <div className="w-full p-2  bg-blue-400 flex gap-1 rounded-lg ">
       <div className="flex-1 bg-white  h-10 flex items-center rounded-md">
         <span>icon</span>
         <input
           type="text"
           placeholder="Where are you going?"
-          className="h-full w-full ml-1"
+          className="h-full w-full ml-1 flex-1"
         />
       </div>
       <div className="flex-1 bg-white  h-10 flex items-center gap-2 rounded-md">
@@ -41,7 +41,7 @@ const Search = () => {
         <input type="text" placeholder="adult" />
       </div>
       <button>search</button>
-    </section>
+    </div>
   );
 };
 
