@@ -2,6 +2,7 @@ import { useLocation } from "react-router-dom";
 import useFetch from "../hooks/useFetch";
 import SearchResult from "./SearchResult";
 import Search from "../components/Search";
+import Filter from "../components/Filter";
 
 const Hotel = () => {
   const location = useLocation();
@@ -9,11 +10,11 @@ const Hotel = () => {
   const { data, loading, error } = useFetch(`api/hotel/${hotelId}`);
   console.log(data);
   return (
-    <section className="relative py-14 bg-red-400">
-      <div className="max-w-6xl m-auto ">
-        <Search />
-      </div>
-      <div>
+    <section className="relative py-14  max-w-6xl m-auto">
+      <Search />
+
+      <div className="flex gap-10 mt-6">
+        <Filter />
         <SearchResult />
       </div>
     </section>

@@ -3,7 +3,7 @@ import HotelCard from "../components/HotelCard";
 
 const SearchResult = () => {
   return (
-    <div className="flex flex-col   gap-4  bg-green-400">
+    <div className="flex flex-col   gap-4  ">
       {Array(9)
         .fill(null)
         .map((_, i) => (
