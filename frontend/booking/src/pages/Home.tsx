@@ -5,6 +5,7 @@ import ListByType from "../components/ListByType";
 import RoomList from "../components/HotelList";
 import Search from "../components/Search";
 import HotelList from "../components/HotelList";
+import Offer from "../components/Offer";
 
 const Home = () => {
   return (
@@ -13,6 +14,7 @@ const Home = () => {
       <Search />
       <div className="py-20 px-4 max-w-6xl m-auto ">
         <Destination />
+        <Offer />
         <ListByType />
         <HotelList />
       </div>

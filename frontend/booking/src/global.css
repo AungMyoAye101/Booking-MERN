@@ -4,6 +4,9 @@
 @tailwind utilities;
 
 @layer base {
+  body {
+    @apply bg-neutral-200;
+  }
   input {
     @apply focus:outline-none px-2;
   }

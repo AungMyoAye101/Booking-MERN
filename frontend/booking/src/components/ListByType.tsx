@@ -83,7 +83,7 @@ const ListByType = () => {
           {list.map((item, i) => (
             <div
               key={i}
-              className="min-w-[250px]  relative rounded-lg overflow-hidden shadow-lg cursor-pointer"
+              className="min-w-[250px]  relative rounded-lg overflow-hidden shadow-lg cursor-pointer bg-white"
             >
               <div className=" overflow-hidden">
                 <img

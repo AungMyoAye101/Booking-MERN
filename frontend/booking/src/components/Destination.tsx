@@ -63,7 +63,7 @@ const Destination = () => {
           {list.map((item, i) => (
             <div
               key={i}
-              className="min-w-[300px] aspect-video rounded-lg overflow-hidden relative "
+              className="min-w-[300px] aspect-video rounded-lg overflow-hidden relative bg-white"
             >
               <img
                 src={item.url}

@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 const Contact = () => {
   return (
     <section className="py-10 max-w-6xl  m-auto flex justify-center items-center ">
-      <div className=" w-full  border border-gray-100 shadow-lg flex justify-between  gap-4 text-white relative overflow-hidden">
+      <div className=" w-full  border bg-white border-gray-100 rounded-lg shadow-lg flex justify-between  gap-4 text-white relative overflow-hidden">
         <div className="w-20 h-20 rounded-full bg-yellow-300 absolute -left-4 top-10 "></div>
         <div className="w-20 h-20 rounded-full bg-yellow-300 absolute right-96 -bottom-10 "></div>
         <div className="  flex justify-center w-full overflow-hidden">
@@ -17,7 +17,7 @@ const Contact = () => {
 
             <Link
               to={"/signup"}
-              className="bg-blue-300 font-roboto  text-black text-xs px-4 py-2 rounded-md"
+              className="bg-blue-300 font-roboto  text-black text-xs px-4 py-1 rounded-md"
             >
               Signup
             </Link>
