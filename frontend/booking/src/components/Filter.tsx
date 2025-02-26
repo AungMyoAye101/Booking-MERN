@@ -2,8 +2,8 @@ import React from "react";
 
 const Filter = () => {
   return (
-    <section className="">
-      <div className="rounded-lg  bg-white shadow-lg w-72 p-4 flex flex-col gap-1">
+    <section className="h-screen  sticky top-16 min-w-72 max-w-80">
+      <div className="rounded-lg  bg-white shadow-lg w-full p-4 flex flex-col gap-1">
         <h2 className="text-lg font-semibold mb-4">Filter Hotels</h2>
         {/* Location */}
         <div>

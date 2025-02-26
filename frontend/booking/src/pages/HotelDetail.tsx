@@ -1,4 +1,6 @@
 import { BiHeart, BiShare, BiShareAlt } from "react-icons/bi";
+import { FaParking } from "react-icons/fa";
+
 import { FaLocationDot, FaShare } from "react-icons/fa6";
 
 const HotelDetail = () => {
@@ -48,31 +50,39 @@ const HotelDetail = () => {
           alt="London"
         />
       </div>
-      <div className="flex flex-col gap-2">
-        <h2 className="text-2xl font-roboto font-semibold">Description</h2>
-        <p>
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Nemo qui
-          iusto, reprehenderit fuga atque quisquam cumque quae error placeat
-          alias porro totam ab adipisci mollitia debitis maiores nam rem earum.
+      <div className="flex  gap-4 justify-between">
+        <p className="text-sm font-serif">
+          Lorem ipsum dolor sit amet consectetur adipisicing elit. Officia
+          aliquid laudantium non. Reprehenderit quas ullam fugiat sed nemo ea
+          architecto tenetur, possimus placeat veniam maiores recusandae
+          reiciendis voluptates exercitationem ratione. Lorem ipsum dolor sit,
+          amet consectetur adipisicing elit. Possimus in, quos veniam quaerat
+          cupiditate eum non saepe dicta modi provident repudiandae nemo tempore
+          nisi magni expedita veritatis natus reiciendis. Voluptatem?
         </p>
-        <h2 className="text-2xl font-roboto font-semibold">Description</h2>
-        <p>
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Nemo qui
-          iusto, reprehenderit fuga atque quisquam cumque quae error placeat
-          alias porro totam ab adipisci mollitia debitis maiores nam rem earum.
-        </p>
-        <h2 className="text-2xl font-roboto font-semibold">Description</h2>
-        <p>
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Nemo qui
-          iusto, reprehenderit fuga atque quisquam cumque quae error placeat
-          alias porro totam ab adipisci mollitia debitis maiores nam rem earum.
-        </p>
-        <h2 className="text-2xl font-roboto font-semibold">Description</h2>
-        <p>
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Nemo qui
-          iusto, reprehenderit fuga atque quisquam cumque quae error placeat
-          alias porro totam ab adipisci mollitia debitis maiores nam rem earum.
-        </p>
+        <div className=" bg-white rounded-lg shadow-lg w-72 min-w-72 p-4 flex flex-col gap-3">
+          <h1 className="font-roboto font-semibold text-lg">
+            Property highlight
+          </h1>
+          <h2 className="font-semibold font-roboto ">
+            Perfect for 1 night stay
+          </h2>
+          <div className="flex gap-2 items-center ">
+            <FaLocationDot />
+            <p className="text-sm ">
+              Top location: Highly rated by recent guests (8.7)
+            </p>
+          </div>
+          <h2 className="font-semibold font-roboto ">Breakfast info</h2>
+          <p className="text-sm font-roboto ">
+            Continental, Vegetarian, Asian, American
+          </p>
+          <div className="flex gap-2 items-center ">
+            <FaParking />
+            <p className="text-sm ">Free parking available at the hotel</p>
+          </div>
+          <button className="w-full">Reserve</button>
+        </div>
       </div>
     </section>
   );

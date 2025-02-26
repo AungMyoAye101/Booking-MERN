@@ -12,7 +12,7 @@ const Hotel = () => {
   return (
     <section className="relative py-14  max-w-6xl m-auto">
       <Search />
-      <div className="flex gap-10 mt-6">
+      <div className="flex gap-10 mt-6 ">
         <Filter />
         <SearchResult />
       </div>
