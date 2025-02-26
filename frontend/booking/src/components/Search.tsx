@@ -1,4 +1,10 @@
-import { Children, useState } from "react";
+import { useState } from "react";
+import { DateRange } from "react-date-range";
+import { IoBedOutline } from "react-icons/io5";
+import "react-date-range/dist/styles.css"; // main css file
+import "react-date-range/dist/theme/default.css"; // theme css file
+import { format } from "date-fns";
+import { MdCalendarMonth } from "react-icons/md";
 
 type OptionsType = {
   adult: number;
@@ -9,13 +15,24 @@ const Search = () => {
   const [searchData, setSearchData] = useState({
     text: "",
   });
-
+  const [isDateOpen, setIsDateOpen] = useState(false);
+  const [datePicker, setDatePicker] = useState([
+    {
+      startDate: new Date(),
+      endDate: new Date(),
+      key: "selection",
+    },
+  ]);
+  //option
   const [openOPtions, setOpenOPtions] = useState(false);
   const [options, setOptions] = useState({
     adult: 1,
     children: 0,
     room: 1,
   });
+  const formatDate = (date: Date) => {
+    return format(date, "dd/mm/yyyy");
+  };
 
   const optionsHandler = (increase: boolean, type: keyof OptionsType) => {
     setOptions((pre) => ({
@@ -44,20 +61,38 @@ const Search = () => {
   };
   return (
     <div className="w-full p-2  bg-blue-400 flex gap-1 rounded-lg ">
-      <div className="flex-1 bg-white  h-10 flex items-center rounded-md">
+      <div className="flex-1 bg-white  h-10 flex items-center rounded-md px-2">
+        <IoBedOutline className="text-xl " />
         <input
           type="text"
           placeholder="Where are you going?"
           className="h-full w-full ml-1 flex-1"
         />
       </div>
-      <div className="flex-1 bg-white  h-10 flex items-center gap-2 rounded-md">
-        <input type="date" className="h-full" />
-        <input type="date" className="h-full  " />
+      <div className="flex-1 bg-white  h-10 flex items-center gap-2 rounded-md relative">
+        <div
+          onClick={() => setIsDateOpen(!isDateOpen)}
+          className="font-roboto px-4 text-sm flex items-center gap-1 cursor-pointer  "
+        >
+          <MdCalendarMonth className="text-lg" />
+          {formatDate(datePicker[0].startDate)}
+          <span className="mx-1">to</span>
+          {formatDate(datePicker[0].endDate)}
+        </div>
+        {isDateOpen && (
+          <div className="absolute top-12  ">
+            <DateRange
+              editableDateInputs={true}
+              onChange={(item: any) => setDatePicker([item.selection])}
+              moveRangeOnFirstSelection={false}
+              ranges={datePicker}
+            />
+          </div>
+        )}
       </div>
       <div className="flex-1 bg-white  h-10 flex items-center rounded-md relative">
         <div
-          className="px-4 cursor-pointer"
+          className="px-4 cursor-pointer text-sm font-roboto"
           onClick={() => setOpenOPtions(!openOPtions)}
         >
           1 Adult 0 Children 1 Room
