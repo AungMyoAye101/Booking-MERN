@@ -12,7 +12,7 @@ const Home = () => {
     <section>
       <Hero />
       <div>
-        <div className="max-w-6xl m-auto w-full  absolute top-[50%] left-[50%] translate-x-[-50%] translate-y-[-50%] ">
+        <div className="max-w-6xl m-auto w-full  absolute top-[50%] left-[50%] translate-x-[-50%] translate-y-[-50%] z-20 ">
           <Search />
         </div>
       </div>
