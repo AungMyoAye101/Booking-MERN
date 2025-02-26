@@ -1,4 +1,5 @@
 import { useRef } from "react";
+import { PiGreaterThan, PiLessThan } from "react-icons/pi";
 
 const ListByType = () => {
   const containerRef = useRef<HTMLDivElement>(null);
@@ -68,13 +69,13 @@ const ListByType = () => {
           onClick={() => handleSlide(false)}
           className="bg-white flex items-center justify-center text-black z-10 rounded-full w-10 h-10 absolute left-0 top-[50%] translate-y-[-50%]"
         >
-          p
+          <PiLessThan />
         </button>
         <button
           onClick={() => handleSlide(true)}
           className="bg-white flex items-center justify-center text-black z-10 rounded-full w-10 h-10 absolute right-0 top-[50%] translate-y-[-50%]"
         >
-          n
+          <PiGreaterThan />
         </button>
         <main
           ref={containerRef}

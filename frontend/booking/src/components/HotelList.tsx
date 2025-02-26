@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 import useFetch from "../hooks/useFetch";
 import { useRef } from "react";
-
+import { PiGreaterThan, PiLessThan } from "react-icons/pi";
 const HotelList = () => {
   const containerRef = useRef<HTMLDivElement>(null);
 
@@ -81,20 +81,21 @@ const HotelList = () => {
           onClick={() => handleSlide(false)}
           className="bg-white flex items-center justify-center text-black z-10 rounded-full w-10 h-10 absolute left-0 top-[50%] translate-y-[-50%]"
         >
-          p
+          <PiLessThan />
         </button>
         <button
           onClick={() => handleSlide(true)}
           className="bg-white flex items-center justify-center text-black z-10 rounded-full w-10 h-10 absolute right-0 top-[50%] translate-y-[-50%]"
         >
-          n
+          <PiGreaterThan />
         </button>
         <main
           ref={containerRef}
           className="flex gap-4 overflow-hidden flex-nowrap  relative py-4"
         >
           {list.map((item, i) => (
-            <div
+            <Link
+              to={`hotel/${item.title}`}
               key={i}
               className="min-w-[250px]  relative rounded-lg overflow-hidden shadow-lg cursor-pointer bg-white"
             >
@@ -121,7 +122,7 @@ const HotelList = () => {
                   <span className="font-semibold ml-1">${item.price}</span>
                 </div>
               </div>
-            </div>
+            </Link>
           ))}
         </main>
       </div>

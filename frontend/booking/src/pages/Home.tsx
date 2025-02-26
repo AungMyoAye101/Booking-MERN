@@ -18,8 +18,8 @@ const Home = () => {
       </div>
       <div className="py-20 px-4 max-w-6xl m-auto ">
         <Destination />
-        <Offer />
         <ListByType />
+        <Offer />
         <HotelList />
       </div>
 

@@ -60,7 +60,7 @@ const Search = () => {
     }
   };
   return (
-    <div className="w-full p-2  bg-blue-400 flex gap-1 rounded-lg ">
+    <div className="w-full   bg-blue-300 border-4 border-blue-300 flex gap-1 rounded-lg  ">
       <div className="flex-1 bg-white  h-10 flex items-center rounded-md px-2">
         <IoBedOutline className="text-xl " />
         <input
@@ -171,7 +171,7 @@ const Search = () => {
           </div>
         )}
       </div>
-      <button>search</button>
+      <button className="btn">search</button>
     </div>
   );
 };
