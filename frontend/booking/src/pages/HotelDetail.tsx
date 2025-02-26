@@ -2,6 +2,7 @@ import { BiHeart, BiShare, BiShareAlt } from "react-icons/bi";
 import { FaParking } from "react-icons/fa";
 
 import { FaLocationDot, FaShare } from "react-icons/fa6";
+import Review from "../components/Review";
 
 const HotelDetail = () => {
   return (
@@ -24,37 +25,40 @@ const HotelDetail = () => {
           <button>I'll reserve</button>
         </div>
       </div>
-      <div className=" py-4 grid grid-cols-2 md:grid-cols-3 gap-4">
-        <img
-          src="https://img.freepik.com/free-photo/spa-pool-sky-leisure-background_1203-4946.jpg?t=st=1739537710~exp=1739541310~hmac=422cd13ece996d0295ebf1d2af53809f31269de4f541577d495722e423c484c6&w=740"
-          alt="Dublin"
-          className="col-span-2 row-span-2 rounded-xl object-cover w-full h-full"
-        />
-        <img
-          src="https://img.freepik.com/free-photo/colonial-style-house-night-scene_1150-17925.jpg?t=st=1739537537~exp=1739541137~hmac=4ea038e25fe4731404bfcdd8bc276c05b04c8e65c734e586c23ad03f815409e3&w=740"
-          alt="Austin"
-          className="rounded-xl object-cover w-full h-full"
-        />
-        <img
-          src="https://img.freepik.com/free-photo/colonial-style-house-night-scene_1150-17925.jpg?t=st=1739537537~exp=1739541137~hmac=4ea038e25fe4731404bfcdd8bc276c05b04c8e65c734e586c23ad03f815409e3&w=740"
-          alt="London"
-          className="rounded-xl object-cover w-full h-full"
-        />
-        <img
-          src="https://img.freepik.com/free-photo/spa-pool-sky-leisure-background_1203-4946.jpg?t=st=1739537710~exp=1739541310~hmac=422cd13ece996d0295ebf1d2af53809f31269de4f541577d495722e423c484c6&w=740"
-          alt="Dublin"
-          className="rounded-xl object-cover w-full h-full"
-        />
-        <img
-          src="https://img.freepik.com/free-photo/colonial-style-house-night-scene_1150-17925.jpg?t=st=1739537537~exp=1739541137~hmac=4ea038e25fe4731404bfcdd8bc276c05b04c8e65c734e586c23ad03f815409e3&w=740"
-          alt="Austin"
-          className="rounded-xl object-cover w-full h-full"
-        />
-        <img
-          src="https://img.freepik.com/free-photo/colonial-style-house-night-scene_1150-17925.jpg?t=st=1739537537~exp=1739541137~hmac=4ea038e25fe4731404bfcdd8bc276c05b04c8e65c734e586c23ad03f815409e3&w=740"
-          alt="London"
-          className="rounded-xl object-cover w-full h-full"
-        />
+      <div className="flex gap-4">
+        <div className=" py-4 grid grid-cols-2 md:grid-cols-3 gap-4">
+          <img
+            src="https://img.freepik.com/free-photo/spa-pool-sky-leisure-background_1203-4946.jpg?t=st=1739537710~exp=1739541310~hmac=422cd13ece996d0295ebf1d2af53809f31269de4f541577d495722e423c484c6&w=740"
+            alt="Dublin"
+            className="col-span-2 row-span-2 rounded-xl object-cover w-full h-full"
+          />
+          <img
+            src="https://img.freepik.com/free-photo/colonial-style-house-night-scene_1150-17925.jpg?t=st=1739537537~exp=1739541137~hmac=4ea038e25fe4731404bfcdd8bc276c05b04c8e65c734e586c23ad03f815409e3&w=740"
+            alt="Austin"
+            className="rounded-xl object-cover w-full h-full"
+          />
+          <img
+            src="https://img.freepik.com/free-photo/colonial-style-house-night-scene_1150-17925.jpg?t=st=1739537537~exp=1739541137~hmac=4ea038e25fe4731404bfcdd8bc276c05b04c8e65c734e586c23ad03f815409e3&w=740"
+            alt="London"
+            className="rounded-xl object-cover w-full h-full"
+          />
+          <img
+            src="https://img.freepik.com/free-photo/spa-pool-sky-leisure-background_1203-4946.jpg?t=st=1739537710~exp=1739541310~hmac=422cd13ece996d0295ebf1d2af53809f31269de4f541577d495722e423c484c6&w=740"
+            alt="Dublin"
+            className="rounded-xl object-cover w-full h-full"
+          />
+          <img
+            src="https://img.freepik.com/free-photo/colonial-style-house-night-scene_1150-17925.jpg?t=st=1739537537~exp=1739541137~hmac=4ea038e25fe4731404bfcdd8bc276c05b04c8e65c734e586c23ad03f815409e3&w=740"
+            alt="Austin"
+            className="rounded-xl object-cover w-full h-full"
+          />
+          <img
+            src="https://img.freepik.com/free-photo/colonial-style-house-night-scene_1150-17925.jpg?t=st=1739537537~exp=1739541137~hmac=4ea038e25fe4731404bfcdd8bc276c05b04c8e65c734e586c23ad03f815409e3&w=740"
+            alt="London"
+            className="rounded-xl object-cover w-full h-full"
+          />
+        </div>
+        <Review />
       </div>
 
       <div className="flex  gap-4 justify-between">
@@ -67,7 +71,7 @@ const HotelDetail = () => {
           cupiditate eum non saepe dicta modi provident repudiandae nemo tempore
           nisi magni expedita veritatis natus reiciendis. Voluptatem?
         </p>
-        <div className=" bg-white rounded-lg shadow-lg w-72 min-w-72 p-4 flex flex-col gap-3">
+        <div className=" bg-blue-100 rounded-lg shadow-lg w-72 min-w-72 p-4 flex flex-col gap-3">
           <h1 className="font-roboto font-semibold text-lg">
             Property highlight
           </h1>

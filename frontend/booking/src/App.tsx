@@ -6,8 +6,8 @@ import NavBar from "./components/NavBar";
 import Footer from "./components/Footer";
 import Login from "./pages/Login";
 import Signup from "./pages/Signup";
-import Hotel from "./pages/hotel";
 import HotelDetail from "./pages/HotelDetail";
+import Hotel from "./pages/Hotel";
 
 function App() {
   return (
