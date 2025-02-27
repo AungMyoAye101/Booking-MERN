@@ -67,7 +67,7 @@ const Login = () => {
             className="bg-neutral-100 rounded p-2 border"
           />
         </label>
-        <label htmlFor="email" className="flex flex-col gap-1">
+        <label htmlFor="password" className="flex flex-col gap-1">
           <span className="font-roboto text-sm">Password</span>
           <input
             value={user.password}
