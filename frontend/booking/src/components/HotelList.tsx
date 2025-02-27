@@ -13,7 +13,7 @@ const HotelList = () => {
       });
     }
   };
-  const { data, loading, error } = useFetch("api/hotel?featured=true&limit=4");
+  const { data, loading, error } = useFetch("api/hotel?featured=true&limit=5");
   console.log(data);
   const list = [
     {
@@ -93,9 +93,9 @@ const HotelList = () => {
           ref={containerRef}
           className="flex gap-4 overflow-hidden flex-nowrap  relative py-4"
         >
-          {list.map((item, i) => (
+          {data.map((item, i) => (
             <Link
-              to={`hotel/${item.title}`}
+              to={`hotel/${item._id}`}
               key={i}
               className="min-w-[250px]  relative rounded-lg overflow-hidden shadow-lg cursor-pointer bg-white"
             >
@@ -103,23 +103,26 @@ const HotelList = () => {
                 <img
                   src={item.url}
                   alt="image"
-                  className="w-full h-auto hover:scale-125 transition-transform ease-in-out "
+                  className="w-full h-auto hover:scale-125 transition-transform ease-in-out aspect-square"
                 />
               </div>
               <div className="py-4 px-2 flex flex-col gap-1">
-                <p className="text-sm opacity-90">hotel</p>
+                <div className="flex justify-between items-center gap-4">
+                  <p className="text-sm opacity-90">{item.type}</p>
+                  <div className="bg-blue-800 p-1.5  text-white text-xs rounded">
+                    {item.rating}
+                  </div>
+                </div>
+
                 <h2 className="  font-roboto text-xl font-semibold">
                   {item.title}
                 </h2>
-                <div className="flex gap-1 items-center">
-                  <div className="bg-blue-800 py-1 px-1.5 text-white text-sm rounded">
-                    {item.rating}
-                  </div>
-                  <span className="text-sm ">144reviews</span>
-                </div>
+
                 <div className="self-end font-roboto">
                   <span className="text-sm ">Starting from </span>
-                  <span className="font-semibold ml-1">${item.price}</span>
+                  <span className="font-semibold ml-1">
+                    ${item.cheapestPrice}
+                  </span>
                 </div>
               </div>
             </Link>

@@ -51,7 +51,7 @@ const Login = () => {
   };
 
   return (
-    <section className="flex justify-center items-center min-h-screen">
+    <section className="flex justify-center items-center min-h-screen relative">
       <form className="bg-white min-w-80 max-w-96 h-fit py-8 px-6 border  rounded-lg shadow-lg flex flex-col gap-4 ">
         <h1 className="text-center font-bold font-roboto text-2xl">Login </h1>
         <label htmlFor="email" className="flex flex-col gap-1">
@@ -98,7 +98,9 @@ const Login = () => {
           Submit
         </button>
         {error && (
-          <p className="bg-rose-500 text-white rounded-lg ">{errorMessage}</p>
+          <p className="bg-rose-500 text-white rounded-lg p-2">
+            {errorMessage}
+          </p>
         )}
       </form>
     </section>

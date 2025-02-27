@@ -15,5 +15,6 @@ router.post("/", verifyAdmin, createHotel);
 router.put("/:id", verifyAdmin, updateHotel);
 router.delete("/:id", verifyAdmin, deleteHotel);
 router.get("/:id", getHotelById);
+// router.get("/:id", getHotelById);
 
 module.exports = router;

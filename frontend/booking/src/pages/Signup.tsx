@@ -105,7 +105,9 @@ const Signup = () => {
           Submit
         </button>
         {error && (
-          <p className="bg-rose-500 text-white rounded-lg ">{errorMesasage}</p>
+          <p className="bg-rose-500 text-white rounded-lg p-2">
+            {errorMesasage}
+          </p>
         )}
       </form>
     </section>

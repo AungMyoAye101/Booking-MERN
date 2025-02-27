@@ -66,10 +66,15 @@ const getHotelById = async (req, res, next) => {
   }
 };
 
+const getHotelByType = async (req, res, next) => {
+  console.log(req.query);
+};
+
 module.exports = {
   createHotel,
   updateHotel,
   deleteHotel,
   getAllHotels,
   getHotelById,
+  getHotelByType,
 };
