@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { FaX } from "react-icons/fa6";
 import { CreateHotelType } from "../lib/types";
+import { createHotelValidation } from "../lib/formValidation";
 
 const CreateHotel = () => {
   const [hotel, setHotel] = useState<CreateHotelType>({
@@ -44,6 +45,18 @@ const CreateHotel = () => {
       photos: photoArray,
       distance: distanceArray,
     }));
+    if (hotel.photos.length === 0 || hotel.distance.length === 0) {
+      return;
+    }
+
+    try {
+      const validatedHotel = createHotelValidation.parse(hotel);
+      if (validatedHotel) {
+        console.log("passed");
+      }
+    } catch (error) {
+      console.log(error);
+    }
     console.log(hotel);
   };
 

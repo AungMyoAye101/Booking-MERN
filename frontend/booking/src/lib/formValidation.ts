@@ -18,7 +18,7 @@ export const signUpUserValidation = z.object({
     .max(12, { message: "password doesn't exceed 12 character" }),
   email: z.string().email(),
 });
-export const crateHotelValidation = z.object({
+export const createHotelValidation = z.object({
   name: z
     .string()
     .min(3, { message: "Hotel name contain at least 6 character" })
@@ -27,7 +27,7 @@ export const crateHotelValidation = z.object({
     .string()
     .min(6, { message: "hotel title contain at least 6 character" })
     .max(24, { message: "hotel title doesn't exceed 12 character" }),
-  desecription: z
+  description: z
     .string()
     .min(6, { message: "Description contain at least 6 character" }),
 
@@ -35,7 +35,7 @@ export const crateHotelValidation = z.object({
     .string()
     .min(3, { message: "Address contain at least 6 character" }),
 
-  photo: z
+  photos: z
     .string()
     .array()
     .min(1, { message: "Photo contain at least 1 photo" }),
@@ -45,5 +45,5 @@ export const crateHotelValidation = z.object({
     .min(1, { message: "Photo contain at least 1 photo" }),
   city: z.string().min(3, { message: "City contain at least 6 character" }),
 
-  cheapestPrice: z.number(),
+  cheapestPrice: z.string(),
 });
