@@ -8,6 +8,8 @@ import Login from "./pages/Login";
 import Signup from "./pages/Signup";
 import HotelDetail from "./pages/HotelDetail";
 import Hotel from "./pages/Hotel";
+import Admin from "./pages/Admin";
+import CreateHotel from "./pages/CreateHotel";
 
 function App() {
   return (
@@ -20,6 +22,8 @@ function App() {
         <Route path="/list" element={<List />} />
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<Signup />} />
+        <Route path="/admin" element={<Admin />} />
+        <Route path="/admin/createHotel" element={<CreateHotel />} />
       </Routes>
       <Footer />
     </BrowserRouter>

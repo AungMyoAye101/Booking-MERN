@@ -1,7 +1,11 @@
 import { useRef } from "react";
 import { PiGreaterThan, PiLessThan } from "react-icons/pi";
+import useFetch from "../hooks/useFetch";
 
 const ListByType = () => {
+  // const { data, loading, error } = useFetch(
+  //   "api/hotel?type=hotel,apartment,villa,cabin"
+  // );
   const containerRef = useRef<HTMLDivElement>(null);
 
   const handleSlide = (isRight: boolean) => {
