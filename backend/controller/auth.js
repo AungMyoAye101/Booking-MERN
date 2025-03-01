@@ -45,6 +45,8 @@ const login = async (req, res, next) => {
     res
       .cookie("access_token", token, {
         httpOnly: true,
+        sameSite: "Lax",
+        // Restrict cookie sharing across origins
       })
       .status(201)
       .json(otherDetail);

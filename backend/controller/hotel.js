@@ -5,6 +5,7 @@ const createHotel = async (req, res) => {
   const newHotel = new Hotel(req.body);
   try {
     const savedHotel = await newHotel.save();
+    console.log("Hotel created");
     res.status(201).json(savedHotel);
   } catch (error) {
     res.status(500).json(error);

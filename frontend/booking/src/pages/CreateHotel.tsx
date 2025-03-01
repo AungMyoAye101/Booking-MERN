@@ -38,7 +38,7 @@ const CreateHotel = () => {
     }
   };
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: any) => {
     e.preventDefault();
     setHotel((prev) => ({
       ...prev,
@@ -52,7 +52,16 @@ const CreateHotel = () => {
     try {
       const validatedHotel = createHotelValidation.parse(hotel);
       if (validatedHotel) {
-        console.log("passed");
+        const res = await fetch("http://localhost:5000/api/hotel", {
+          method: "POST",
+          headers: { "Content-type": "application/json" },
+          credentials: "include",
+          body: JSON.stringify(hotel),
+        });
+        if (!res.ok) {
+          throw new Error("Failed to create hotel");
+        }
+        console.log("hotel create successfullly");
       }
     } catch (error) {
       console.log(error);
@@ -62,10 +71,7 @@ const CreateHotel = () => {
 
   return (
     <section className="py-20 flex justify-center">
-      <form
-        onSubmit={(e) => handleSubmit(e)}
-        className="grid grid-cols-2 w-full gap-4 bg-white rounded-lg p-4 border"
-      >
+      <form className="flex flex-col  w-full gap-4 bg-white rounded-lg p-4 border">
         <label htmlFor="name" className="flex flex-col gap-1">
           <span className="font-roboto text-sm">Name</span>
           <input
@@ -85,6 +91,17 @@ const CreateHotel = () => {
             type="text"
             name="title"
             placeholder="title"
+            className="bg-neutral-100 rounded p-2 border"
+            onChange={(e) => handleChange(e)}
+          />
+        </label>
+        <label htmlFor="type" className="flex flex-col gap-1">
+          <span className="font-roboto text-sm">Type</span>
+          <input
+            id="type"
+            type="text"
+            name="type"
+            placeholder="type"
             className="bg-neutral-100 rounded p-2 border"
             onChange={(e) => handleChange(e)}
           />
@@ -205,19 +222,12 @@ const CreateHotel = () => {
             onChange={(e) => handleChange(e)}
           />
         </label>
-        <label htmlFor="feature" className="flex flex-col gap-1">
-          <span className="font-roboto text-sm">Feature</span>
-          <input
-            id="feature"
-            type="checkbox"
-            name="feature"
-            placeholder="add feature"
-            className="bg-neutral-100 rounded p-2 border"
-            onChange={(e) => handleChange(e)}
-          />
-        </label>
 
-        <button type="submit" className="btn h-fit">
+        <button
+          type="submit"
+          onClick={(e) => handleSubmit(e)}
+          className="btn h-fit"
+        >
           Create Hotel
         </button>
       </form>

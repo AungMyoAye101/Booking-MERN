@@ -32,7 +32,12 @@ app.get("/", (req, res) => {
 });
 
 //Middleware for route handler
-app.use(cors());
+app.use(
+  cors({
+    origin: "http://localhost:5173", // Your frontend URL
+    credentials: true, // Allow cookies to be sent
+  })
+);
 app.use(cookieParser());
 app.use(express.json());
 

@@ -27,6 +27,10 @@ export const createHotelValidation = z.object({
     .string()
     .min(6, { message: "hotel title contain at least 6 character" })
     .max(24, { message: "hotel title doesn't exceed 12 character" }),
+  type: z
+    .string()
+    .min(3, { message: "type  contain at least 6 character" })
+    .max(12, { message: "type  doesn't exceed 12 character" }),
   description: z
     .string()
     .min(6, { message: "Description contain at least 6 character" }),
