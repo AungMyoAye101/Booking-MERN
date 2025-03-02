@@ -41,7 +41,7 @@ const login = async (req, res, next) => {
       { id: user._id, isAdmin: user.isAdmin },
       process.env.SECRET_KEY
     );
-    const { password, isAdmin, ...otherDetail } = user._doc;
+
     res
       .cookie("access_token", token, {
         httpOnly: true,
@@ -49,7 +49,7 @@ const login = async (req, res, next) => {
         // Restrict cookie sharing across origins
       })
       .status(201)
-      .json(otherDetail);
+      .json(user);
   } catch (error) {
     next(error);
   }

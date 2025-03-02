@@ -10,6 +10,7 @@ import HotelDetail from "./pages/HotelDetail";
 import Hotel from "./pages/Hotel";
 import Admin from "./pages/Admin";
 import CreateHotel from "./pages/CreateHotel";
+import Dashboard from "./components/Dashboard";
 
 function App() {
   return (
@@ -22,8 +23,10 @@ function App() {
         <Route path="/list" element={<List />} />
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<Signup />} />
-        <Route path="/admin" element={<Admin />} />
-        <Route path="/admin/createHotel" element={<CreateHotel />} />
+        <Route path="/admin" element={<Admin />}>
+          <Route path="" element={<Dashboard />} />
+          <Route path="createHotel" element={<CreateHotel />} />
+        </Route>
       </Routes>
       <Footer />
     </BrowserRouter>

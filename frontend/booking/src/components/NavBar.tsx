@@ -32,7 +32,20 @@ const NavBar = () => {
         </Link>
         <div className="flex items-center gap-4">
           {user ? (
-            <button onClick={handleLogout}>Logout</button>
+            <>
+              {user.isAdmin === true && (
+                <Link to={"/admin"} className="btn bg-white text-blue-800">
+                  Admin
+                </Link>
+              )}
+
+              <button
+                onClick={handleLogout}
+                className="btn bg-white text-blue-800"
+              >
+                Logout
+              </button>
+            </>
           ) : (
             <>
               <Link to={"/login"} className="btn bg-white text-blue-800">
