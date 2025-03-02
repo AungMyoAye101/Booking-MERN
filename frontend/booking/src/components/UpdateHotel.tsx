@@ -2,8 +2,12 @@ import React, { useEffect, useState } from "react";
 import { createHotelValidation } from "../lib/formValidation";
 import { CreateHotelType } from "../lib/types";
 import useFetch from "../hooks/useFetch";
+import { useParams } from "react-router-dom";
+import { FaX } from "react-icons/fa6";
 
 const UpdateHotel = () => {
+  const { id } = useParams();
+
   const [hotel, setHotel] = useState<CreateHotelType>({
     name: "",
     title: "",
@@ -20,20 +24,6 @@ const UpdateHotel = () => {
   const [url, setUrl] = useState("");
   const [distanceArray, setDistanceArray] = useState<string[]>([]);
   const [distance, setDistance] = useState("");
-
-  useEffect(() => {
-    const fetchHotel = async () => {
-      const res = await fetch(`http://localhost:5000/api/hotel/${""}`, {
-        method: "GET",
-        headers: { "Content-type": "application/json" },
-      });
-      if (!res.ok) {
-        throw Error("Failed to fetch hotel ");
-      }
-      const data = await res.json();
-      console.log(data);
-    };
-  }, []);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setHotel((pre) => ({ ...pre, [e.target.name]: e.target.value }));
@@ -66,16 +56,16 @@ const UpdateHotel = () => {
     try {
       const validatedHotel = createHotelValidation.parse(hotel);
       if (validatedHotel) {
-        const res = await fetch("http://localhost:5000/api/hotel", {
-          method: "POST",
+        const res = await fetch(`http://localhost:5000/api/hotel/${id}`, {
+          method: "PUT",
           headers: { "Content-type": "application/json" },
           credentials: "include",
           body: JSON.stringify(hotel),
         });
         if (!res.ok) {
-          throw new Error("Failed to create hotel");
+          throw new Error("Failed to update hotel");
         }
-        console.log("hotel create successfullly");
+        console.log("hotel updated successfullly");
       }
     } catch (error) {
       console.log(error);
@@ -91,6 +81,7 @@ const UpdateHotel = () => {
           id="name"
           type="text"
           name="name"
+          value={hotel.name}
           placeholder="hotel name"
           className="bg-neutral-100 rounded p-2 border w-full"
           onChange={(e) => handleChange(e)}
