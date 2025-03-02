@@ -5,6 +5,7 @@ const Admin = () => {
     <section className="flex py-16 gap-4 ">
       <div className="flex flex-col gap-4 bg-white p-4 border rounded w-60">
         <Link to={"/admin"}>Dashboard</Link>
+        <Link to={"/admin/hotels"}>Hotels</Link>
         <Link to={"/admin/createHotel"}>Create hotel</Link>
       </div>
       <div className="flex-1">
