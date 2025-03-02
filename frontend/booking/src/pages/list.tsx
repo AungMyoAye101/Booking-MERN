@@ -4,6 +4,19 @@ import useFetch from "../hooks/useFetch";
 const List = () => {
   const { data, loading } = useFetch("api/hotel?limit=10");
   console.log(data);
+  const handleDelete = async (id: string) => {
+    try {
+      const res = await fetch(`http://localhost:5000/api/hotel/${id}`, {
+        method: "DELETE",
+      });
+      if (!res.ok) {
+        throw Error("Failed to delete hotel");
+      }
+      console.log("hotel was deleted");
+    } catch (error) {
+      console.log(error);
+    }
+  };
   return (
     <section className="w-full flex flex-col gap-6">
       {data.map((item) => (
@@ -25,9 +38,9 @@ const List = () => {
               <Link to={`/admin/updateHotel/${item._id}`} className="btn">
                 Update
               </Link>
-              <Link to={`/admin/deleteHotel/${item._id}`} className="btn">
+              <button onClick={() => handleDelete(item._id)} className="btn">
                 Delete
-              </Link>
+              </button>
             </div>
           </div>
         </div>
