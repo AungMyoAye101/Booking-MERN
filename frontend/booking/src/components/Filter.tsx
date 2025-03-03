@@ -1,20 +1,7 @@
 import React, { useState } from "react";
 import useFetch from "../hooks/useFetch";
 
-const Filter = () => {
-  const [filterData, setFilterData] = useState({
-    city: "",
-    min: 1,
-    max: 200,
-  });
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFilterData((pre) => ({ ...pre, [name]: value }));
-  };
-  const { data, error } = useFetch(
-    `api/hotel?city=${filterData.city}&min=${filterData.min}&max=${filterData.max}}`
-  );
-  console.log(data);
+const Filter = ({ filterData, handleChange }: any) => {
   return (
     <section className="h-screen  sticky top-16 min-w-72 max-w-80">
       <form className="rounded-lg  bg-white shadow-lg w-full p-4 flex flex-col gap-1">

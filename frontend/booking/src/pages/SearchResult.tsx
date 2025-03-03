@@ -1,14 +1,23 @@
 import React from "react";
 import HotelCard from "../components/HotelCard";
 
-const SearchResult = () => {
+const SearchResult = ({ data, loading }: any) => {
   return (
     <div className="flex flex-col   gap-4  ">
-      {Array(9)
-        .fill(null)
-        .map((_, i) => (
-          <HotelCard key={i} />
-        ))}
+      {loading ? (
+        <div>Loading ....</div>
+      ) : (
+        data.map((item) => (
+          <HotelCard
+            key={item._id}
+            name={item.name}
+            city={item.city}
+            description={item.description}
+            cheapestPrice={item.cheapestPrice}
+            rating={item.rating}
+          />
+        ))
+      )}
     </div>
   );
 };
