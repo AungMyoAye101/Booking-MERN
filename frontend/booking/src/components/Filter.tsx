@@ -1,9 +1,23 @@
-import React from "react";
+import React, { useState } from "react";
+import useFetch from "../hooks/useFetch";
 
 const Filter = () => {
+  const [filterData, setFilterData] = useState({
+    city: "",
+    min: 1,
+    max: 200,
+  });
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFilterData((pre) => ({ ...pre, [name]: value }));
+  };
+  const { data, error } = useFetch(
+    `api/hotel?city=${filterData.city}&min=${filterData.min}&max=${filterData.max}}`
+  );
+  console.log(data);
   return (
     <section className="h-screen  sticky top-16 min-w-72 max-w-80">
-      <div className="rounded-lg  bg-white shadow-lg w-full p-4 flex flex-col gap-1">
+      <form className="rounded-lg  bg-white shadow-lg w-full p-4 flex flex-col gap-1">
         <h2 className="text-lg font-semibold mb-4">Filter Hotels</h2>
         {/* Location */}
         <div>
@@ -13,10 +27,11 @@ const Filter = () => {
           <input
             type="text"
             id="location"
-            // value={location}
-            // onChange={(e) => setLocation(e.target.value)}
-            placeholder="Enter city"
             className="bg-neutral-100 p-2 rounded-md w-full"
+            placeholder="Enter city"
+            name="city"
+            value={filterData.city}
+            onChange={(e) => handleChange(e)}
           />
         </div>
         <div>
@@ -38,6 +53,9 @@ const Filter = () => {
           <label>min-price:</label>
           <input
             type="number"
+            name="min"
+            value={filterData.min}
+            onChange={(e) => handleChange(e)}
             // value={guests}
             // onChange={(e) => setGuests(Number(e.target.value))}
             className="bg-neutral-100 w-14 h-10 rounded-md"
@@ -48,6 +66,9 @@ const Filter = () => {
           <label>max-price:</label>
           <input
             type="number"
+            name="max"
+            value={filterData.max}
+            onChange={(e) => handleChange(e)}
             // value={guests}
             // onChange={(e) => setGuests(Number(e.target.value))}
             className="bg-neutral-100 w-14 h-10 rounded-md"
@@ -98,7 +119,7 @@ const Filter = () => {
 
         {/* Apply Filters Button */}
         <button>Search</button>
-      </div>
+      </form>
     </section>
   );
 };

@@ -13,7 +13,7 @@ type OptionsType = {
 };
 const Search = () => {
   const [searchData, setSearchData] = useState({
-    text: "",
+    city: "",
   });
   const [isDateOpen, setIsDateOpen] = useState(false);
   const [datePicker, setDatePicker] = useState([
@@ -51,7 +51,7 @@ const Search = () => {
     e.preventDefault();
     try {
       const res = await fetch(
-        `http://localhost:5000/api/hotel?name=${searchData.text}&limit=4`
+        `http://localhost:5000/api/hotel?city=${searchData.city}&limit=6`
       );
       const data = await res.json();
       console.log(data);
@@ -60,16 +60,21 @@ const Search = () => {
     }
   };
   return (
-    <div className="w-full   bg-blue-300 border-4 border-blue-300 flex gap-1 rounded-lg  ">
-      <div className="flex-1 bg-white  h-10 flex items-center rounded-md px-2">
+    <form
+      onSubmit={onSubmit}
+      className="w-full   bg-blue-300 border-4 border-blue-300 flex flex-wrap gap-1 rounded-lg  "
+    >
+      <div className="flex-1 min-w-60 bg-white  h-10 flex items-center rounded-md px-2">
         <IoBedOutline className="text-xl " />
         <input
           type="text"
+          name="city"
           placeholder="Where are you going?"
           className="h-full w-full ml-1 flex-1"
+          onChange={(e) => handleChange(e)}
         />
       </div>
-      <div className="flex-1 bg-white  h-10 flex items-center gap-2 rounded-md relative">
+      <div className="flex-1 min-w-60 bg-white  h-10 flex items-center gap-2 rounded-md relative">
         <div
           onClick={() => setIsDateOpen(!isDateOpen)}
           className="font-roboto px-4 text-sm flex items-center gap-1 cursor-pointer  "
@@ -90,9 +95,9 @@ const Search = () => {
           </div>
         )}
       </div>
-      <div className="flex-1 bg-white  h-10 flex items-center rounded-md relative">
+      <div className="flex-1 min-w-60 bg-white  h-10 flex items-center rounded-md relative">
         <div
-          className="px-4 cursor-pointer text-sm font-roboto"
+          className="px-4 cursor-pointer text-xs text-nowrap line-clamp-1 font-roboto"
           onClick={() => setOpenOPtions(!openOPtions)}
         >
           1 Adult 0 Children 1 Room
@@ -171,8 +176,10 @@ const Search = () => {
           </div>
         )}
       </div>
-      <button className="btn">search</button>
-    </div>
+      <button type="submit" className="btn">
+        search
+      </button>
+    </form>
   );
 };
 
