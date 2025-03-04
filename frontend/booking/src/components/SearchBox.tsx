@@ -1,20 +1,28 @@
-import { useState } from "react";
+import { ChangeEvent, FormEvent, useState } from "react";
 import { DateRange } from "react-date-range";
 import { IoBedOutline } from "react-icons/io5";
 import "react-date-range/dist/styles.css"; // main css file
 import "react-date-range/dist/theme/default.css"; // theme css file
 import { format } from "date-fns";
 import { MdCalendarMonth } from "react-icons/md";
+import { useSearchContext } from "../context/SearchContext";
+import { Navigate, useNavigate } from "react-router-dom";
 
 type OptionsType = {
   adult: number;
   children: number;
   room: number;
 };
-const Search = () => {
-  const [searchData, setSearchData] = useState({
-    city: "",
-  });
+const SearchBox = () => {
+  const search = useSearchContext();
+  const [destination, setDestination] = useState<string>("");
+  const [checkIn, setCheckIn] = useState<Date>(new Date());
+  const [checkOut, setCheckOut] = useState<Date>(new Date());
+  const [adultCount, setAdultCount] = useState<number>(0);
+  const [childrenCount, setChildrenCount] = useState<number>(0);
+
+  console.log(search);
+  const navigate = useNavigate();
   const [isDateOpen, setIsDateOpen] = useState(false);
   const [datePicker, setDatePicker] = useState([
     {
@@ -41,23 +49,21 @@ const Search = () => {
     }));
   };
 
-  const handleChange = (e: any) => {
-    console.log(searchData);
-    const { name, value } = e.target;
-    setSearchData((pre) => ({ ...pre, [name]: value }));
-  };
+  // const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
+  //   const { name, value } = e.target;
+  //   setSearchData((pre) => ({ ...pre, [name]: value }));
+  // };
 
-  const onSubmit = async (e: any) => {
+  const onSubmit = async (e: FormEvent) => {
     e.preventDefault();
-    try {
-      const res = await fetch(
-        `http://localhost:5000/api/hotel?city=${searchData.city}&limit=6`
-      );
-      const data = await res.json();
-      console.log(data);
-    } catch (error) {
-      console.log(error);
-    }
+    search?.saveSearch(
+      destination,
+      checkIn,
+      checkOut,
+      adultCount,
+      childrenCount
+    );
+    navigate("/search");
   };
   return (
     <form
@@ -68,10 +74,10 @@ const Search = () => {
         <IoBedOutline className="text-xl " />
         <input
           type="text"
-          name="city"
+          name="destination"
           placeholder="Where are you going?"
           className="h-full w-full ml-1 flex-1"
-          onChange={(e) => handleChange(e)}
+          onChange={(e) => setDestination(e.target.value)}
         />
       </div>
       <div className="flex-1 min-w-60 bg-white  h-10 flex items-center gap-2 rounded-md relative">
@@ -109,7 +115,7 @@ const Search = () => {
               <div className="flex items-center gap-2">
                 <button
                   disabled={options.adult <= 1}
-                  onClick={() => optionsHandler(false, "adult")}
+                  onClick={() => setAdultCount((pre) => pre - 1)}
                   className="bg-transparent text-blue-700 border border-blue-700 rounded hover:bg-blue-200 w-6 h-8  flex justify-center items-center"
                 >
                   -
@@ -118,7 +124,7 @@ const Search = () => {
                   {options.adult}
                 </span>
                 <button
-                  onClick={() => optionsHandler(true, "adult")}
+                  onClick={() => setAdultCount((pre) => pre + 1)}
                   className="bg-transparent text-blue-700 border border-blue-700 rounded hover:bg-blue-200 w-6 h-8  flex justify-center items-center"
                 >
                   +
@@ -130,7 +136,7 @@ const Search = () => {
               <div className="flex items-center gap-2">
                 <button
                   disabled={options.children <= 0}
-                  onClick={() => optionsHandler(false, "adult")}
+                  onClick={() => setChildrenCount((pre) => pre - 1)}
                   className="bg-transparent text-blue-700 border border-blue-700 rounded hover:bg-blue-200 w-6 h-8  flex justify-center items-center"
                 >
                   -
@@ -139,14 +145,14 @@ const Search = () => {
                   {options.children}
                 </span>
                 <button
-                  onClick={() => optionsHandler(true, "adult")}
+                  onClick={() => setChildrenCount((pre) => pre + 1)}
                   className="bg-transparent text-blue-700 border border-blue-700 rounded hover:bg-blue-200 w-6 h-8  flex justify-center items-center"
                 >
                   +
                 </button>
               </div>
             </div>
-            <div className="flex justify-between items-center ">
+            {/* <div className="flex justify-between items-center ">
               <h3 className="font-semibold font-roboto">Rooms</h3>
               <div className="flex items-center gap-2">
                 <button
@@ -166,7 +172,7 @@ const Search = () => {
                   +
                 </button>
               </div>
-            </div>
+            </div> */}
             <button
               onClick={() => setOpenOPtions(!openOPtions)}
               className="bg-transparent border border-blue-700 rounded  text-blue-700 hover:bg-blue-200"
@@ -183,4 +189,4 @@ const Search = () => {
   );
 };
 
-export default Search;
+export default SearchBox;

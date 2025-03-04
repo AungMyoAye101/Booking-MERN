@@ -12,6 +12,7 @@ import Admin from "./pages/Admin";
 import CreateHotel from "./pages/CreateHotel";
 import Dashboard from "./components/Dashboard";
 import UpdateHotel from "./components/UpdateHotel";
+import Search from "./pages/Search";
 
 function App() {
   return (
@@ -22,6 +23,7 @@ function App() {
         <Route path="/hotel" element={<Hotel />} />
         <Route path="/hotel/:id" element={<HotelDetail />} />
         <Route path="/list" element={<List />} />
+        <Route path="/search" element={<Search />} />
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<Signup />} />
         <Route path="/admin" element={<Admin />}>

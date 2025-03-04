@@ -1,4 +1,4 @@
-import { createContext, useState } from "react";
+import { createContext, useContext, useState } from "react";
 
 type SearchType = {
   destination: string;
@@ -15,7 +15,7 @@ type SearchType = {
     childrenCount: number
   ) => void;
 };
-const SearchContext = createContext<SearchType | undefined>(undefined);
+export const SearchContext = createContext<SearchType | undefined>(undefined);
 
 export const SearchContextProvider = ({
   children,
@@ -61,4 +61,9 @@ export const SearchContextProvider = ({
       {children}
     </SearchContext.Provider>
   );
+};
+
+export const useSearchContext = () => {
+  const context = useContext(SearchContext);
+  return context;
 };

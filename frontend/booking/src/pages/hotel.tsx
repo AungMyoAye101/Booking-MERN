@@ -1,7 +1,6 @@
-import { useLocation } from "react-router-dom";
 import useFetch from "../hooks/useFetch";
 import SearchResult from "./SearchResult";
-import Search from "../components/Search";
+import Search from "../components/SearchBox";
 import Filter from "../components/Filter";
 import { useState } from "react";
 
@@ -11,14 +10,14 @@ const Hotel = () => {
     min: 1,
     max: 200,
   });
-  const handleChange = (e) => {
+  const handleChange = (e: any) => {
     const { name, value } = e.target;
     setFilterData((pre) => ({ ...pre, [name]: value }));
   };
   const { data, loading, error } = useFetch(
     `api/hotel?city=${filterData.city}&min=${filterData.min}&max=${filterData.max}}`
   );
-  console.log(data);
+
   return (
     <section className="relative py-14  max-w-6xl m-auto">
       <Search />

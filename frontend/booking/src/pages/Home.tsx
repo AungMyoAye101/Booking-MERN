@@ -2,8 +2,7 @@ import Contact from "../components/Contact";
 import Destination from "../components/Destination";
 import Hero from "../components/Hero";
 import ListByType from "../components/ListByType";
-import RoomList from "../components/HotelList";
-import Search from "../components/Search";
+import Search from "../components/SearchBox";
 import HotelList from "../components/HotelList";
 import Offer from "../components/Offer";
 
