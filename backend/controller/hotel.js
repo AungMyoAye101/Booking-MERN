@@ -37,10 +37,16 @@ const deleteHotel = async (req, res) => {
 };
 //Get all hotel
 const getAllHotels = async (req, res, next) => {
-  const { city, min = 0, max = 99999, limit = 10, ...others } = req.query;
+  const {
+    destination,
+    min = 0,
+    max = 99999,
+    limit = 10,
+    ...others
+  } = req.query;
   console.log(min, max, limit, others);
   let filter = {};
-  if (city) {
+  if (destination) {
     filter.city = { $regex: city, $options: "i" };
   }
   // if (min || max) {

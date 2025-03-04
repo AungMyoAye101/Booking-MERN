@@ -1,43 +1,64 @@
-import { createContext, useReducer } from "react";
+import { createContext, useState } from "react";
 
-const INITIAL_STATE = {
-  city: "",
-  dates: [],
-  options: {
-    adlut: undefined,
-    children: undefined,
-    room: undefined,
-  },
+type SearchType = {
+  destination: string;
+  checkIn: Date;
+  checkOut: Date;
+  adultCount: number;
+  childrenCount: number;
+  hotelId: string;
+  saveSearch: (
+    distination: string,
+    checkIn: Date,
+    checkOut: Date,
+    adultCount: number,
+    childrenCount: number
+  ) => void;
 };
+const SearchContext = createContext<SearchType | undefined>(undefined);
 
-const reducer = (state, action) => {
-  switch (action.type) {
-    case "NEW_SEARCH":
-      return action.payload;
-    case "RESET_SEARCH":
-      return INITIAL_STATE;
+export const SearchContextProvider = ({
+  children,
+}: {
+  children: React.ReactNode;
+}) => {
+  const [destination, setDestination] = useState<string>("");
+  const [checkIn, setCheckIn] = useState<Date>(new Date());
+  const [checkOut, setCheckOut] = useState<Date>(new Date());
+  const [adultCount, setAdultCount] = useState<number>(0);
+  const [childrenCount, setChildrenCount] = useState<number>(0);
+  const [hotelId, setHotelId] = useState<string>("");
 
-    default:
-      return state;
-  }
-};
-
-const searchContext = createContext(INITIAL_STATE);
-
-const SearchContextProvider = ({ children }: { childern: React.ReactNode }) => {
-  const [state, dispatch] = useReducer(reducer, INITIAL_STATE);
+  const saveSearch = (
+    destination: string,
+    checkIn: Date,
+    checkOut: Date,
+    adultCount: number,
+    childrenCount: number,
+    hotelId?: string
+  ) => {
+    setDestination(destination);
+    setCheckIn(checkIn);
+    setCheckOut(checkOut);
+    setAdultCount(adultCount);
+    setChildrenCount(childrenCount);
+    if (hotelId) {
+      setHotelId(hotelId);
+    }
+  };
   return (
-    <searchContext.Provider
+    <SearchContext.Provider
       value={{
-        city: state.city,
-        dates: state.dates,
-        options: state.option,
-        dispatch,
+        destination,
+        checkIn,
+        checkOut,
+        adultCount,
+        childrenCount,
+        hotelId,
+        saveSearch,
       }}
     >
       {children}
-    </searchContext.Provider>
+    </SearchContext.Provider>
   );
 };
-
-export default SearchContextProvider;
