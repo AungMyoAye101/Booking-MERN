@@ -17,6 +17,18 @@ const register = async (req, res, next) => {
       password: hashPassword,
     });
     await newUser.save();
+    const token = jwt.sign(
+      { id: newUser._id, isAdmin: newUser.isAdmin },
+      process.env.SECRET_KEY,
+      { expiresIn: "1d" }
+    );
+
+    res.cookie("access_token", token, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+
+      // Restrict cookie sharing across origins
+    });
     res.status(201).json("User has been created");
   } catch (error) {
     next(error);
@@ -39,17 +51,17 @@ const login = async (req, res, next) => {
 
     const token = jwt.sign(
       { id: user._id, isAdmin: user.isAdmin },
-      process.env.SECRET_KEY
+      process.env.SECRET_KEY,
+      { expiresIn: "1d" }
     );
 
-    res
-      .cookie("access_token", token, {
-        httpOnly: true,
-        sameSite: "Lax",
-        // Restrict cookie sharing across origins
-      })
-      .status(201)
-      .json(user);
+    res.cookie("access_token", token, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+
+      // Restrict cookie sharing across origins
+    });
+    return res.status(201).json(user);
   } catch (error) {
     next(error);
   }
