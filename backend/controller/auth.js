@@ -26,8 +26,6 @@ const register = async (req, res, next) => {
     res.cookie("access_token", token, {
       httpOnly: true,
       secure: process.env.NODE_ENV === "production",
-
-      // Restrict cookie sharing across origins
     });
     res.status(201).json("User has been created");
   } catch (error) {

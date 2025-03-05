@@ -1,8 +1,10 @@
 import { Link, useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { signUpUserValidation } from "../lib/formValidation";
+import { register } from "../lib/auth.action";
+import { CreateUserType } from "../lib/types";
 const Signup = () => {
-  const [user, setUser] = useState({
+  const [user, setUser] = useState<CreateUserType>({
     name: "",
     password: "",
     email: "",
@@ -16,20 +18,13 @@ const Signup = () => {
     console.log(user);
     setUser((pre) => ({ ...pre, [e.target.name]: e.target.value }));
   };
-  const onSubmitHandle = async (e: any) => {
+  const onSubmitHandle = (e: any) => {
     e.preventDefault();
     setLoading(true);
     try {
       const validatedUser = signUpUserValidation.parse(user);
       if (validatedUser) {
-        const res = await fetch("http://localhost:5000/api/auth/register", {
-          method: "POST",
-          headers: {
-            "Content-type": "application/json",
-          },
-          body: JSON.stringify(user),
-        });
-        const data = await res.json();
+        const data = register(user);
         console.log(data);
         navigate("/");
       }

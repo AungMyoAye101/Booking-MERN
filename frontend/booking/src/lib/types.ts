@@ -24,3 +24,8 @@ export interface CreateHotelType {
   distance: string[];
   type: string;
 }
+export interface CreateUserType {
+  name: string;
+  email: string;
+  password: string;
+}
