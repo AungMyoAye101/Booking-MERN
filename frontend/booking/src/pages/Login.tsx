@@ -1,7 +1,7 @@
 import { Link, useNavigate } from "react-router-dom";
-import { useContext, useState } from "react";
+import { useState } from "react";
 import { loginUserValidation } from "../lib/formValidation";
-import { authContext } from "../context/authContext";
+import { useAuth } from "../context/authContext";
 
 const Login = () => {
   const [user, setUser] = useState({
@@ -11,8 +11,9 @@ const Login = () => {
   const [error, setError] = useState(false);
   const [errorMessage, setErrorMEssage] = useState("");
   const [loading, setLoading] = useState(false);
-  const { dispatch } = useContext(authContext);
+  const { state, dispatch } = useAuth()
   const navigate = useNavigate();
+
 
   const handleChange = (e: { target: { name: string; value: string } }) => {
     setUser((pre) => ({ ...pre, [e.target.name]: e.target.value }));
@@ -23,19 +24,20 @@ const Login = () => {
     try {
       const validatedUser = loginUserValidation.parse(user);
       if (validatedUser) {
-        dispatch({ type: "LOGIN_START" });
+
         const res = await fetch("http://localhost:5000/api/auth/login", {
           method: "POST",
           headers: { "Content-type": "application/json" },
+          credentials: "include",
           body: JSON.stringify(user),
         });
         if (!res.ok) {
           throw new Error("Something went wrong");
         }
         const data = await res.json();
-        dispatch({ type: "LOGIN_SUCCESS", payload: data });
-        navigate("/");
+        dispatch({ type: "LOGIN", payload: data });
         console.log(data);
+        navigate("/");
       } else {
         throw new Error();
       }

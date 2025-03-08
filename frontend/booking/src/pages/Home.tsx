@@ -7,6 +7,7 @@ import HotelList from "../components/HotelList";
 import Offer from "../components/Offer";
 
 const Home = () => {
+
   return (
     <section>
       <Hero />

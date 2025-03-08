@@ -1,25 +1,28 @@
 import { Link } from "react-router-dom";
-import { useContext } from "react";
-import { authContext } from "../context/authContext";
+import { useAuth } from "../context/authContext";
+
 
 const NavBar = () => {
-  const { user, dispatch } = useContext(authContext);
+
+  const { state, dispatch } = useAuth()
+  console.log(state)
 
   const handleLogout = async () => {
     try {
       const res = await fetch(`http://localhost:5000/api/auth/logout`, {
         method: "POST",
+        credentials: "include",
       });
 
       if (!res.ok) {
         const errorData = await res.json();
         throw new Error(errorData.message || "Logout failed");
       }
-
       dispatch({ type: "LOGOUT" });
+      console.log("Logout success");
     } catch (error) {
       console.log(error);
-      dispatch({ type: "LOGIN_FAILED", payload: error });
+
     }
   };
   return (
@@ -31,9 +34,9 @@ const NavBar = () => {
           </h1>
         </Link>
         <div className="flex items-center gap-4">
-          {user ? (
+          {state.user ? (
             <>
-              {user.isAdmin === true && (
+              {state.user.isAdmin === true && (
                 <Link to={"/admin"} className="btn bg-white text-blue-800">
                   Admin
                 </Link>
@@ -56,6 +59,7 @@ const NavBar = () => {
               </Link>
             </>
           )}
+
         </div>
       </div>
     </nav>

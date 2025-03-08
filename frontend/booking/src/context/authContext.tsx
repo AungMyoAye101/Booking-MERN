@@ -1,88 +1,60 @@
-import { createContext, useEffect, useReducer } from "react";
+import { createContext, useReducer, useContext, ReactNode } from "react";
 
-type AuthState = {
+// Define the shape of the context state
+interface AuthState {
   user: any;
-  loading: boolean;
-  error: any;
-};
+}
+
+// Define the shape of the context actions
 interface AuthAction {
   type: string;
   payload?: any;
 }
-const INITIAL_STATE: AuthState = {
-  user: JSON.parse(localStorage.getItem("user") || "null"),
-  loading: false,
-  error: null,
+
+// Create the initial state
+const initialState: AuthState = {
+  user: null,
 };
-const reducer = (state: AuthState, action: AuthAction) => {
+
+// Create the context
+const AuthContext = createContext<{
+  state: AuthState;
+  dispatch: React.Dispatch<AuthAction>;
+}>({
+  state: initialState,
+  dispatch: () => null,
+});
+
+// Create a reducer to manage the state
+const authReducer = (state: AuthState, action: AuthAction): AuthState => {
   switch (action.type) {
-    case "LOGIN_START":
+    case "LOGIN":
       return {
-        user: null,
-        loading: true,
-        error: null,
+        ...state,
+        user: action.payload,
       };
     case "LOGOUT":
       return {
+        ...state,
         user: null,
-        loading: true,
-        error: null,
-      };
-    case "LOGIN_SUCCESS":
-      return {
-        user: action.payload,
-        loading: false,
-        error: false,
-      };
-
-    case "LOGIN_FAILED":
-      return {
-        user: null,
-        loading: false,
-        error: action.payload,
       };
     default:
       return state;
   }
 };
 
-// type AuthContextType = {
-//   user: any;
-//   loading: boolean;
-//   error: any;
-//   dispatch: React.Dispatch<AuthAction>;
-// };
-
-export const authContext = createContext<{
-  user: any;
-  loading: boolean;
-  error: any;
-  dispatch: React.Dispatch<AuthAction>;
-}>({
-  user: INITIAL_STATE.user,
-  loading: INITIAL_STATE.loading,
-  error: INITIAL_STATE.error,
-  dispatch: () => null,
-});
-const AuthContextProvider = ({ children }: { children: React.ReactNode }) => {
-  const [state, dispatch] = useReducer(reducer, INITIAL_STATE);
-
-  useEffect(() => {
-    localStorage.setItem("user", JSON.stringify(state.user));
-  }, [state]);
+// Create a provider component
+export const AuthProvider = ({ children }: { children: ReactNode }) => {
+  const [state, dispatch] = useReducer(authReducer, initialState);
 
   return (
-    <authContext.Provider
-      value={{
-        user: state.user,
-        loading: state.loading,
-        error: state.error,
-        dispatch,
-      }}
-    >
+    <AuthContext.Provider value={{ state, dispatch }}>
       {children}
-    </authContext.Provider>
+    </AuthContext.Provider>
   );
 };
 
-export default AuthContextProvider;
+// Custom hook to use the AuthContext
+export const useAuth = () => {
+  return useContext(AuthContext);
+};

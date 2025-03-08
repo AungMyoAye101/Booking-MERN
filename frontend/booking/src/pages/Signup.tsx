@@ -11,35 +11,36 @@ const Signup = () => {
     email: "",
   });
 
-  const[password,setPassword]=useState<boolean>(true)
- 
+  const [password, setPassword] = useState<boolean>(true)
+
   const navigate = useNavigate();
   const handleChange = (e: { target: { name: string; value: string } }) => {
 
     setUser((pre) => ({ ...pre, [e.target.name]: e.target.value }));
   };
-  const onSubmitHandle = async(e: FormEvent) => {
+  const onSubmitHandle = async (e: FormEvent) => {
     e.preventDefault();
 
     const validatedUser = signUpUserValidation.parse(user);
     if (validatedUser) {
-  try {
-    const res = await fetch('http://localhost:5000/api/auth/register', {
-      method: "POST",
-      headers: {
-        "Content-type": "application/json",
-      },
-      credentials:"include",
-      body: JSON.stringify(user),
-    });
-    if (!res.ok) {
-      throw new Error("Failed to create user!");
-    }
-    navigate("/");
-    return res.json();
-  } catch (error) {
-    console.log(error)
-  }
+      try {
+        const res = await fetch('http://localhost:5000/api/auth/register', {
+          method: "POST",
+          headers: {
+            "Content-type": "application/json",
+          },
+          credentials: "include",
+          body: JSON.stringify(user),
+        });
+        if (!res.ok) {
+          throw new Error("Failed to create user!");
+        }
+        dispatch({ type: "LOGIN", payload: data });
+        navigate("/");
+        return res.json();
+      } catch (error) {
+        console.log(error)
+      }
 
 
     }
@@ -68,7 +69,7 @@ const Signup = () => {
         <label htmlFor="password" className="flex flex-col gap-1 relative">
           <span className="font-roboto text-sm">Password</span>
           <input
-            type={password ? "password":"text"}
+            type={password ? "password" : "text"}
             name="password"
             id="password"
             value={user.password}
@@ -77,9 +78,9 @@ const Signup = () => {
             className="bg-neutral-100 rounded p-2 border "
           />
           {
-            password ?<FaEyeSlash className="absolute right-2 top-[60%] z-10 cursor-pointer" onClick={()=>setPassword(false)}/> :<FaEye className="absolute right-2 top-[60%] z-10 cursor-pointer" onClick={()=>setPassword(true)}/>
+            password ? <FaEyeSlash className="absolute right-2 top-[60%] z-10 cursor-pointer" onClick={() => setPassword(false)} /> : <FaEye className="absolute right-2 top-[60%] z-10 cursor-pointer" onClick={() => setPassword(true)} />
           }
-          
+
         </label>
         <label htmlFor="email" className="flex flex-col gap-1">
           <span className="font-roboto text-sm">Email</span>
