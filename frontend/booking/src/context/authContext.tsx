@@ -1,4 +1,5 @@
 import { createContext, useReducer, useContext, ReactNode } from "react";
+import { CreateUserType } from "../lib/types";
 
 // Define the shape of the context state
 interface AuthState {
@@ -13,15 +14,15 @@ interface AuthAction {
 
 // Create the initial state
 const initialState: AuthState = {
-  user: null,
+  user: null as any,
 };
 
 // Create the context
 const AuthContext = createContext<{
-  state: AuthState;
+  user: CreateUserType;
   dispatch: React.Dispatch<AuthAction>;
 }>({
-  state: initialState,
+  user: initialState,
   dispatch: () => null,
 });
 
@@ -30,12 +31,10 @@ const authReducer = (state: AuthState, action: AuthAction): AuthState => {
   switch (action.type) {
     case "LOGIN":
       return {
-        ...state,
         user: action.payload,
       };
     case "LOGOUT":
       return {
-        ...state,
         user: null,
       };
     default:
@@ -47,8 +46,9 @@ const authReducer = (state: AuthState, action: AuthAction): AuthState => {
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [state, dispatch] = useReducer(authReducer, initialState);
 
+
   return (
-    <AuthContext.Provider value={{ state, dispatch }}>
+    <AuthContext.Provider value={{ user: state.user, dispatch }}>
       {children}
     </AuthContext.Provider>
   );

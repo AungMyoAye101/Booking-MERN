@@ -4,6 +4,7 @@ import { signUpUserValidation } from "../lib/formValidation";
 
 import { CreateUserType } from "../lib/types";
 import { FaEye, FaEyeSlash } from "react-icons/fa6";
+import { useAuth } from "../context/authContext";
 const Signup = () => {
   const [user, setUser] = useState<CreateUserType>({
     name: "",
@@ -12,6 +13,7 @@ const Signup = () => {
   });
 
   const [password, setPassword] = useState<boolean>(true)
+  const { dispatch } = useAuth()
 
   const navigate = useNavigate();
   const handleChange = (e: { target: { name: string; value: string } }) => {
@@ -35,9 +37,10 @@ const Signup = () => {
         if (!res.ok) {
           throw new Error("Failed to create user!");
         }
+        const data = await res.json();
         dispatch({ type: "LOGIN", payload: data });
         navigate("/");
-        return res.json();
+
       } catch (error) {
         console.log(error)
       }

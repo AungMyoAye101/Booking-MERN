@@ -4,9 +4,7 @@ import { useAuth } from "../context/authContext";
 
 const NavBar = () => {
 
-  const { state, dispatch } = useAuth()
-  console.log(state)
-
+  const { user, dispatch } = useAuth()
   const handleLogout = async () => {
     try {
       const res = await fetch(`http://localhost:5000/api/auth/logout`, {
@@ -34,13 +32,13 @@ const NavBar = () => {
           </h1>
         </Link>
         <div className="flex items-center gap-4">
-          {state.user ? (
+          {user ? (
             <>
-              {state.user.isAdmin === true && (
+              {/* {user.isAdmin === true && (
                 <Link to={"/admin"} className="btn bg-white text-blue-800">
                   Admin
                 </Link>
-              )}
+              )} */}
 
               <button
                 onClick={handleLogout}
