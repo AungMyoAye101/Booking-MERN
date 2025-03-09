@@ -7,6 +7,7 @@ const roomRouter = require("./routes/room");
 const { default: mongoose } = require("mongoose");
 const cookieParser = require("cookie-parser");
 const cors = require("cors");
+const { v2 } = require("cloudinary")
 const app = express();
 
 dotenv.config();
@@ -27,14 +28,20 @@ const connectToDb = async () => {
 mongoose.connection.on("disconnected", () => {
   console.log("Mongo DB is disconnected !");
 });
+v2.config({
+  cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+  cloud_api: process.env.CLOUDINARY_API_KEY,
+  cloud_secret: process.env.CLOUDINARY_API_SECRET,
+})
 app.get("/", (req, res) => {
   res.send("hello Elizbeth Olsen");
 });
 
 //Middleware for route handler
 app.use(cors({
-  origin:"http://localhost:5173",
-  credentials: true,}
+  origin: "http://localhost:5173",
+  credentials: true,
+}
 ));
 app.use(cookieParser());
 app.use(express.json());
