@@ -2,6 +2,7 @@ import { useState } from "react";
 import { FaX } from "react-icons/fa6";
 import { CreateHotelType } from "../lib/types";
 import { createHotelValidation } from "../lib/formValidation";
+import { hotelInput } from "../config/createHotel";
 
 const CreateHotel = () => {
   const [hotel, setHotel] = useState<CreateHotelType>({
@@ -71,29 +72,24 @@ const CreateHotel = () => {
 
   return (
     <form className="min-w-2xl flex flex-col  w-full gap-4 bg-white rounded-lg p-4 border">
-      <label htmlFor="name" className="flex flex-col gap-1  flex-1">
-        <span className="font-roboto text-sm">Name</span>
-        <input
-          id="name"
-          type="text"
-          name="name"
-          placeholder="hotel name"
-          className="bg-neutral-100 rounded p-2 border w-full"
-          onChange={(e) => handleChange(e)}
-        />
-      </label>
+      {
+        hotelInput.map((item) => (
 
-      <label htmlFor="title" className="flex flex-col gap-1  flex-1">
-        <span className="font-roboto text-sm">Title</span>
-        <input
-          id="title"
-          type="text"
-          name="title"
-          placeholder="title"
-          className="bg-neutral-100 rounded p-2 border"
-          onChange={(e) => handleChange(e)}
-        />
-      </label>
+          <label htmlFor={item} className="flex flex-col gap-1  flex-1">
+            <span className="font-roboto text-sm">{item}</span>
+            <input
+              id={item}
+              type="text"
+              name={item}
+              placeholder={item}
+              className="bg-neutral-100 rounded p-2 border w-full"
+              onChange={(e) => handleChange(e)}
+            />
+          </label>
+        ))
+      }
+
+      \
       <label htmlFor="type" className="flex flex-col gap-1 flex-1 ">
         <span className="font-roboto text-sm">Type</span>
         <select
@@ -111,17 +107,7 @@ const CreateHotel = () => {
         </select>
       </label>
 
-      <label htmlFor="description" className="flex flex-col gap-1 flex-1">
-        <span className="font-roboto text-sm">Description</span>
-        <input
-          id="description"
-          type="text"
-          name="description"
-          placeholder="description"
-          className="bg-neutral-100 rounded p-2 border"
-          onChange={(e) => handleChange(e)}
-        />
-      </label>
+
       <div>
         <label htmlFor="photo" className="flex flex-col gap-1">
           <span className="font-roboto text-sm">Photo</span>
@@ -165,9 +151,8 @@ const CreateHotel = () => {
             name="distance"
             value={distance}
             placeholder="enter a distance to add more"
-            className={`bg-neutral-100 rounded p-2 border ${
-              distanceArray.length >= 2 ? "cursor-not-allowed" : ""
-            }`}
+            className={`bg-neutral-100 rounded p-2 border ${distanceArray.length >= 2 ? "cursor-not-allowed" : ""
+              }`}
             onChange={(e) => setDistance(e.target.value)}
             onKeyDown={(e) => handleKeyDown(e, "distance")}
           />
@@ -193,39 +178,6 @@ const CreateHotel = () => {
         </div>
       </div>
 
-      <label htmlFor="city" className="flex flex-col gap-1 flex-1">
-        <span className="font-roboto text-sm">City</span>
-        <input
-          id="city"
-          type="text"
-          name="city"
-          placeholder="city"
-          className="bg-neutral-100 rounded p-2 border"
-          onChange={(e) => handleChange(e)}
-        />
-      </label>
-      <label htmlFor="address" className="flex flex-col gap-1 flex-1">
-        <span className="font-roboto text-sm">address</span>
-        <input
-          id="address"
-          type="text"
-          name="address"
-          placeholder="address"
-          className="bg-neutral-100 rounded p-2 border"
-          onChange={(e) => handleChange(e)}
-        />
-      </label>
-      <label htmlFor="cheapestPrice" className="flex flex-col gap-1 flex-1">
-        <span className="font-roboto text-sm"> Cheapest Price</span>
-        <input
-          id="cheapestPrice"
-          type="number"
-          name="cheapestPrice"
-          placeholder="0"
-          className="bg-neutral-100 rounded p-2 border"
-          onChange={(e) => handleChange(e)}
-        />
-      </label>
 
       <button
         type="submit"
