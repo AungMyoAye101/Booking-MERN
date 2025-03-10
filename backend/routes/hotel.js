@@ -1,5 +1,5 @@
 const express = require("express");
-const Hotel = require("../models/hotel.model");
+const upload = require("../utils/upload");
 const {
   getAllHotels,
   updateHotel,
@@ -11,7 +11,7 @@ const { verifyAdmin } = require("../utils/verifyToken");
 const router = express.Router();
 
 router.get("/", getAllHotels);
-router.post("/", createHotel);
+router.post("/create-hotel", upload.array('photos', 5), createHotel);
 router.put("/:id", updateHotel);
 router.delete("/:id", deleteHotel);
 router.get("/:id", getHotelById);
