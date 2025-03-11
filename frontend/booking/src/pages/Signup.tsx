@@ -69,6 +69,19 @@ const Signup = () => {
           />
         </label>
 
+
+        <label htmlFor="email" className="flex flex-col gap-1">
+          <span className="font-roboto text-sm">Email</span>
+          <input
+            type="email"
+            name="email"
+            id="email"
+            value={user.email}
+            placeholder="example@.gmail.com"
+            onChange={(e) => handleChange(e)}
+            className="bg-neutral-100 rounded p-2 border"
+          />
+        </label>
         <label htmlFor="password" className="flex flex-col gap-1 relative">
           <span className="font-roboto text-sm">Password</span>
           <input
@@ -84,18 +97,6 @@ const Signup = () => {
             password ? <FaEyeSlash className="absolute right-2 top-[60%] z-10 cursor-pointer" onClick={() => setPassword(false)} /> : <FaEye className="absolute right-2 top-[60%] z-10 cursor-pointer" onClick={() => setPassword(true)} />
           }
 
-        </label>
-        <label htmlFor="email" className="flex flex-col gap-1">
-          <span className="font-roboto text-sm">Email</span>
-          <input
-            type="email"
-            name="email"
-            id="email"
-            value={user.email}
-            placeholder="example@.gmail.com"
-            onChange={(e) => handleChange(e)}
-            className="bg-neutral-100 rounded p-2 border"
-          />
         </label>
         <div className="flex justify-between items-center">
           <p className="text-xs font-roboto opacity-80 ">
