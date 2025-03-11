@@ -1,7 +1,7 @@
-import { useState } from "react";
-import { FaX } from "react-icons/fa6";
+import { useEffect, useState } from "react";
+// import { FaX } from "react-icons/fa6";
 import { CreateHotelType } from "../lib/types";
-import { createHotelValidation } from "../lib/formValidation";
+// import { createHotelValidation } from "../lib/formValidation";
 import { hotelInput } from "../config/createHotel";
 
 const CreateHotel = () => {
@@ -39,19 +39,21 @@ const CreateHotel = () => {
   //   }
   // };
 
-  const handleSubmit = async (e: any) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // setHotel((prev) => ({
-    //   ...prev,
-    //   photos: photoArray,
-    //   distance: distanceArray,
-    // }));
-    // if (hotel.photos.length === 0 || hotel.distance.length === 0) {
-    //   return;
-    // }
-
-    console.log(hotel);
-    console.log(photoArray);
+    const formData = new FormData();
+    formData.append("name", hotel.name);
+    formData.append("title", hotel.title);
+    formData.append("description", hotel.description);
+    formData.append("address", hotel.address);
+    formData.append("cheapestPrice", hotel.cheapestPrice.toString());
+    formData.append("city", hotel.city);
+    formData.append("type", hotel.type);
+    photoArray.forEach((file) => {
+      formData.append("photos", file);
+    })
+    console.log(hotel)
+    console.log(formData.values);
 
     // try {
     //   const validatedHotel = createHotelValidation.parse(hotel);
@@ -75,12 +77,15 @@ const CreateHotel = () => {
 
   const handlePhotoChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = e.target.files;
-    console.log(photoArray);
+
     if (files) {
-      console.log(files);
-      setPhotoArray(Array.from(files));
+      const newFile = Array.from(files)
+      setPhotoArray((pre) => [...pre, ...newFile]);
     }
   }
+  useEffect(() => {
+    console.log(photoArray);
+  }, [photoArray])
 
   return (
     <form onSubmit={handleSubmit} className="min-w-2xl flex flex-col  w-full gap-4 bg-white rounded-lg p-4 border">
@@ -124,11 +129,10 @@ const CreateHotel = () => {
         <label htmlFor="photo" className="flex flex-col gap-1">
           <span className="font-roboto text-sm">Photo</span>
           <input
-            disabled={photoArray.length >= 5}
+            // disabled={photoArray.length >= 5}
             id="photo"
             type="file"
-
-            multiple
+            multiple={true}
             onChange={(e) => handlePhotoChange(e)}
           />
         </label>

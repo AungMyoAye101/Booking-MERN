@@ -1,7 +1,7 @@
 export const hotelInput = [
-    ' name',
-    ' title',
-    ' description',
-    ' address',
-    ' cheapestPrice',
+    'name',
+    'title',
+    'description',
+    'address',
+    'cheapestPrice',
     'city']
