@@ -9,7 +9,7 @@ const CreateHotel = () => {
     name: "",
     title: "",
     description: "",
-    photos: [],
+    photos: '',
     address: "",
     cheapestPrice: 0,
     city: "",
@@ -17,10 +17,10 @@ const CreateHotel = () => {
     type: "",
   });
 
-  const [photoArray, setPhotoArray] = useState<File[]>([]);
-  const [url, setUrl] = useState("");
-  const [distanceArray, setDistanceArray] = useState<string[]>([]);
-  const [distance, setDistance] = useState("");
+  const [photoArray, setPhotoArray] = useState<any>([]);
+  // const [url, setUrl] = useState("");
+  // const [distanceArray, setDistanceArray] = useState<string[]>([]);
+  // const [distance, setDistance] = useState("");
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     setHotel((pre) => ({ ...pre, [e.target.name]: e.target.value }));
@@ -40,103 +40,96 @@ const CreateHotel = () => {
   // };
 
   const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    const formData = new FormData();
-    formData.append("name", hotel.name);
-    formData.append("title", hotel.title);
-    formData.append("description", hotel.description);
-    formData.append("address", hotel.address);
-    formData.append("cheapestPrice", hotel.cheapestPrice.toString());
-    formData.append("city", hotel.city);
-    formData.append("type", hotel.type);
-    photoArray.forEach((file) => {
-      formData.append("photos", file);
-    })
-    console.log(hotel)
-    console.log(formData.values);
 
-    // try {
-    //   const validatedHotel = createHotelValidation.parse(hotel);
-    //   if (validatedHotel) {
-    //     const res = await fetch("http://localhost:5000/api/hotel/create-hotel", {
-    //       method: "POST",
-    //       headers: { "Content-type": "application/json" },
-    //       credentials: "include",
-    //       body: JSON.stringify(hotel),
-    //     });
-    //     if (!res.ok) {
-    //       throw new Error("Failed to create hotel");
-    //     }
-    //     console.log("hotel create successfullly");
-    //   }
-    // } catch (error) {
-    //   console.log(error);
-    // }
+    e.preventDefault();
+    setHotel((pre) => ({ ...pre, photos: photoArray }));
+
+
+    try {
+
+      const res = await fetch("http://localhost:5000/api/hotel/create-hotel", {
+        method: "POST",
+        headers: { "Content-Type": "application/json", },
+        body: JSON.stringify(hotel),
+      });
+      if (!res.ok) {
+        throw new Error("Failed to create hotel");
+      }
+      console.log("hotel create successfullly");
+    }
+    catch (error) {
+      console.log(error);
+    }
 
   };
 
   const handlePhotoChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = e.target.files;
 
-    if (files) {
-      const newFile = Array.from(files)
-      setPhotoArray((pre) => [...pre, ...newFile]);
+    if (files && files.length > 0) {
+      const reader = new FileReader()
+      reader.readAsDataURL(files[0])
+      reader.onload = () => {
+        setPhotoArray(reader.result)
+      }
+      reader.onerror = (error) => {
+        console.log('Error: ', error)
+      }
     }
-  }
-  useEffect(() => {
-    console.log(photoArray);
-  }, [photoArray])
+    useEffect(() => {
+      console.log(photoArray);
+    }, [photoArray])
 
-  return (
-    <form onSubmit={handleSubmit} className="min-w-2xl flex flex-col  w-full gap-4 bg-white rounded-lg p-4 border">
-      {
-        hotelInput.map((item) => (
+    return (
+      <form onSubmit={handleSubmit} className="min-w-2xl flex flex-col  w-full gap-4 bg-white rounded-lg p-4 border">
+        {
+          hotelInput.map((item) => (
 
-          <label htmlFor={item} className="flex flex-col gap-1  flex-1" key={item}>
-            <span className="font-roboto text-sm capitalize font-semibold">{item}</span>
+            <label htmlFor={item} className="flex flex-col gap-1  flex-1" key={item}>
+              <span className="font-roboto text-sm capitalize font-semibold">{item}</span>
+              <input
+                id={item}
+                type="text"
+                name={item}
+                placeholder={item}
+                className="bg-neutral-100 rounded p-2 border w-full"
+                onChange={(e) => handleChange(e)}
+              />
+            </label>
+          ))
+        }
+
+
+        <label htmlFor="type" className="flex flex-col gap-1 flex-1 ">
+          <span className="font-roboto text-sm">Type</span>
+          <select
+            name="type"
+            id="type"
+            className="bg-blue-100 outline-none p-2 rounded"
+            onChange={(e) => handleChange(e)}
+          >
+            <option value="hotel" >
+              Hotel
+            </option>
+            <option value="aparment">Aparment</option>
+            <option value="villa">Villa</option>
+            <option value="cabin">Cabin</option>
+          </select>
+        </label>
+
+
+        <div>
+          <label htmlFor="photo" className="flex flex-col gap-1">
+            <span className="font-roboto text-sm">Photo</span>
             <input
-              id={item}
-              type="text"
-              name={item}
-              placeholder={item}
-              className="bg-neutral-100 rounded p-2 border w-full"
-              onChange={(e) => handleChange(e)}
+              // disabled={photoArray.length >= 5}
+              id="photo"
+              type="file"
+              name="photo"
+              onChange={(e) => handlePhotoChange(e)}
             />
           </label>
-        ))
-      }
-
-
-      <label htmlFor="type" className="flex flex-col gap-1 flex-1 ">
-        <span className="font-roboto text-sm">Type</span>
-        <select
-          name="type"
-          id="type"
-          className="bg-blue-100 outline-none p-2 rounded"
-          onChange={(e) => handleChange(e)}
-        >
-          <option value="hotel" >
-            Hotel
-          </option>
-          <option value="aparment">Aparment</option>
-          <option value="villa">Villa</option>
-          <option value="cabin">Cabin</option>
-        </select>
-      </label>
-
-
-      <div>
-        <label htmlFor="photo" className="flex flex-col gap-1">
-          <span className="font-roboto text-sm">Photo</span>
-          <input
-            // disabled={photoArray.length >= 5}
-            id="photo"
-            type="file"
-            multiple={true}
-            onChange={(e) => handlePhotoChange(e)}
-          />
-        </label>
-        {/* <div className="flex gap-2 items-center mt-2">
+          {/* <div className="flex gap-2 items-center mt-2">
           {photoArray.length > 0 &&
             photoArray.map((n, i) => (
               <div
@@ -153,8 +146,8 @@ const CreateHotel = () => {
               </div>
             ))}
         </div> */}
-      </div>
-      {/* <div>
+        </div>
+        {/* <div>
         <label htmlFor="distance" className="flex flex-col gap-1 flex-1">
           <span className="font-roboto text-sm">Distance</span>
           <input
@@ -192,14 +185,14 @@ const CreateHotel = () => {
       </div> */}
 
 
-      <button
-        type="submit"
-        className="btn h-fit"
-      >
-        Create Hotel
-      </button>
-    </form>
-  );
-};
+        <button
+          type="submit"
+          className="btn h-fit"
+        >
+          Create Hotel
+        </button>
+      </form>
+    );
+  };
 
-export default CreateHotel;
+  export default CreateHotel;

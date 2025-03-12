@@ -25,10 +25,11 @@ const connectToDb = async () => {
   }
 };
 cloudinary.config({
-  cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
-  cloud_api: process.env.CLOUDINARY_API_KEY,
-  cloud_secret: process.env.CLOUDINARY_API_SECRET,
+  cloud_name: 'dnxnmdcjb',
+  cloud_api: '153895644393575',
+  cloud_secret: 'TgdUTFeBtpTz1ccak1bXIJIWUIY',
 })
+
 // DB connection error
 mongoose.connection.on("disconnected", () => {
   console.log("Mongo DB is disconnected !");
