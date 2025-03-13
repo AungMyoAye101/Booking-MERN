@@ -194,5 +194,5 @@ const CreateHotel = () => {
       </form>
     );
   };
-
-  export default CreateHotel;
+}
+export default CreateHotel

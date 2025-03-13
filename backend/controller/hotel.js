@@ -1,9 +1,35 @@
 const Hotel = require("../models/hotel.model");
-const cloudinary = require("cloudinary");
+const cloudinary = require("cloudinary").v2;
 //Create hotel
 const createHotel = async (req, res) => {
-  console.log(req.body);
+  console.log("uploading file from broswer")
+  console.log(req.file);
 
+  try {
+    const data = req.file
+    const buffer = data.toBuffer()
+
+
+    await new Promise((resolve) => {
+      cloudinary.uploader.upload((error, result) => {
+        if (error) {
+          res.status(400).json("Failed to upload image to cloundinary")
+        } else {
+          resolve(result)
+          return result.secure_url
+
+        }
+
+
+      })
+        .end(buffer)
+    })
+
+
+  } catch (error) {
+    console.log(error.message)
+    res.status(500).json('failed to upload images')
+  }
 
   // try {
   //   //   const images = req.files.map(async (img) => {
