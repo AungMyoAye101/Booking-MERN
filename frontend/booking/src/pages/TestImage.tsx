@@ -1,29 +1,38 @@
 import { useState } from "react";
 
 const TestImage = () => {
-    const [image, setImage] = useState<any>(null);
-    const [base64, setBase64] = useState<any>(null);
+    const [image, setImage] = useState<any>([]);
+    const [base64, setBase64] = useState<any>([]);
 
     const handleImage = (e: any) => {
-        const file = e.target.files[0];
-        if (file) {
-            const reader = new FileReader();
-            reader.readAsDataURL(file);
-            reader.onloadend = () => {
-                setBase64(reader.result);
-            }
+        const file = Array.from(e.target.files)
+        if (file.length > 0) {
+
+            const promise = file.map((file: any) => {
+                const reader = new FileReader();
+                return new Promise((resolve, reject) => {
+                    reader.onloadend = () => {
+                        resolve(reader.result);
+                    }
+                    reader.onerror = reject;
+                    reader.readAsDataURL(file);
+                })
+            })
+            Promise.all(promise).then((result) => setBase64(result))
         }
     }
-    console.log(base64);
+
+
 
     const onSubmit = async (e: any) => {
         e.preventDefault();
         console.log('submit');
+
         try {
             const res = await fetch("http://localhost:5000/api/upload", {
                 method: "POST",
                 headers: { "Content-Type": "application/json", },
-                body: JSON.stringify({ image: base64 }),
+                body: JSON.stringify({ images: base64 }),
             });
 
             if (!res.ok) {
@@ -42,7 +51,7 @@ const TestImage = () => {
     return <div className="min-h-screen flex justify-center items-center">
         <div className="w-96 h-96 bg-gray-200 flex flex-col justify-center items-center">
             <form onSubmit={onSubmit}>
-                <input type="file" accept="image/*" placeholder="image" onChange={handleImage} />
+                <input type="file" accept="image/*" multiple placeholder="image" onChange={handleImage} />
                 <button type="submit" className="btn">Post</button>
             </form>
         </div>

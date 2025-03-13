@@ -76,60 +76,58 @@ const CreateHotel = () => {
         console.log('Error: ', error)
       }
     }
-    useEffect(() => {
-      console.log(photoArray);
-    }, [photoArray])
+  }
 
-    return (
-      <form onSubmit={handleSubmit} className="min-w-2xl flex flex-col  w-full gap-4 bg-white rounded-lg p-4 border">
-        {
-          hotelInput.map((item) => (
+  return (
+    <form onSubmit={handleSubmit} className="min-w-2xl flex flex-col  w-full gap-4 bg-white rounded-lg p-4 border">
+      {
+        hotelInput.map((item) => (
 
-            <label htmlFor={item} className="flex flex-col gap-1  flex-1" key={item}>
-              <span className="font-roboto text-sm capitalize font-semibold">{item}</span>
-              <input
-                id={item}
-                type="text"
-                name={item}
-                placeholder={item}
-                className="bg-neutral-100 rounded p-2 border w-full"
-                onChange={(e) => handleChange(e)}
-              />
-            </label>
-          ))
-        }
-
-
-        <label htmlFor="type" className="flex flex-col gap-1 flex-1 ">
-          <span className="font-roboto text-sm">Type</span>
-          <select
-            name="type"
-            id="type"
-            className="bg-blue-100 outline-none p-2 rounded"
-            onChange={(e) => handleChange(e)}
-          >
-            <option value="hotel" >
-              Hotel
-            </option>
-            <option value="aparment">Aparment</option>
-            <option value="villa">Villa</option>
-            <option value="cabin">Cabin</option>
-          </select>
-        </label>
-
-
-        <div>
-          <label htmlFor="photo" className="flex flex-col gap-1">
-            <span className="font-roboto text-sm">Photo</span>
+          <label htmlFor={item} className="flex flex-col gap-1  flex-1" key={item}>
+            <span className="font-roboto text-sm capitalize font-semibold">{item}</span>
             <input
-              // disabled={photoArray.length >= 5}
-              id="photo"
-              type="file"
-              name="photo"
-              onChange={(e) => handlePhotoChange(e)}
+              id={item}
+              type="text"
+              name={item}
+              placeholder={item}
+              className="bg-neutral-100 rounded p-2 border w-full"
+              onChange={(e) => handleChange(e)}
             />
           </label>
-          {/* <div className="flex gap-2 items-center mt-2">
+        ))
+      }
+
+
+      <label htmlFor="type" className="flex flex-col gap-1 flex-1 ">
+        <span className="font-roboto text-sm">Type</span>
+        <select
+          name="type"
+          id="type"
+          className="bg-blue-100 outline-none p-2 rounded"
+          onChange={(e) => handleChange(e)}
+        >
+          <option value="hotel" >
+            Hotel
+          </option>
+          <option value="aparment">Aparment</option>
+          <option value="villa">Villa</option>
+          <option value="cabin">Cabin</option>
+        </select>
+      </label>
+
+
+      <div>
+        <label htmlFor="photo" className="flex flex-col gap-1">
+          <span className="font-roboto text-sm">Photo</span>
+          <input
+            // disabled={photoArray.length >= 5}
+            id="photo"
+            type="file"
+            name="photo"
+            onChange={(e) => handlePhotoChange(e)}
+          />
+        </label>
+        {/* <div className="flex gap-2 items-center mt-2">
           {photoArray.length > 0 &&
             photoArray.map((n, i) => (
               <div
@@ -146,8 +144,8 @@ const CreateHotel = () => {
               </div>
             ))}
         </div> */}
-        </div>
-        {/* <div>
+      </div>
+      {/* <div>
         <label htmlFor="distance" className="flex flex-col gap-1 flex-1">
           <span className="font-roboto text-sm">Distance</span>
           <input
@@ -185,14 +183,13 @@ const CreateHotel = () => {
       </div> */}
 
 
-        <button
-          type="submit"
-          className="btn h-fit"
-        >
-          Create Hotel
-        </button>
-      </form>
-    );
-  };
-}
+      <button
+        type="submit"
+        className="btn h-fit"
+      >
+        Create Hotel
+      </button>
+    </form>
+  );
+};
 export default CreateHotel
