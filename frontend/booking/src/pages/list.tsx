@@ -26,19 +26,19 @@ const List = () => {
         >
           <Link
             to={`/hotel/${item._id}`}
-            className="w-40 aspect-square rounded-lg "
+            className="w-40 aspect-square rounded-lg overflow-hidden "
           >
-            <img src={item.photos[0]} alt="hotel image" className="w-full " />
+            <img src={item.photos[0]} alt="hotel image" className="w-full h-full object-cover" />
           </Link>
           <div className="flex flex-col gap-2 flex-1">
             <h1 className="text-2xl font-roboto font-semibold">{item.name}</h1>
-            <h2 className="font-serif text-sm font-semibold">{item.title}</h2>
+            <h2 className="font-roboto text-sm font-semibold">{item.title}</h2>
             <p className="text-xs ">{item.description}</p>
             <div className="self-end flex gap-4">
               <Link to={`/admin/updateHotel/${item._id}`} className="btn">
                 Update
               </Link>
-              <button onClick={() => handleDelete(item._id)} className="btn">
+              <button onClick={() => handleDelete(item._id)} className="btn bg-rose-600">
                 Delete
               </button>
             </div>

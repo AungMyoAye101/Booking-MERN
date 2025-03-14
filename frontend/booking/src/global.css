@@ -7,11 +7,12 @@
   body {
     @apply bg-neutral-50;
   }
+
   input {
     @apply focus:outline-none px-2;
   }
 
   .btn {
-    @apply px-4 py-2 bg-blue-800 rounded-md text-white text-sm hover:bg-orange-300;
+    @apply px-4 py-2 bg-blue-800 rounded-md text-white text-sm hover:bg-purple-700;
   }
 }

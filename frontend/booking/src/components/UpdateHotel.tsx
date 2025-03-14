@@ -14,10 +14,11 @@ const UpdateHotel = () => {
     description: "",
     photos: [],
     address: "",
-    cheapestPrice: 0,
+    price: 0,
     city: "",
-    distance: [],
+    distance: '',
     type: "",
+    rating: 0,
   });
 
   const [photoArray, setPhotoArray] = useState<string[]>([]);
@@ -170,9 +171,8 @@ const UpdateHotel = () => {
             name="distance"
             value={distance}
             placeholder="enter a distance to add more"
-            className={`bg-neutral-100 rounded p-2 border ${
-              distanceArray.length >= 2 ? "cursor-not-allowed" : ""
-            }`}
+            className={`bg-neutral-100 rounded p-2 border ${distanceArray.length >= 2 ? "cursor-not-allowed" : ""
+              }`}
             onChange={(e) => setDistance(e.target.value)}
             onKeyDown={(e) => handleKeyDown(e, "distance")}
           />
