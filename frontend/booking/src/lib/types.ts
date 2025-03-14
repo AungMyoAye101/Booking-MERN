@@ -19,9 +19,10 @@ export interface CreateHotelType {
   description: string;
   photos: string[];
   address: string;
-  cheapestPrice: number;
+  price: number;
+  rating: number;
   city: string;
-  distance: string[];
+  distance: string;
   type: string;
 }
 export interface UserType {

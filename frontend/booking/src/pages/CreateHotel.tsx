@@ -1,8 +1,10 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 // import { FaX } from "react-icons/fa6";
 import { CreateHotelType } from "../lib/types";
 // import { createHotelValidation } from "../lib/formValidation";
 import { hotelInput } from "../config/createHotel";
+
+import { MdOutlineCloudUpload } from "react-icons/md";
 
 const CreateHotel = () => {
   const [hotel, setHotel] = useState<CreateHotelType>({
@@ -11,31 +13,20 @@ const CreateHotel = () => {
     description: "",
     photos: [],
     address: "",
-    cheapestPrice: 0,
+    price: 0,
     city: "",
-    distance: [],
+    rating: 0,
+    distance: '',
     type: "",
   });
 
   const [photoArray, setPhotoArray] = useState<any>([]);
 
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
     setHotel((pre) => ({ ...pre, [e.target.name]: e.target.value }));
   };
 
-  // const handleKeyDown = (e: any, type: string) => {
-  //   if (e.key === "Enter") {
-  //     if (type === "photo") {
-  //       setPhotoArray((pre) => [...pre, url]);
-  //       setUrl("");
-  //     }
-  //     if (type === "distance") {
-  //       setDistanceArray((pre) => [...pre, distance]);
-  //       setDistance("");
-  //     }
-  //   }
-  // };
 
   const handleSubmit = async (e: React.FormEvent) => {
 
@@ -65,34 +56,35 @@ const CreateHotel = () => {
 
   };
 
-  const handlePhotoChange = (e: any) => {
-    const files = Array.from(e.target.files);
 
-    if (files.length == 0) return
 
-    const promise = files.map((file: any) => {
+  const handlePhotoChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const files = Array.from(e.target.files || []);
+
+    if (files.length === 0) return;
+
+    const promise = files.map((file) => {
       const reader = new FileReader();
-      return new Promise((resolve, reject) => {
+      return new Promise<string | ArrayBuffer | null>((resolve, reject) => {
         reader.onloadend = () => {
           resolve(reader.result);
-        }
+        };
         reader.onerror = () => reject(new Error("Failed to read file"));
         reader.readAsDataURL(file);
-      })
+      });
+    });
 
-    })
-
-    Promise.all(promise).then((result) => setPhotoArray(result))
-
-  }
+    Promise.all(promise).then((result) => setPhotoArray(result));
+  };
 
 
   return (
     <form onSubmit={handleSubmit} className="min-w-2xl flex flex-col  w-full gap-4 bg-white rounded-lg p-4 border">
+
       {
         hotelInput.map((item) => (
 
-          <label htmlFor={item} className="flex flex-col gap-1  flex-1" key={item}>
+          <label htmlFor={item} className="flex flex-col gap-1  " key={item}>
             <span className="font-roboto text-sm capitalize font-semibold">{item}</span>
             <input
               id={item}
@@ -106,7 +98,35 @@ const CreateHotel = () => {
         ))
       }
 
+      <label htmlFor='description' className="flex flex-col gap-1  flex-1" >
+        <span className="font-roboto text-sm capitalize font-semibold">Description</span>
+        <textarea
+          id='description'
+          name='description'
+          placeholder='description'
+          className="bg-neutral-100 rounded p-2 border w-full min-h-28"
+          onChange={(e) => handleChange(e)}
+        />
+      </label>
 
+
+      <label htmlFor="rating" className="flex flex-col gap-1 flex-1 ">
+        <span className="font-roboto text-sm">Rating</span>
+        <select
+          name="rating"
+          id="rating"
+          className="bg-blue-100 outline-none p-2 rounded"
+          onChange={(e) => handleChange(e)}
+        >
+          <option value='' disabled >Please provide a star rating</option>{
+            [1, 2, 3, 4, 5].map((item) => (
+
+              <option value={item} key={item}>{item}</option>
+            ))
+          }
+
+        </select>
+      </label>
       <label htmlFor="type" className="flex flex-col gap-1 flex-1 ">
         <span className="font-roboto text-sm">Type</span>
         <select
@@ -115,22 +135,26 @@ const CreateHotel = () => {
           className="bg-blue-100 outline-none p-2 rounded"
           onChange={(e) => handleChange(e)}
         >
-          <option value=""  >
 
+          <option value="" disabled >
+            Please select a type
           </option>
-          <option value="hotel"  >
-            Hotel
-          </option>
-          <option value="aparment">Aparment</option>
-          <option value="villa">Villa</option>
-          <option value="cabin">Cabin</option>
+          {
+            ["hotel", "aparment", "villa", "cabin"].map((item) => (
+              <option value={item} key={item}>{item}</option>
+            ))
+          }
+
         </select>
       </label>
 
 
       <div>
-        <label htmlFor="photo" className="flex flex-col gap-1">
-          <span className="font-roboto text-sm">Photo</span>
+        <label htmlFor="photo" className="flex flex-col gap-2 ">
+          <div className="w-32 h-20 bg-neutral-200 rounded-lg flex justify-center items-center cursor-pointer">
+            <MdOutlineCloudUpload className="text-4xl text-gray-400" />
+          </div>
+          <span className="font-roboto text-sm ">Please upload photo</span>
           <input
             disabled={photoArray.length >= 5}
             id="photo"
@@ -138,67 +162,15 @@ const CreateHotel = () => {
             name="photo"
             multiple
             onChange={handlePhotoChange}
+            className="hidden"
           />
         </label>
-        {/* <div className="flex gap-2 items-center mt-2">
-          {photoArray.length > 0 &&
-            photoArray.map((n, i) => (
-              <div
-                key={i}
-                className="flex justify-between items-center border border-gray-200 rounded-md w-32 gap-2 px-1.5 py-1 bg-blue-50  hover:bg-rose-100"
-              >
-                <span className="text-xs line-clamp-1">{n}</span>
-                <FaX
-                  onClick={() =>
-                    setPhotoArray(() => photoArray.filter((_, y) => y !== i))
-                  }
-                  className=" text-xs cursor-pointer"
-                />
-              </div>
-            ))}
-        </div> */}
-      </div>
-      {/* <div>
-        <label htmlFor="distance" className="flex flex-col gap-1 flex-1">
-          <span className="font-roboto text-sm">Distance</span>
-          <input
-            disabled={distanceArray.length >= 2}
-            id="distance"
-            type="text"
-            name="distance"
-            value={distance}
-            placeholder="enter a distance to add more"
-            className={`bg-neutral-100 rounded p-2 border ${distanceArray.length >= 2 ? "cursor-not-allowed" : ""
-              }`}
-            onChange={(e) => setDistance(e.target.value)}
-            onKeyDown={(e) => handleKeyDown(e, "distance")}
-          />
-        </label>
-        <div className="flex gap-2 items-center mt-2">
-          {distanceArray.length > 0 &&
-            distanceArray.map((n, i) => (
-              <div
-                key={i}
-                className="flex justify-between items-center border border-gray-200 rounded-md w-32 gap-2 px-1.5 py-1 bg-blue-50  hover:bg-rose-100"
-              >
-                <span className="text-xs line-clamp-1">{n}</span>
-                <FaX
-                  onClick={() =>
-                    setDistanceArray(() =>
-                      distanceArray.filter((_, y) => y !== i)
-                    )
-                  }
-                  className=" text-xs cursor-pointer"
-                />
-              </div>
-            ))}
-        </div>
-      </div> */}
 
+      </div>
 
       <button
         type="submit"
-        className="btn h-fit"
+        className="btn self-end"
       >
         Create Hotel
       </button>

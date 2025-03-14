@@ -29,25 +29,28 @@ export const createHotelValidation = z.object({
     .max(24, { message: "hotel title doesn't exceed 12 character" }),
   type: z
     .string()
-    .min(3, { message: "type  contain at least 6 character" })
-    .max(12, { message: "type  doesn't exceed 12 character" }),
+    .nonempty({ message: "Please select a type" })
+  ,
+  rating: z
+    .number()
+    .min(1, { message: "Please provide a star rating" })
+  ,
   description: z
     .string()
-    .min(6, { message: "Description contain at least 6 character" }),
+    .min(12, { message: "Description contain at least 12 character" }),
 
   address: z
     .string()
-    .min(3, { message: "Address contain at least 6 character" }),
+    .min(6, { message: "Address contain at least 6 character" }),
 
   photos: z
     .string()
     .array()
-    .min(1, { message: "Photo contain at least 1 photo" }),
+    .min(1, { message: "Please add a photo" }),
   distance: z
     .string()
-    .array()
-    .min(1, { message: "Photo contain at least 1 photo" }),
+    .min(3, { message: "Please add a distance" }),
   city: z.string().min(3, { message: "City contain at least 6 character" }),
 
-  cheapestPrice: z.string(),
+  price: z.number().min(1, { message: "Please provide a price" }),
 });

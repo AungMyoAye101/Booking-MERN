@@ -36,7 +36,7 @@ const hotelSchema = new mongoose.Schema(
         ref: "Room",
       },
     ],
-    cheapestPrice: {
+    price: {
       type: Number,
       requried: true,
     },
@@ -45,7 +45,7 @@ const hotelSchema = new mongoose.Schema(
       default: false,
     },
     distance: {
-      type: [String],
+      type: String,
     },
 
     city: {
