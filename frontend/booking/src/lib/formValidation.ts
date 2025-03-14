@@ -22,7 +22,7 @@ export const createHotelValidation = z.object({
   name: z
     .string()
     .min(3, { message: "Hotel name contain at least 6 character" })
-    .max(12, { message: "Hotel name doesn't exceed 12 character" }),
+    .max(24, { message: "Hotel name doesn't exceed 12 character" }),
   title: z
     .string()
     .min(6, { message: "hotel title contain at least 6 character" })
@@ -32,7 +32,7 @@ export const createHotelValidation = z.object({
     .nonempty({ message: "Please select a type" })
   ,
   rating: z
-    .number()
+    .string()
     .min(1, { message: "Please provide a star rating" })
   ,
   description: z
@@ -52,5 +52,5 @@ export const createHotelValidation = z.object({
     .min(3, { message: "Please add a distance" }),
   city: z.string().min(3, { message: "City contain at least 6 character" }),
 
-  price: z.number().min(1, { message: "Please provide a price" }),
+  price: z.string().min(1, { message: "Please provide a price" }),
 });

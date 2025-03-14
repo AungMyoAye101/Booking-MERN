@@ -5,6 +5,8 @@ import { CreateHotelType } from "../lib/types";
 import { hotelInput } from "../config/createHotel";
 
 import { MdOutlineCloudUpload } from "react-icons/md";
+import { create } from "domain";
+import { createHotelValidation } from "../lib/formValidation";
 
 const CreateHotel = () => {
   const [hotel, setHotel] = useState<CreateHotelType>({
@@ -31,13 +33,19 @@ const CreateHotel = () => {
   const handleSubmit = async (e: React.FormEvent) => {
 
     e.preventDefault();
-    console.log('submit');
+
     setHotel((pre) => ({ ...pre, photos: photoArray }));
 
     if (hotel.photos.length === 0) return
 
+    const validateHotel = createHotelValidation.safeParse(hotel);
+    if (!validateHotel.success) {
+      console.log(validateHotel.error);
+      return;
+    }
+
     try {
-      console.log(hotel);
+
 
       const res = await fetch("http://localhost:5000/api/hotel/create-hotel", {
         method: "POST",
@@ -162,7 +170,7 @@ const CreateHotel = () => {
             name="photo"
             multiple
             onChange={handlePhotoChange}
-            className="hidden"
+
           />
         </label>
 
