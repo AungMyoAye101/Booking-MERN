@@ -3,56 +3,33 @@ const cloudinary = require("cloudinary").v2;
 //Create hotel
 const createHotel = async (req, res) => {
   console.log("uploading file from broswer")
-  console.log(req.file);
 
+  const { name, title, city, address, type, price, description, photos } = req.body;
+  console.log(type)
   try {
-    const data = req.file
-    const buffer = data.toBuffer()
-
-
-    await new Promise((resolve) => {
-      cloudinary.uploader.upload((error, result) => {
-        if (error) {
-          res.status(400).json("Failed to upload image to cloundinary")
-        } else {
-          resolve(result)
-          return result.secure_url
-
-        }
-
-
-      })
-        .end(buffer)
+    const uploadedImages = photos.map((img) => {
+      return cloudinary.uploader.upload(img, { folder: "hotels" })
     })
+    const uploadResponse = await Promise.all(uploadedImages)
+    const urls = uploadResponse.map((img) => img.secure_url)
 
-
+    const newHotel = new Hotel({
+      name,
+      title,
+      city,
+      address,
+      type,
+      price,
+      description,
+      photos: urls
+    });
+    const savedHotel = await newHotel.save();
+    res.status(201).json(savedHotel);
   } catch (error) {
     console.log(error.message)
     res.status(500).json('failed to upload images')
   }
 
-  // try {
-  //   //   const images = req.files.map(async (img) => {
-  //   //     const b64 = Buffer.from(img.buffer).toString("base64");
-  //   //     const dataURI = `data:${img.mimetype};base64,${b64}`;
-  //   //     const res = await cloudinary.uploader.upload(dataURI);
-  //   //     return res.secure_url;
-  //   //   });
-  //   // } catch (error) {
-  //   //   console.error("Error uploading image to Cloudinary:", error);
-  //   //   throw error; // Re-throw the error to stop the process
-  //   // }
-  //   const photos = req.files.map((file) => file.path);
-  //   // const photos = await Promise.all(images);
-  //   const newHotel = new Hotel({ ...req.body, photos });
-
-
-  //   const savedHotel = await newHotel.save();
-  //   console.log("Hotel created", savedHotel);
-  //   res.status(201).json(savedHotel);
-  // } catch (error) {
-  //   res.status(500).json(error);
-  // }
 };
 
 //Update hotel

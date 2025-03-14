@@ -17,7 +17,7 @@ export interface CreateHotelType {
   name: string;
   title: string;
   description: string;
-  photos: string;
+  photos: string[];
   address: string;
   cheapestPrice: number;
   city: string;

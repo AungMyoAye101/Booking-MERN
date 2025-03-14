@@ -9,7 +9,7 @@ const CreateHotel = () => {
     name: "",
     title: "",
     description: "",
-    photos: '',
+    photos: [],
     address: "",
     cheapestPrice: 0,
     city: "",
@@ -18,9 +18,7 @@ const CreateHotel = () => {
   });
 
   const [photoArray, setPhotoArray] = useState<any>([]);
-  // const [url, setUrl] = useState("");
-  // const [distanceArray, setDistanceArray] = useState<string[]>([]);
-  // const [distance, setDistance] = useState("");
+
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     setHotel((pre) => ({ ...pre, [e.target.name]: e.target.value }));
@@ -42,10 +40,13 @@ const CreateHotel = () => {
   const handleSubmit = async (e: React.FormEvent) => {
 
     e.preventDefault();
+    console.log('submit');
     setHotel((pre) => ({ ...pre, photos: photoArray }));
 
+    if (hotel.photos.length === 0) return
 
     try {
+      console.log(hotel);
 
       const res = await fetch("http://localhost:5000/api/hotel/create-hotel", {
         method: "POST",
@@ -55,7 +56,8 @@ const CreateHotel = () => {
       if (!res.ok) {
         throw new Error("Failed to create hotel");
       }
-      console.log("hotel create successfullly");
+      const data = await res.json();
+      console.log("hotel create successfullly", data);
     }
     catch (error) {
       console.log(error);
@@ -63,20 +65,27 @@ const CreateHotel = () => {
 
   };
 
-  const handlePhotoChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const files = e.target.files;
+  const handlePhotoChange = (e: any) => {
+    const files = Array.from(e.target.files);
 
-    if (files && files.length > 0) {
-      const reader = new FileReader()
-      reader.readAsDataURL(files[0])
-      reader.onload = () => {
-        setPhotoArray(reader.result)
-      }
-      reader.onerror = (error) => {
-        console.log('Error: ', error)
-      }
-    }
+    if (files.length == 0) return
+
+    const promise = files.map((file: any) => {
+      const reader = new FileReader();
+      return new Promise((resolve, reject) => {
+        reader.onloadend = () => {
+          resolve(reader.result);
+        }
+        reader.onerror = () => reject(new Error("Failed to read file"));
+        reader.readAsDataURL(file);
+      })
+
+    })
+
+    Promise.all(promise).then((result) => setPhotoArray(result))
+
   }
+
 
   return (
     <form onSubmit={handleSubmit} className="min-w-2xl flex flex-col  w-full gap-4 bg-white rounded-lg p-4 border">
@@ -106,7 +115,10 @@ const CreateHotel = () => {
           className="bg-blue-100 outline-none p-2 rounded"
           onChange={(e) => handleChange(e)}
         >
-          <option value="hotel" >
+          <option value=""  >
+
+          </option>
+          <option value="hotel"  >
             Hotel
           </option>
           <option value="aparment">Aparment</option>
@@ -120,11 +132,12 @@ const CreateHotel = () => {
         <label htmlFor="photo" className="flex flex-col gap-1">
           <span className="font-roboto text-sm">Photo</span>
           <input
-            // disabled={photoArray.length >= 5}
+            disabled={photoArray.length >= 5}
             id="photo"
             type="file"
             name="photo"
-            onChange={(e) => handlePhotoChange(e)}
+            multiple
+            onChange={handlePhotoChange}
           />
         </label>
         {/* <div className="flex gap-2 items-center mt-2">

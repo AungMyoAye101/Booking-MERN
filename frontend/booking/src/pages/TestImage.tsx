@@ -6,20 +6,22 @@ const TestImage = () => {
 
     const handleImage = (e: any) => {
         const file = Array.from(e.target.files)
-        if (file.length > 0) {
 
-            const promise = file.map((file: any) => {
-                const reader = new FileReader();
-                return new Promise((resolve, reject) => {
-                    reader.onloadend = () => {
-                        resolve(reader.result);
-                    }
-                    reader.onerror = reject;
-                    reader.readAsDataURL(file);
-                })
+        if (file.length === 0) return;
+
+
+        const promise = file.map((file: any) => {
+            const reader = new FileReader();
+            return new Promise((resolve, reject) => {
+                reader.onloadend = () => {
+                    resolve(reader.result);
+                }
+                reader.onerror = reject;
+                reader.readAsDataURL(file);
             })
-            Promise.all(promise).then((result) => setBase64(result))
-        }
+        })
+        Promise.all(promise).then((result) => setBase64(result))
+
     }
 
 
