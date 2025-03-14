@@ -15,7 +15,7 @@ const HotelDetail = () => {
     description: "",
     photos: [],
     address: "",
-    cheapestPrice: 0,
+    price: 0,
     city: "",
     distance: "",
     featured: false,
@@ -24,8 +24,6 @@ const HotelDetail = () => {
     type: "",
   });
   const { id } = useParams();
-  console.log("hotel id " + id);
-
   const fetchHotel = async () => {
     const res = await fetch(`http://localhost:5000/api/hotel/${id}`);
     const data = await res.json();
@@ -60,9 +58,8 @@ const HotelDetail = () => {
               key={i}
               src={img}
               alt={hotel.name + " room photo"}
-              className={`${
-                i === 0 ? "col-span-2 row-span-2 " : ""
-              }rounded-xl object-cover w-full h-full`}
+              className={`${i === 0 ? "col-span-2 row-span-2 " : ""
+                }rounded-xl object-cover w-full h-full`}
             />
           ))}
         </div>
@@ -80,7 +77,7 @@ const HotelDetail = () => {
           </h2>
           <div className="flex gap-2 items-center ">
             <FaLocationDot />
-            <p className="text-sm ">{hotel.distance[0]}</p>
+            <p className="text-sm ">{hotel.distance}</p>
           </div>
           <h2 className="font-semibold font-roboto ">Breakfast info</h2>
           <p className="text-sm font-roboto ">

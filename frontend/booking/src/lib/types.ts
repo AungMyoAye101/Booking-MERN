@@ -5,7 +5,7 @@ export interface HotelType {
   description: string;
   photos: string[];
   address: string;
-  cheapestPrice: number;
+  price: number;
   city: string;
   distance: "";
   featured: boolean;

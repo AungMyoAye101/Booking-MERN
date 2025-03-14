@@ -11,7 +11,7 @@ const Login = () => {
   const [error, setError] = useState(false);
   const [errorMessage, setErrorMEssage] = useState("");
   const [loading, setLoading] = useState(false);
-  const { state, dispatch } = useAuth()
+  const { dispatch } = useAuth()
   const navigate = useNavigate();
 
 

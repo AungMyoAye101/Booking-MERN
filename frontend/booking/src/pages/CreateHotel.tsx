@@ -1,11 +1,7 @@
 import { useState } from "react";
-// import { FaX } from "react-icons/fa6";
 import { CreateHotelType } from "../lib/types";
-// import { createHotelValidation } from "../lib/formValidation";
 import { hotelInput } from "../config/createHotel";
-
 import { MdOutlineCloudUpload } from "react-icons/md";
-import { create } from "domain";
 import { createHotelValidation } from "../lib/formValidation";
 
 const CreateHotel = () => {

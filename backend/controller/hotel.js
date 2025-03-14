@@ -67,7 +67,7 @@ const getAllHotels = async (req, res, next) => {
     limit = 10,
     ...others
   } = req.query;
-  console.log(min, max, limit, others);
+
   let filter = {};
   if (destination) {
     filter.city = { $regex: city, $options: "i" };
