@@ -52,5 +52,5 @@ export const createHotelValidation = z.object({
     .min(3, { message: "Please add a distance" }),
   city: z.string().min(3, { message: "City contain at least 6 character" }),
 
-  price: z.string().min(1, { message: "Please provide a price" }),
+  price: z.number().min(1, { message: "Please provide a price" }),
 });

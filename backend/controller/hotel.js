@@ -38,12 +38,20 @@ const createHotel = async (req, res) => {
 //Update hotel
 
 const updateHotel = async (req, res) => {
+  const { photos } = req.body
   try {
+    const uploadedImages = photos.map((img) => {
+      return cloudinary.uploader.upload(img, { folder: "hotels" })
+    })
+    const uploadResponse = await Promise.all(uploadedImages)
+    const urls = uploadResponse.map((img) => img.secure_url)
+
     const updatedHotel = await Hotel.findByIdAndUpdate(
       req.params.id,
-      { $set: req.body },
+      { $set: { ...req.body, photos: urls } },
       { new: true }
     );
+    console.log("hotel was updated!")
     res.status(201).json(updatedHotel);
   } catch (error) {
     res.status(500).json(error);
