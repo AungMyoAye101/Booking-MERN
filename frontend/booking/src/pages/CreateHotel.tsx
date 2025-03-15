@@ -144,7 +144,7 @@ const CreateHotel = () => {
             Please select a type
           </option>
           {
-            ["hotel", "aparment", "villa", "cabin"].map((item) => (
+            ["hotel", "aparment", "villa", "cabin", 'lodge'].map((item) => (
               <option value={item} key={item}>{item}</option>
             ))
           }
@@ -166,6 +166,7 @@ const CreateHotel = () => {
             name="photo"
             multiple
             onChange={handlePhotoChange}
+            className="hidden"
 
           />
         </label>

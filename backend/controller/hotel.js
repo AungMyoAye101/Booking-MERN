@@ -48,8 +48,8 @@ const updateHotel = async (req, res) => {
 
     const updatedHotel = await Hotel.findByIdAndUpdate(
       req.params.id,
-      { $set: { ...req.body, photos: urls } },
-      { new: true }
+      { ...req.body, photos: urls },
+
     );
     console.log("hotel was updated!")
     res.status(201).json(updatedHotel);
