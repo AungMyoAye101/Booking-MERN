@@ -55,8 +55,8 @@ const HotelCreateForm = ({ id }: { id: string }) => {
         try {
 
 
-            const res = await fetch("http://localhost:5000/api/hotel/create-hotel", {
-                method: "POST",
+            const res = await fetch(`http://localhost:5000/api/hotel/${id}`, {
+                method: "PUT",
                 headers: { "Content-Type": "application/json", },
                 body: JSON.stringify(hotel),
             });
