@@ -8,7 +8,7 @@ const Admin = () => {
         <Link to={"/admin/hotels"}>Hotels</Link>
         <Link to={"/admin/createHotel"}>Create hotel</Link>
       </div>
-      <div className="flex-1">
+      <div className="flex-1 h-screen overflow-hidden overflow-y-scroll">
         <Outlet />
       </div>
     </section>

@@ -68,25 +68,7 @@ app.use((err, req, res, next) => {
   });
 });
 
-app.post("/api/upload", async (req, res) => {
-  const { images } = req.body;
-  console.log(images)
-  console.log('fetched')
-  try {
-    if (!images) throw new Error("No image found")
-    const uploadCloundinary = images.map((image) => {
-      return cloudinary.uploader.upload(image, { folder: "hotel photo" })
-    })
-    const uploadResponse = await Promise.all(uploadCloundinary)
-    const urls = uploadResponse.map((image) => image.secure_url)
-    console.log(urls)
-    res.json({ urls })
-  } catch (error) {
-    console.log(error)
 
-  }
-
-})
 app.listen(port, () => {
   connectToDb();
   console.log("server is listening on port " + port);
