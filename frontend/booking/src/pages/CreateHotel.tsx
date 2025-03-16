@@ -18,7 +18,7 @@ const CreateHotel = () => {
     type: "",
   });
 
-  const [photoArray, setPhotoArray] = useState<any>([]);
+  const [photoArray, setPhotoArray] = useState<(string | ArrayBuffer | null)[]>([]);
 
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
@@ -30,7 +30,7 @@ const CreateHotel = () => {
 
     e.preventDefault();
 
-    setHotel((pre) => ({ ...pre, photos: photoArray }));
+    setHotel((pre) => ({ ...pre, photos: photoArray.filter((item): item is string => typeof item === "string") }));
 
     if (hotel.photos.length === 0) return
 
@@ -69,16 +69,17 @@ const CreateHotel = () => {
 
     const promise = files.map((file) => {
       const reader = new FileReader();
-      return new Promise<string | ArrayBuffer | null>((resolve, reject) => {
+      return new Promise<string | null>((resolve, reject) => {
         reader.onloadend = () => {
-          resolve(reader.result);
+          if (reader.result) resolve(reader.result as string);
+
         };
         reader.onerror = () => reject(new Error("Failed to read file"));
         reader.readAsDataURL(file);
       });
     });
 
-    Promise.all(promise).then((result) => setPhotoArray(result));
+    Promise.all(promise).then((result) => setPhotoArray((pre) => [...pre, ...result]));
   };
 
 
@@ -153,7 +154,7 @@ const CreateHotel = () => {
       </label>
 
 
-      <div>
+      <div className="flex gap-4">
         <label htmlFor="photo" className="flex flex-col gap-2 ">
           <div className="w-32 h-20 bg-neutral-200 rounded-lg flex justify-center items-center cursor-pointer">
             <MdOutlineCloudUpload className="text-4xl text-gray-400" />
@@ -170,8 +171,25 @@ const CreateHotel = () => {
 
           />
         </label>
+        {
+          photoArray.length > 0 && photoArray
+            .filter((item): item is string => typeof item === "string")
+            .map((item, index) => (
+              <div className="relative" key={index}>
+                <button
+                  type="button"
+                  className="absolute top-0.5 right-0.5 bg-red-500 text-white rounded-full w-6 h-6 flex justify-center items-center text-sm"
+                  onClick={() => setPhotoArray((pre) => pre.filter((_, i) => i !== index))}
+                >
+                  X
+                </button>
+                <img src={item} alt="hotel image" className="w-28 h-20 object-cover rounded-lg hover:shadow-md" />
+              </div>
 
+            ))
+        }
       </div>
+
 
       <button
         type="submit"
