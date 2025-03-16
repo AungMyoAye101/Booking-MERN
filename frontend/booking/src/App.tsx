@@ -1,9 +1,7 @@
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import Home from "./pages/Home";
-
 import List from "./pages/List";
 import NavBar from "./components/NavBar";
-import Footer from "./components/Footer";
 import Login from "./pages/Login";
 import Signup from "./pages/Signup";
 import HotelDetail from "./pages/HotelDetail";

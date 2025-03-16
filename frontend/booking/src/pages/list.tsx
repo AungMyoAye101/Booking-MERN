@@ -3,7 +3,7 @@ import useFetch from "../hooks/useFetch";
 import { useEffect, useState } from "react";
 
 const List = () => {
-  const { data, loading } = useFetch("api/hotel?limit=10");
+  const { data, loading, reFetch } = useFetch("api/hotel?limit=10");
   const [toggleDelete, setToggleDelete] = useState(false)
   const [selection, setSelection] = useState({
     _id: "",
@@ -40,6 +40,7 @@ const List = () => {
         throw Error("Failed to delete hotel");
       }
       setToggleDelete(false);
+      reFetch()
       console.log("hotel was deleted");
     } catch (error) {
       console.log(error);
@@ -51,7 +52,7 @@ const List = () => {
       {
         loading ? <div>Loading...</div> :
 
-          data.map((item, i) => (
+          data.map((item) => (
             <div
               key={item._id}
               className="flex-1 flex gap-4 bg-white rounded-lg p-4 shadow-lg "
