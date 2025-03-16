@@ -19,16 +19,18 @@ const HotelCreateForm = ({ id }: { id: string }) => {
         distance: '',
         type: "",
     });
+    const [photoArray, setPhotoArray] = useState<any>([]);
     useEffect(() => {
         const fetchHotel = async () => {
             const res = await fetch(`http://localhost:5000/api/hotel/${id}`);
             const data = await res.json();
             console.log(data);
             setHotel(data);
+            setPhotoArray(data.photos);
         };
         fetchHotel()
     }, []);
-    const [photoArray, setPhotoArray] = useState<any>([]);
+
 
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
@@ -90,7 +92,7 @@ const HotelCreateForm = ({ id }: { id: string }) => {
             });
         });
 
-        Promise.all(promise).then((result) => setPhotoArray(result));
+        Promise.all(promise).then((result) => setPhotoArray((pre: any) => [...pre, ...result]));
     };
     return (
         <form onSubmit={handleSubmit} className="min-w-2xl flex flex-col  w-full gap-4 bg-white rounded-lg p-4 border">
@@ -168,7 +170,7 @@ const HotelCreateForm = ({ id }: { id: string }) => {
             </label>
 
 
-            <div>
+            <div className="flex gap-4">
                 <label htmlFor="photo" className="flex flex-col gap-2 ">
                     <div className="w-32 h-20 bg-neutral-200 rounded-lg flex justify-center items-center cursor-pointer">
                         <MdOutlineCloudUpload className="text-4xl text-gray-400" />
@@ -185,6 +187,19 @@ const HotelCreateForm = ({ id }: { id: string }) => {
 
                     />
                 </label>
+                {
+                    photoArray.length > 0 && photoArray.map((item, index) => (
+                        <div className="relative" key={index}>
+                            <button
+                                type="button"
+                                className="absolute top-0.5 right-0.5 bg-red-500 text-white rounded-full w-6 h-6 flex justify-center items-center text-sm"
+                                onClick={() => setPhotoArray((pre: any) => pre.filter((_, i) => i !== index))}
+                            >
+                                X
+                            </button>
+                            <img src={item} alt="hotel image" className="w-28 h-20 object-cover rounded-lg hover:shadow-md" />
+                        </div>))
+                }
 
             </div>
 
