@@ -13,7 +13,7 @@ import CreateHotel from "./pages/CreateHotel";
 import Dashboard from "./components/Dashboard";
 import UpdateHotel from "./components/UpdateHotel";
 import Search from "./pages/Search";
-import TestImage from "./pages/TestImage";
+
 
 function App() {
   return (
@@ -21,7 +21,6 @@ function App() {
       <NavBar />
       <Routes>
         <Route path="/" element={<Home />} />
-        <Route path="/test" element={<TestImage />} />
         <Route path="/hotel" element={<Hotel />} />
         <Route path="/hotel/:id" element={<HotelDetail />} />
         <Route path="/list" element={<List />} />
@@ -35,7 +34,7 @@ function App() {
           <Route path="updateHotel/:id" element={<UpdateHotel />} />
         </Route>
       </Routes>
-      <Footer />
+
     </BrowserRouter>
   );
 }

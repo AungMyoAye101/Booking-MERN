@@ -34,14 +34,14 @@ const CreateHotel = () => {
 
     if (hotel.photos.length === 0) return
 
-    const validateHotel = createHotelValidation.safeParse(hotel);
-    if (!validateHotel.success) {
-      console.log(validateHotel.error);
-      return;
-    }
+    // const validateHotel = createHotelValidation.safeParse(hotel);
+    // if (!validateHotel.success) {
+    //   console.log(validateHotel.error);
+    //   return;
+    // }
 
     try {
-
+      console.log('creating hotel...')
 
       const res = await fetch("http://localhost:5000/api/hotel/create-hotel", {
         method: "POST",
