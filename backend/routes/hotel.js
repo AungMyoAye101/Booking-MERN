@@ -1,5 +1,5 @@
 const express = require("express");
-const upload = require("../utils/upload");
+
 const {
   getAllHotels,
   updateHotel,
@@ -7,7 +7,7 @@ const {
   deleteHotel,
   getHotelById,
 } = require("../controller/hotel");
-const { verifyAdmin } = require("../utils/verifyToken");
+const { verifyAdmin, verifyToken, verifyUser } = require("../utils/verifyToken");
 const router = express.Router();
 
 router.get("/", getAllHotels);

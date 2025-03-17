@@ -40,13 +40,13 @@ const HotelList = () => {
             <Link
               to={`hotel/${item._id}`}
               key={i}
-              className="min-w-[250px]  relative rounded-lg overflow-hidden shadow-lg cursor-pointer bg-white"
+              className="min-w-[250px]   relative rounded-lg overflow-hidden shadow-lg cursor-pointer bg-white"
             >
-              <div className=" overflow-hidden">
+              <div className=" overflow-hidden h-72 aspect-square">
                 <img
                   src={item.photos[0]}
                   alt="image"
-                  className="w-full h-auto hover:scale-125 transition-transform ease-in-out aspect-square"
+                  className="w-full h-full hover:scale-125 transition-transform ease-in-out aspect-square"
                 />
               </div>
               <div className="py-4 px-2 flex flex-col gap-1">

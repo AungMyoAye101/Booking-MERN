@@ -3,6 +3,8 @@ import { CreateHotelType } from "../lib/types";
 import { hotelInput } from "../config/createHotel";
 import { MdOutlineCloudUpload } from "react-icons/md";
 import { createHotelValidation } from "../lib/formValidation";
+import { useNavigate } from "react-router-dom";
+
 
 const CreateHotel = () => {
   const [hotel, setHotel] = useState<CreateHotelType>({
@@ -19,7 +21,7 @@ const CreateHotel = () => {
   });
 
   const [photoArray, setPhotoArray] = useState<(string | ArrayBuffer | null)[]>([]);
-
+  const navigate = useNavigate()
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
     setHotel((pre) => ({ ...pre, [e.target.name]: e.target.value }));
@@ -51,8 +53,11 @@ const CreateHotel = () => {
       if (!res.ok) {
         throw new Error("Failed to create hotel");
       }
+
       const data = await res.json();
       console.log("hotel create successfullly", data);
+      navigate("/admin/hotels")
+
     }
     catch (error) {
       console.log(error);
@@ -141,7 +146,7 @@ const CreateHotel = () => {
           onChange={(e) => handleChange(e)}
         >
 
-          <option value="" disabled >
+          <option value="" >
             Please select a type
           </option>
           {
