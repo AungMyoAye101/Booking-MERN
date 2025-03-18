@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { CreateHotelType } from "../lib/types";
-import { hotelInput } from "../config/createHotel";
+import { hotelInput, hotelTypes } from "../config/createHotel";
 import { MdOutlineCloudUpload } from "react-icons/md";
 import { createHotelValidation } from "../lib/formValidation";
 import { useNavigate } from "react-router-dom";
@@ -87,6 +87,8 @@ const CreateHotel = () => {
     Promise.all(promise).then((result) => setPhotoArray((pre) => [...pre, ...result]));
   };
 
+  console.log(hotel);
+
 
   return (
     <form onSubmit={handleSubmit} className="min-w-2xl flex flex-col  w-full gap-4 bg-white rounded-lg p-4 border">
@@ -137,26 +139,21 @@ const CreateHotel = () => {
 
         </select>
       </label>
-      <label htmlFor="type" className="flex flex-col gap-1 flex-1 ">
-        <span className="font-roboto text-sm">Type</span>
-        <select
-          name="type"
-          id="type"
-          className="bg-blue-100 outline-none p-2 rounded"
-          onChange={(e) => handleChange(e)}
-        >
+      <div className="flex flex-col gap-1 flex-1 ">
+        <span className="font-roboto text-sm">Please choose a type</span>
+        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
 
-          <option value="" >
-            Please select a type
-          </option>
           {
-            ["hotel", "aparment", "villa", "cabin", 'lodge'].map((item) => (
-              <option value={item} key={item}>{item}</option>
+            hotelTypes.map((item) => (
+              <label key={item} className={`font-serif px-4 py-1.5 text-sm rounded-lg ${hotel.type === item ? 'bg-blue-500 text-white' : "bg-neutral-200"} `}>
+
+                <input type="radio" value={item} name="type" checked={hotel.type === item} onChange={(e) => handleChange(e)} className="hidden" />
+                <span>{item}</span>
+              </label>
             ))
           }
-
-        </select>
-      </label>
+        </div>
+      </div>
 
 
       <div className="flex gap-4">

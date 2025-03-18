@@ -58,13 +58,16 @@ const HotelList = () => {
                 </div>
 
                 <h2 className="  font-roboto text-xl font-semibold">
+                  {item.name}
+                </h2>
+                <h2 className="  font-roboto  font-semibold opacity-80">
                   {item.title}
                 </h2>
 
                 <div className="self-end font-roboto">
                   <span className="text-sm ">Starting from </span>
                   <span className="font-semibold ml-1">
-                    ${item.cheapestPrice}
+                    ${item.price}
                   </span>
                 </div>
               </div>
