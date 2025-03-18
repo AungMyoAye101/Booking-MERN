@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { CreateHotelType } from "../lib/types";
-import { hotelInput, hotelTypes } from "../config/createHotel";
+import { hotelFacilities, hotelInput, hotelTypes } from "../config/createHotel";
 import { MdOutlineCloudUpload } from "react-icons/md";
 import { createHotelValidation } from "../lib/formValidation";
 import { useNavigate } from "react-router-dom";
@@ -17,22 +17,29 @@ const CreateHotel = () => {
     city: "",
     rating: 0,
     distance: '',
+    amenites: [],
     type: "",
   });
 
   const [photoArray, setPhotoArray] = useState<(string | ArrayBuffer | null)[]>([]);
+  const [amenites, setAmenites] = useState<string[]>([])
   const navigate = useNavigate()
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
     setHotel((pre) => ({ ...pre, [e.target.name]: e.target.value }));
   };
 
+  const handleAmenitesChange = (amenity: string) => {
+    setAmenites((pre) => (amenites.includes(amenity) ? amenites.filter(a => a !== amenity) : [...pre, amenity]))
+
+  }
+
 
   const handleSubmit = async (e: React.FormEvent) => {
 
     e.preventDefault();
 
-    setHotel((pre) => ({ ...pre, photos: photoArray.filter((item): item is string => typeof item === "string") }));
+    setHotel((pre) => ({ ...pre, amenites, photos: photoArray.filter((item): item is string => typeof item === "string") }));
 
     if (hotel.photos.length === 0) return
 
@@ -123,7 +130,7 @@ const CreateHotel = () => {
 
 
       <label htmlFor="rating" className="flex flex-col gap-1 flex-1 ">
-        <span className="font-roboto text-sm">Rating</span>
+        <span className="font-roboto text-sm font-semibold">Rating</span>
         <select
           name="rating"
           id="rating"
@@ -139,8 +146,10 @@ const CreateHotel = () => {
 
         </select>
       </label>
+
+      {/* hotel type  */}
       <div className="flex flex-col gap-1 flex-1 ">
-        <span className="font-roboto text-sm">Please choose a type</span>
+        <span className="font-roboto text-sm font-semibold">Please choose a type</span>
         <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
 
           {
@@ -148,6 +157,23 @@ const CreateHotel = () => {
               <label key={item} className={`font-serif px-4 py-1.5 text-sm rounded-lg ${hotel.type === item ? 'bg-blue-500 text-white' : "bg-neutral-200"} `}>
 
                 <input type="radio" value={item} name="type" checked={hotel.type === item} onChange={(e) => handleChange(e)} className="hidden" />
+                <span>{item}</span>
+              </label>
+            ))
+          }
+        </div>
+      </div>
+
+      {/* hotel amenites */}
+      <div className="flex flex-col gap-1 flex-1 ">
+        <span className="font-roboto text-sm font-semibold">Please Select Amenities:</span>
+        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4  gap-2">
+
+          {
+            hotelFacilities.map((item) => (
+              <label key={item} className={`font-serif px-4 py-1.5 text-sm flex items-center gap-1`}>
+
+                <input type="checkbox" value={item} name="amenities" checked={amenites.includes(item)} onChange={() => handleAmenitesChange(item)} />
                 <span>{item}</span>
               </label>
             ))
