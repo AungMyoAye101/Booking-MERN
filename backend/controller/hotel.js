@@ -4,7 +4,9 @@ const cloudinary = require("cloudinary").v2;
 const createHotel = async (req, res) => {
   console.log("uploading file from broswer")
 
-  const { name, title, city, distance, rating, address, type, price, description, photos } = req.body;
+  const { photos } = req.body;
+  console.log(req.body)
+
 
   try {
     const uploadedImages = photos.map((img) => {
@@ -12,17 +14,10 @@ const createHotel = async (req, res) => {
     })
     const uploadResponse = await Promise.all(uploadedImages)
     const urls = uploadResponse.map((img) => img.secure_url)
+    console.log("image uploaded")
 
     const newHotel = new Hotel({
-      name,
-      title,
-      city,
-      address,
-      type,
-      price,
-      description,
-      rating,
-      distance,
+      ...req.body,
       photos: urls
     });
     const savedHotel = await newHotel.save();

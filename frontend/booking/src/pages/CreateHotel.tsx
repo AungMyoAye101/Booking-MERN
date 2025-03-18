@@ -4,6 +4,7 @@ import { hotelFacilities, hotelInput, hotelTypes } from "../config/createHotel";
 import { MdOutlineCloudUpload } from "react-icons/md";
 import { createHotelValidation } from "../lib/formValidation";
 import { useNavigate } from "react-router-dom";
+import { LOADIPHLPAPI } from "dns";
 
 
 const CreateHotel = () => {
@@ -23,6 +24,7 @@ const CreateHotel = () => {
 
   const [photoArray, setPhotoArray] = useState<(string | ArrayBuffer | null)[]>([]);
   const [amenites, setAmenites] = useState<string[]>([])
+  const [loading, setLoading] = useState(false)
   const navigate = useNavigate()
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
@@ -38,6 +40,7 @@ const CreateHotel = () => {
   const handleSubmit = async (e: React.FormEvent) => {
 
     e.preventDefault();
+    setLoading(true)
 
     setHotel((pre) => ({ ...pre, amenites, photos: photoArray.filter((item): item is string => typeof item === "string") }));
 
@@ -64,11 +67,15 @@ const CreateHotel = () => {
       const data = await res.json();
       console.log("hotel create successfullly", data);
       navigate("/admin/hotels")
+      setLoading(false)
 
     }
     catch (error) {
       console.log(error);
+      throw new Error("Failed to create !")
     }
+    setLoading(false)
+
 
   };
 
@@ -94,7 +101,7 @@ const CreateHotel = () => {
     Promise.all(promise).then((result) => setPhotoArray((pre) => [...pre, ...result]));
   };
 
-  console.log(hotel);
+
 
 
   return (
@@ -107,7 +114,7 @@ const CreateHotel = () => {
             <span className="font-roboto text-sm capitalize font-semibold">{item}</span>
             <input
               id={item}
-              type="text"
+              type={item === "price" ? "number" : "text"}
               name={item}
               placeholder={item}
               className="bg-neutral-100 rounded p-2 border w-full"
@@ -221,9 +228,11 @@ const CreateHotel = () => {
 
       <button
         type="submit"
-        className="btn self-end"
+        className={`btn self-end ${loading ? "cursor-not-allowed" : "cursor-pointer"}`}
+        disabled={loading}
       >
-        Create Hotel
+        {loading ? "creating hotel..." : "Create Hotel"}
+
       </button>
     </form>
   );
