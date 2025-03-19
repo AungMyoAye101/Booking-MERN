@@ -34,11 +34,10 @@ const NavBar = () => {
         <div className="flex items-center gap-4">
           {user ? (
             <>
-              {/* {user.isAdmin === true && (
-                <Link to={"/admin"} className="btn bg-white text-blue-800">
-                  Admin
-                </Link>
-              )} */}
+
+              <Link to={"/admin"} className="btn bg-white text-blue-800">
+                Dashbord
+              </Link>
 
               <button
                 onClick={handleLogout}

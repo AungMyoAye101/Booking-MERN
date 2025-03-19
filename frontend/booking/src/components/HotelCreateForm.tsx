@@ -1,36 +1,21 @@
-import { useEffect, useState } from "react";
-import { createHotelValidation } from "../lib/formValidation";
+
 import { CreateHotelType } from "../lib/types";
-import { hotelInput } from "../config/createHotel";
+import { hotelFacilities, hotelInput, hotelTypes } from "../config/createHotel";
 import { MdOutlineCloudUpload } from "react-icons/md";
 
+type HotelFormType = {
+    hotel: CreateHotelType,
+    setHotel: React.Dispatch<React.SetStateAction<CreateHotelType>>,
+    loading: boolean,
+    handleSubmit: (e: React.FormEvent) => void,
+    photoArray: (string | ArrayBuffer | null)[],
+    setPhotoArray: React.Dispatch<React.SetStateAction<any>>,
+    amenites: string[],
+    setAmenites: React.Dispatch<React.SetStateAction<string[]>>,
 
-const HotelCreateForm = ({ id }: { id: string }) => {
+}
 
-    const [hotel, setHotel] = useState({
-        name: "",
-        title: "",
-        description: "",
-        photos: [],
-        address: "",
-        price: 0,
-        city: "",
-        rating: 0,
-        distance: '',
-        type: "",
-    });
-    const [photoArray, setPhotoArray] = useState<any>([]);
-    useEffect(() => {
-        const fetchHotel = async () => {
-            const res = await fetch(`http://localhost:5000/api/hotel/${id}`);
-            const data = await res.json();
-            console.log(data);
-            setHotel(data);
-            setPhotoArray(data.photos);
-        };
-        fetchHotel()
-    }, []);
-
+const HotelCreateForm = ({ hotel, setHotel, loading, handleSubmit, photoArray, setPhotoArray, amenites, setAmenites }: HotelFormType) => {
 
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
@@ -40,39 +25,10 @@ const HotelCreateForm = ({ id }: { id: string }) => {
     };
 
 
-    const handleSubmit = async (e: React.FormEvent) => {
+    const handleAmenitesChange = (amenity: string) => {
+        setAmenites((pre) => (amenites.includes(amenity) ? amenites.filter(a => a !== amenity) : [...pre, amenity]))
 
-        e.preventDefault();
-
-        setHotel((pre) => ({ ...pre, photos: photoArray }));
-
-        if (hotel.photos.length === 0) return
-
-        const validateHotel = createHotelValidation.safeParse(hotel);
-        if (!validateHotel.success) {
-            console.log(validateHotel.error);
-            return;
-        }
-        console.log("success validation")
-        try {
-
-
-            const res = await fetch(`http://localhost:5000/api/hotel/${id}`, {
-                method: "PUT",
-                headers: { "Content-Type": "application/json", },
-                body: JSON.stringify(hotel),
-            });
-            if (!res.ok) {
-                throw new Error("Failed to create hotel");
-            }
-            const data = await res.json();
-            console.log("hotel create successfullly", data);
-        }
-        catch (error) {
-            console.log(error);
-        }
-
-    };
+    }
 
 
 
@@ -94,6 +50,7 @@ const HotelCreateForm = ({ id }: { id: string }) => {
 
         Promise.all(promise).then((result) => setPhotoArray((pre: any) => [...pre, ...result]));
     };
+
     return (
         <form onSubmit={handleSubmit} className="min-w-2xl flex flex-col  w-full gap-4 bg-white rounded-lg p-4 border">
 
@@ -104,10 +61,10 @@ const HotelCreateForm = ({ id }: { id: string }) => {
                         <span className="font-roboto text-sm capitalize font-semibold">{item}</span>
                         <input
                             id={item}
-                            type="text"
+                            type={item === "price" ? "number" : "text"}
                             name={item}
+                            value={hotel[item as keyof CreateHotelType] || ''}
                             placeholder={item}
-                            value={hotel[item as keyof CreateHotelType]}
                             className="bg-neutral-100 rounded p-2 border w-full"
                             onChange={(e) => handleChange(e)}
                         />
@@ -120,8 +77,8 @@ const HotelCreateForm = ({ id }: { id: string }) => {
                 <textarea
                     id='description'
                     name='description'
+                    value={hotel.description || ''}
                     placeholder='description'
-                    value={hotel.description}
                     className="bg-neutral-100 rounded p-2 border w-full min-h-28"
                     onChange={(e) => handleChange(e)}
                 />
@@ -129,45 +86,56 @@ const HotelCreateForm = ({ id }: { id: string }) => {
 
 
             <label htmlFor="rating" className="flex flex-col gap-1 flex-1 ">
-                <span className="font-roboto text-sm">Rating</span>
+                <span className="font-roboto text-sm font-semibold">Rating</span>
                 <select
                     name="rating"
                     id="rating"
-                    typeof="number"
-                    value={hotel.rating}
                     className="bg-blue-100 outline-none p-2 rounded"
                     onChange={(e) => handleChange(e)}
                 >
                     <option value='' disabled >Please provide a star rating</option>{
                         [1, 2, 3, 4, 5].map((item) => (
 
-                            <option value={item} key={item}>{item}</option>
+                            <option value={item} key={item} selected={hotel.rating === item}>{item}</option>
                         ))
                     }
 
                 </select>
             </label>
-            <label htmlFor="type" className="flex flex-col gap-1 flex-1 ">
-                <span className="font-roboto text-sm">Type</span>
-                <select
-                    name="type"
-                    id="type"
-                    value={hotel.type}
-                    className="bg-blue-100 outline-none p-2 rounded"
-                    onChange={(e) => handleChange(e)}
-                >
 
-                    <option value="" disabled >
-                        Please select a type
-                    </option>
+            {/* hotel type  */}
+            <div className="flex flex-col gap-1 flex-1 ">
+                <span className="font-roboto text-sm font-semibold">Please choose a type</span>
+                <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
+
                     {
-                        ["hotel", "aparment", "villa", "cabin", 'lodge'].map((item) => (
-                            <option value={item} key={item}>{item}</option>
+                        hotelTypes.map((item) => (
+                            <label key={item} className={`font-serif px-4 py-1.5 text-sm rounded-lg ${hotel.type === item ? 'bg-blue-500 text-white' : "bg-neutral-200"} `}>
+
+                                <input type="radio" value={item} name="type" checked={hotel.type === item} onChange={(e) => handleChange(e)} className="hidden" />
+                                <span>{item}</span>
+                            </label>
                         ))
                     }
+                </div>
+            </div>
 
-                </select>
-            </label>
+            {/* hotel amenites */}
+            <div className="flex flex-col gap-1 flex-1 ">
+                <span className="font-roboto text-sm font-semibold">Please Select Amenities:</span>
+                <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4  gap-2">
+
+                    {
+                        hotelFacilities.map((item) => (
+                            <label key={item} className={`font-serif px-4 py-1.5 text-sm flex items-center gap-1`}>
+
+                                <input type="checkbox" value={item} name="amenities" checked={amenites.includes(item)} onChange={() => handleAmenitesChange(item)} />
+                                <span>{item}</span>
+                            </label>
+                        ))
+                    }
+                </div>
+            </div>
 
 
             <div className="flex gap-4">
@@ -188,28 +156,36 @@ const HotelCreateForm = ({ id }: { id: string }) => {
                     />
                 </label>
                 {
-                    photoArray.length > 0 && photoArray.map((item, index) => (
-                        <div className="relative" key={index}>
-                            <button
-                                type="button"
-                                className="absolute top-0.5 right-0.5 bg-red-500 text-white rounded-full w-6 h-6 flex justify-center items-center text-sm"
-                                onClick={() => setPhotoArray((pre: any) => pre.filter((_, i) => i !== index))}
-                            >
-                                X
-                            </button>
-                            <img src={item} alt="hotel image" className="w-28 h-20 object-cover rounded-lg hover:shadow-md" />
-                        </div>))
-                }
+                    photoArray.length > 0 && photoArray
+                        .filter((item): item is string => typeof item === "string")
+                        .map((item, index) => (
+                            <div className="relative" key={index}>
+                                <button
+                                    type="button"
+                                    className="absolute top-0.5 right-0.5 bg-red-500 text-white rounded-full w-6 h-6 flex justify-center items-center text-sm"
+                                    onClick={() => setPhotoArray((pre: (string | ArrayBuffer | null)[]) => pre.filter((_, i: number) => i !== index))}
+                                >
+                                    X
+                                </button>
+                                <img src={item} alt="hotel image" className="w-28 h-20 object-cover rounded-lg hover:shadow-md" />
+                            </div>
 
+                        ))
+                }
             </div>
+
 
             <button
                 type="submit"
-                className="btn self-end"
+                className={`btn self-end ${loading ? "cursor-not-allowed" : "cursor-pointer"}`}
+                disabled={loading}
             >
-                Create Hotel
+                {loading ? "creating hotel..." : "Create Hotel"}
+
             </button>
         </form>
+
+
     )
 }
 

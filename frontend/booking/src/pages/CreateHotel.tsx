@@ -40,7 +40,7 @@ const CreateHotel = () => {
   const handleSubmit = async (e: React.FormEvent) => {
 
     e.preventDefault();
-    setLoading(true)
+
 
     setHotel((pre) => ({ ...pre, amenites, photos: photoArray.filter((item): item is string => typeof item === "string") }));
 
@@ -54,6 +54,7 @@ const CreateHotel = () => {
 
     try {
       console.log('creating hotel...')
+      setLoading(true)
 
       const res = await fetch("http://localhost:5000/api/hotel/create-hotel", {
         method: "POST",
@@ -71,10 +72,14 @@ const CreateHotel = () => {
 
     }
     catch (error) {
+
       console.log(error);
+      setLoading(false)
       throw new Error("Failed to create !")
+    } finally {
+
+      setLoading(false)
     }
-    setLoading(false)
 
 
   };
