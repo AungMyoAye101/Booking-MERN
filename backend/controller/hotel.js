@@ -34,7 +34,8 @@ const createHotel = async (req, res) => {
 
 const updateHotel = async (req, res) => {
   console.log("upadting hotel...")
-  const { photos } = req.body
+  const { photos, amenities } = req.body
+  console.log(amenities)
   try {
 
 

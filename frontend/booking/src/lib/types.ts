@@ -24,7 +24,7 @@ export interface CreateHotelType {
   city: string;
   distance: string;
   type: string;
-  amenites: string[]
+  amenities: string[]
 }
 export interface UserType {
   _id: string;

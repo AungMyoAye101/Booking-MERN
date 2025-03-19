@@ -10,12 +10,12 @@ type HotelFormType = {
     handleSubmit: (e: React.FormEvent) => void,
     photoArray: (string | ArrayBuffer | null)[],
     setPhotoArray: React.Dispatch<React.SetStateAction<any>>,
-    amenites: string[],
-    setAmenites: React.Dispatch<React.SetStateAction<string[]>>,
+    amenities: string[],
+    setAmenities: React.Dispatch<React.SetStateAction<string[]>>,
 
 }
 
-const HotelCreateForm = ({ hotel, setHotel, loading, handleSubmit, photoArray, setPhotoArray, amenites, setAmenites }: HotelFormType) => {
+const HotelCreateForm = ({ hotel, setHotel, loading, handleSubmit, photoArray, setPhotoArray, amenities, setAmenities }: HotelFormType) => {
 
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
@@ -26,7 +26,7 @@ const HotelCreateForm = ({ hotel, setHotel, loading, handleSubmit, photoArray, s
 
 
     const handleAmenitesChange = (amenity: string) => {
-        setAmenites((pre) => (amenites.includes(amenity) ? amenites.filter(a => a !== amenity) : [...pre, amenity]))
+        setAmenities((pre) => (amenities.includes(amenity) ? amenities.filter(a => a !== amenity) : [...pre, amenity]))
 
     }
 
@@ -129,7 +129,7 @@ const HotelCreateForm = ({ hotel, setHotel, loading, handleSubmit, photoArray, s
                         hotelFacilities.map((item) => (
                             <label key={item} className={`font-serif px-4 py-1.5 text-sm flex items-center gap-1`}>
 
-                                <input type="checkbox" value={item} name="amenities" checked={amenites.includes(item)} onChange={() => handleAmenitesChange(item)} />
+                                <input type="checkbox" value={item} name="amenities" checked={hotel.amenities.includes(item) || amenities.includes(item)} onChange={() => handleAmenitesChange(item)} />
                                 <span>{item}</span>
                             </label>
                         ))

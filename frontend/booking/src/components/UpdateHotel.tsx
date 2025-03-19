@@ -18,12 +18,12 @@ const UpdateHotel = () => {
     city: "",
     rating: 0,
     distance: '',
-    amenites: [],
+    amenities: [],
     type: "",
   });
   const [loading, setLoading] = useState(false)
   const [photoArray, setPhotoArray] = useState<any>([]);
-  const [amenites, setAmenites] = useState<string[]>([])
+  const [amenities, setAmenities] = useState<string[]>([])
 
   const navigate = useNavigate()
 
@@ -45,7 +45,7 @@ const UpdateHotel = () => {
     e.preventDefault();
 
 
-    setHotel((pre) => ({ ...pre, amenites, photos: photoArray.filter((item: any): item is string => typeof item === "string") }));
+    setHotel((pre) => ({ ...pre, amenities: amenities, photos: photoArray.filter((item: any): item is string => typeof item === "string") }));
 
     if (hotel.photos.length === 0) return
 
@@ -56,11 +56,11 @@ const UpdateHotel = () => {
     // }
 
     try {
-      console.log('creating hotel...')
+      console.log('updating hotel...')
       setLoading(true)
 
-      const res = await fetch("http://localhost:5000/api/hotel/create-hotel", {
-        method: "POST",
+      const res = await fetch(`http://localhost:5000/api/hotel/${id}`, {
+        method: "PUT",
         headers: { "Content-Type": "application/json", },
         body: JSON.stringify(hotel),
       });
@@ -69,7 +69,7 @@ const UpdateHotel = () => {
       }
 
       const data = await res.json();
-      console.log("hotel create successfullly", data);
+      console.log("hotel updated successfullly", data);
       navigate("/admin/hotels")
       setLoading(false)
 
@@ -78,7 +78,7 @@ const UpdateHotel = () => {
 
       console.log(error);
       setLoading(false)
-      throw new Error("Failed to create !")
+      throw new Error("Failed to update !")
     } finally {
 
       setLoading(false)
@@ -90,7 +90,7 @@ const UpdateHotel = () => {
 
 
   return (
-    <HotelCreateForm hotel={hotel} setHotel={setHotel} loading={loading} handleSubmit={handleSubmit} photoArray={photoArray} setPhotoArray={setPhotoArray} amenites={amenites} setAmenites={setAmenites} />
+    <HotelCreateForm hotel={hotel} setHotel={setHotel} loading={loading} handleSubmit={handleSubmit} photoArray={photoArray} setPhotoArray={setPhotoArray} amenities={amenities} setAmenities={setAmenities} />
   );
 };
 
