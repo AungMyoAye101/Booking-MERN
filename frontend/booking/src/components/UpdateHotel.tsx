@@ -90,7 +90,8 @@ const UpdateHotel = () => {
 
 
   return (
-    <HotelCreateForm hotel={hotel} setHotel={setHotel} loading={loading} handleSubmit={handleSubmit} photoArray={photoArray} setPhotoArray={setPhotoArray} amenities={amenities} setAmenities={setAmenities} />
+    <HotelCreateForm
+      hotel={hotel} setHotel={setHotel} loading={loading} handleSubmit={handleSubmit} photoArray={photoArray} setPhotoArray={setPhotoArray} amenities={amenities} setAmenities={setAmenities} type="update" />
   );
 };
 

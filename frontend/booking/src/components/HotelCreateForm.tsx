@@ -12,10 +12,11 @@ type HotelFormType = {
     setPhotoArray: React.Dispatch<React.SetStateAction<any>>,
     amenities: string[],
     setAmenities: React.Dispatch<React.SetStateAction<string[]>>,
+    type: "create" | "update"
 
 }
 
-const HotelCreateForm = ({ hotel, setHotel, loading, handleSubmit, photoArray, setPhotoArray, amenities, setAmenities }: HotelFormType) => {
+const HotelCreateForm = ({ hotel, setHotel, loading, handleSubmit, photoArray, setPhotoArray, amenities, setAmenities, type }: HotelFormType) => {
 
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
@@ -53,6 +54,7 @@ const HotelCreateForm = ({ hotel, setHotel, loading, handleSubmit, photoArray, s
 
     return (
         <form onSubmit={handleSubmit} className="min-w-2xl flex flex-col  w-full gap-4 bg-white rounded-lg p-4 border">
+            <h1 className="text-2xl font-semibold font-roboto capitalize ">{type} hotel</h1>
 
             {
                 hotelInput.map((item) => (
