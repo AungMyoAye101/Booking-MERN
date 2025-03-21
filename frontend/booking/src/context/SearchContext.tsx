@@ -1,4 +1,5 @@
-import { createContext, useContext, useState } from "react";
+import { de } from "date-fns/locale";
+import { createContext, useContext, useEffect, useState } from "react";
 
 type SearchType = {
   destination: string;
@@ -46,6 +47,24 @@ export const SearchContextProvider = ({
       setHotelId(hotelId);
     }
   };
+
+  useEffect(() => {
+    const debounce = setTimeout(async () => {
+      try {
+        const res = await fetch(`http://localhost:5173/search?destination=${destination}`);
+        const search = await res.json();
+        console.log(search);
+      } catch (error) {
+        console.log(error);
+
+      }
+
+    }, 1000);
+
+    return () => clearTimeout(debounce);
+  }, [destination]);
+
+
   return (
     <SearchContext.Provider
       value={{

@@ -3,6 +3,7 @@ const dotenv = require("dotenv");
 const authRouter = require("./routes/auth");
 const userRouter = require("./routes/user");
 const hotelRouter = require("./routes/hotel");
+const searchRouter = require("./routes/search");
 const roomRouter = require("./routes/room");
 const { default: mongoose } = require("mongoose");
 const cookieParser = require("cookie-parser");
@@ -55,6 +56,7 @@ app.use(cookieParser());
 app.use("/api/auth", authRouter);
 app.use("/api/user", userRouter);
 app.use("/api/hotel", hotelRouter);
+app.use("/api/search", searchRouter);
 app.use("/api/room", roomRouter);
 
 app.use((err, req, res, next) => {

@@ -17,4 +17,5 @@ router.delete("/:id", deleteHotel);
 router.get("/:id", getHotelById);
 // router.get("/:id", getHotelById);
 
+
 module.exports = router;

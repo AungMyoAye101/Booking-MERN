@@ -80,6 +80,7 @@ const SearchBox = () => {
           onChange={(e) => setDestination(e.target.value)}
         />
       </div>
+      {/* Date picker here */}
       <div className="flex-1 min-w-60 bg-white  h-10 flex items-center gap-2 rounded-md relative">
         <div
           onClick={() => setIsDateOpen(!isDateOpen)}
@@ -101,6 +102,7 @@ const SearchBox = () => {
           </div>
         )}
       </div>
+      {/* Room option here */}
       <div className="flex-1 min-w-60 bg-white  h-10 flex items-center rounded-md relative">
         <div
           className="px-4 cursor-pointer text-xs text-nowrap line-clamp-1 font-roboto"
