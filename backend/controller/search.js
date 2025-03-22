@@ -6,7 +6,7 @@ const searchController = async (req, res) => {
     const { destination } = req.query;
     console.log(destination);
     try {
-        const newSearch = await Hotel.find({ city: destination });
+        const newSearch = await Hotel.find({ city: { $regex: new RegExp(destination, 'i') } });
 
         if (newSearch.length === 0) {
             return res.status(404).json({ message: "No destination found!" });
