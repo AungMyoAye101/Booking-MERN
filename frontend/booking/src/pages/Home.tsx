@@ -6,7 +6,9 @@ import Search from "../components/SearchBox";
 import HotelList from "../components/HotelList";
 import Offer from "../components/Offer";
 
+
 const Home = () => {
+
 
   return (
     <section>
