@@ -1,4 +1,4 @@
-import { useContext, useState, createContext } from "react";
+import { useContext, useState, createContext, useEffect } from "react";
 
 type SearchType = {
   destination: string;
@@ -27,7 +27,31 @@ export const SearchProvider = ({ children }: { children: React.ReactNode }) => {
       guests,
     }));
   }
-  console.log(search)
+
+  useEffect(() => {
+    const debounceFn = async () => {
+      try {
+        const res = await fetch(`http://localhost:5000/api/search?destination=${search.destination}`, {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        });
+        if (!res.ok) {
+          throw new Error("Failed to search")
+        }
+        const data = await res.json()
+        console.log(data)
+      } catch (error) {
+        console.log(error)
+        throw new Error("Failed to search ")
+      }
+    }
+
+    debounceFn()
+
+
+  }, [search.destination]);
 
   return (
     <SearchContext.Provider value={{ destination: search.destination, checkIn: search.checkIn, checkOut: search.checkOut, guests: search.guests, handleSearch }}>

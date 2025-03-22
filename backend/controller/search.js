@@ -4,7 +4,9 @@ const Hotel = require("../models/hotel.model");
 const searchController = async (req, res) => {
     console.log("searching...")
     const { destination } = req.query;
-    console.log(destination);
+    if (destination === "" || destination.length === 0) {
+        return;
+    }
     try {
         const newSearch = await Hotel.find({ city: { $regex: new RegExp(destination, 'i') } });
 
@@ -12,11 +14,11 @@ const searchController = async (req, res) => {
             return res.status(404).json({ message: "No destination found!" });
         }
         console.log(newSearch);
-        res.status(200).json(newSearch);
+        return res.status(200).json(newSearch);
 
     } catch (error) {
         console.log(error);
-        res.status(500).json({ message: "Failed to search!" });
+        return res.status(500).json({ message: "Failed to search!" });
     }
     res.status(200).json(destination);
 }
