@@ -1,4 +1,5 @@
 import { useContext, useState, createContext, useEffect } from "react";
+import { HotelType } from "../lib/types";
 
 type SearchType = {
   destination: string;
@@ -6,6 +7,8 @@ type SearchType = {
   checkOut: Date;
   guests: number;
   handleSearch: (destination: string, checkIn: Date, checkOut: Date, guests: number) => void;
+  loading: boolean,
+  searchData: HotelType[] | undefined
 
 }
 
@@ -18,6 +21,8 @@ export const SearchProvider = ({ children }: { children: React.ReactNode }) => {
     guests: 1,
   });
 
+  const [searchData, setSearchData] = useState<HotelType[]>([])
+
   const handleSearch = (destination: string, checkIn: Date, checkOut: Date, guests: number) => {
     setSearch((prev) => ({
       ...prev,
@@ -28,8 +33,11 @@ export const SearchProvider = ({ children }: { children: React.ReactNode }) => {
     }));
   }
 
+  const [loading, setLoading] = useState(false)
+
   useEffect(() => {
     const debounceFn = async () => {
+      setLoading(true)
       try {
         const res = await fetch(`http://localhost:5000/api/search?destination=${search.destination}`, {
           method: "GET",
@@ -41,11 +49,15 @@ export const SearchProvider = ({ children }: { children: React.ReactNode }) => {
           throw new Error("Failed to search")
         }
         const data = await res.json()
+        setSearchData(data)
+        setLoading(false)
         console.log(data)
       } catch (error) {
+        setLoading(false)
         console.log(error)
         throw new Error("Failed to search ")
       }
+      setLoading(false)
     }
 
     debounceFn()
@@ -54,7 +66,7 @@ export const SearchProvider = ({ children }: { children: React.ReactNode }) => {
   }, [search.destination]);
 
   return (
-    <SearchContext.Provider value={{ destination: search.destination, checkIn: search.checkIn, checkOut: search.checkOut, guests: search.guests, handleSearch }}>
+    <SearchContext.Provider value={{ destination: search.destination, checkIn: search.checkIn, checkOut: search.checkOut, guests: search.guests, handleSearch, loading, searchData }}>
       {children}
     </SearchContext.Provider>
   );

@@ -7,11 +7,11 @@ export interface HotelType {
   address: string;
   price: number;
   city: string;
-  distance: "";
-  featured: boolean;
+  distance: string;
   rating: number;
   rooms: string[];
   type: string;
+  amenities: string[];
 }
 export interface CreateHotelType {
   name: string;

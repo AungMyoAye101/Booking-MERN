@@ -20,7 +20,7 @@ const searchController = async (req, res) => {
         console.log(error);
         return res.status(500).json({ message: "Failed to search!" });
     }
-    res.status(200).json(destination);
+
 }
 
 

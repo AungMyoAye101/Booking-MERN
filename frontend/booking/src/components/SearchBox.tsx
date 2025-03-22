@@ -21,7 +21,7 @@ const SearchBox = () => {
   const [checkOut, setCheckOut] = useState<Date>(new Date());
   const [adultCount, setAdultCount] = useState<number>(0);
   const [childrenCount, setChildrenCount] = useState<number>(0);
-  console.log(adultCount + 'adult')
+
   const navigate = useNavigate();
   const [isDateOpen, setIsDateOpen] = useState(false);
   const [datePicker, setDatePicker] = useState([
@@ -46,6 +46,7 @@ const SearchBox = () => {
     console.log("click")
     console.log(destination)
     handleSearch(destination, checkIn, checkOut, adultCount + childrenCount);
+    navigate("/search")
 
   }
 
