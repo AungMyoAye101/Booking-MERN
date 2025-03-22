@@ -27,6 +27,7 @@ export const SearchProvider = ({ children }: { children: React.ReactNode }) => {
       guests,
     }));
   }
+  console.log(search)
 
   return (
     <SearchContext.Provider value={{ destination: search.destination, checkIn: search.checkIn, checkOut: search.checkOut, guests: search.guests, handleSearch }}>

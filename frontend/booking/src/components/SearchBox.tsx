@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { FormEvent, useState } from "react";
 import { DateRange } from "react-date-range";
 import { IoBedOutline } from "react-icons/io5";
 import "react-date-range/dist/styles.css"; // main css file
@@ -6,6 +6,7 @@ import "react-date-range/dist/theme/default.css"; // theme css file
 import { format } from "date-fns";
 import { MdCalendarMonth } from "react-icons/md";
 import { useNavigate } from "react-router-dom";
+import { useSearch } from "../context/SearchContext";
 
 type OptionsType = {
   adult: number;
@@ -13,13 +14,14 @@ type OptionsType = {
   room: number;
 };
 const SearchBox = () => {
+  const { handleSearch } = useSearch()
 
   const [destination, setDestination] = useState<string>("");
   const [checkIn, setCheckIn] = useState<Date>(new Date());
   const [checkOut, setCheckOut] = useState<Date>(new Date());
   const [adultCount, setAdultCount] = useState<number>(0);
   const [childrenCount, setChildrenCount] = useState<number>(0);
-
+  console.log(adultCount + 'adult')
   const navigate = useNavigate();
   const [isDateOpen, setIsDateOpen] = useState(false);
   const [datePicker, setDatePicker] = useState([
@@ -39,6 +41,14 @@ const SearchBox = () => {
   const formatDate = (date: Date) => {
     return format(date, "dd/mm/yyyy");
   };
+
+  const onSubmit = () => {
+    console.log("click")
+    console.log(destination)
+    handleSearch(destination, checkIn, checkOut, adultCount + childrenCount);
+
+  }
+
 
   // const optionsHandler = (increase: boolean, type: keyof OptionsType) => {
   //   setOptions((pre) => ({
@@ -64,7 +74,7 @@ const SearchBox = () => {
   //   navigate("/search");
   // };
   return (
-    <form
+    <div
       className="w-full   bg-blue-300 border-4 border-blue-300 flex flex-wrap gap-1 rounded-lg  "
     >
       <div className="flex-1 min-w-60 bg-white  h-10 flex items-center rounded-md px-2">
@@ -113,14 +123,14 @@ const SearchBox = () => {
               <h3 className="font-semibold font-roboto">Adults</h3>
               <div className="flex items-center gap-2">
                 <button
-                  disabled={options.adult <= 1}
+
                   onClick={() => setAdultCount((pre) => pre - 1)}
                   className="bg-transparent text-blue-700 border border-blue-700 rounded hover:bg-blue-200 w-6 h-8  flex justify-center items-center"
                 >
                   -
                 </button>
                 <span className="font-roboto font-semibold">
-                  {options.adult}
+                  {adultCount}
                 </span>
                 <button
                   onClick={() => setAdultCount((pre) => pre + 1)}
@@ -134,14 +144,14 @@ const SearchBox = () => {
               <h3 className="font-semibold font-roboto">Children</h3>
               <div className="flex items-center gap-2">
                 <button
-                  disabled={options.children <= 0}
+                  // disabled={options.children <= 0}
                   onClick={() => setChildrenCount((pre) => pre - 1)}
                   className="bg-transparent text-blue-700 border border-blue-700 rounded hover:bg-blue-200 w-6 h-8  flex justify-center items-center"
                 >
                   -
                 </button>
                 <span className="font-roboto font-semibold">
-                  {options.children}
+                  {childrenCount}
                 </span>
                 <button
                   onClick={() => setChildrenCount((pre) => pre + 1)}
@@ -181,10 +191,10 @@ const SearchBox = () => {
           </div>
         )}
       </div>
-      <button className="btn">
+      <button className="btn" onClick={onSubmit}>
         search
       </button>
-    </form>
+    </div>
   );
 };
 
