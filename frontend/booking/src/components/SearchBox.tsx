@@ -1,12 +1,11 @@
-import { ChangeEvent, FormEvent, useState } from "react";
+import { useState } from "react";
 import { DateRange } from "react-date-range";
 import { IoBedOutline } from "react-icons/io5";
 import "react-date-range/dist/styles.css"; // main css file
 import "react-date-range/dist/theme/default.css"; // theme css file
 import { format } from "date-fns";
 import { MdCalendarMonth } from "react-icons/md";
-import { useSearchContext } from "../context/SearchContext";
-import { Navigate, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 type OptionsType = {
   adult: number;
@@ -14,14 +13,13 @@ type OptionsType = {
   room: number;
 };
 const SearchBox = () => {
-  const search = useSearchContext();
+
   const [destination, setDestination] = useState<string>("");
   const [checkIn, setCheckIn] = useState<Date>(new Date());
   const [checkOut, setCheckOut] = useState<Date>(new Date());
   const [adultCount, setAdultCount] = useState<number>(0);
   const [childrenCount, setChildrenCount] = useState<number>(0);
 
-  console.log(search);
   const navigate = useNavigate();
   const [isDateOpen, setIsDateOpen] = useState(false);
   const [datePicker, setDatePicker] = useState([
@@ -42,32 +40,31 @@ const SearchBox = () => {
     return format(date, "dd/mm/yyyy");
   };
 
-  const optionsHandler = (increase: boolean, type: keyof OptionsType) => {
-    setOptions((pre) => ({
-      ...pre,
-      [type]: increase ? options[type] + 1 : options[type] - 1,
-    }));
-  };
+  // const optionsHandler = (increase: boolean, type: keyof OptionsType) => {
+  //   setOptions((pre) => ({
+  //     ...pre,
+  //     [type]: increase ? options[type] + 1 : options[type] - 1,
+  //   }));
+  // };
 
   // const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
   //   const { name, value } = e.target;
   //   setSearchData((pre) => ({ ...pre, [name]: value }));
   // };
 
-  const onSubmit = async (e: FormEvent) => {
-    e.preventDefault();
-    search?.saveSearch(
-      destination,
-      checkIn,
-      checkOut,
-      adultCount,
-      childrenCount
-    );
-    navigate("/search");
-  };
+  // const onSubmit = async (e: FormEvent) => {
+  //   e.preventDefault();
+  //   search?.saveSearch(
+  //     destination,
+  //     checkIn,
+  //     checkOut,
+  //     adultCount,
+  //     childrenCount
+  //   );
+  //   navigate("/search");
+  // };
   return (
     <form
-      onSubmit={onSubmit}
       className="w-full   bg-blue-300 border-4 border-blue-300 flex flex-wrap gap-1 rounded-lg  "
     >
       <div className="flex-1 min-w-60 bg-white  h-10 flex items-center rounded-md px-2">
@@ -184,7 +181,7 @@ const SearchBox = () => {
           </div>
         )}
       </div>
-      <button type="submit" className="btn">
+      <button className="btn">
         search
       </button>
     </form>
