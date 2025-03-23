@@ -14,7 +14,7 @@ const Hotel = () => {
     const { name, value } = e.target;
     setFilterData((pre) => ({ ...pre, [name]: value }));
   };
-  const { data, loading, error } = useFetch(
+  const { data, loading } = useFetch(
     `api/hotel?city=${filterData.city}&min=${filterData.min}&max=${filterData.max}}`
   );
 

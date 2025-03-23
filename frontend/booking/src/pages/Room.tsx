@@ -1,10 +1,13 @@
-import React from 'react'
+
+import { useParams } from 'react-router-dom'
 import RoomForm from '../components/RoomForm'
 
 const Room = () => {
+    const { hotelId } = useParams()
+
     return (
         <div>
-            <RoomForm />
+            <RoomForm hotelId={hotelId!} />
         </div>
     )
 }

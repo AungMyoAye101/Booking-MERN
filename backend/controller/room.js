@@ -3,8 +3,11 @@ const Hotel = require("../models/hotel.model");
 const { default: mongoose } = require("mongoose");
 //Create Room
 const createRoom = async (req, res, next) => {
+  console.log("creating room...");
   const newRoom = new Room(req.body);
   const hotelId = req.params.hotelId;
+  console.log(req.body)
+
 
   try {
     if (!mongoose.Types.ObjectId.isValid(hotelId)) {
@@ -13,8 +16,8 @@ const createRoom = async (req, res, next) => {
     const savedRoom = await newRoom.save();
 
     await Hotel.findByIdAndUpdate(hotelId, { $push: { rooms: savedRoom._id } });
-
-    res.status(201).json(savedRoom);
+    console.log("room is saved");
+    return res.status(201).json(savedRoom);
   } catch (error) {
     next(error);
   }

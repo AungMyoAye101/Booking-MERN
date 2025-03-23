@@ -8,7 +8,7 @@ type RoomType = {
     roomNumber?: [{ number: number, availableDate: Date }]
 }
 
-const RoomForm = () => {
+const RoomForm = ({ hotelId }: { hotelId: string }) => {
     const [room, setRoom] = useState<RoomType>({
         title: '',
         description: '',
@@ -29,10 +29,25 @@ const RoomForm = () => {
     }
 
 
-    const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
 
-        console.log(room)
+        try {
+            const res = await fetch(`http://localhost:5000/api/room/${hotelId}`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(room)
+            })
+
+            if (!res.ok) throw new Error('Something went wrong')
+            const data = await res.json()
+            console.log(data)
+        } catch (error) {
+            console.log(error)
+
+        }
     }
 
 

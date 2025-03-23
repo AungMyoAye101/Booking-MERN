@@ -72,6 +72,9 @@ const List = () => {
                   <Link to={`/admin/updateHotel/${item._id}`} className="btn">
                     Update
                   </Link>
+                  <Link to={`/admin/room/${item._id}`} className="btn">
+                    add room
+                  </Link>
                   <button onClick={() => handleOpen(item._id, item.name, item.type)} className="btn bg-rose-600">
                     Delete
                   </button>
