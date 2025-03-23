@@ -18,7 +18,7 @@ const roomSchema = new mongoose.Schema(
 
     price: {
       type: Number,
-      requried: true,
+      required: true,
     },
 
     roomNumbers: [{ number: Number, unavailableDate: { type: [Date] } }],

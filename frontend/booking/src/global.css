@@ -12,6 +12,14 @@
     @apply focus:outline-none px-2;
   }
 
+  .label {
+    @apply font-roboto text-sm capitalize font-semibold;
+  }
+
+  .input {
+    @apply bg-neutral-100 rounded p-2 border w-full;
+  }
+
   .btn {
     @apply px-4 py-2 bg-blue-800 rounded-md text-white text-sm hover:bg-purple-700;
   }

@@ -11,6 +11,7 @@ import CreateHotel from "./pages/CreateHotel";
 import Dashboard from "./components/Dashboard";
 import UpdateHotel from "./components/UpdateHotel";
 import Search from "./pages/Search";
+import Room from "./pages/Room";
 
 
 function App() {
@@ -29,6 +30,7 @@ function App() {
           <Route path="/signup" element={<Signup />} />
           <Route path="/admin" element={<Admin />}>
             <Route path="" element={<Dashboard />} />
+            <Route path="room" element={<Room />} />
             <Route path="hotels" element={<List />} />
             <Route path="createHotel" element={<CreateHotel />} />
             <Route path="updateHotel/:id" element={<UpdateHotel />} />

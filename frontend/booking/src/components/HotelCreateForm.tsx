@@ -81,7 +81,7 @@ const HotelCreateForm = ({ hotel, setHotel, loading, handleSubmit, photoArray, s
                     name='description'
                     value={hotel.description || ''}
                     placeholder='description'
-                    className="bg-neutral-100 rounded p-2 border w-full min-h-28"
+                    className="bg-neutral-100 rounded p-2 border w-full min-h-28 focus:outline-none"
                     onChange={(e) => handleChange(e)}
                 />
             </label>

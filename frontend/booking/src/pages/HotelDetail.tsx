@@ -18,10 +18,10 @@ const HotelDetail = () => {
     price: 0,
     city: "",
     distance: "",
-    featured: false,
     rating: 0,
     rooms: [],
     type: "",
+    amenities: [],
   });
   const { id } = useParams();
   const fetchHotel = async () => {
