@@ -120,8 +120,8 @@ const getAllHotels = async (req, res, next) => {
 //get hotel by specific id
 const getHotelById = async (req, res, next) => {
   try {
-    const hotel = await Hotel.findById(req.params.id);
-    res.status(200).json(hotel);
+    const hotel = await Hotel.findById(req.params.id).populate("rooms");
+    return res.status(200).json(hotel);
   } catch (error) {
     next(error);
   }

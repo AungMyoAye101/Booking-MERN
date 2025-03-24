@@ -9,7 +9,7 @@ export interface HotelType {
   city: string;
   distance: string;
   rating: number;
-  rooms: string[];
+  rooms: RoomType[];
   type: string;
   amenities: string[];
 }
@@ -37,4 +37,14 @@ export interface CreateUserType {
   name: string;
   email: string;
   password: string;
+}
+
+
+export interface RoomType {
+  _id: string;
+  title: string,
+  description: string,
+  price: number,
+  maxPeople: number,
+  roomNumber?: [{ number: number, availableDate: Date }]
 }

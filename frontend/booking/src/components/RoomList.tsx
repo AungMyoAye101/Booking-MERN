@@ -1,9 +1,7 @@
-const RoomList = () => {
-    const rooms = [
-        { name: "Single", guests: 1, price: 100, available: true },
-        { name: "Double", guests: 2, price: 150, available: false },
-        { name: "Suite", guests: 4, price: 300, available: true },
-    ];
+import { RoomType } from "../lib/types";
+
+const RoomList = ({ rooms }: { rooms: RoomType[] }) => {
+
 
     return (
         <section className="w-full">
@@ -17,18 +15,15 @@ const RoomList = () => {
                     </tr>
                 </thead>
                 <tbody>
-                    {rooms.map((room, index) => (
-                        <tr key={index} className="text-center">
-                            <td className="p-2 border border-gray-300">{room.name}</td>
-                            <td className="p-2 border border-gray-300">{room.guests}</td>
+                    {rooms.map((room) => (
+                        <tr key={room._id} className="text-center">
+                            <td className="p-2 border border-gray-300">{room.title}</td>
+                            <td className="p-2 border border-gray-300">{room.maxPeople}</td>
                             <td className="p-2 border border-gray-300">${room.price}</td>
                             <td className="p-2 border border-gray-300">
-                                <button
-                                    className={`px-4 py-1 rounded ${room.available ? "bg-green-500 text-white" : "bg-red-500 text-white"
-                                        }`}
-                                >
-                                    {room.available ? "Yes" : "No"}
-                                </button>
+
+                                <button className="btn">Reserve</button>
+
                             </td>
                         </tr>
                     ))}
