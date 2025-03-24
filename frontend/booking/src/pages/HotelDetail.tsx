@@ -6,6 +6,7 @@ import Review from "../components/Review";
 import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { HotelType } from "../lib/types";
+import RoomList from "../components/RoomList";
 
 const HotelDetail = () => {
   const [hotel, setHotel] = useState<HotelType>({
@@ -108,7 +109,7 @@ const HotelDetail = () => {
       </div>
 
 
-
+      <RoomList />
 
     </section>
   );
