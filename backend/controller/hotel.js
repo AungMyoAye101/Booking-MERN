@@ -6,15 +6,23 @@ const createHotel = async (req, res) => {
 
   const { photos } = req.body;
   console.log(req.body)
-
-
+  let urls;
   try {
     const uploadedImages = photos.map((img) => {
       return cloudinary.uploader.upload(img, { folder: "hotels" })
     })
     const uploadResponse = await Promise.all(uploadedImages)
-    const urls = uploadResponse.map((img) => img.secure_url)
+    urls = uploadResponse.map((img) => img.secure_url)
     console.log("image uploaded")
+  } catch (error) {
+    console.log(error.message)
+    return res.status(500).json('failed to upload images')
+
+  }
+
+
+  try {
+
 
     const newHotel = new Hotel({
       ...req.body,
@@ -22,10 +30,10 @@ const createHotel = async (req, res) => {
     });
     const savedHotel = await newHotel.save();
     console.log("hotel saved")
-    res.status(201).json(savedHotel);
+    return res.status(201).json(savedHotel);
   } catch (error) {
     console.log(error.message)
-    res.status(500).json('failed to upload images')
+    return res.status(500).json('failed to upload images')
   }
 
 };
@@ -36,14 +44,28 @@ const updateHotel = async (req, res) => {
   console.log("upadting hotel...")
   const { photos, amenities } = req.body
   console.log(amenities)
+
+  let urls;
+
   try {
-
-
     const uploadedImages = photos.map((img) => {
       return cloudinary.uploader.upload(img, { folder: "hotels" })
     })
     const uploadResponse = await Promise.all(uploadedImages)
-    const urls = uploadResponse.map((img) => img.secure_url)
+    urls = uploadResponse.map((img) => img.secure_url)
+    console.log("image uploaded")
+    if (urls.length === 0) {
+      return res.status(400).json("Please upload at least one image")
+    }
+  } catch (error) {
+    console.log(error.message)
+    return res.status(500).json('failed to upload images')
+
+  }
+  try {
+
+
+
 
 
     const updatedHotel = await Hotel.findByIdAndUpdate(
