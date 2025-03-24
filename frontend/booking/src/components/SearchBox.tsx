@@ -46,7 +46,7 @@ const SearchBox = () => {
     console.log("click")
     console.log(destination)
     handleSearch(destination, checkIn, checkOut, adultCount + childrenCount);
-    navigate("/search")
+    navigate(`/search?destination=${destination}&checkIn=${checkIn}&checkOut=${checkOut}&adultCount=${adultCount}&childrenCount=${childrenCount}`);
 
   }
 

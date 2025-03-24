@@ -51,20 +51,19 @@ const HotelDetail = () => {
           </button>
         </div>
       </div>
-      <div className="flex flex-col md:flex-row gap-4">
-        <div className=" py-4 grid grid-cols-2 md:grid-cols-3 gap-4">
-          {hotel.photos.map((img, i) => (
-            <img
-              key={i}
-              src={img}
-              alt={hotel.name + " room photo"}
-              className={`${i === 0 ? "col-span-2 row-span-2 " : ""
-                }rounded-xl object-cover w-full h-full`}
-            />
-          ))}
-        </div>
-        <Review />
+
+      <div className=" py-4 grid grid-cols-2 gap-4">
+        {hotel.photos.map((img, i) => (
+          <img
+            key={i}
+            src={img}
+            alt={hotel.name + " room photo"}
+            className={`${i === 0 ? "" : ""
+              }rounded-xl object-cover w-full h-full aspect-video`}
+          />
+        ))}
       </div>
+
 
       <div className="flex  gap-4 justify-between">
         <p className="text-sm font-serif">{hotel.description}</p>
@@ -92,6 +91,8 @@ const HotelDetail = () => {
           </button>
         </div>
       </div>
+      <Review />
+
     </section>
   );
 };
