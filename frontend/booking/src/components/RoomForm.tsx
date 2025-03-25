@@ -5,7 +5,7 @@ type RoomType = {
     description: string,
     price: number,
     maxPeople: number,
-    roomNumber?: [{ number: number, availableDate: Date }]
+    roomNumber: ''
 }
 
 const RoomForm = ({ hotelId }: { hotelId: string }) => {
@@ -14,23 +14,21 @@ const RoomForm = ({ hotelId }: { hotelId: string }) => {
         description: '',
         price: 0,
         maxPeople: 0,
-        roomNumber: [{ number: 0, availableDate: new Date() }]
+        roomNumber: ''
     })
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
         const { name, value } = e.target;
-        setRoom((pre) => ({ ...pre, [name]: name === "price" || name === "maxPeople" ? +value : value }));
+        setRoom((pre) => ({ ...pre, [name]: name === 'price' || name === 'maxPeople' ? +value : value }));
     };
 
-    const addRoomNumber = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const { value } = e.target;
-        setRoom((pre) => ({ ...pre, roomNumber: [{ number: +value, availableDate: new Date() }] }));
-        console.log(room)
-    }
 
 
     const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
+        const roomNumber = room.roomNumber.split(',').map((num) => num.trim())
+        const newRoom = { ...room, roomNumber }
+        console.log(newRoom)
 
         try {
             const res = await fetch(`http://localhost:5000/api/room/${hotelId}`, {
@@ -38,7 +36,7 @@ const RoomForm = ({ hotelId }: { hotelId: string }) => {
                 headers: {
                     'Content-Type': 'application/json'
                 },
-                body: JSON.stringify(room)
+                body: JSON.stringify(newRoom)
             })
 
             if (!res.ok) throw new Error('Something went wrong')
@@ -72,7 +70,7 @@ const RoomForm = ({ hotelId }: { hotelId: string }) => {
             </label>
             <label htmlFor="roomNumber" className='label'>
                 RoomNumber
-                <input type="number" id="roomNumber" name="roomNumber" className="input" onChange={(e) => addRoomNumber(e)} />
+                <input type="text" id="roomNumber" name="roomNumber" placeholder='Room Numbers (comma-separated)' className="input" onChange={(e) => handleChange(e)} />
             </label>
             <button type='submit' className='btn self-end'>Create romm</button>
         </form >

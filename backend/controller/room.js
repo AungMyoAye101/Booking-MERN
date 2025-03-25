@@ -4,22 +4,33 @@ const { default: mongoose } = require("mongoose");
 //Create Room
 const createRoom = async (req, res, next) => {
   console.log("creating room...");
-  const newRoom = new Room(req.body);
+  const { title, description, maxPeople, price, roomNumber } = req.body;
   const hotelId = req.params.hotelId;
-  console.log(req.body)
-
 
   try {
     if (!mongoose.Types.ObjectId.isValid(hotelId)) {
       return res.status(400).json("Hotel id is not valid!");
     }
-    const savedRoom = await newRoom.save();
 
-    await Hotel.findByIdAndUpdate(hotelId, { $push: { rooms: savedRoom._id } });
-    console.log("room is saved");
-    return res.status(201).json(savedRoom);
+    const roomNumbers = roomNumber.map((num) => ({ number: num, booking: [] }));
+
+    const newRoom = await Room.create({
+      title,
+      description,
+      maxPeople,
+      price,
+      roomNumbers,
+      hotel: hotelId,
+    });
+    console.log("room is created");
+
+
+    await Hotel.findByIdAndUpdate(hotelId, { $push: { rooms: newRoom._id } });
+    console.log("hotel is updated");
+    return res.status(201).json(newRoom);
   } catch (error) {
-    next(error);
+    console.log(error);
+    return res.status(500).json("Failed to create room", error.message);
   }
 };
 //update room
@@ -84,6 +95,28 @@ const getRoomById = async (req, res, next) => {
     next(error);
   }
 };
+// Booking Room
+
+const bookingRoom = async (req, res, next) => {
+  const { roomId, checkIn, checkOut } = req.body;
+  try {
+
+    if (!mongoose.Types.ObjectId.isValid(roomId)) {
+      return res.status(400).json("Room id is not valid");
+    }
+    const room = await Room.findById(roomId);
+    if (room) {
+      room.isBooked = true;
+      await room.save();
+      res.status(200).json("Room is booked");
+    } else {
+      res.status(404).json("Room not found");
+    }
+  } catch (error) {
+    next(error);
+  }
+}
+
 module.exports = {
   createRoom,
   updateRoom,
