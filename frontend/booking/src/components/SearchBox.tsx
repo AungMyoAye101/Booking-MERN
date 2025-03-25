@@ -31,22 +31,19 @@ const SearchBox = () => {
       key: "selection",
     },
   ]);
+  console.log(datePicker);
   //option
   const [openOPtions, setOpenOPtions] = useState(false);
-  const [options, setOptions] = useState({
-    adult: 1,
-    children: 0,
-    room: 1,
-  });
   const formatDate = (date: Date) => {
     return format(date, "dd/mm/yyyy");
   };
 
   const onSubmit = () => {
     console.log("click")
-    console.log(destination)
-    handleSearch(destination, checkIn, checkOut, adultCount + childrenCount);
-    navigate(`/search?destination=${destination}&checkIn=${checkIn}&checkOut=${checkOut}&adultCount=${adultCount}&childrenCount=${childrenCount}`);
+
+    console.log(destination, datePicker[0].startDate, datePicker[0].endDate, adultCount + childrenCount)
+    handleSearch(destination, datePicker[0].startDate, datePicker[0].endDate, adultCount + childrenCount);
+    navigate(`/search?destination=${destination}&checkIn=${datePicker[0].startDate}&checkOut=${datePicker[0].endDate}&adultCount=${adultCount}&childrenCount=${childrenCount}`);
 
   }
 

@@ -39,7 +39,7 @@ export const SearchProvider = ({ children }: { children: React.ReactNode }) => {
     const debounceFn = async () => {
       setLoading(true)
       try {
-        const res = await fetch(`http://localhost:5000/api/search?destination=${search.destination}`, {
+        const res = await fetch(`http://localhost:5000/api/search?destination=${search.destination}&checkIn=${search.checkIn}&checkOut=${search.checkOut}&guests=${search.guests}`, {
           method: "GET",
           headers: {
             "Content-Type": "application/json",

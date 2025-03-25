@@ -2,12 +2,13 @@
 const Hotel = require("../models/hotel.model");
 
 const searchController = async (req, res) => {
-    console.log("searching...")
-    const { destination } = req.query;
+
+    const { destination, checkIn, checkOut, guests } = req.query;
     if (destination === "" || destination.length === 0) {
         return;
     }
     try {
+        console.log("searching..." + checkIn + " " + checkOut + " " + destination + " " + guests)
         const newSearch = await Hotel.find({ city: { $regex: new RegExp(destination, 'i') } });
 
         if (newSearch.length === 0) {
