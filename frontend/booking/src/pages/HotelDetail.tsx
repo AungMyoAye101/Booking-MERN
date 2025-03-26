@@ -109,7 +109,7 @@ const HotelDetail = () => {
       </div>
 
 
-      <RoomList rooms={hotel.rooms} />
+      <RoomList hotelId={id!} />
 
     </section>
   );

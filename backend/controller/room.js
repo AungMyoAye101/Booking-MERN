@@ -139,11 +139,36 @@ const bookingRoom = async (req, res, next) => {
   }
 }
 
+const checkAvailability = async (req, res) => {
+  const { hotel, checkIn, checkOut, guests } = req.body
+
+  if (!mongoose.Types.ObjectId.isValid(hotel)) {
+    return res.status(400).json("hotel Id is not valid")
+  }
+  try {
+    const rooms = await Room.find({ hotel })
+
+    const availableRooms = rooms.map((room) => {
+
+      const availableRoomNumbers = room.roomNumbers.filter((r) => r.booking.every((date) => new Date(date) < new Date(checkIn) || new Date(date) > new Date(checkOut)))
+
+      return { ...room.toObject(), roomNumbers: availableRoomNumbers }
+
+    })
+    console.log(availableRooms)
+    res.status(200).json(availableRooms)
+  } catch (error) {
+    console.log(error)
+    res.status(500).json(error.message)
+  }
+}
+
 module.exports = {
   createRoom,
   updateRoom,
   deleteRoom,
   getAllRooms,
   getRoomById,
-  bookingRoom
+  bookingRoom,
+  checkAvailability
 };

@@ -1,12 +1,19 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { RoomType } from "../lib/types";
 import { format } from "date-fns";
 import { MdCalendarMonth } from "react-icons/md";
 import { DateRange } from "react-date-range";
-import { FaPeopleArrows } from "react-icons/fa";
 import { BsPeople } from "react-icons/bs";
 
-const RoomList = ({ rooms }: { rooms: RoomType[] }) => {
+const RoomList = ({ hotelId }: { hotelId: string }) => {
+
+    const [rooms, setRooms] = useState<RoomType[]>([])
+    const [roomSearch, setRoomSearch] = useState({
+        checkin: new Date(),
+        checkOut: new Date(),
+        guests: 1,
+        hotel: hotelId
+    })
     const [adultCount, setAdultCount] = useState<number>(1);
     const [childrenCount, setChildrenCount] = useState<number>(0);
     const [isDateOpen, setIsDateOpen] = useState(false);
@@ -17,14 +24,51 @@ const RoomList = ({ rooms }: { rooms: RoomType[] }) => {
             key: "selection",
         },
     ]);
-    console.log(datePicker);
+
     //option
     const [openOPtions, setOpenOPtions] = useState(false);
     const formatDate = (date: Date) => {
         return format(date, "dd/mm/yyyy");
     };
 
-    console.log(rooms)
+    //Set room search data for check available rooms
+
+    const handleRoomSearch = () => {
+        setRoomSearch((pre) => ({
+            ...pre,
+            checkin: datePicker[0].startDate,
+            checkOut: datePicker[0].endDate,
+            guests: adultCount + childrenCount,
+        }))
+    }
+
+
+    useEffect(() => {
+        const checkAvalibleRoom = async () => {
+            try {
+                const res = await fetch(`http://localhost:5000/api/room/checkAvailability`, {
+                    method: "POST",
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(roomSearch)
+                })
+                if (!res.ok) {
+                    throw new Error("Failed to check room availability ")
+                }
+                const data = await res.json()
+                setRooms(data)
+
+            } catch (error: any) {
+                console.log(error.message)
+            }
+
+        }
+        checkAvalibleRoom()
+
+    }, [roomSearch])
+
+
     return (
         <section className="w-full space-y-4">
             <div className="w-fit flex items-center bg-yellow-400 gap-4 p-2 rounded-lg">
@@ -112,7 +156,7 @@ const RoomList = ({ rooms }: { rooms: RoomType[] }) => {
                         </div>
                     )}
                 </div>
-                <button className="btn">
+                <button className="btn" onClick={handleRoomSearch}>
                     Change Search
                 </button>
             </div>
