@@ -164,6 +164,7 @@ const RoomList = ({ hotelId }: { hotelId: string }) => {
                 <thead>
                     <tr className="bg-blue-600 text-white">
                         <th className="p-2 border border-gray-300">Room Name</th>
+                        <th className="p-2 border border-gray-300">Room No</th>
                         <th className="p-2 border border-gray-300">Guests</th>
                         <th className="p-2 border border-gray-300">Price</th>
                         <th className="p-2 border border-gray-300">Available</th>
@@ -171,16 +172,18 @@ const RoomList = ({ hotelId }: { hotelId: string }) => {
                 </thead>
                 <tbody>
                     {rooms.map((room) => (
-                        <tr key={room._id} className="text-center">
-                            <td className="p-2 border border-gray-300">{room.title}</td>
-                            <td className="p-2 border border-gray-300">{room.maxPeople}</td>
-                            <td className="p-2 border border-gray-300">${room.price}</td>
-                            <td className="p-2 border border-gray-300">
-                                <button className="btn">Reserve</button>
-                            </td>
+                        room.roomNumber.map(r => (
+                            <tr key={r.number} className="text-center">
+                                <td rowSpan={room.roomNumber?.length} className="p-2 border border-gray-300">{room.title}</td>
+                                <td rowSpan={room.roomNumber?.length} className="p-2 border border-gray-300">{r.number}</td>
+                                <td rowSpan={room.roomNumber?.length} className="p-2 border border-gray-300">{room.maxPeople}</td>
+                                <td rowSpan={room.roomNumber?.length} className="p-2 border border-gray-300">${room.price}</td>
+                                <td rowSpan={room.roomNumber?.length} className="p-2 border border-gray-300">
+                                    <button className="btn">Reserve</button>
+                                </td>
+                            </tr>
+                        ))
 
-
-                        </tr>
                     ))}
                 </tbody>
             </table>
