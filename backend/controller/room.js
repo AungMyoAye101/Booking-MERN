@@ -98,20 +98,42 @@ const getRoomById = async (req, res, next) => {
 // Booking Room
 
 const bookingRoom = async (req, res, next) => {
-  const { roomId, checkIn, checkOut } = req.body;
+  const { roomId, roomNumber, userId, checkIn, checkOut } = req.body;
+
   try {
 
     if (!mongoose.Types.ObjectId.isValid(roomId)) {
       return res.status(400).json("Room id is not valid");
     }
     const room = await Room.findById(roomId);
-    if (room) {
-      room.isBooked = true;
-      await room.save();
-      res.status(200).json("Room is booked");
-    } else {
-      res.status(404).json("Room not found");
+    if (!room) {
+      return res.status(404).json("Room not found");
     }
+
+    const selectedRoom = room.roomNumbers.find((r) => r.number === Number(roomNumber));
+    if (!selectedRoom) {
+      return res.status(404).json("Room number not found");
+    }
+    console.log(selectedRoom)
+
+    const isAvailable = selectedRoom.booking.every((booking) => {
+      return new Date(checkIn) >= new Date(booking.checkOut) || new Date(checkOut) <= new Date(booking.checkIn);
+    });
+    console.log(isAvailable)
+
+    if (!isAvailable) {
+
+      return res.status(400).json("Room is not available for this date");
+    }
+
+    const totalPrice = ((new Date(checkOut) - new Date(checkIn)) / (1000 * 60 * 60 * 24)) * room.price
+
+
+    selectedRoom.booking.push({ userId, checkIn, checkOut, totalPrice })
+
+    await room.save()
+    console.log(room)
+    return res.status(200).json({ message: "room boookin successfull", totalPrice })
   } catch (error) {
     next(error);
   }
@@ -123,4 +145,5 @@ module.exports = {
   deleteRoom,
   getAllRooms,
   getRoomById,
+  bookingRoom
 };
