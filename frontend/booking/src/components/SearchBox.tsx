@@ -1,4 +1,4 @@
-import { FormEvent, useState } from "react";
+import { useState } from "react";
 import { DateRange } from "react-date-range";
 import { IoBedOutline } from "react-icons/io5";
 import "react-date-range/dist/styles.css"; // main css file
@@ -17,8 +17,6 @@ const SearchBox = () => {
   const { handleSearch } = useSearch()
 
   const [destination, setDestination] = useState<string>("");
-  const [checkIn, setCheckIn] = useState<Date>(new Date());
-  const [checkOut, setCheckOut] = useState<Date>(new Date());
   const [adultCount, setAdultCount] = useState<number>(0);
   const [childrenCount, setChildrenCount] = useState<number>(0);
 
@@ -39,38 +37,11 @@ const SearchBox = () => {
   };
 
   const onSubmit = () => {
-    console.log("click")
-
-    console.log(destination, datePicker[0].startDate, datePicker[0].endDate, adultCount + childrenCount)
     handleSearch(destination, datePicker[0].startDate, datePicker[0].endDate, adultCount + childrenCount);
     navigate(`/search?destination=${destination}&checkIn=${datePicker[0].startDate}&checkOut=${datePicker[0].endDate}&adultCount=${adultCount}&childrenCount=${childrenCount}`);
 
   }
 
-
-  // const optionsHandler = (increase: boolean, type: keyof OptionsType) => {
-  //   setOptions((pre) => ({
-  //     ...pre,
-  //     [type]: increase ? options[type] + 1 : options[type] - 1,
-  //   }));
-  // };
-
-  // const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
-  //   const { name, value } = e.target;
-  //   setSearchData((pre) => ({ ...pre, [name]: value }));
-  // };
-
-  // const onSubmit = async (e: FormEvent) => {
-  //   e.preventDefault();
-  //   search?.saveSearch(
-  //     destination,
-  //     checkIn,
-  //     checkOut,
-  //     adultCount,
-  //     childrenCount
-  //   );
-  //   navigate("/search");
-  // };
   return (
     <div
       className="w-full   bg-blue-300 border-4 border-blue-300 flex flex-wrap gap-1 rounded-lg  "
