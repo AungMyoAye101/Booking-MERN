@@ -46,5 +46,5 @@ export interface RoomType {
   description: string,
   price: number,
   maxPeople: number,
-  roomNumber?: [{ number: number, availableDate: Date }]
+  roomNumbers: [{ number: number, booking: [Date] }]
 }

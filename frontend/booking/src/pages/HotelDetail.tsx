@@ -33,7 +33,7 @@ const HotelDetail = () => {
   useEffect(() => {
     fetchHotel();
   }, []);
-  console.log(hotel);
+
   return (
     <section className=" py-16 max-w-6xl m-auto p-4">
       <div className="flex justify-between gap-4">

@@ -68,7 +68,7 @@ const RoomList = ({ hotelId }: { hotelId: string }) => {
 
     }, [roomSearch])
 
-
+    console.log(rooms)
     return (
         <section className="w-full space-y-4">
             <div className="w-fit flex items-center bg-yellow-400 gap-4 p-2 rounded-lg">
@@ -160,34 +160,39 @@ const RoomList = ({ hotelId }: { hotelId: string }) => {
                     Change Search
                 </button>
             </div>
-            <table className="w-full border-collapse border border-gray-300 rounded-lg">
+            <table className="w-full border-collapse ">
                 <thead>
-                    <tr className="bg-blue-600 text-white">
-                        <th className="p-2 border border-gray-300">Room Name</th>
-                        <th className="p-2 border border-gray-300">Room No</th>
-                        <th className="p-2 border border-gray-300">Guests</th>
-                        <th className="p-2 border border-gray-300">Price</th>
-                        <th className="p-2 border border-gray-300">Available</th>
+                    <tr className="bg-blue-600 text-white rounded-lg">
+                        <th className="table-border">Room Name</th>
+                        <th className="table-border">Room No</th>
+                        <th className="table-border">Guests</th>
+                        <th className="table-border">Total Price</th>
+                        <th className="table-border">Available</th>
                     </tr>
                 </thead>
                 <tbody>
-                    {rooms.map((room) => (
-                        room.roomNumber.map(r => (
-                            <tr key={r.number} className="text-center">
-                                <td rowSpan={room.roomNumber?.length} className="p-2 border border-gray-300">{room.title}</td>
-                                <td rowSpan={room.roomNumber?.length} className="p-2 border border-gray-300">{r.number}</td>
-                                <td rowSpan={room.roomNumber?.length} className="p-2 border border-gray-300">{room.maxPeople}</td>
-                                <td rowSpan={room.roomNumber?.length} className="p-2 border border-gray-300">${room.price}</td>
-                                <td rowSpan={room.roomNumber?.length} className="p-2 border border-gray-300">
-                                    <button className="btn">Reserve</button>
-                                </td>
-                            </tr>
-                        ))
+                    {
+                        rooms.map((room) => (
+                            room?.roomNumbers.map((r, i) => (
+                                <tr key={i} className="text-center rounded-lg">
+                                    {
+                                        i === 0 && (<td rowSpan={room.roomNumbers.length} className="table-border "> {room.title}</td>)
+                                    }
 
-                    ))}
+                                    <td className="table-border"> {r.number}</td>
+                                    <td className="table-border"> {room.maxPeople}</td>
+                                    <td className="table-border"> ${room.price}</td>
+                                    <td className="table-border">
+                                        <button className="btn">Reserve</button>
+                                    </td>
+                                </tr>
+                            ))
+
+
+                        ))
+                    }
                 </tbody>
             </table>
-
 
         </section>
     );

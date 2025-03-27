@@ -23,4 +23,9 @@
   .btn {
     @apply px-4 py-2 bg-blue-800 rounded-md text-white text-sm hover:bg-blue-600;
   }
+
+  .table-border {
+    @apply p-2 border-2 border-gray-300
+  }
+
 }
