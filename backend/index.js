@@ -5,6 +5,7 @@ const userRouter = require("./routes/user");
 const hotelRouter = require("./routes/hotel");
 const searchRouter = require("./routes/search");
 const roomRouter = require("./routes/room");
+const reviewRouter = require("./routes/review.route");
 const { default: mongoose } = require("mongoose");
 const cookieParser = require("cookie-parser");
 const cors = require("cors");
@@ -58,6 +59,7 @@ app.use("/api/user", userRouter);
 app.use("/api/hotel", hotelRouter);
 app.use("/api/search", searchRouter);
 app.use("/api/room", roomRouter);
+app.use("/api/review", reviewRouter)
 
 app.use((err, req, res, next) => {
   const errorStatus = err.status || 500;

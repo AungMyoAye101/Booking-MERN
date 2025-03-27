@@ -36,6 +36,12 @@ const hotelSchema = new mongoose.Schema(
         ref: "Room",
       },
     ],
+    reviews: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Review",
+      },
+    ],
     price: {
       type: Number,
       requried: true,

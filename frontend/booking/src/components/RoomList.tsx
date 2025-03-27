@@ -35,6 +35,7 @@ const RoomList = ({ hotelId }: { hotelId: string }) => {
     //Set room search data for check available rooms
 
     const handleRoomSearch = () => {
+        console.log("changed..")
         setRoomSearch((pre) => ({
             ...pre,
             checkIn: datePicker[0].startDate,
@@ -46,6 +47,7 @@ const RoomList = ({ hotelId }: { hotelId: string }) => {
 
     useEffect(() => {
         const checkAvalibleRoom = async () => {
+            console.log("refresh")
             try {
                 const res = await fetch(`http://localhost:5000/api/room/checkAvailability`, {
                     method: "POST",
@@ -67,7 +69,7 @@ const RoomList = ({ hotelId }: { hotelId: string }) => {
         }
         checkAvalibleRoom()
 
-    }, [roomSearch.checkIn, roomSearch.checkOut])
+    }, [roomSearch])
 
 
 
