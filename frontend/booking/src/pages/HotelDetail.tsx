@@ -81,7 +81,7 @@ const HotelDetail = () => {
 
         <div className="flex flex-col gap-4">
           <Review />
-          <ReviewForm />
+          <ReviewForm hotelId={id!} />
 
           <div className=" bg-white rounded-lg shadow-xl w-72 min-w-72 p-4 flex flex-col gap-3">
             <h1 className="font-roboto font-semibold text-lg">
