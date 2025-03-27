@@ -4,12 +4,13 @@ import { format } from "date-fns";
 import { MdCalendarMonth } from "react-icons/md";
 import { DateRange } from "react-date-range";
 import { BsPeople } from "react-icons/bs";
+import { roomBooking } from "../lib/room.booking";
 
 const RoomList = ({ hotelId }: { hotelId: string }) => {
 
     const [rooms, setRooms] = useState<RoomType[]>([])
     const [roomSearch, setRoomSearch] = useState({
-        checkin: new Date(),
+        checkIn: new Date(),
         checkOut: new Date(),
         guests: 1,
         hotel: hotelId
@@ -36,7 +37,7 @@ const RoomList = ({ hotelId }: { hotelId: string }) => {
     const handleRoomSearch = () => {
         setRoomSearch((pre) => ({
             ...pre,
-            checkin: datePicker[0].startDate,
+            checkIn: datePicker[0].startDate,
             checkOut: datePicker[0].endDate,
             guests: adultCount + childrenCount,
         }))
@@ -66,9 +67,10 @@ const RoomList = ({ hotelId }: { hotelId: string }) => {
         }
         checkAvalibleRoom()
 
-    }, [roomSearch])
+    }, [roomSearch.checkIn, roomSearch.checkOut])
 
-    console.log(rooms)
+
+
     return (
         <section className="w-full space-y-4">
             <div className="w-fit flex items-center bg-yellow-400 gap-4 p-2 rounded-lg">
@@ -192,7 +194,9 @@ const RoomList = ({ hotelId }: { hotelId: string }) => {
                                     <td className="table-border"> {room.maxPeople}</td>
                                     <td className="table-border"> ${room.price}</td>
                                     <td className="table-border">
-                                        <button className="btn">Reserve</button>
+                                        <button className="btn"
+                                            onClick={() => roomBooking(room._id, r.number, '67d02624399e7df5e7974e42', roomSearch.checkIn, roomSearch.checkOut)}
+                                        >Reserve</button>
                                     </td>
                                 </tr>
                             ))

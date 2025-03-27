@@ -99,6 +99,7 @@ const getRoomById = async (req, res, next) => {
 
 const bookingRoom = async (req, res, next) => {
   const { roomId, roomNumber, userId, checkIn, checkOut } = req.body;
+  console.log(roomId, roomNumber, userId, checkIn, checkOut)
 
   try {
 
@@ -129,10 +130,12 @@ const bookingRoom = async (req, res, next) => {
     const totalPrice = ((new Date(checkOut) - new Date(checkIn)) / (1000 * 60 * 60 * 24)) * room.price
 
 
-    selectedRoom.booking.push({ userId, checkIn, checkOut, totalPrice })
+    selectedRoom.booking.push({
+      userId, checkIn, checkOut, totalPrice
+    })
 
     await room.save()
-    console.log(room)
+    console.log(room.roomNumbers)
     return res.status(200).json({ message: "room boookin successfull", totalPrice })
   } catch (error) {
     next(error);
