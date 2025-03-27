@@ -176,7 +176,16 @@ const RoomList = ({ hotelId }: { hotelId: string }) => {
                             room?.roomNumbers.map((r, i) => (
                                 <tr key={i} className="text-center rounded-lg">
                                     {
-                                        i === 0 && (<td rowSpan={room.roomNumbers.length} className="table-border "> {room.title}</td>)
+                                        i === 0 && (<td rowSpan={room.roomNumbers.length} className="table-border max-w-20">
+                                            <div className="font-roboto ">
+                                                {room.title}
+                                            </div>
+                                            <div className="text-sm ">
+                                                {room.description}
+                                            </div>
+
+
+                                        </td>)
                                     }
 
                                     <td className="table-border"> {r.number}</td>
