@@ -7,6 +7,7 @@ import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { HotelType } from "../lib/types";
 import RoomList from "../components/RoomList";
+import ReviewForm from "../components/ReviewForm";
 
 const HotelDetail = () => {
   const [hotel, setHotel] = useState<HotelType>({
@@ -80,6 +81,7 @@ const HotelDetail = () => {
 
         <div className="flex flex-col gap-4">
           <Review />
+          <ReviewForm />
 
           <div className=" bg-white rounded-lg shadow-xl w-72 min-w-72 p-4 flex flex-col gap-3">
             <h1 className="font-roboto font-semibold text-lg">
