@@ -7,6 +7,7 @@ const Hero = () => {
           Search low prices on hotels, homes and much more...
         </p>
       </div>
+
     </section>
   );
 };

@@ -17,26 +17,26 @@ import Room from "./pages/Room";
 function App() {
   return (
     <BrowserRouter>
-      <div className="max-w-6xl mx-auto">
-        <NavBar />
 
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/hotel" element={<Hotel />} />
-          <Route path="/hotel/:id" element={<HotelDetail />} />
-          <Route path="/list" element={<List />} />
-          <Route path="/search" element={<Search />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/signup" element={<Signup />} />
-          <Route path="/admin" element={<Admin />}>
-            <Route path="" element={<Dashboard />} />
-            <Route path="room/:hotelId" element={<Room />} />
-            <Route path="hotels" element={<List />} />
-            <Route path="createHotel" element={<CreateHotel />} />
-            <Route path="updateHotel/:id" element={<UpdateHotel />} />
-          </Route>
-        </Routes>
-      </div>
+      <NavBar />
+
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/hotel" element={<Hotel />} />
+        <Route path="/hotel/:id" element={<HotelDetail />} />
+        <Route path="/list" element={<List />} />
+        <Route path="/search" element={<Search />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/signup" element={<Signup />} />
+        <Route path="/admin" element={<Admin />}>
+          <Route path="" element={<Dashboard />} />
+          <Route path="room/:hotelId" element={<Room />} />
+          <Route path="hotels" element={<List />} />
+          <Route path="createHotel" element={<CreateHotel />} />
+          <Route path="updateHotel/:id" element={<UpdateHotel />} />
+        </Route>
+      </Routes>
+
 
     </BrowserRouter>
   );
