@@ -74,7 +74,7 @@ const RoomList = ({ hotelId }: { hotelId: string }) => {
 
 
     return (
-        <section className="w-full space-y-4">
+        <section className="w-full space-y-4" id="room">
             <div className="w-fit flex items-center bg-yellow-400 gap-4 p-2 rounded-lg">
                 <div className="flex-1 min-w-60 bg-white  h-10 flex items-center gap-2 rounded-md relative">
                     <div

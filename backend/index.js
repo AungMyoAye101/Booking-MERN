@@ -41,9 +41,6 @@ cloudinary.config({
 mongoose.connection.on("disconnected", () => {
   console.log("Mongo DB is disconnected !");
 });
-app.get("/", (req, res) => {
-  res.send("hello Elizbeth Olsen");
-});
 
 //Middleware for route handler
 app.use(cors({

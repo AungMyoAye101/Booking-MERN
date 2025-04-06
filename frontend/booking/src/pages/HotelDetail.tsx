@@ -48,9 +48,9 @@ const HotelDetail = () => {
         <div className="flex items-center gap-4">
           <BiHeart className="text-2xl cursor-pointer" />{" "}
           <BiShareAlt className="text-2xl cursor-pointer" />
-          <button className=" bg-blue-700 hover:bg-blue-300 text-white font-roboto text-sm px-4 py-2 rounded-md">
+          <a href="#room" className=" bg-blue-700 hover:bg-blue-300 text-white font-roboto text-sm px-4 py-2 rounded-md">
             I'll reserve
-          </button>
+          </a>
         </div>
       </div>
 
