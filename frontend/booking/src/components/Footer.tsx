@@ -1,44 +1,42 @@
+import { FaFacebookF, FaInstagram, FaWhatsapp, FaXTwitter } from "react-icons/fa6";
+import { Link } from "react-router-dom";
+
 const Footer = () => {
   const links = [
-    "Countries",
-    "Regions",
-    "Cities",
-    " Districts",
-    "Airports",
-    " Hotels",
-    " Homes",
-    " Apartments",
-    " Resorts",
-    " Villas",
-    " Hostels",
-    " Guest houses",
-    "  Unique places to stay",
-    " Reviews",
-    " Unpacked: Travel articles",
-    "  Travel communities",
-    "  Seasonal and holiday deals",
-    "  Car rental",
-    "  Flight Finder",
-    "   Restaurant reservations",
-    "  Travel Agents",
-    " Curtomer Service",
-    "  Partner Help",
-    " Careers",
-    " Sustainability",
-    "  Press center",
-    " Safety Resource Center",
-    " Investor relations",
-    " Terms & conditions]",
+    "home",
+    'about',
+    'contact',
   ];
   return (
-    <section className="bg-blue-800 text-white">
-      <div className="max-w-6xl m-auto p-4">
-        <div className="flex flex-wrap gap-1 ">
-          {links.map((item, i) => (
-            <p key={i} className="w-60 line-clamp-1">
-              {item}
-            </p>
-          ))}
+    <section className="flex justify-center items-start p-4 bg-blue-300">
+      <div className="flex flex-col gap-2  items-center justify-center">
+        <h1 className="text-xl md:text-2xl font-semibold font-roboto ">Booking</h1>
+        <div className="flex justify-center items-center gap-4 ">
+          {
+            links.map(i => (
+              <Link to={i} key={i} className="font-serif text-lg md:text-xl">{i}</Link>
+            ))
+          }
+        </div>
+        <div className="flex justify-center items-center gap-4 ">
+          <a href={'/'} className="flex justify-center items-center w-10 h-10 rounded-full bg-white hover:bg-blue-400 text-black hover:text-white">
+            <FaFacebookF />
+          </a>
+          <a href={'/'} className="flex justify-center items-center w-10 h-10 rounded-full bg-white hover:bg-blue-400 text-black hover:text-white">
+            <FaXTwitter />
+          </a>
+          <a href={'/'} className="flex justify-center items-center w-10 h-10 rounded-full bg-white hover:bg-blue-400 text-black hover:text-white">
+            <FaInstagram />
+          </a>
+          <a href={'/'} className="flex justify-center items-center w-10 h-10 rounded-full bg-white hover:bg-blue-400 text-black hover:text-white">
+            <FaWhatsapp />
+          </a>
+
+
+
+
+
+
         </div>
       </div>
     </section>
