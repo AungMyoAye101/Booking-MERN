@@ -8,7 +8,7 @@ const Search = () => {
   const { searchData, loading } = useSearch()
 
   return (
-    <section className="h-96 py-20">
+    <section className=" py-20 bg-red-400  flex flex-col gap-4 max-w-6xl mx-auto">
       {
         loading ? <h1>Loading...</h1> : searchData?.map((item) => (
           <div
@@ -31,7 +31,7 @@ const Search = () => {
                 </div>
               </div>
               <h2 className="font-roboto text-sm opacity-85 ">{item.title} </h2>
-              <p className=" ">{item.description}</p>
+              <p className=" font-serif ">{item.description}</p>
               <button className="btn self-end">Reserve</button>
             </div>
           </div>

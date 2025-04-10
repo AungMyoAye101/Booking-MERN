@@ -1,10 +1,10 @@
-import React from "react";
+
 import HotelCard from "../components/HotelCard";
 
 const SearchResult = ({ data, loading }: any) => {
   return (
     <div className="flex flex-col   gap-4  ">
-      {loading ? (
+      {/* {loading ? (
         <div>Loading ....</div>
       ) : (
         data.map((item) => (
@@ -17,7 +17,7 @@ const SearchResult = ({ data, loading }: any) => {
             rating={item.rating}
           />
         ))
-      )}
+      )} */}
     </div>
   );
 };
