@@ -1,4 +1,5 @@
 import { useState } from "react"
+import { FaStar } from "react-icons/fa6"
 
 type ReviewType = {
     review: string,
@@ -32,7 +33,7 @@ const ReviewForm = ({ hotelId }: { hotelId: string }) => {
             if (!res.ok) {
                 throw new Error("review failed!")
             }
-            console.log("reviewed succefully")
+            console.log("reviewed successfully")
         } catch (error: any) {
             console.log(error.message)
             throw new Error(error.message)
@@ -40,16 +41,19 @@ const ReviewForm = ({ hotelId }: { hotelId: string }) => {
     }
 
 
+
+
     return (
         <form onSubmit={onSubmit} className='flex flex-col gap-2 w-full min-w-52 max-w-60 py-4 bg-white p-2 rounded-lg shadow-lg'>
-            <h1 className="font-roboto font-lg">Please Leave your review</h1>
-            <select name="ratings" id="" className="input" onChange={(e) => handleChange(e)} >
-                <option value="1">1</option>
-                <option value="2">2</option>
-                <option value="3">3</option>
-                <option value="4">4</option>
-                <option value="5">5</option>
-            </select>
+            <h1 className="font-roboto font-lg font-medium">Please Leave your review</h1>
+            {/* Stars rating for reviews */}
+            <div className="flex items-center  gap-1 text-xl">
+                {
+                    [1, 2, 3, 4, 5].map(num => (
+                        <FaStar key={num} className={`cursor-pointer ${num <= reviews.ratings ? "text-amber-500" : "text-neutral-400"}`} onClick={() => setReviews((pre) => ({ ...pre, ratings: num }))} />
+                    ))
+                }
+            </div>
             <textarea name="review" id="" placeholder='your review' className="input focus:outline-none" onChange={(e) => handleChange(e)} />
             <button type="submit" className='btn'>Submit</button>
         </form>
