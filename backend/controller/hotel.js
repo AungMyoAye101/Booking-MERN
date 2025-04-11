@@ -63,11 +63,6 @@ const updateHotel = async (req, res) => {
 
   }
   try {
-
-
-
-
-
     const updatedHotel = await Hotel.findByIdAndUpdate(
       req.params.id,
       { ...req.body, photos: urls },
