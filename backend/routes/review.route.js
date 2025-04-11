@@ -38,6 +38,7 @@ router.get('/:id', async (req, res) => {
         if (!reviews) {
             return res.status(400).json('No reviews found!')
         }
+        console.log(reviews)
         return res.status(200).json(reviews)
     } catch (error) {
         console.log(error.message)

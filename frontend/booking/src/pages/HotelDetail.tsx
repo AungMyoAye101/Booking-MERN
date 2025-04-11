@@ -1,6 +1,5 @@
 import { BiHeart, BiShareAlt } from "react-icons/bi";
 import { FaParking } from "react-icons/fa";
-
 import { FaLocationDot } from "react-icons/fa6";
 import Review from "../components/Review";
 import { useParams } from "react-router-dom";
@@ -80,7 +79,7 @@ const HotelDetail = () => {
         </div>
 
         <div className="flex flex-col gap-4">
-          <Review />
+          <Review hotelId={id!} />
           <ReviewForm hotelId={id!} />
 
           <div className=" bg-white rounded-lg shadow-xl w-72 min-w-72 p-4 flex flex-col gap-3">
