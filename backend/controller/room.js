@@ -99,8 +99,6 @@ const getRoomById = async (req, res, next) => {
 
 const bookingRoom = async (req, res, next) => {
   const { roomId, roomNumber, userId, checkIn, checkOut } = req.body;
-  console.log(roomId, roomNumber, userId, checkIn, checkOut)
-
   try {
 
     if (!mongoose.Types.ObjectId.isValid(roomId)) {
@@ -115,7 +113,7 @@ const bookingRoom = async (req, res, next) => {
     if (!selectedRoom) {
       return res.status(404).json("Room number not found");
     }
-    console.log(selectedRoom)
+
 
     const isAvailable = selectedRoom.booking.every((booking) => {
       return new Date(checkIn) >= new Date(booking.checkOut) || new Date(checkOut) <= new Date(booking.checkIn);
@@ -135,7 +133,7 @@ const bookingRoom = async (req, res, next) => {
     })
 
     await room.save()
-    console.log(room.roomNumbers)
+
     return res.status(200).json({ message: "room boookin successfull", totalPrice })
   } catch (error) {
     next(error);
@@ -158,7 +156,7 @@ const checkAvailability = async (req, res) => {
       return { ...room.toObject(), roomNumbers: availableRoomNumbers }
 
     })
-    console.log(availableRooms)
+
     res.status(200).json(availableRooms)
   } catch (error) {
     console.log(error)

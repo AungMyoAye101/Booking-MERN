@@ -78,38 +78,39 @@ const HotelDetail = () => {
           </div>
         </div>
 
-        <div className="flex flex-col gap-4">
-          <Review hotelId={id!} />
-          <ReviewForm hotelId={id!} />
 
-          <div className=" bg-white rounded-lg shadow-xl w-72 min-w-72 p-4 flex flex-col gap-3">
-            <h1 className="font-roboto font-semibold text-lg">
-              Property highlight
-            </h1>
-            <h2 className="font-semibold font-roboto ">
-              Perfect for 1 night stay
-            </h2>
-            <div className="flex gap-2 items-center ">
-              <FaLocationDot />
-              <p className="text-sm ">{hotel.distance}</p>
-            </div>
-            <h2 className="font-semibold font-roboto ">Breakfast info</h2>
-            <p className="text-sm font-roboto ">
-              Continental, Vegetarian, Asian, American
-            </p>
-            <div className="flex gap-2 items-center ">
-              <FaParking />
-              <p className="text-sm ">Free parking available at the hotel</p>
-            </div>
-            <button className="w-full bg-blue-700 hover:bg-blue-300 text-white font-roboto text-sm px-4 py-2 rounded-md">
-              Reserve
-            </button>
+
+
+
+        <div className=" bg-white rounded-lg shadow-xl w-72 min-w-72 p-4 flex flex-col gap-3">
+          <h1 className="font-roboto font-semibold text-lg">
+            Property highlight
+          </h1>
+          <h2 className="font-semibold font-roboto ">
+            Perfect for 1 night stay
+          </h2>
+          <div className="flex gap-2 items-center ">
+            <FaLocationDot />
+            <p className="text-sm ">{hotel.distance}</p>
           </div>
-
+          <h2 className="font-semibold font-roboto ">Breakfast info</h2>
+          <p className="text-sm font-roboto ">
+            Continental, Vegetarian, Asian, American
+          </p>
+          <div className="flex gap-2 items-center ">
+            <FaParking />
+            <p className="text-sm ">Free parking available at the hotel</p>
+          </div>
+          <button className="w-full bg-blue-700 hover:bg-blue-300 text-white font-roboto text-sm px-4 py-2 rounded-md">
+            Reserve
+          </button>
         </div>
+
       </div>
 
+      <Review hotelId={id!} />
 
+      <ReviewForm hotelId={id!} />
       <RoomList hotelId={id!} />
 
     </section>

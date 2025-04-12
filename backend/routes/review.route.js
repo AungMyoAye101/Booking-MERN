@@ -34,7 +34,7 @@ router.get('/:id', async (req, res) => {
         if (!mongoose.Types.ObjectId.isValid(hotelId)) {
             return res.status(400).json('hotel id is not valid!')
         }
-        const reviews = await Hotel.findById(hotelId).populate("reviews")
+        const reviews = await Review.find({ hotelId }).populate("userId", "name email")
         if (!reviews) {
             return res.status(400).json('No reviews found!')
         }
