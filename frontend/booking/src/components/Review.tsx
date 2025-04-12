@@ -1,8 +1,9 @@
 
 import { useEffect, useState } from "react";
+import { ReviewType } from "../lib/types";
 
 const Review = ({ hotelId }: { hotelId: string }) => {
-  const [reviews, setReviews] = useState([])
+  const [reviews, setReviews] = useState<ReviewType[]>([])
   const fetchReviews = async () => {
     try {
       const res = await fetch(`http://localhost:5000/api/review/${hotelId}`, {
@@ -31,7 +32,7 @@ const Review = ({ hotelId }: { hotelId: string }) => {
     <section className="flex gap-4 w-full">
       {
         reviews.map((item, i) => (
-          <div key={i} className="min-w-52  py-4 ">
+          <div key={i} className="min-w-52 max-w-64 py-4 ">
             <div className="bg-white rounded-xl shadow-xl">
               <div className="flex flex-col gap-2 px-2 py-1">
                 <div className=" flex items-center gap-2">

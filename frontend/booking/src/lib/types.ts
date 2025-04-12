@@ -48,3 +48,19 @@ export interface RoomType {
   maxPeople: number,
   roomNumbers: [{ number: number, booking: [Date] }]
 }
+
+export interface ReviewFormType {
+  review: string,
+  ratings: number,
+  hotelId: string,
+  userId: string
+}
+export interface ReviewType {
+  review: string,
+  ratings: number,
+  hotelId: string,
+  userId: {
+    name: string,
+    email: string,
+  }
+}

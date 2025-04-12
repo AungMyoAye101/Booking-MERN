@@ -1,27 +1,23 @@
 import { useState } from "react"
 import { FaStar } from "react-icons/fa6"
+import { ReviewFormType } from "../lib/types"
 
-type ReviewType = {
-    review: string,
-    ratings: number,
-    hotelId: string,
-    userId: string
-}
+
 const ReviewForm = ({ hotelId }: { hotelId: string }) => {
-    const [reviews, setReviews] = useState<ReviewType>({
+    const [reviews, setReviews] = useState<ReviewFormType>({
         review: '',
         ratings: 1,
         userId: "67cc3e270d58ef78947ae090",
         hotelId
     })
 
-    const handleChange = (e: any) => {
+    const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
         const { name, value } = e.target;
         setReviews((pre) => ({ ...pre, [name]: value }));
     }
 
-    const onSubmit = async (e: any) => {
-        e.preventDefault()
+    const onSubmit = async () => {
+
         try {
             const res = await fetch("http://localhost:5000/api/review", {
                 method: "POST",
@@ -33,6 +29,12 @@ const ReviewForm = ({ hotelId }: { hotelId: string }) => {
             if (!res.ok) {
                 throw new Error("review failed!")
             }
+            setReviews({
+                review: '',
+                ratings: 1,
+                userId: "67cc3e270d58ef78947ae090",
+                hotelId
+            })
             console.log("reviewed successfully")
         } catch (error: any) {
             console.log(error.message)
@@ -54,7 +56,7 @@ const ReviewForm = ({ hotelId }: { hotelId: string }) => {
                     ))
                 }
             </div>
-            <textarea name="review" id="" placeholder='your review' className="input focus:outline-none" onChange={(e) => handleChange(e)} />
+            <textarea name="review" value={reviews.review} placeholder='your review' className="input focus:outline-none" onChange={(e) => handleChange(e)} />
             <button type="submit" className='btn'>Submit</button>
         </form>
     )
