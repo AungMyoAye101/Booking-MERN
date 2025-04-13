@@ -20,12 +20,12 @@ const register = async (req, res, next) => {
     const token = jwt.sign(
       { id: newUser._id, isAdmin: newUser.isAdmin },
       process.env.SECRET_KEY,
-      { expiresIn: "1d" }
+      { expiresIn: 3 * 24 * 60 * 60 }
     );
 
     res.cookie("access_token", token, {
-      httpOnly: true,
-      secure: process.env.NODE_ENV === "production",
+      withCredentials: true,
+      httpOnly: false,
     });
     res.status(201).json(newUser);
   } catch (error) {
@@ -35,14 +35,15 @@ const register = async (req, res, next) => {
 
 //login
 const login = async (req, res, next) => {
+  const { email, password } = req.body
   try {
-    const user = await User.findOne({ email: req.body.email });
+    const user = await User.findOne({ email });
     if (!user) {
       return next(createError(400, "User not found"));
     }
 
     const isPasswordCorrect = await bcrypt.compare(
-      req.body.password,
+      password,
       user.password
     );
     if (!isPasswordCorrect) {
@@ -52,12 +53,12 @@ const login = async (req, res, next) => {
     const token = jwt.sign(
       { id: user._id, isAdmin: user.isAdmin },
       process.env.SECRET_KEY,
-      { expiresIn: "1d" }
+      { expiresIn: 3 * 24 * 60 * 60 }
     );
 
     res.cookie("access_token", token, {
-      httpOnly: true,
-      secure: process.env.NODE_ENV === "production",
+      httpOnly: false,
+      withCredentials: true
 
       // Restrict cookie sharing across origins
     });

@@ -1,14 +1,22 @@
 const jwt = require("jsonwebtoken");
 const { createError } = require("./error");
+const User = require("../models/user.model");
 
 const verifyToken = (req, res, next) => {
   const token = req.cookies.access_token;
-  if (!token) next(createError(401, "You are not authenicated"));
+  if (!token) {
+    return res.status(400).json("Your token is invalid!")
+  };
 
-  jwt.verify(token, process.env.SECRET_KEY, (err, user) => {
-    if (err) next(createError(403, "Token is not valid"));
-    req.user = user;
-    next();
+  jwt.verify(token, process.env.SECRET_KEY, async (err, data) => {
+    if (err) {
+      return res.status(400).json("Your token is invalid")
+    };
+    const user = await User.findById(data.id)
+    if (!user) {
+      return res.status(400).json("You are not authenicated!")
+    }
+    return res.status(200).json(user)
   });
 };
 
