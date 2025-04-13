@@ -64,8 +64,8 @@ const HotelDetail = () => {
                 key={i}
                 src={img}
                 alt={hotel.name + " room photo"}
-                className={`${i === 0 ? "" : ""
-                  }rounded-xl object-cover w-full h-full aspect-video`}
+                className={`
+                  rounded-xl object-cover w-full h-full aspect-video`}
               />
             ))}
           </div>
@@ -107,11 +107,12 @@ const HotelDetail = () => {
         </div>
 
       </div>
+      <div className="flex flex-col gap-4 py-4">
 
-      <Review hotelId={id!} />
-
-      <ReviewForm hotelId={id!} />
-      <RoomList hotelId={id!} />
+        <Review hotelId={id!} />
+        <ReviewForm hotelId={id!} />
+        <RoomList hotelId={id!} />
+      </div>
 
     </section>
   );

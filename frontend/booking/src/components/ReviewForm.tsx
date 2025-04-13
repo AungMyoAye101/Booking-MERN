@@ -4,7 +4,7 @@ import { ReviewFormType } from "../lib/types"
 
 
 const ReviewForm = ({ hotelId }: { hotelId: string }) => {
-    const [reviews, setReviews] = useState<ReviewFormType>({
+    const [review, setReview] = useState<ReviewFormType>({
         review: '',
         ratings: 1,
         userId: "67cc3e270d58ef78947ae090",
@@ -13,10 +13,11 @@ const ReviewForm = ({ hotelId }: { hotelId: string }) => {
 
     const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
         const { name, value } = e.target;
-        setReviews((pre) => ({ ...pre, [name]: value }));
+        setReview((pre) => ({ ...pre, [name]: value }));
     }
 
-    const onSubmit = async () => {
+    const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+        e.preventDefault();
 
         try {
             const res = await fetch("http://localhost:5000/api/review", {
@@ -24,12 +25,12 @@ const ReviewForm = ({ hotelId }: { hotelId: string }) => {
                 headers: {
                     "Content-type": "application/json"
                 },
-                body: JSON.stringify(reviews)
+                body: JSON.stringify(review)
             })
             if (!res.ok) {
                 throw new Error("review failed!")
             }
-            setReviews({
+            setReview({
                 review: '',
                 ratings: 1,
                 userId: "67cc3e270d58ef78947ae090",
@@ -52,11 +53,11 @@ const ReviewForm = ({ hotelId }: { hotelId: string }) => {
             <div className="flex items-center  gap-1 text-xl">
                 {
                     [1, 2, 3, 4, 5].map(num => (
-                        <FaStar key={num} className={`cursor-pointer ${num <= reviews.ratings ? "text-amber-500" : "text-neutral-400"}`} onClick={() => setReviews((pre) => ({ ...pre, ratings: num }))} />
+                        <FaStar key={num} className={`cursor-pointer ${num <= review.ratings ? "text-amber-500" : "text-neutral-400"}`} onClick={() => setReview((pre) => ({ ...pre, ratings: num }))} />
                     ))
                 }
             </div>
-            <textarea name="review" value={reviews.review} placeholder='your review' className="input focus:outline-none" onChange={(e) => handleChange(e)} />
+            <textarea name="review" value={review.review} placeholder='your review' className="input focus:outline-none" onChange={(e) => handleChange(e)} />
             <button type="submit" className='btn'>Submit</button>
         </form>
     )
