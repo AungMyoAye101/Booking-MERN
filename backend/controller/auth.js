@@ -36,6 +36,7 @@ const register = async (req, res, next) => {
 //login
 const login = async (req, res, next) => {
   const { email, password } = req.body
+  console.log(email, password)
   try {
     const user = await User.findOne({ email });
     if (!user) {
@@ -47,7 +48,7 @@ const login = async (req, res, next) => {
       user.password
     );
     if (!isPasswordCorrect) {
-      return next(createError(400, "Worng username or password"));
+      return next(createError(400, "Wrong username or password"));
     }
 
     const token = jwt.sign(
@@ -69,7 +70,7 @@ const login = async (req, res, next) => {
 };
 
 const logout = (req, res) => {
-  res.cookie("access_token", "", { expries: new Date(0) });
+  res.cookie("access_token", "", { expires: new Date(0) });
   res.status(200).json("user logout");
 };
 

@@ -4,7 +4,7 @@ const { verifyToken } = require("../utils/verifyToken");
 const router = express.Router();
 
 router.post("/register", register);
-router.post("/login", verifyToken, login);
+router.post("/login", login);
 router.post("/logout", logout);
 router.get("/verifyToken", verifyToken);
 
