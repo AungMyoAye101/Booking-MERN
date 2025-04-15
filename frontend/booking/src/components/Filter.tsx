@@ -1,5 +1,4 @@
-import React, { useState } from "react";
-import useFetch from "../hooks/useFetch";
+
 
 const Filter = ({ filterData, handleChange }: any) => {
   return (

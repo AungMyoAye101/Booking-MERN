@@ -35,23 +35,23 @@ const NavBar = () => {
           {user ? (
             <>
 
-              <Link to={"/admin"} className="btn bg-white text-blue-800">
-                Dashbord
+              <Link to={"/admin"} className="btn bg-white text-blue-800 hover:bg-blue-200">
+                Dashboard
               </Link>
 
               <button
                 onClick={handleLogout}
-                className="btn bg-white text-blue-800"
+                className="btn bg-white text-blue-800 hover:bg-blue-200"
               >
                 Logout
               </button>
             </>
           ) : (
             <>
-              <Link to={"/login"} className="btn bg-white text-blue-800">
+              <Link to={"/login"} className="btn bg-white text-blue-800 hover:bg-blue-200">
                 Login
               </Link>
-              <Link to={"/signup"} className="btn bg-white text-blue-800">
+              <Link to={"/signup"} className="btn bg-white text-blue-800 hover:bg-blue-200">
                 Signup
               </Link>
             </>
