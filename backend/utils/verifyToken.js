@@ -7,17 +7,24 @@ const verifyToken = (req, res, next) => {
   if (!token) {
     return res.status(400).json("Your token is invalid!")
   };
+  try {
+    const decoded = jwt.verify(token, process.env.SECRET_KEY)
+    req.user = decoded
+    next()
+  } catch (error) {
+    res.status(400).json("Your are not authorized!")
+  }
 
-  jwt.verify(token, process.env.SECRET_KEY, async (err, data) => {
-    if (err) {
-      return res.status(400).json("Your token is invalid")
-    };
-    const user = await User.findById(data.id)
-    if (!user) {
-      return res.status(400).json("You are not authenicated!")
-    }
-    return res.status(200).json(user)
-  });
+  // jwt.verify(token, process.env.SECRET_KEY, async (err, data) => {
+  //   if (err) {
+  //     return res.status(400).json("Your token is invalid")
+  //   };
+  //   const user = await User.findById(data.id)
+  //   if (!user) {
+  //     return res.status(400).json("You are not authenicated!")
+  //   }
+  //   return res.status(200).json(user)
+  // });
 };
 
 const verifyUser = (req, res, next) => {

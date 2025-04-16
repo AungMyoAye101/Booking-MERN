@@ -54,14 +54,13 @@ const login = async (req, res, next) => {
     const token = jwt.sign(
       { id: user._id, isAdmin: user.isAdmin },
       process.env.SECRET_KEY,
-      { expiresIn: 3 * 24 * 60 * 60 }
+      { expiresIn: '1d' }
     );
 
     res.cookie("access_token", token, {
-      httpOnly: false,
-      withCredentials: true
-
-      // Restrict cookie sharing across origins
+      httpOnly: true,
+      withCredentials: true,
+      maxAge: 24 * 60 * 60 * 1000     // Restrict cookie sharing across origins
     });
     return res.status(201).json(user);
   } catch (error) {
@@ -70,7 +69,7 @@ const login = async (req, res, next) => {
 };
 
 const logout = (req, res) => {
-  res.cookie("access_token", "", { expires: new Date(0) });
+  res.clearCookie("access_token");
   res.status(200).json("user logout");
 };
 
