@@ -8,5 +8,13 @@
   "keywords": [],
   "author": "",
   "license": "ISC",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/AungMyoAye101/Booking-MERN.git"
+  },
+  "bugs": {
+    "url": "https://github.com/AungMyoAye101/Booking-MERN/issues"
+  },
+  "homepage": "https://github.com/AungMyoAye101/Booking-MERN#readme",
   "description": ""
 }

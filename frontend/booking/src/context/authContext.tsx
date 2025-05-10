@@ -100,7 +100,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   }
   useEffect(() => {
     auth()
-  }, [])
+  }, [user])
 
   const logout = async () => {
 

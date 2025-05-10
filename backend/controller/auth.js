@@ -2,12 +2,14 @@ const User = require("../models/user.model");
 const bcrypt = require("bcrypt");
 const { createError } = require("../utils/error");
 const jwt = require("jsonwebtoken");
+
+//Redister new user
 const register = async (req, res, next) => {
   try {
     const { name, email, password } = req.body;
     const userExist = await User.findOne({ email });
     if (userExist) {
-      return res.status(400).json("User  already exist!");
+      return res.status(400).json({ success: false, message: "User  already exist!" });
     }
 
     const hashPassword = await bcrypt.hash(password, 10);
@@ -20,16 +22,18 @@ const register = async (req, res, next) => {
     const token = jwt.sign(
       { id: newUser._id, isAdmin: newUser.isAdmin },
       process.env.SECRET_KEY,
-      { expiresIn: 3 * 24 * 60 * 60 }
+      { expiresIn: '1d' }
     );
 
-    res.cookie("access_token", token, {
-      withCredentials: true,
-      httpOnly: false,
+    res.cookie("token", token, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === 'production',
+      sameSite: process.env.NODE_ENV === 'production' ? 'none' : "lax",
+      maxAge: 1 * 60 * 60 * 1000
     });
-    res.status(201).json(newUser);
+    return res.status(201).json(newUser);
   } catch (error) {
-    next(error);
+    return res.status(500).json({ success: false, message: error.message })
   }
 };
 
@@ -57,20 +61,30 @@ const login = async (req, res, next) => {
       { expiresIn: '1d' }
     );
 
-    res.cookie("access_token", token, {
+    res.cookie("token", token, {
       httpOnly: true,
-      withCredentials: true,
-      maxAge: 24 * 60 * 60 * 1000     // Restrict cookie sharing across origins
+      secure: process.env.NODE_ENV === "production",
+      sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
+      maxAge: 1 * 60 * 60 * 1000  // Restrict cookie sharing across origins
     });
-    return res.status(201).json(user);
+    return res.status(201).json({ success: true, message: "Login successfull", user });
   } catch (error) {
-    next(error);
+    return res.status(500).json({ success: false, message: error.message })
   }
 };
 
 const logout = (req, res) => {
-  res.clearCookie("access_token");
-  res.status(200).json("user logout");
+  try {
+
+    res.clearCookie("token");
+    return res.status(200).json({ success: true, message: "user logout" });
+  } catch (error) {
+    return res.status(500).json({ success: false, message: error.message })
+  }
 };
 
-module.exports = { register, login, logout };
+const currentUser = (req, res) => {
+  console.log(req.user)
+}
+
+module.exports = { register, login, logout, currentUser };
