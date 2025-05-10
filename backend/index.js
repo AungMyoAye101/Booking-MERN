@@ -59,17 +59,9 @@ app.use("/api/search", searchRouter);
 app.use("/api/room", roomRouter);
 app.use("/api/review", reviewRouter)
 
-app.use((err, req, res, next) => {
-  const errorStatus = err.status || 500;
-  const errorMessage = err.message || "Something went worng!";
-  return res.status(errorStatus).json({
-    success: false,
-    status: errorStatus,
-    message: errorMessage,
-    stack: err.stack,
-  });
-});
-
+app.get('/', (req, res) => {
+  res.send("Server is running on port 5000")
+})
 
 app.listen(port, () => {
   connectToDb();

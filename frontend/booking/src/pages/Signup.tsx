@@ -34,10 +34,12 @@ const Signup = () => {
           credentials: "include",
           body: JSON.stringify(user),
         });
-        if (!res.ok) {
-          throw new Error("Failed to create user!");
-        }
         const data = await res.json();
+        if (!res.ok || data.success === false) {
+          console.log(data.message)
+          return
+        }
+
         dispatch({ type: "LOGIN", payload: data });
         navigate("/");
 

@@ -4,8 +4,7 @@ import { useAuth } from "../context/authContext";
 
 const NavBar = () => {
 
-  const authContext = useAuth();
-  const user = authContext?.user;
+  const { user } = useAuth()
   console.log(user, 'checked')
   // const handleLogout = async () => {
   //   try {
@@ -34,7 +33,7 @@ const NavBar = () => {
           </h1>
         </Link>
         <div className="flex items-center gap-4">
-          {user ? (
+          {user._id ? (
             <>
 
               <Link to={"/admin"} className="btn bg-white text-blue-800 hover:bg-blue-200">
