@@ -31,7 +31,7 @@ const register = async (req, res, next) => {
       sameSite: process.env.NODE_ENV === 'production' ? 'none' : "lax",
       maxAge: 1 * 60 * 60 * 1000
     });
-    return res.status(201).json(newUser);
+    return res.status(201).json({ success: true, message: "User created successfully.", user: newUser });
   } catch (error) {
     return res.status(500).json({ success: false, message: error.message })
   }

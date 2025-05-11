@@ -4,26 +4,26 @@ import { useAuth } from "../context/authContext";
 
 const NavBar = () => {
 
-  const { user } = useAuth()
+  const { user, dispatch } = useAuth()
   console.log(user, 'checked')
-  // const handleLogout = async () => {
-  //   try {
-  //     const res = await fetch(`http://localhost:5000/api/auth/logout`, {
-  //       method: "POST",
-  //       credentials: "include",
-  //     });
+  const handleLogout = async () => {
+    try {
+      const res = await fetch(`http://localhost:5000/api/auth/logout`, {
+        method: "POST",
+        credentials: "include",
+      });
 
-  //     if (!res.ok) {
-  //       const errorData = await res.json();
-  //       throw new Error(errorData.message || "Logout failed");
-  //     }
-  //     dispatch({ type: "LOGOUT" });
-  //     console.log("Logout success");
-  //   } catch (error) {
-  //     console.log(error);
+      if (!res.ok) {
+        const errorData = await res.json();
+        throw new Error(errorData.message || "Logout failed");
+      }
+      dispatch({ type: "LOGOUT" });
+      console.log("Logout success");
+    } catch (error) {
+      console.log(error);
 
-  //   }
-  // };
+    }
+  };
   return (
     <nav className="bg-blue-800 fixed top-0 left-0 w-full  z-50">
       <div className="flex justify-between items-center max-w-6xl px-4 py-2 m-auto">
@@ -41,7 +41,7 @@ const NavBar = () => {
               </Link>
 
               <button
-                // onClick={handleLogout}
+                onClick={handleLogout}
                 className="btn bg-white text-blue-800 hover:bg-blue-200"
               >
                 Logout

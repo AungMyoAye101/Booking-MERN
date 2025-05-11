@@ -40,7 +40,7 @@ const Signup = () => {
           return
         }
 
-        dispatch({ type: "LOGIN", payload: data });
+        dispatch({ type: "LOGIN", payload: data.user });
         navigate("/");
 
       } catch (error) {
