@@ -5,6 +5,7 @@ import { signUpUserValidation } from "../lib/formValidation";
 import { CreateUserType } from "../lib/types";
 import { FaEye, FaEyeSlash } from "react-icons/fa6";
 import { useAuth } from "../context/authContext";
+import { base_url } from "../lib/helper";
 const Signup = () => {
   const [user, setUser] = useState<CreateUserType>({
     name: "",
@@ -26,16 +27,18 @@ const Signup = () => {
     const validatedUser = signUpUserValidation.parse(user);
     if (validatedUser) {
       try {
-        const res = await fetch('http://localhost:5000/api/auth/register', {
+        const res = await fetch(base_url + "/api/auth/register", {
           method: "POST",
           headers: {
-            "Content-type": "application/json",
+            "Content-type": "application/json"
           },
-          credentials: "include",
           body: JSON.stringify(user),
-        });
-        const data = await res.json();
-        if (!res.ok || data.success === false) {
+          credentials: "include"
+
+        })
+        const data = await res.json()
+
+        if (!res.ok && data.success === false) {
           console.log(data.message)
           return
         }

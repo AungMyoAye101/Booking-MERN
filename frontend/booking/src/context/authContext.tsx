@@ -1,7 +1,7 @@
 import { createContext, useContext, useEffect, useReducer, } from "react"
 import { UserType } from "../lib/types"
+import { base_url } from "../lib/helper"
 
-export const base_url = 'https://localhost:5000'
 
 const defaultUser = {
   _id: "",
@@ -37,7 +37,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 
   const fetchUser = async () => {
     try {
-      const res = await fetch(base_url + "/auth/me", {
+      const res = await fetch(base_url + "/api/auth/me", {
         method: "GET",
         headers: {
           "Content-type": "application/json"
@@ -45,12 +45,13 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         credentials: "include"
 
       })
-      const { user } = await res.json()
+
+      const data = await res.json()
       if (!res.ok) {
         dispatch({ type: "LOGOUT" })
+        return
       }
-      console.log(user)
-      dispatch({ type: "LOGIN", payload: user })
+      dispatch({ type: "LOGIN", payload: data.user })
     } catch (error) {
       if (error instanceof Error) console.error(error.message)
     }

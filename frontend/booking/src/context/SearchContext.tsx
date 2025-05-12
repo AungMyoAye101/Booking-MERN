@@ -45,13 +45,15 @@ export const SearchProvider = ({ children }: { children: React.ReactNode }) => {
             "Content-Type": "application/json",
           },
         });
-        if (!res.ok) {
-          throw new Error("Failed to search")
-        }
         const data = await res.json()
+        if (!res.ok) {
+          console.log(data.message)
+          return
+        }
+
         setSearchData(data)
         setLoading(false)
-        console.log(data)
+
       } catch (error) {
         setLoading(false)
         console.log(error)
