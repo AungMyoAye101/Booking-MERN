@@ -4,23 +4,27 @@ import { signUpUserValidation } from "../lib/formValidation";
 
 import { CreateUserType } from "../lib/types";
 import { FaEye, FaEyeSlash } from "react-icons/fa6";
-import { useAuth } from "../context/authContext";
 import { base_url } from "../lib/helper";
+import { useAuth } from "../context/authContext";
+import { useForm } from "react-hook-form";
 const Signup = () => {
   const [user, setUser] = useState<CreateUserType>({
     name: "",
     password: "",
     email: "",
   });
-
   const [password, setPassword] = useState<boolean>(true)
   const { dispatch } = useAuth()
-
   const navigate = useNavigate();
   const handleChange = (e: { target: { name: string; value: string } }) => {
 
     setUser((pre) => ({ ...pre, [e.target.name]: e.target.value }));
   };
+
+
+  const { register, handleSubmit, formState: { errors } } = useForm<CreateUserType>()
+
+
   const onSubmitHandle = async (e: FormEvent) => {
     e.preventDefault();
 
@@ -65,13 +69,14 @@ const Signup = () => {
           <span className="font-roboto text-sm">Name</span>
           <input
             type="text"
-            name="name"
             id="name"
-            value={user.name}
-            placeholder="name"
-            onChange={(e) => handleChange(e)}
-            className="bg-neutral-100 rounded p-2 border"
+            {...register("name", { required: "This field is required.", minLength: { value: 1, message: "Name at least 1 character." } })}
+            placeholder="Jhon Doe"
+            className="input_con"
           />
+          {
+            errors.name && <p className="error_message">{errors.name.message}</p>
+          }
         </label>
 
 

@@ -20,8 +20,8 @@ body {
     @apply font-roboto text-sm capitalize font-semibold;
   }
 
-  .input {
-    @apply bg-neutral-100 rounded p-2 border w-full;
+  .input_con {
+    @apply w-full bg-neutral-100 rounded p-2 border;
   }
 
   .btn {
@@ -30,6 +30,10 @@ body {
 
   .table-border {
     @apply p-2 border-2 border-gray-300
+  }
+
+  .error_message {
+    @apply text-red-500 text-sm
   }
 
 }
