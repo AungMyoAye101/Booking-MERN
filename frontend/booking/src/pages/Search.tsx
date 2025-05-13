@@ -1,16 +1,16 @@
 import { Link } from "react-router-dom";
-import { useSearch } from "../context/SearchContext";
+
 import SideBar from "../components/SideBar";
 
 
 
 const Search = () => {
 
-  const { searchData, loading } = useSearch()
+  // const { searchData, loading } = useSearch()
 
   return (
     <section className=" py-20 flex gap-4   max-w-6xl mx-auto">
-      <SideBar />
+      {/* <SideBar />
       <div className="flex flex-col gap-4">
         {
           loading ? <h1>Loading...</h1> : searchData?.map((item) => (
@@ -41,7 +41,7 @@ const Search = () => {
           ))
 
         }
-      </div>
+      </div> */}
 
 
     </section>

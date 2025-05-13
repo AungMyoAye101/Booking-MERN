@@ -6,7 +6,7 @@ import "react-date-range/dist/theme/default.css"; // theme css file
 import { format } from "date-fns";
 import { MdCalendarMonth } from "react-icons/md";
 import { useNavigate } from "react-router-dom";
-import { useSearch } from "../context/SearchContext";
+
 
 type OptionsType = {
   adult: number;
@@ -14,7 +14,7 @@ type OptionsType = {
   room: number;
 };
 const SearchBox = () => {
-  const { handleSearch } = useSearch()
+  // const { handleSearch } = useSearch()
 
   const [destination, setDestination] = useState<string>("");
   const [adultCount, setAdultCount] = useState<number>(0);
@@ -36,11 +36,11 @@ const SearchBox = () => {
     return format(date, "dd/mm/yyyy");
   };
 
-  const onSubmit = () => {
-    handleSearch(destination, datePicker[0].startDate, datePicker[0].endDate, adultCount + childrenCount);
-    navigate(`/search?destination=${destination}&checkIn=${datePicker[0].startDate}&checkOut=${datePicker[0].endDate}&adultCount=${adultCount}&childrenCount=${childrenCount}`);
+  // const onSubmit = () => {
+  //   handleSearch(destination, datePicker[0].startDate, datePicker[0].endDate, adultCount + childrenCount);
+  //   navigate(`/search?destination=${destination}&checkIn=${datePicker[0].startDate}&checkOut=${datePicker[0].endDate}&adultCount=${adultCount}&childrenCount=${childrenCount}`);
 
-  }
+  // }
 
   return (
     <div
@@ -160,7 +160,7 @@ const SearchBox = () => {
           </div>
         )}
       </div>
-      <button className="btn" onClick={onSubmit}>
+      <button className="btn" >
         search
       </button>
     </div>

@@ -21,7 +21,7 @@ const Home = () => {
         <Destination />
         <ListByType />
         <Offer />
-        <HotelList />
+        {/* <HotelList /> */}
       </div>
 
       <Contact />
