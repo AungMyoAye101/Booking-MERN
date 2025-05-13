@@ -38,6 +38,12 @@ export interface CreateUserType {
   password: string;
   comfrimPassword: string
 }
+export interface LoginUserType {
+
+  email: string;
+  password: string;
+
+}
 
 
 export interface RoomType {
