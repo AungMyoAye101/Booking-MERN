@@ -5,7 +5,6 @@ const createHotel = async (req, res) => {
   console.log("uploading file from broswer")
 
   const { photos } = req.body;
-  console.log(req.body)
   let urls;
   try {
     const uploadedImages = photos.map((img) => {
@@ -15,25 +14,22 @@ const createHotel = async (req, res) => {
     urls = uploadResponse.map((img) => img.secure_url)
     console.log("image uploaded")
   } catch (error) {
-    console.log(error.message)
-    return res.status(500).json('failed to upload images')
+    return res.status(500).json({ success: false, message: error.message })
 
   }
 
-
+  // add hotel with uploaded image urls to database
   try {
-
-
     const newHotel = new Hotel({
       ...req.body,
       photos: urls
     });
     const savedHotel = await newHotel.save();
     console.log("hotel saved")
-    return res.status(201).json(savedHotel);
+    return res.status(201).json({ success: true, message: "Hotel created successfull", hotels: savedHotel });
   } catch (error) {
     console.log(error.message)
-    return res.status(500).json('failed to upload images')
+    return res.status(500).json({ success: false, message: error.message })
   }
 
 };
@@ -43,7 +39,7 @@ const createHotel = async (req, res) => {
 const updateHotel = async (req, res) => {
   console.log("upadting hotel...")
   const { photos, amenities } = req.body
-  console.log(amenities)
+
 
   let urls;
 
@@ -55,11 +51,10 @@ const updateHotel = async (req, res) => {
     urls = uploadResponse.map((img) => img.secure_url)
     console.log("image uploaded")
     if (urls.length === 0) {
-      return res.status(400).json("Please upload at least one image")
+      return res.status(400).json({ success: false, message: "Please upload at least one image" })
     }
   } catch (error) {
-    console.log(error.message)
-    return res.status(500).json('failed to upload images')
+    return res.status(500).json({ success: false, message: error.message })
 
   }
   try {
@@ -69,19 +64,19 @@ const updateHotel = async (req, res) => {
       { new: true }
 
     );
-    console.log("hotel was updated!")
-    res.status(200).json(updatedHotel);
+
+    return res.status(200).json({ success: true, message: "Hotel updated successfull ", hotels: updatedHotel });
   } catch (error) {
-    res.status(500).json(error);
+    return res.status(500).json({ success: false, message: error.message });
   }
 };
 
 const deleteHotel = async (req, res) => {
   try {
     await Hotel.findByIdAndDelete(req.params.id);
-    res.status(200).json("Hotel is succeffully deleted.");
+    return res.status(200).json({ success: true, message: "Hotel is succeffully deleted." });
   } catch (error) {
-    res.status(500).json(error);
+    return res.status(500).json({ success: false, message: error.message });
   }
 };
 //Get all hotel
@@ -106,9 +101,9 @@ const getAllHotels = async (req, res, next) => {
 
   try {
     const hotels = await Hotel.find(filter).limit(limit);
-    res.status(200).json(hotels);
+    return res.status(200).json({ success: true, message: "Get all hotels success.", hotels });
   } catch (error) {
-    next(error);
+    return res.status(500).json({ success: false, message: error.message });
   }
 };
 
@@ -116,14 +111,20 @@ const getAllHotels = async (req, res, next) => {
 const getHotelById = async (req, res, next) => {
   try {
     const hotel = await Hotel.findById(req.params.id).populate("rooms");
-    return res.status(200).json(hotel);
+    return res.status(200).json({ success: true, message: "Success to get hotel by id", hotel });
   } catch (error) {
-    next(error);
+    return res.status(500).json({ success: false, message: error.message });
   }
 };
 
 const getHotelByType = async (req, res, next) => {
   console.log(req.query);
+  try {
+    const hotels = await Hotel.find({ ...req.query })
+    return res.status(200).json({ success: true, message: "Success to get hotel by type", hotels });
+  } catch (error) {
+    return res.status(500).json({ success: false, message: error.message });
+  }
 };
 
 module.exports = {
