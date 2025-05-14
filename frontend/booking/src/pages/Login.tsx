@@ -3,12 +3,15 @@ import { useAuth } from "../context/authContext";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { LoginUserType } from "../lib/types";
+import { showToast } from "../context/ToastProvider";
+import { FaEye, FaEyeSlash } from "react-icons/fa6";
 
 
 
 const Login = () => {
 
   const [error, setError] = useState('');
+  const [showPassword, setShowPassword] = useState(false)
   const [loading, setLoading] = useState(false);
   const { dispatch } = useAuth()
   const navigate = useNavigate();
@@ -28,10 +31,12 @@ const Login = () => {
       const resData = await res.json();
       if (!res.ok && resData.success === false) {
         console.log(resData.message)
+        showToast("error", resData.message)
         return
       }
 
       dispatch({ type: "LOGIN", payload: resData.user });
+      showToast("success", resData.message)
       navigate("/");
 
     } catch (error) {
@@ -59,15 +64,16 @@ const Login = () => {
             errors.email && <p className="error_message">{errors.email.message}</p>
           }
         </label>
-        <label htmlFor="password" className="flex flex-col gap-1">
+        <label htmlFor="password" className="input_container relative">
           <span className="font-roboto text-sm">Password</span>
           <input
-            type="password"
+            type={showPassword ? "text" : "password"}
             id="password"
             {...register("password", { required: "Password is required.", minLength: { value: 6, message: "Password at least 6 characters long." } })}
             placeholder="your password"
-            className="input_con"
+            className="input_con "
           />
+          <button className="absolute right-2 top-[55%] text-neutral-600 text-lg" type="button" onClick={() => setShowPassword(pre => !pre)}>{showPassword ? <FaEye /> : <FaEyeSlash />}</button>
           {
             errors.password && <p className="error_message">{errors.password.message}</p>
           }

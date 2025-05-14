@@ -1,6 +1,7 @@
 import { createContext, useContext, useEffect, useReducer, } from "react"
 import { UserType } from "../lib/types"
 import { base_url } from "../lib/helper"
+import { showToast } from "./ToastProvider"
 
 type authContextProps = {
     user: UserType,
@@ -47,6 +48,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
             })
             const data = await res.json()
             if (!res.ok) {
+                showToast("error", data.message)
                 throw new Error(data.message)
             }
             dispatch({ type: "LOGIN", payload: data.user })

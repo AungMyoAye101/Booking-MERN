@@ -20,8 +20,12 @@ body {
     @apply font-roboto text-sm capitalize font-semibold;
   }
 
+  .input_container {
+    @apply flex flex-col gap-1 w-full md:w-[49%]
+  }
+
   .input_con {
-    @apply w-full bg-neutral-100 rounded p-2 border;
+    @apply w-full bg-neutral-200 rounded p-2 border;
   }
 
   .btn {
