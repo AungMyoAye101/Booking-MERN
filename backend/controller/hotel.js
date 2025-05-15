@@ -101,7 +101,7 @@ const getAllHotels = async (req, res, next) => {
 
   try {
     const hotels = await Hotel.find(filter).limit(limit);
-    return res.status(200).json({ success: true, message: "Get all hotels success.", hotels });
+    return res.status(200).json({ success: true, message: "Get all hotels success.", data: hotels });
   } catch (error) {
     return res.status(500).json({ success: false, message: error.message });
   }
@@ -111,7 +111,7 @@ const getAllHotels = async (req, res, next) => {
 const getHotelById = async (req, res, next) => {
   try {
     const hotel = await Hotel.findById(req.params.id).populate("rooms");
-    return res.status(200).json({ success: true, message: "Success to get hotel by id", hotel });
+    return res.status(200).json({ success: true, message: "Success to get hotel by id", data: hotel });
   } catch (error) {
     return res.status(500).json({ success: false, message: error.message });
   }
@@ -121,7 +121,7 @@ const getHotelByType = async (req, res, next) => {
   console.log(req.query);
   try {
     const hotels = await Hotel.find({ ...req.query })
-    return res.status(200).json({ success: true, message: "Success to get hotel by type", hotels });
+    return res.status(200).json({ success: true, message: "Success to get hotel by type", data: hotels });
   } catch (error) {
     return res.status(500).json({ success: false, message: error.message });
   }

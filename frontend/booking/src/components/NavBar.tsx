@@ -5,7 +5,7 @@ import { useAuth } from "../context/authContext";
 const NavBar = () => {
 
   const { user, dispatch } = useAuth()
-  console.log(user, 'checked')
+
   const handleLogout = async () => {
     try {
       const res = await fetch(`http://localhost:5000/api/auth/logout`, {
@@ -18,10 +18,9 @@ const NavBar = () => {
         throw new Error(errorData.message || "Logout failed");
       }
       dispatch({ type: "LOGOUT" });
-      console.log("Logout success");
     } catch (error) {
-      console.log(error);
 
+      if (error instanceof Error) console.log(error.message)
     }
   };
   return (
