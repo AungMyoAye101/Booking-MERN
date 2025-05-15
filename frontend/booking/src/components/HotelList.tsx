@@ -4,6 +4,8 @@ import { useEffect, useRef, useState } from "react";
 import { PiGreaterThan, PiLessThan } from "react-icons/pi";
 import { base_url } from "../lib/helper";
 import { HotelType } from "../lib/types";
+import { FaLocationDot } from "react-icons/fa6";
+import { FaStar } from "react-icons/fa";
 
 const HotelList = () => {
     const containerRef = useRef<HTMLDivElement>(null);
@@ -18,7 +20,7 @@ const HotelList = () => {
             });
         }
     };
-    console.log(data)
+
     const fetchData = async () => {
         try {
             setLoading(true)
@@ -93,23 +95,23 @@ const HotelList = () => {
                                 <div className="p-2 flex flex-col ">
                                     <div className="flex justify-between items-center gap-4">
                                         <p className="text-sm opacity-90">{item.type}</p>
-                                        <div className="bg-blue-800 py-1 px-2  text-white text-xs rounded">
-                                            {item.rating}
+                                        <div className="flex items-center gap-1">
+                                            <FaStar className="text-orange-400" /> {item.rating}
                                         </div>
                                     </div>
 
                                     <h2 className="  font-roboto text-lg font-semibold">
                                         {item.name}
                                     </h2>
-                                    <h2 className="  font-roboto text-xs font-semibold opacity-80">
-                                        {item.title}
+                                    <h2 className="  font-roboto text-xs opacity-80 flex  items-center gap-1">
+                                        <FaLocationDot /> {item.city}
                                     </h2>
 
                                     <div className="self-end font-roboto">
-                                        <span className="text-sm ">Starting from </span>
-                                        <span className="font-semibold ml-1">
+                                        <span className="font-semibold ">
                                             ${item.price}
                                         </span>
+                                        <span className="text-sm opacity-90">/night</span>
                                     </div>
                                 </div>
                             </Link>

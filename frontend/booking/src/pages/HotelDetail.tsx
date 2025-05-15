@@ -27,7 +27,7 @@ const HotelDetail = () => {
   const { id } = useParams();
   const fetchHotel = async () => {
     const res = await fetch(`http://localhost:5000/api/hotel/${id}`);
-    const data = await res.json();
+    const { data } = await res.json();
     setHotel(data);
   };
   useEffect(() => {
@@ -70,7 +70,7 @@ const HotelDetail = () => {
             ))}
           </div>
           <p className=" font-serif">{hotel.description}</p>
-          <div className="flex gap-2 items-center">
+          <div className="flex flex-wrap gap-2 items-center">
 
             {
               hotel.amenities.map((item) => (<div key={item} className="font-serif text-sm bg-blue-200 py-1 px-2 rounded-lg">{item}</div>))
@@ -82,7 +82,7 @@ const HotelDetail = () => {
 
 
 
-        <div className=" bg-white rounded-lg shadow-xl w-72 min-w-72 p-4 flex flex-col gap-3">
+        {/* <div className=" bg-white rounded-lg shadow-xl w-72 min-w-72 p-4 flex flex-col gap-3">
           <h1 className="font-roboto font-semibold text-lg">
             Property highlight
           </h1>
@@ -104,7 +104,7 @@ const HotelDetail = () => {
           <button className="w-full bg-blue-700 hover:bg-blue-300 text-white font-roboto text-sm px-4 py-2 rounded-md">
             Reserve
           </button>
-        </div>
+        </div> */}
 
       </div>
       <div className="flex flex-col gap-4 py-4">

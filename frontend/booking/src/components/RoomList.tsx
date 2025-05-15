@@ -56,14 +56,14 @@ const RoomList = ({ hotelId }: { hotelId: string }) => {
                     },
                     body: JSON.stringify(roomSearch)
                 })
-                if (!res.ok) {
-                    throw new Error("Failed to check room availability ")
+                const { success, message, data } = await res.json()
+                if (!res.ok && success === false) {
+                    throw new Error(message)
                 }
-                const data = await res.json()
                 setRooms(data)
 
-            } catch (error: any) {
-                console.log(error.message)
+            } catch (error) {
+                if (error instanceof Error) console.log(error.message)
             }
 
         }
