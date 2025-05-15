@@ -2,8 +2,8 @@ const Room = require("../models/room.model");
 const Hotel = require("../models/hotel.model");
 const { default: mongoose } = require("mongoose");
 //Create Room
-const createRoom = async (req, res, next) => {
-  console.log("creating room...");
+const createRoom = async (req, res) => {
+
   const { title, description, maxPeople, price, roomNumber } = req.body;
   const hotelId = req.params.hotelId;
 
@@ -22,15 +22,14 @@ const createRoom = async (req, res, next) => {
       roomNumbers,
       hotel: hotelId,
     });
-    console.log("room is created");
+
 
 
     await Hotel.findByIdAndUpdate(hotelId, { $push: { rooms: newRoom._id } });
-    console.log("hotel is updated");
-    return res.status(201).json(newRoom);
+
+    return res.status(201).json({ success: true, message: "Room created successfully", data: newRoom });
   } catch (error) {
-    console.log(error);
-    return res.status(500).json("Failed to create room", error.message);
+    return res.status(500).json({ success: false, message: error.message });
   }
 };
 //update room
@@ -45,9 +44,9 @@ const updateRoom = async (req, res, next) => {
         new: true,
       }
     );
-    res.status(201).json(updatedRoom);
+    res.status(201).json({ success: true, message: "Room updated.", data: updatedRoom });
   } catch (error) {
-    next(error);
+    return res.status(500).json({ success: false, message: error.message });
   }
 };
 //Delete room
@@ -69,20 +68,20 @@ const deleteRoom = async (req, res, next) => {
       { $pull: { rooms: roomId } },
       { new: true }
     );
-    res.status(200).json("Room is succeffully deleted.");
+    res.status(200).json({ success: true, message: "Room was deleted." });
   } catch (error) {
-    next(error);
+    return res.status(500).json({ success: false, message: error.message });
   }
 };
 
 //Get all room
 
-const getAllRooms = async (req, res, next) => {
+const getAllRooms = async (req, res,) => {
   try {
     const rooms = await Room.find();
-    res.status(200).json(rooms);
+    return res.status(200).json({ success: true, message: "Get all rooms", data: rooms });
   } catch (error) {
-    next(error);
+    return res.status(500).json({ success: false, message: error.message });
   }
 };
 
@@ -92,7 +91,7 @@ const getRoomById = async (req, res, next) => {
     const room = await Room.findById(req.params.id);
     res.status(200).json(room);
   } catch (error) {
-    next(error);
+    return res.status(500).json({ success: false, message: error.message });
   }
 };
 // Booking Room
@@ -136,7 +135,7 @@ const bookingRoom = async (req, res, next) => {
 
     return res.status(200).json({ message: "room boookin successfull", totalPrice })
   } catch (error) {
-    next(error);
+    return res.status(500).json({ success: false, message: error.message });
   }
 }
 
@@ -157,10 +156,9 @@ const checkAvailability = async (req, res) => {
 
     })
 
-    res.status(200).json(availableRooms)
+    return res.status(200).json({ success: true, message: "Room checked successfull", data: availableRooms })
   } catch (error) {
-    console.log(error)
-    res.status(500).json(error.message)
+    return res.status(500).json({ success: false, message: error.message });
   }
 }
 
