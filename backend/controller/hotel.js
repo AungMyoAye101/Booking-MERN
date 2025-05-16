@@ -1,4 +1,5 @@
 const Hotel = require("../models/hotel.model");
+
 const cloudinary = require("cloudinary").v2;
 //Create hotel
 const createHotel = async (req, res) => {
@@ -117,12 +118,42 @@ const getHotelById = async (req, res, next) => {
   }
 };
 
-const getHotelByType = async (req, res, next) => {
-  console.log(req.query);
+const getHotelByType = async (req, res) => {
+
   try {
-    const hotels = await Hotel.find({ ...req.query })
-    return res.status(200).json({ success: true, message: "Success to get hotel by type", data: hotels });
+    console.log("hotel type")
+    const hotel = await Hotel.countDocuments({ type: "Hotel", })
+    const motel = await Hotel.countDocuments({ type: "Motel" })
+    const villa = await Hotel.countDocuments({ type: "Villa" })
+    const apparment = await Hotel.countDocuments({ type: "Apparment" })
+    const resort = await Hotel.countDocuments({ type: "Resort" })
+    const data = [{
+      type: "Hotel",
+      count: hotel
+    },
+    {
+      type: "Motel",
+      count: motel
+    },
+    {
+      type: "Villa",
+      count: villa
+    },
+    {
+      type: "Resort",
+      count: resort
+    }, {
+      type: "Apparment",
+      count: apparment
+    },
+    ]
+
+    return res.status(200).json({
+      success: true, message: "Success to get hotel by type", data
+    });
+
   } catch (error) {
+    console.log(error.message)
     return res.status(500).json({ success: false, message: error.message });
   }
 };

@@ -1,11 +1,15 @@
-import { useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { PiGreaterThan, PiLessThan } from "react-icons/pi";
-import useFetch from "../hooks/useFetch";
+import { base_url } from "../lib/helper";
+import HotelLoading from "./HotelLoading";
 
+type HotelList = {
+  type: string,
+  count: number
+}
 const ListByType = () => {
-  // const { data, loading, error } = useFetch(
-  //   "api/hotel?type=hotel,apartment,villa,cabin"
-  // );
+  const [data, setData] = useState<HotelList[]>([])
+  const [loading, setLoading] = useState(false)
   const containerRef = useRef<HTMLDivElement>(null);
 
   const handleSlide = (isRight: boolean) => {
@@ -16,53 +20,32 @@ const ListByType = () => {
       });
     }
   };
-  const list = [
-    {
-      url: "https://img.freepik.com/free-photo/spa-pool-sky-leisure-background_1203-4946.jpg?t=st=1739537710~exp=1739541310~hmac=422cd13ece996d0295ebf1d2af53809f31269de4f541577d495722e423c484c6&w=740",
-      city: "Dublin",
-      count: 0,
-    },
-    {
-      url: "https://img.freepik.com/free-photo/colonial-style-house-night-scene_1150-17925.jpg?t=st=1739537537~exp=1739541137~hmac=4ea038e25fe4731404bfcdd8bc276c05b04c8e65c734e586c23ad03f815409e3&w=740",
-      city: "Austin",
-      count: 10,
-    },
-    {
-      url: "https://img.freepik.com/free-photo/spa-pool-sky-leisure-background_1203-4946.jpg?t=st=1739537710~exp=1739541310~hmac=422cd13ece996d0295ebf1d2af53809f31269de4f541577d495722e423c484c6&w=740",
-      city: "Dublin",
-      count: 0,
-    },
-    {
-      url: "https://img.freepik.com/free-photo/colonial-style-house-night-scene_1150-17925.jpg?t=st=1739537537~exp=1739541137~hmac=4ea038e25fe4731404bfcdd8bc276c05b04c8e65c734e586c23ad03f815409e3&w=740",
-      city: "Austin",
-      count: 10,
-    },
-    {
-      url: "https://img.freepik.com/free-photo/spa-pool-sky-leisure-background_1203-4946.jpg?t=st=1739537710~exp=1739541310~hmac=422cd13ece996d0295ebf1d2af53809f31269de4f541577d495722e423c484c6&w=740",
-      city: "Dublin",
-      count: 0,
-    },
-    {
-      url: "https://img.freepik.com/free-photo/colonial-style-house-night-scene_1150-17925.jpg?t=st=1739537537~exp=1739541137~hmac=4ea038e25fe4731404bfcdd8bc276c05b04c8e65c734e586c23ad03f815409e3&w=740",
-      city: "Austin",
-      count: 10,
-    },
-    {
-      url: "https://img.freepik.com/free-photo/spa-pool-sky-leisure-background_1203-4946.jpg?t=st=1739537710~exp=1739541310~hmac=422cd13ece996d0295ebf1d2af53809f31269de4f541577d495722e423c484c6&w=740",
-      city: "Dublin",
-      count: 0,
-    },
-    {
-      url: "https://img.freepik.com/free-photo/colonial-style-house-night-scene_1150-17925.jpg?t=st=1739537537~exp=1739541137~hmac=4ea038e25fe4731404bfcdd8bc276c05b04c8e65c734e586c23ad03f815409e3&w=740",
-      city: "Austin",
-      count: 10,
-    },
-    {
-      url: "https://img.freepik.com/free-photo/colonial-style-house-night-scene_1150-17925.jpg?t=st=1739537537~exp=1739541137~hmac=4ea038e25fe4731404bfcdd8bc276c05b04c8e65c734e586c23ad03f815409e3&w=740",
-      city: "London",
-      count: 122,
-    },
-  ];
+
+  const fetchHotelBytype = async () => {
+    try {
+      setLoading(true)
+      const res = await fetch(base_url + "/api/hotel/type/hotelType", {
+        method: "GET",
+        headers: {
+          "Content-type": "application/json"
+        }
+      })
+      const { success, message, data } = await res.json()
+      if (!res.ok && success === false) {
+        throw new Error(message)
+      }
+      setData(data)
+    } catch (error) {
+      if (error instanceof Error) console.error(error.message)
+    } finally {
+      setLoading(false)
+    }
+  }
+  useEffect(() => {
+    fetchHotelBytype()
+  }, [])
+
+
   return (
     <section className="my-4 py-10">
       <h1 className="text-4xl font-roboto font-semibold mb-2 ">
@@ -85,21 +68,21 @@ const ListByType = () => {
           ref={containerRef}
           className="flex gap-4 overflow-hidden flex-nowrap  relative py-4"
         >
-          {list.map((item, i) => (
+          {loading ? <HotelLoading /> : data.map((item, i) => (
             <div
               key={i}
               className="min-w-[250px]  relative rounded-lg overflow-hidden shadow-lg cursor-pointer bg-white"
             >
               <div className=" overflow-hidden">
                 <img
-                  src={item.url}
+                  src="https://img.freepik.com/free-photo/spa-pool-sky-leisure-background_1203-4946.jpg?t=st=1739537710~exp=1739541310~hmac=422cd13ece996d0295ebf1d2af53809f31269de4f541577d495722e423c484c6&w=740"
                   alt="image"
                   className="w-full h-auto hover:scale-125 transition-transform ease-in-out "
                 />
               </div>
               <div className="py-4 px-2">
                 <h2 className="  font-roboto text-xl font-semibold">
-                  {item.city}
+                  {item.type}
                 </h2>
                 <p className="text-sm ">{item.count} propertes</p>
               </div>
