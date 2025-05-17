@@ -121,7 +121,6 @@ const getHotelById = async (req, res, next) => {
 const getHotelByType = async (req, res) => {
 
   try {
-    console.log("hotel type")
     const hotel = await Hotel.countDocuments({ type: "Hotel", })
     const motel = await Hotel.countDocuments({ type: "Motel" })
     const villa = await Hotel.countDocuments({ type: "Villa" })
@@ -153,10 +152,23 @@ const getHotelByType = async (req, res) => {
     });
 
   } catch (error) {
-    console.log(error.message)
     return res.status(500).json({ success: false, message: error.message });
   }
 };
+
+const getHotelByCity = async (req, res) => {
+
+  const cities = req.query.city.split(',')
+  try {
+
+    const hotel = await Promise.all(cities.map((data) =>
+      Hotel.find({ city: { $in: data } })
+    ))
+    res.status(200).json({ success: true, message: "Get hotel by city success.", data: hotel })
+  } catch (error) {
+    res.status(500).json({ success: false, message: error.message })
+  }
+}
 
 module.exports = {
   createHotel,
@@ -165,4 +177,5 @@ module.exports = {
   getAllHotels,
   getHotelById,
   getHotelByType,
+  getHotelByCity
 };

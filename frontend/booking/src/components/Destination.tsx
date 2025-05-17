@@ -1,81 +1,77 @@
-import { useRef } from "react";
+import { useEffect, useRef, useState } from "react";
+import { base_url } from "../lib/helper";
+import { HotelType } from "../lib/types";
 
-import { PiGreaterThan, PiLessThan } from "react-icons/pi";
+
 
 const Destination = () => {
   const containerRef = useRef<HTMLDivElement>(null);
+  const [data, setData] = useState<HotelType[][]>([])
+  const [loading, setLoading] = useState(false)
 
-  const handleSlide = (isRight: boolean) => {
-    if (containerRef.current) {
-      containerRef.current.scrollBy({
-        left: isRight ? 300 : -300,
-        behavior: "smooth",
-      });
+
+  const fetchHotelBytype = async () => {
+    try {
+      setLoading(true)
+      const res = await fetch(base_url + "/api/hotel/type/getHotelByCity?city=Tokyo,Denver,Miami", {
+        method: "GET",
+        headers: {
+          "Content-type": "application/json"
+        }
+      })
+      const { success, message, data } = await res.json()
+      if (!res.ok && success === false) {
+        throw new Error(message)
+      }
+      setData(data)
+    } catch (error) {
+      if (error instanceof Error) console.error(error.message)
+    } finally {
+      setLoading(false)
     }
-  };
-  const list = [
-    {
-      url: "https://img.freepik.com/free-photo/spa-pool-sky-leisure-background_1203-4946.jpg?t=st=1739537710~exp=1739541310~hmac=422cd13ece996d0295ebf1d2af53809f31269de4f541577d495722e423c484c6&w=740",
-      city: "Dublin",
-      count: 0,
-    },
-    {
-      url: "https://img.freepik.com/free-photo/colonial-style-house-night-scene_1150-17925.jpg?t=st=1739537537~exp=1739541137~hmac=4ea038e25fe4731404bfcdd8bc276c05b04c8e65c734e586c23ad03f815409e3&w=740",
-      city: "Austin",
-      count: 10,
-    },
-    {
-      url: "https://img.freepik.com/free-photo/spa-pool-sky-leisure-background_1203-4946.jpg?t=st=1739537710~exp=1739541310~hmac=422cd13ece996d0295ebf1d2af53809f31269de4f541577d495722e423c484c6&w=740",
-      city: "Dublin",
-      count: 0,
-    },
-    {
-      url: "https://img.freepik.com/free-photo/colonial-style-house-night-scene_1150-17925.jpg?t=st=1739537537~exp=1739541137~hmac=4ea038e25fe4731404bfcdd8bc276c05b04c8e65c734e586c23ad03f815409e3&w=740",
-      city: "Austin",
-      count: 10,
-    },
-    {
-      url: "https://img.freepik.com/free-photo/colonial-style-house-night-scene_1150-17925.jpg?t=st=1739537537~exp=1739541137~hmac=4ea038e25fe4731404bfcdd8bc276c05b04c8e65c734e586c23ad03f815409e3&w=740",
-      city: "London",
-      count: 122,
-    },
-  ];
+  }
+  useEffect(() => {
+    fetchHotelBytype()
+  }, [])
+
+
+
+  const loadingElem = [1, 2, 3].map((i) => <div key={i} className="border shadow bg-white flex-1 p-2 rounded min-w-[200px] aspect-video">
+    <div className="bg-neutral-200 rounded w-full h-full p-2">
+      <div className="bg-neutral-50 h-5 w-40 rounded "></div>
+    </div>
+  </div>)
+
+
+
   return (
     <section className="mb-4">
       <h1 className="text-4xl font-roboto font-semibold mb-2 ">
         Trending destination
       </h1>
       <div className="relative">
-        <button
-          onClick={() => handleSlide(false)}
-          className="bg-white flex items-center justify-center text-black z-10 rounded-full w-10 h-10 absolute left-0 top-[50%] translate-y-[-50%]"
-        >
-          <PiLessThan />
-        </button>
-        <button
-          onClick={() => handleSlide(true)}
-          className="bg-white flex items-center justify-center text-black z-10 rounded-full w-10 h-10 absolute right-0 top-[50%] translate-y-[-50%]"
-        >
-          <PiGreaterThan />
-        </button>
+
         <main
           ref={containerRef}
-          className="flex gap-4 overflow-hidden flex-nowrap  relative"
+          className="flex gap-4 flex-wrap relative"
         >
-          {list.map((item, i) => (
-            <div
-              key={i}
-              className="min-w-[300px] aspect-video rounded-lg overflow-hidden relative bg-white"
-            >
-              <img
-                src={item.url}
-                alt="image"
-                className="w-full h-auto hover:scale-125 transition-transform ease-in-out "
-              />
-              <h2 className="absolute top-4 left-4 text-white font-roboto text-2xl font-bold">
-                {item.city}
-              </h2>
-            </div>
+          {loading ? loadingElem : data.map((field) => (
+            field.map((item) => (
+              <div
+                key={item._id}
+                className="min-w-[200px]  flex-1 h-auto  aspect-video rounded-lg overflow-hidden relative bg-white"
+              >
+                <img
+                  src={item.photos[0]}
+                  alt="image"
+                  className="w-full h-auto hover:scale-125 transition-transform ease-in-out "
+                />
+                <h2 className="absolute top-4 left-4 text-white font-roboto text-2xl font-bold">
+                  {item.city}
+                </h2>
+              </div>
+            ))
+
           ))}
         </main>
       </div>
