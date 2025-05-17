@@ -24,7 +24,7 @@ const ListByType = () => {
   const fetchHotelBytype = async () => {
     try {
       setLoading(true)
-      const res = await fetch(base_url + "/api/hotel/type/hotelType", {
+      const res = await fetch(base_url + "/api/hotel/type/hotelType?type=Hotel,Apartment,Beach Resort,Luxury,Business,Cabin,Motel", {
         method: "GET",
         headers: {
           "Content-type": "application/json"
@@ -49,7 +49,7 @@ const ListByType = () => {
   return (
     <section className="my-4 py-10">
       <h1 className="text-4xl font-roboto font-semibold mb-2 ">
-        Broswes by property type
+        Browse by property type
       </h1>
       <div className="relative">
         <button
@@ -80,11 +80,11 @@ const ListByType = () => {
                   className="w-full h-auto hover:scale-125 transition-transform ease-in-out "
                 />
               </div>
-              <div className="py-4 px-2">
-                <h2 className="  font-roboto text-xl font-semibold">
+              <div className="py-4 px-2 flex gap-2 items-center justify-between">
+                <h2 className="  font-roboto text-lg font-semibold">
                   {item.type}
                 </h2>
-                <p className="text-sm ">{item.count} propertes</p>
+                <p className="text-sm "> <b>{item.count}</b> properties</p>
               </div>
             </div>
           ))}

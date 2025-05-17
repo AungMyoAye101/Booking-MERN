@@ -3,7 +3,7 @@ const Hotel = require("../models/hotel.model");
 const cloudinary = require("cloudinary").v2;
 //Create hotel
 const createHotel = async (req, res) => {
-  console.log("uploading file from broswer")
+  console.log("uploading file from browser")
 
   const { photos } = req.body;
   let urls;
@@ -38,7 +38,7 @@ const createHotel = async (req, res) => {
 //Update hotel
 
 const updateHotel = async (req, res) => {
-  console.log("upadting hotel...")
+  console.log("updating hotel...")
   const { photos, amenities } = req.body
 
 
@@ -75,7 +75,7 @@ const updateHotel = async (req, res) => {
 const deleteHotel = async (req, res) => {
   try {
     await Hotel.findByIdAndDelete(req.params.id);
-    return res.status(200).json({ success: true, message: "Hotel is succeffully deleted." });
+    return res.status(200).json({ success: true, message: "Hotel is successfully deleted." });
   } catch (error) {
     return res.status(500).json({ success: false, message: error.message });
   }
@@ -92,7 +92,7 @@ const getAllHotels = async (req, res, next) => {
 
   let filter = {};
   if (destination) {
-    filter.city = { $regex: city, $options: "i" };
+    filter.city = { $regex: destination, $options: "i" };
   }
   // if (min || max) {
   //   filters.CheapPrice = {};
@@ -119,34 +119,21 @@ const getHotelById = async (req, res, next) => {
 };
 
 const getHotelByType = async (req, res) => {
+  const types = req.query.type.split(',')
+  if (!types) {
+    return res.status(404).json({ success: false, message: "Hotel types are required!" })
+  }
+
 
   try {
-    const hotel = await Hotel.countDocuments({ type: "Hotel", })
-    const motel = await Hotel.countDocuments({ type: "Motel" })
-    const villa = await Hotel.countDocuments({ type: "Villa" })
-    const apparment = await Hotel.countDocuments({ type: "Apparment" })
-    const resort = await Hotel.countDocuments({ type: "Resort" })
-    const data = [{
-      type: "Hotel",
-      count: hotel
-    },
-    {
-      type: "Motel",
-      count: motel
-    },
-    {
-      type: "Villa",
-      count: villa
-    },
-    {
-      type: "Resort",
-      count: resort
-    }, {
-      type: "Apparment",
-      count: apparment
-    },
-    ]
 
+    const counts = await Promise.all(types.map(data => (Hotel.countDocuments({ type: { $regex: `^${data}`, $options: 'i' } }))
+    ))
+
+    const data = types.map((type, i) => ({
+      type,
+      count: counts[i]
+    }))
     return res.status(200).json({
       success: true, message: "Success to get hotel by type", data
     });
