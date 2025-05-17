@@ -82,18 +82,18 @@ const deleteHotel = async (req, res) => {
 };
 //Get all hotel
 const getAllHotels = async (req, res, next) => {
-  const {
-    destination,
-    min = 0,
-    max = 99999,
-    limit = 10,
-    ...others
-  } = req.query;
+  // const {
+  //   destination,
+  //   min = 0,
+  //   max = 99999,
+  //   limit = 10,
+  //   ...others
+  // } = req.query;
 
-  let filter = {};
-  if (destination) {
-    filter.city = { $regex: destination, $options: "i" };
-  }
+  // let filter = {};
+  // if (destination) {
+  //   filter.city = { $regex: destination, $options: "i" };
+  // }
   // if (min || max) {
   //   filters.CheapPrice = {};
   //   if (min) filters.price.$gte = parseFloat(min);
@@ -101,7 +101,7 @@ const getAllHotels = async (req, res, next) => {
   // }
 
   try {
-    const hotels = await Hotel.find(filter).limit(limit);
+    const hotels = await Hotel.find({}).limit(10);
     return res.status(200).json({ success: true, message: "Get all hotels success.", data: hotels });
   } catch (error) {
     return res.status(500).json({ success: false, message: error.message });

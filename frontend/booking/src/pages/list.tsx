@@ -1,14 +1,41 @@
 import { Link } from "react-router-dom";
 import { useEffect, useState } from "react";
+import { HotelType } from "../lib/types";
+import { base_url } from "../lib/helper";
 
 const List = () => {
-  const { data, loading, reFetch } = useFetch("api/hotel?limit=10");
+  const [data, setData] = useState<HotelType[]>([])
+  const [loading, setLoading] = useState(false)
   const [toggleDelete, setToggleDelete] = useState(false)
   const [selection, setSelection] = useState({
     _id: "",
     name: "",
     type: "",
   })
+
+  const fetchHotel = async () => {
+    try {
+      setLoading(true)
+      const res = await fetch(base_url + "/api/hotel", {
+        method: "GET",
+        headers: {
+          "Content-type": "application/json"
+        }
+      })
+      const { success, message, data } = await res.json()
+      if (!res.ok && success === false) {
+        throw new Error(message)
+      }
+      setData(data)
+    } catch (error) {
+      if (error instanceof Error) console.error(error.message)
+    } finally {
+      setLoading(false)
+    }
+  }
+  useEffect(() => {
+    fetchHotel()
+  }, [])
 
 
   useEffect(() => {
@@ -39,7 +66,7 @@ const List = () => {
         throw Error("Failed to delete hotel");
       }
       setToggleDelete(false);
-      reFetch()
+
       console.log("hotel was deleted");
     } catch (error) {
       console.log(error);
