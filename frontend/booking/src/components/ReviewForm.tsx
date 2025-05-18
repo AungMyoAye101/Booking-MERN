@@ -1,45 +1,57 @@
 import { useState } from "react"
 import { FaStar } from "react-icons/fa6"
 import { ReviewFormType } from "../lib/types"
+import { useAuth } from "../context/authContext"
+import { showToast } from "../context/ToastProvider"
 
 
 const ReviewForm = ({ hotelId }: { hotelId: string }) => {
-    const [review, setReview] = useState<ReviewFormType>({
+    const { user } = useAuth()
+    const [review, setReview] = useState({
         review: '',
-        ratings: 1,
-        userId: "67cc3e270d58ef78947ae090",
-        hotelId
+        ratings: 1
     })
 
-    const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-        const { name, value } = e.target;
-        setReview((pre) => ({ ...pre, [name]: value }));
-    }
+    const [validationError, setValidationError] = useState('')
+    const [loading, setLoading] = useState(false)
+
+
 
     const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
+        if (review.review.length < 3) {
+            return setValidationError("Review must contain at least 3 characters.")
+        }
+        if (!user._id) {
+            showToast('warn', 'You need to sign in first')
+            return
+        }
+
 
         try {
+            setLoading(true)
             const res = await fetch("http://localhost:5000/api/review", {
                 method: "POST",
                 headers: {
                     "Content-type": "application/json"
                 },
-                body: JSON.stringify(review)
+                body: JSON.stringify({ ...review, hotelId, userId: user._id })
             })
-            if (!res.ok) {
-                throw new Error("review failed!")
+            const { success, message } = await res.json()
+            if (!res.ok && success === false) {
+                throw new Error(message)
             }
+            showToast("info", message)
             setReview({
                 review: '',
-                ratings: 1,
-                userId: "67cc3e270d58ef78947ae090",
-                hotelId
+                ratings: 1
             })
-            console.log("reviewed successfully")
-        } catch (error: any) {
-            console.log(error.message)
-            throw new Error(error.message)
+        } catch (error) {
+            if (error instanceof Error) {
+                throw new Error(error.message)
+            }
+        } finally {
+            setLoading(false)
         }
     }
 
@@ -57,8 +69,16 @@ const ReviewForm = ({ hotelId }: { hotelId: string }) => {
                     ))
                 }
             </div>
-            <textarea name="review" value={review.review} placeholder='your review' className="input focus:outline-none" onChange={(e) => handleChange(e)} />
-            <button type="submit" className='btn'>Submit</button>
+            <textarea
+                name="review"
+                value={review.review}
+                placeholder='your review'
+                className="input focus:outline-none border border-neutral-400 focus:border-green-400 min-h-20 p-2 rounded"
+                onChange={(e) => setReview((pre) => ({ ...pre, review: e.target.value }))} />
+            {
+                validationError && <p className="error_message">{validationError}</p>
+            }
+            <button disabled={loading} type="submit" className='btn'>{loading ? 'Submiting...' : 'Submit'}</button>
         </form>
     )
 }

@@ -83,13 +83,13 @@ const HotelList = () => {
                             <Link
                                 to={`hotel/${item._id}`}
                                 key={i}
-                                className="w-fit border   relative rounded-lg overflow-hidden shadow-md cursor-pointer bg-white hover:shadow-lg "
+                                className=" min-w-[250px] w-fit border   relative rounded-lg overflow-hidden shadow-md cursor-pointer bg-white hover:shadow-lg "
                             >
-                                <div className=" h-60 overflow-hidden  aspect-square">
+                                <div className="h-48  overflow-hidden  ">
                                     <img
                                         src={item.photos[0]}
                                         alt="image"
-                                        className="w-full h-full hover:scale-125 transition-transform ease-in-out aspect-square"
+                                        className="w-full h-full hover:scale-125 transition-transform ease-in-out "
                                     />
                                 </div>
                                 <div className="p-2 flex flex-col ">

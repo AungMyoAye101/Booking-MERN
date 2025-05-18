@@ -12,14 +12,16 @@ const Review = ({ hotelId }: { hotelId: string }) => {
           "Content-type": "application/json"
         }
       })
-      if (!res.ok) {
-        throw new Error("Failed to fetch reviews")
+
+      const { success, message, data } = await res.json()
+      if (!res.ok && success === 'false') {
+        throw new Error(message)
       }
-      const data = await res.json()
       setReviews(data)
     } catch (error) {
-      console.log(error)
-      throw new Error("Failed to fetch reviews")
+      if (error instanceof Error) {
+        throw new Error(error.message)
+      }
     }
   }
 
@@ -27,7 +29,7 @@ const Review = ({ hotelId }: { hotelId: string }) => {
     fetchReviews()
   }, [hotelId])
 
-  console.log(reviews, 'reviews ')
+
   return (
     <section className="flex gap-4 w-full">
       {
@@ -41,10 +43,10 @@ const Review = ({ hotelId }: { hotelId: string }) => {
                     alt="user profile photo"
                     className="w-10 h-10 rounded-full "
                   />
-                  <div className="font-roboto flex flex-col ">
+                  {/* <div className="font-roboto flex flex-col ">
                     <h2 className="text-sm font-semibold">{item.userId.name}</h2>
                     <p className="text-xs">{item.userId.email}</p>
-                  </div>
+                  </div> */}
                 </div>
                 <p className="font-serif text-sm">
                   {item.review}
