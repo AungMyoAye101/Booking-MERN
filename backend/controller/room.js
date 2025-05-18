@@ -11,8 +11,7 @@ const createRoom = async (req, res) => {
     if (!mongoose.Types.ObjectId.isValid(hotelId)) {
       return res.status(400).json("Hotel id is not valid!");
     }
-
-    const roomNumbers = roomNumber.map((num) => ({ number: num, booking: [] }));
+    const roomNumbers = roomNumber.split(',').map((num) => num.trim()).map((num) => ({ number: num, booking: [] }));
 
     const newRoom = await Room.create({
       title,

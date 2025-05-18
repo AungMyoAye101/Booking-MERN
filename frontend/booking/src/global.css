@@ -21,7 +21,7 @@ body {
   }
 
   .input_container {
-    @apply flex flex-col gap-1 w-full md:w-[49%]
+    @apply flex flex-col gap-1 w-full
   }
 
   .input_con {

@@ -55,7 +55,7 @@ const Signup = () => {
 
   return (
     <section className="flex justify-center items-center min-h-screen mt-10">
-      <form onSubmit={onSubmitHandle} className="bg-white  min-w- w-full  max-w-6xl  py-8 px-6 border  rounded-lg shadow-lg flex flex-col gap-4 ">
+      <form onSubmit={onSubmitHandle} className="bg-white  min-w-80 max-w-[400px] flex-1 py-8 px-6 border  rounded-lg shadow-lg flex flex-col gap-4 ">
         <h1 className="text-center font-bold font-roboto text-2xl">Signup </h1>
         <main className="flex flex-wrap gap-4">
 
@@ -127,11 +127,11 @@ const Signup = () => {
         <button
           type="submit"
           disabled={loading}
-          className={`bg-blue-800  px-4 py-1.5 rounded-lg font-roboto  text-white hover:bg-blue-500 self-end ${loading ? 'cursor-wait' : "cursor-pointer"}`}
+          className={`bg-blue-800  px-4 py-1.5 rounded-lg font-roboto  text-white hover:bg-blue-500  ${loading ? 'cursor-wait' : "cursor-pointer"}`}
         >
           {loading ? "Submiting..." : "Submit"}
         </button>
-        <Link to={'/login'}>Don't have an account? Signup</Link>
+        <Link to={'/login'} className="font-roboto text-sm hover:text-purple-500">Already have an account? Login</Link>
       </form>
     </section>
   );

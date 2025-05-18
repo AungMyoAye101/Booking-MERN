@@ -43,10 +43,10 @@ const Review = ({ hotelId }: { hotelId: string }) => {
                     alt="user profile photo"
                     className="w-10 h-10 rounded-full "
                   />
-                  {/* <div className="font-roboto flex flex-col ">
+                  <div className="font-roboto flex flex-col ">
                     <h2 className="text-sm font-semibold">{item.userId.name}</h2>
                     <p className="text-xs">{item.userId.email}</p>
-                  </div> */}
+                  </div>
                 </div>
                 <p className="font-serif text-sm">
                   {item.review}

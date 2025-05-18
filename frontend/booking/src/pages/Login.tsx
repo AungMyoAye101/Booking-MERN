@@ -49,7 +49,7 @@ const Login = () => {
 
   return (
     <section className="flex justify-center items-center min-h-screen relative">
-      <form className="bg-white min-w-80 max-w-96 h-fit py-8 px-6 border  rounded-lg shadow-lg flex flex-col gap-4 ">
+      <form className="bg-white min-w-80 max-w-[400px] flex-1 h-fit py-8 px-6 border  rounded-lg shadow-lg flex flex-col gap-4 ">
         <h1 className="text-center font-bold font-roboto text-2xl">Login </h1>
         <label htmlFor="email" className="flex flex-col gap-1">
           <span className="font-roboto text-sm">Email</span>

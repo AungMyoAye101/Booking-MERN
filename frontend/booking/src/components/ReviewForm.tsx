@@ -1,6 +1,5 @@
 import { useState } from "react"
 import { FaStar } from "react-icons/fa6"
-import { ReviewFormType } from "../lib/types"
 import { useAuth } from "../context/authContext"
 import { showToast } from "../context/ToastProvider"
 

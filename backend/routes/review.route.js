@@ -17,7 +17,7 @@ router.post('/', async (req, res) => {
         await Hotel.findByIdAndUpdate(hotelId, {
             $push: { reviews: newReview._id }
         })
-        console.log(newReview, "reviewed succefully")
+
         res.status(201).json({ sucess: true, message: "Review created successfull." })
     } catch (error) {
         res.status(500).json({ success: false, message: error.message })
@@ -37,7 +37,6 @@ router.get('/:id', async (req, res) => {
         }
         return res.status(200).json({ success: true, message: "Get review successfull.", data: reviews })
     } catch (error) {
-        console.log(error.message)
         return res.status(500).json({ success: false, message: error.message })
     }
 })

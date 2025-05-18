@@ -1,4 +1,6 @@
-import React, { useState } from 'react'
+
+import { useForm } from 'react-hook-form'
+import { showToast } from '../context/ToastProvider'
 
 type RoomType = {
     title: string,
@@ -8,27 +10,13 @@ type RoomType = {
     roomNumber: ''
 }
 
+
 const RoomForm = ({ hotelId }: { hotelId: string }) => {
-    const [room, setRoom] = useState<RoomType>({
-        title: '',
-        description: '',
-        price: 0,
-        maxPeople: 0,
-        roomNumber: ''
-    })
 
-    const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-        const { name, value } = e.target;
-        setRoom((pre) => ({ ...pre, [name]: name === 'price' || name === 'maxPeople' ? +value : value }));
-    };
+    const { register, handleSubmit, reset, formState: { isLoading, errors } } = useForm<RoomType>()
 
+    const onSubmit = handleSubmit(async (data) => {
 
-
-    const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-        e.preventDefault();
-        const roomNumber = room.roomNumber.split(',').map((num) => num.trim())
-        const newRoom = { ...room, roomNumber }
-        console.log(newRoom)
 
         try {
             const res = await fetch(`http://localhost:5000/api/room/${hotelId}`, {
@@ -36,43 +24,81 @@ const RoomForm = ({ hotelId }: { hotelId: string }) => {
                 headers: {
                     'Content-Type': 'application/json'
                 },
-                body: JSON.stringify(newRoom)
+                body: JSON.stringify(data)
             })
 
-            if (!res.ok) throw new Error('Something went wrong')
-            const data = await res.json()
-            console.log(data)
+            const resData = await res.json()
+            if (!res.ok && resData.success === false) throw new Error(resData.message)
+            showToast("success", resData.message)
+            reset()
         } catch (error) {
-            console.log(error)
+            if (error instanceof Error) {
+                throw new Error(error.message)
+            }
 
         }
-    }
+    })
 
 
     return (
-        <form className="flex flex-col gap-4 " onSubmit={(e) => onSubmit(e)}>
+        <form className="flex flex-col gap-4 py-6 px-4 bg-white border border-neutral-100 shadow rounded-md " onSubmit={onSubmit}>
             <h1 className="text-2xl font-semibold font-roboto capitalize">Create room</h1>
-            <label htmlFor="title" className='label'>
+            <label htmlFor="title" className='label input_container'>
                 Title
-                <input type="text" id="title" name="title" className="input" onChange={(e) => handleChange(e)} />
+                <input type="text"
+                    {...register("title", { required: "Title is required", minLength: { value: 3, message: "Title must contain 3 characters" } })}
+                    className="input_con"
+                    placeholder='Enter room title'
+                />
+                {
+                    errors.title && <p className='error_message'>{errors.title.message}</p>
+                }
             </label>
-            <label htmlFor="description" className='label'>
+            <label htmlFor="description" className='label input_container'>
                 Description
-                <textarea id="description" name="description" className="input focus:outline-none min-h-20" onChange={(e) => handleChange(e)} />
+                <textarea
+                    {...register("description", { required: "Description is required", minLength: { value: 3, message: "Description must contain 3 characters" } })}
+                    className="input_con"
+                    placeholder='Enter room description'
+                />
+                {
+                    errors.description && <p className='error_message'>{errors.description.message}</p>
+                }
             </label>
-            <label htmlFor="price" className='label'>
-                Price per night
-                <input type="number" id="price" name="price" className="input" onChange={(e) => handleChange(e)} />
+            <label htmlFor="price" className='label input_container'>
+                Price
+                <input type="number"
+                    {...register("price", { required: "price is required" })}
+                    className="input_con"
+                    placeholder='Enter price per night' />
+                {
+                    errors.price && <p className='error_message'>{errors.price.message}</p>
+                }
             </label>
-            <label htmlFor="maxPeople" className='label'>
-                Max people
-                <input type="number" id="maxPeople" name="maxPeople" className="input" onChange={(e) => handleChange(e)} />
+            <label htmlFor="maxPeople" className='label input_container'>
+                Max People
+                <input type="number"
+                    {...register("maxPeople", { required: "Max  people is required" })}
+                    className='input_con'
+                    placeholder='Enter total guest'
+                />
+                {
+                    errors.maxPeople && <p className='error_message'>{errors.maxPeople.message}</p>
+                }
             </label>
-            <label htmlFor="roomNumber" className='label'>
-                RoomNumber
-                <input type="text" id="roomNumber" name="roomNumber" placeholder='Room Numbers (comma-separated)' className="input" onChange={(e) => handleChange(e)} />
+            <label htmlFor="roomNumber" className='label input_container'>
+                Room Number
+                <input type="text"
+                    {...register("roomNumber", { required: "Room numbers are required" })}
+                    className="input_con"
+                    placeholder='Add room number by comma sparated.'
+                />
+                {
+                    errors.roomNumber && <p className='error_message'>{errors.roomNumber.message}</p>
+                }
             </label>
-            <button type='submit' className='btn self-end'>Create romm</button>
+
+            <button type='submit' disabled={isLoading} className='btn self-end'>{isLoading ? "Creating..." : "Create room"}</button>
         </form >
     )
 }
