@@ -3,14 +3,14 @@ const User = require("../models/user.model");
 //update User
 const updateUser = async (req, res, next) => {
   try {
-    const updatedUser = await User.findByIdAndUpdate(
+    await User.findByIdAndUpdate(
       req.params.id,
       { $set: req.body },
       { new: true }
     );
-    res.status(201).json(updatedUser);
+    res.status(201).json({ success: true, message: "User updated." });
   } catch (error) {
-    next(error);
+    res.status(500).json({ success: false, message: error.message })
   }
 };
 
@@ -20,7 +20,7 @@ const deleteUser = async (req, res, next) => {
     await User.findByIdAndDelete(req.params.id);
     res.status(200).json("User is successfully deleted.");
   } catch (error) {
-    next(error);
+    res.status(500).json({ success: false, message: error.message })
   }
 };
 
@@ -30,16 +30,16 @@ const getAllUsers = async (req, res, next) => {
     const allUsers = await User.find();
     res.status(200).json(allUsers);
   } catch (error) {
-    next(error);
+    res.status(500).json({ success: false, message: error.message })
   }
 };
 //get user by id
 const getUserById = async (req, res, next) => {
   try {
     const user = await User.findById(req.params.id);
-    res.status(200).json(user);
+    res.status(200).json({ success: true, message: "User get success", user });
   } catch (error) {
-    next(error);
+    res.status(500).json({ success: false, message: error.message })
   }
 };
 
