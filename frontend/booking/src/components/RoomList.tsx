@@ -47,14 +47,13 @@ const RoomList = ({ hotelId }: { hotelId: string }) => {
 
     useEffect(() => {
         const checkAvalibleRoom = async () => {
-            console.log("refresh")
             try {
-                const res = await fetch(`http://localhost:5000/api/room/checkAvailability`, {
-                    method: "POST",
+                const res = await fetch(`http://localhost:5000/api/room/${hotelId}?checkIn=${roomSearch.checkIn.toISOString()}&checkOut=${roomSearch.checkOut.toISOString()}`, {
+                    method: "GET",
                     headers: {
                         'Content-Type': 'application/json'
                     },
-                    body: JSON.stringify(roomSearch)
+
                 })
                 const { success, message, data } = await res.json()
                 if (!res.ok && success === false) {

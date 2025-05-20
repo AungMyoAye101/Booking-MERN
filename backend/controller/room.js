@@ -1,4 +1,5 @@
 const Room = require("../models/room.model");
+const Booking = require("../models/room.model");
 const Hotel = require("../models/hotel.model");
 const { default: mongoose } = require("mongoose");
 //Create Room
@@ -75,10 +76,18 @@ const deleteRoom = async (req, res, next) => {
 
 //Get all room
 
-const getAllRooms = async (req, res,) => {
+const getAllRoomsByHotelId = async (req, res,) => {
+  const { hotelId } = req.params
+  const { guest } = req.query
+  if (!mongoose.Types.ObjectId.isValid(hotelId)) {
+    return res.status(400).json({ success: false, message: "Invalid hotel id!" })
+  }
   try {
-    const rooms = await Room.find();
-    return res.status(200).json({ success: true, message: "Get all rooms", data: rooms });
+    const hotel = await Hotel.findById(hotelId).populate("rooms")
+
+    const availableRooms = hotel.rooms.filter(room => room.maxPeople === Number(guest))
+
+    return res.status(200).json({ success: true, message: "Get all rooms", data: availableRooms });
   } catch (error) {
     return res.status(500).json({ success: false, message: error.message });
   }
@@ -132,29 +141,34 @@ const bookingRoom = async (req, res, next) => {
 
     await room.save()
 
-    return res.status(200).json({ message: "room boookin successfull", totalPrice })
+    return res.status(200).json({ message: "room booking successfull", totalPrice })
   } catch (error) {
+    console.log(error.message)
     return res.status(500).json({ success: false, message: error.message });
   }
 }
 
 const checkAvailability = async (req, res) => {
-  const { hotel, checkIn, checkOut, guests } = req.body
+  const { roomId } = req.params
+  const { checkIn, checkOut, guests } = req.query
+  const from = checkIn
+  const to = checkOut
 
-  if (!mongoose.Types.ObjectId.isValid(hotel)) {
+  if (!mongoose.Types.ObjectId.isValid(roomId)) {
     return res.status(400).json("hotel Id is not valid")
   }
   try {
-    const rooms = await Room.find({ hotel })
+    const room = await Room.findById(roomId)
+    if (!room) {
+      return res.status(404).json({ success: false, message: "Room not found." })
+    }
 
-    const availableRooms = rooms.map((room) => {
-
-      const availableRoomNumbers = room.roomNumbers.filter((r) => r.booking.every((date) => new Date(date) < new Date(checkIn) || new Date(date) > new Date(checkOut)))
-
-      return { ...room.toObject(), roomNumbers: availableRoomNumbers }
-
+    const availableRooms = room.roomNumbers.filter((roomNumber) => {
+      const isAvailable = roomNumber.booking.every(b => (
+        to <= b.checkIn || from >= b.checkOut
+      ))
+      return isAvailable
     })
-
     return res.status(200).json({ success: true, message: "Room checked successfull", data: availableRooms })
   } catch (error) {
     return res.status(500).json({ success: false, message: error.message });
@@ -165,7 +179,7 @@ module.exports = {
   createRoom,
   updateRoom,
   deleteRoom,
-  getAllRooms,
+  getAllRoomsByHotelId,
   getRoomById,
   bookingRoom,
   checkAvailability

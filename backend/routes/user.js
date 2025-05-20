@@ -23,8 +23,9 @@ router.get('/mybooking/:userId', async (req, res) => {
   }
   try {
     const myBooking = await Booking.find({ userId })
+    console.log(myBooking)
 
-    res.status(500).json({ success: false, message: "Booking data get successfully.", data: myBooking })
+    res.status(200).json({ success: true, message: "Booking data get successfully.", data: myBooking })
   } catch (error) {
     res.status(500).json({ success: false, message: error.message })
   }
