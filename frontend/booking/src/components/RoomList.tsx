@@ -12,7 +12,7 @@ const RoomList = ({ hotelId }: { hotelId: string }) => {
     const [roomSearch, setRoomSearch] = useState({
         checkIn: new Date(),
         checkOut: new Date(),
-        guests: 1,
+        guests: 2,
         hotel: hotelId
     })
     const [adultCount, setAdultCount] = useState<number>(1);
@@ -48,7 +48,7 @@ const RoomList = ({ hotelId }: { hotelId: string }) => {
     useEffect(() => {
         const checkAvalibleRoom = async () => {
             try {
-                const res = await fetch(`http://localhost:5000/api/room/${hotelId}?checkIn=${roomSearch.checkIn.toISOString()}&checkOut=${roomSearch.checkOut.toISOString()}`, {
+                const res = await fetch(`http://localhost:5000/api/room/${hotelId}?guest=${roomSearch.guests}&checkIn=${roomSearch.checkIn.toISOString()}&checkOut=${roomSearch.checkOut.toISOString()}`, {
                     method: "GET",
                     headers: {
                         'Content-Type': 'application/json'
@@ -59,6 +59,7 @@ const RoomList = ({ hotelId }: { hotelId: string }) => {
                 if (!res.ok && success === false) {
                     throw new Error(message)
                 }
+                console.log(data)
                 setRooms(data)
 
             } catch (error) {

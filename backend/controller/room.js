@@ -78,17 +78,44 @@ const deleteRoom = async (req, res, next) => {
 
 const getAllRoomsByHotelId = async (req, res,) => {
   const { hotelId } = req.params
-  const { guest } = req.query
+  const { guest, checkIn, checkOut } = req.query
   if (!mongoose.Types.ObjectId.isValid(hotelId)) {
     return res.status(400).json({ success: false, message: "Invalid hotel id!" })
   }
   try {
     const hotel = await Hotel.findById(hotelId).populate("rooms")
 
-    const availableRooms = hotel.rooms.filter(room => room.maxPeople === Number(guest))
+    const availableRooms = hotel.rooms
+      .filter(room => room.maxPeople <= Number(guest))
+      .map(room => {
+        const isAvailableRoom = room.roomNumbers.filter(rn => (
+          rn.booking.every(b => (
+            checkIn >= b.checkOut || checkOut <= b.checkIn
+          ))
+        ))
+
+        if (isAvailableRoom.length > 0) {
+          return {
+            title: room.title,
+            description: room.description,
+            maxPeople: room.maxPeople,
+            price: room.price,
+            roomNumbers: isAvailableRoom.map(item => ({
+              number: item.number,
+              booking: item.booking
+            }))
+          }
+        } else {
+          return null
+        }
+      }).filter(room => room !== null)
+
+    console.log(availableRooms)
+
 
     return res.status(200).json({ success: true, message: "Get all rooms", data: availableRooms });
   } catch (error) {
+    console.log(error.message)
     return res.status(500).json({ success: false, message: error.message });
   }
 };
