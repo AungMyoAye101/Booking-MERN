@@ -96,6 +96,7 @@ const getAllRoomsByHotelId = async (req, res,) => {
 
         if (isAvailableRoom.length > 0) {
           return {
+            _id: room._id,
             title: room.title,
             description: room.description,
             maxPeople: room.maxPeople,
@@ -109,10 +110,6 @@ const getAllRoomsByHotelId = async (req, res,) => {
           return null
         }
       }).filter(room => room !== null)
-
-    console.log(availableRooms)
-
-
     return res.status(200).json({ success: true, message: "Get all rooms", data: availableRooms });
   } catch (error) {
     console.log(error.message)
@@ -131,16 +128,19 @@ const getRoomById = async (req, res, next) => {
 };
 // Booking Room
 
-const bookingRoom = async (req, res, next) => {
+const bookingRoom = async (req, res) => {
   const { roomId, roomNumber, userId, checkIn, checkOut } = req.body;
   try {
 
     if (!mongoose.Types.ObjectId.isValid(roomId)) {
-      return res.status(400).json("Room id is not valid");
+      return res.status(400).json({ sucess: false, message: "Room id is not valid" });
+    }
+    if (!mongoose.Types.ObjectId.isValid(userId)) {
+      return res.status(400).json({ sucess: false, message: "User id is not valid!" });
     }
     const room = await Room.findById(roomId);
     if (!room) {
-      return res.status(404).json("Room not found");
+      return res.status(404).json({ success: false, message: "Room not found" });
     }
 
     const selectedRoom = room.roomNumbers.find((r) => r.number === Number(roomNumber));
@@ -152,7 +152,6 @@ const bookingRoom = async (req, res, next) => {
     const isAvailable = selectedRoom.booking.every((booking) => {
       return new Date(checkIn) >= new Date(booking.checkOut) || new Date(checkOut) <= new Date(booking.checkIn);
     });
-    console.log(isAvailable)
 
     if (!isAvailable) {
 
@@ -168,7 +167,7 @@ const bookingRoom = async (req, res, next) => {
 
     await room.save()
 
-    return res.status(200).json({ message: "room booking successfull", totalPrice })
+    return res.status(200).json({ success: true, message: "room booking successfull", totalPrice })
   } catch (error) {
     console.log(error.message)
     return res.status(500).json({ success: false, message: error.message });

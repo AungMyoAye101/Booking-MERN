@@ -5,6 +5,7 @@ import { MdCalendarMonth } from "react-icons/md";
 import { DateRange } from "react-date-range";
 import { BsPeople } from "react-icons/bs";
 import { roomBooking } from "../lib/room.booking";
+import { useAuth } from "../context/authContext";
 
 const RoomList = ({ hotelId }: { hotelId: string }) => {
 
@@ -15,6 +16,7 @@ const RoomList = ({ hotelId }: { hotelId: string }) => {
         guests: 2,
         hotel: hotelId
     })
+    const { user } = useAuth()
     const [adultCount, setAdultCount] = useState<number>(1);
     const [childrenCount, setChildrenCount] = useState<number>(0);
     const [isDateOpen, setIsDateOpen] = useState(false);
@@ -100,7 +102,7 @@ const RoomList = ({ hotelId }: { hotelId: string }) => {
                 {/* Room option here */}
                 <div className="flex-1 min-w-60 bg-white  h-10 flex items-center rounded-md relative">
                     <div
-                        className="w-full px-4 cursor-pointer text-xs text-nowrap line-clamp-1 font-roboto flex items-cneter gap-1"
+                        className="w-full px-4 cursor-pointer text-xs text-nowrap line-clamp-1 font-roboto flex items-center gap-1"
                         onClick={() => setOpenOPtions(!openOPtions)}
                     >
                         <BsPeople />
@@ -197,7 +199,7 @@ const RoomList = ({ hotelId }: { hotelId: string }) => {
                                     <td className="table-border"> ${room.price}</td>
                                     <td className="table-border">
                                         <button className="btn"
-                                            onClick={() => roomBooking(room._id, r.number, '67d02624399e7df5e7974e42', roomSearch.checkIn, roomSearch.checkOut)}
+                                            onClick={() => roomBooking(room._id, r.number, user._id, roomSearch.checkIn, roomSearch.checkOut)}
                                         >Reserve</button>
                                     </td>
                                 </tr>
