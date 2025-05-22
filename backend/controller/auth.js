@@ -1,6 +1,5 @@
 const User = require("../models/user.model");
 const bcrypt = require("bcrypt");
-const { createError } = require("../utils/error");
 const jwt = require("jsonwebtoken");
 
 //Redister new user
@@ -29,7 +28,7 @@ const register = async (req, res, next) => {
       httpOnly: true,
       secure: process.env.NODE_ENV === 'production',
       sameSite: process.env.NODE_ENV === 'production' ? 'none' : "lax",
-      maxAge: 1 * 60 * 60 * 1000
+      maxAge: 1 * 24 * 60 * 60 * 1000
     });
     return res.status(201).json({ success: true, message: "User created successfully.", user: newUser });
   } catch (error) {
@@ -51,7 +50,7 @@ const login = async (req, res) => {
       user.password
     );
     if (!isPasswordCorrect) {
-      return next(createError(400, "Wrong username or password"));
+      return res.status(400).json({ success: false, message: "Email or password does not match!" })
     }
 
     const token = jwt.sign(
@@ -64,9 +63,9 @@ const login = async (req, res) => {
       httpOnly: true,
       secure: process.env.NODE_ENV === "production",
       sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
-      maxAge: 1 * 60 * 60 * 1000  // Restrict cookie sharing across origins
+      maxAge: 1 * 24 * 60 * 60 * 1000  // Restrict cookie sharing across origins
     });
-    return res.status(201).json({ success: true, message: "Login successfull", user });
+    return res.status(201).json({ success: true, message: "Login successful", data: user });
   } catch (error) {
     return res.status(500).json({ success: false, message: error.message })
   }
@@ -82,8 +81,20 @@ const logout = (req, res) => {
   }
 };
 
-const currentUser = (req, res) => {
-  console.log(req.user)
+
+//check current user
+const currentUser = async (req, res) => {
+
+  try {
+    const user = await User.findById(req.user.id)
+    if (!user) {
+      return res.status(404).json({ success: false, message: "User not found" })
+    }
+
+    res.status(200).json({ success: true, message: "success", data: user })
+  } catch (error) {
+    res.status(500).json({ success: false, message: error.message })
+  }
 }
 
 module.exports = { register, login, logout, currentUser };

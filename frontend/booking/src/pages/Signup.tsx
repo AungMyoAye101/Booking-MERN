@@ -12,7 +12,7 @@ const Signup = () => {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false)
   const [showPassword, setShowPassword] = useState(false)
-
+  const [error, setError] = useState('')
 
   const { register, handleSubmit, watch, formState: { errors } } = useForm<CreateUserType>()
 
@@ -31,7 +31,7 @@ const Signup = () => {
       const resData = await res.json()
 
       if (!res.ok && resData.success === false) {
-        console.log(resData.message)
+        setError(resData.message)
         showToast("error", resData.message)
         return
       }
@@ -41,7 +41,7 @@ const Signup = () => {
 
     } catch (error) {
       if (error instanceof Error) {
-        console.log(error)
+        setError(error.message)
         showToast("error", error.message)
       }
     } finally {
@@ -101,26 +101,26 @@ const Signup = () => {
           </label>
 
 
-          <label htmlFor="comfirm-password" className="input_container">
-            <span className="font-roboto text-sm">Comfirm Password</span>
+          <label htmlFor="confirm-password" className="input_container">
+            <span className="font-roboto text-sm">Confirm Password</span>
             <input
               type="password"
-              id="comfirm-password"
-              {...register("comfrimPassword", {
+              id="confirm-password"
+              {...register("confirmPassword", {
                 validate: (val) => {
                   if (!val) {
-                    return "Comfrim password is required"
+                    return "Confirm password is required"
                   } else if (val !== watch("password")) {
                     return "Passwords do not match."
                   }
                 }
               })}
 
-              placeholder="comfirm password"
+              placeholder="confirm password"
               className="input_con"
             />
             {
-              errors.comfrimPassword && <p className="error_message">{errors.comfrimPassword.message}</p>
+              errors.confirmPassword && <p className="error_message">{errors.confirmPassword.message}</p>
             }
           </label>
         </main>
@@ -129,9 +129,12 @@ const Signup = () => {
           disabled={loading}
           className={`bg-blue-800  px-4 py-1.5 rounded-lg font-roboto  text-white hover:bg-blue-500  ${loading ? 'cursor-wait' : "cursor-pointer"}`}
         >
-          {loading ? "Submiting..." : "Submit"}
+          {loading ? "Submitting..." : "Submit"}
         </button>
         <Link to={'/login'} className="font-roboto text-sm hover:text-purple-500">Already have an account? Login</Link>
+        {
+          error && <p className="error_message">{error}</p>
+        }
       </form>
     </section>
   );

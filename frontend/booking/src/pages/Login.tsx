@@ -30,12 +30,12 @@ const Login = () => {
       });
       const resData = await res.json();
       if (!res.ok && resData.success === false) {
-        console.log(resData.message)
+        setError(resData.message)
         showToast("error", resData.message)
         return
       }
 
-      dispatch({ type: "LOGIN", payload: resData.user });
+      dispatch({ type: "LOGIN", payload: resData.data });
       showToast("success", resData.message)
       navigate("/");
 
@@ -57,7 +57,7 @@ const Login = () => {
             type="email"
             id="email"
             {...register("email", { required: "This field is required." })}
-            placeholder="example@gamil.com"
+            placeholder="example@gmail.com"
             className="input_con"
           />
           {

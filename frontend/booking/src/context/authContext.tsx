@@ -1,7 +1,7 @@
 import { createContext, useContext, useEffect, useReducer, } from "react"
 import { UserType } from "../lib/types"
 import { base_url } from "../lib/helper"
-import { showToast } from "./ToastProvider"
+
 
 type authContextProps = {
     user: UserType,
@@ -43,15 +43,15 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
                 method: "GET",
                 headers: {
                     "Content-type": "application/json"
-                }
+                },
+                credentials: "include"
 
             })
-            const data = await res.json()
-            if (!res.ok) {
-                showToast("error", data.message)
-                throw new Error(data.message)
+            const { success, message, data } = await res.json()
+            if (!res.ok && success === false) {
+                throw new Error(message)
             }
-            dispatch({ type: "LOGIN", payload: data.user })
+            dispatch({ type: "LOGIN", payload: data })
         } catch (error) {
             if (error instanceof Error) console.log(error.message)
         }
@@ -59,6 +59,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     useEffect(() => {
         currentUser()
     }, [])
+
 
     return (
         <authContext.Provider value={{ user: state, dispatch }}>{children}</authContext.Provider>

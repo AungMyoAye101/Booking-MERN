@@ -1,5 +1,4 @@
 const jwt = require("jsonwebtoken");
-const { createError } = require("./error");
 
 
 const verifyToken = (req, res, next) => {
@@ -16,15 +15,6 @@ const verifyToken = (req, res, next) => {
   }
 };
 
-const verifyUser = (req, res, next) => {
-  verifyToken(req, res, next, () => {
-    if (req.user.id === req.parmas.id || req.user.isAdmin) {
-      next();
-    } else {
-      next(createError(403, "You are not authorized"));
-    }
-  });
-};
 const verifyAdmin = (req, res, next) => {
   verifyToken(req, res, next, () => {
     if (req.user.isAdmin) {
@@ -35,4 +25,4 @@ const verifyAdmin = (req, res, next) => {
   });
 };
 
-module.exports = { verifyToken, verifyAdmin, verifyUser };
+module.exports = { verifyToken, verifyAdmin };
