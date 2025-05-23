@@ -15,6 +15,7 @@ const Search = () => {
   const checkOut = searchParam.get('checkOut')
   const guests = searchParam.get('guests')
   const rating = searchParam.get('rating')
+  const sort = searchParam.get('sort')
   const minPrice = searchParam.get('minPrice')
   const maxPrice = searchParam.get('maxPrice')
 
@@ -29,7 +30,7 @@ const Search = () => {
   const searchHotel = async () => {
     try {
       setLoading(true)
-      const res = await fetch(base_url + `/api/search?destination=${destination}&checkIn=${checkIn}&checkOut=${checkOut}&guests=${guests}&rating=${rating}&minPrice=${minPrice}&maxPrice=${maxPrice}`, {
+      const res = await fetch(base_url + `/api/search?destination=${destination}&checkIn=${checkIn}&checkOut=${checkOut}&guests=${guests}&sort=${sort}&rating=${rating}&minPrice=${minPrice}&maxPrice=${maxPrice}`, {
         method: "GET",
         headers: {
           "Content-type": "application/json"
@@ -84,10 +85,13 @@ const Search = () => {
                 <img src={item.photos[0]} alt="hotel image" className="w-full h-full object-cover" />
               </Link>
               <div className="flex justify-between gap-4 flex-1">
-                <div className="flex flex-col gap-1 flex-1">
-                  <h1 className="text-2xl font-roboto font-semibold">{item.name}</h1>
-                  <h2 className="font-roboto text-sm opacity-85 ">{item.title} </h2>
-                  <p className=" font-roboto line-clamp-3">{item.description}</p>
+                <div className="flex flex-col gap-1 flex-1 font-roboto">
+                  <h1 className="text-2xl  font-semibold">{item.name}</h1>
+                  <h2 className=" text-sm opacity-85 ">{item.title} </h2>
+                  <p className="  line-clamp-3">{item.description}</p>
+                  <div className="text-lg ">
+                    <b>{item.price} </b>/night
+                  </div>
 
                 </div>
                 <div className="flex flex-col gap-4 justify-between">

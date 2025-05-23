@@ -3,11 +3,11 @@ const Hotel = require("../models/hotel.model");
 
 const searchController = async (req, res) => {
 
-    const { destination, minPrice, maxPrice, page = 1, limit = 6, rating } = req.query;
-
-    if (destination === "" || destination.length === 0) {
-        return;
-    }
+    const { destination, minPrice, maxPrice, page = 1, limit = 6, rating, sort } = req.query;
+    console.log(sort)
+    // if (destination === "" || destination.length === 0) {
+    //     return;
+    // }
     const searchQuery = {
         city: { $regex: new RegExp(destination, 'i') },
     }
@@ -20,13 +20,23 @@ const searchController = async (req, res) => {
         if (maxPrice) searchQuery.price.$lte = parseInt(maxPrice || 999)
     }
     const skip = (parseInt(page) - 1) * parseInt(limit)
-    const sortOption = {}
+    let sortOption = {}
 
+    if (sort === "priceAsc") {
+        sortOption = { price: 1 }
+    } else if (sort === 'priceDesc') {
+        sortOption = { price: -1 }
+    } else if (sort === 'highest') {
+        sortOption = { rating: -1 }
+    } else if (sort === 'lowest') {
+        sortOption = { rating: 1 }
+    } else {
+        sortOption = {}
+    }
 
-
-    console.log(searchQuery)
+    console.log(sortOption)
     try {
-        const hotel = await Hotel.find(searchQuery).skip(skip).limit(limit);
+        const hotel = await Hotel.find({}).sort(sortOption).skip(skip).limit(limit);
 
         if (hotel.length === 0) {
             return res.status(404).json({ success: false, message: "No destination found!" });
