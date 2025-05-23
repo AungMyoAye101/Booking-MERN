@@ -81,7 +81,7 @@ const deleteHotel = async (req, res) => {
   }
 };
 //Get all hotel
-const getAllHotels = async (req, res, next) => {
+const getAllHotels = async (req, res,) => {
   // const {
   //   destination,
   //   min = 0,
@@ -109,7 +109,7 @@ const getAllHotels = async (req, res, next) => {
 };
 
 //get hotel by specific id
-const getHotelById = async (req, res, next) => {
+const getHotelById = async (req, res) => {
   try {
     const hotel = await Hotel.findById(req.params.id).populate("rooms");
     return res.status(200).json({ success: true, message: "Success to get hotel by id", data: hotel });
@@ -156,6 +156,7 @@ const getHotelByCity = async (req, res) => {
     res.status(500).json({ success: false, message: error.message })
   }
 }
+
 
 module.exports = {
   createHotel,

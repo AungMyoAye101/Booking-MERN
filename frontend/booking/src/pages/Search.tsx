@@ -1,13 +1,46 @@
-import { Link } from "react-router-dom";
+import { Link, useSearchParams } from "react-router-dom";
 
 import SideBar from "../components/SideBar";
+import { useEffect, useState } from "react";
+import { base_url } from "../lib/helper";
 
 
 
 const Search = () => {
+  const [hotel, setHotel] = useState()
 
-  // const { searchData, loading } = useSearch()
+  const [searchParam] = useSearchParams()
+  const destination = searchParam.get('destination')
+  const checkIn = searchParam.get('checkIn')
+  const checkOut = searchParam.get('checkOut')
+  const guest = searchParam.get('guest')
 
+  console.log(destination, checkIn, checkOut, guest)
+  useEffect(() => {
+    searchHotel()
+
+  }, [destination, checkIn, checkOut, guest])
+
+  const searchHotel = async () => {
+    try {
+      const res = await fetch(base_url + `/api/search?destination=${destination}&checkIn=${checkIn}&checkOut=${checkOut}&guest=${guest}`, {
+        method: "GET",
+        headers: {
+          "Content-type": "application/json"
+        }
+      })
+      const { success, message, data } = await res.json()
+      if (!res.ok && success === false) {
+        throw new Error(message)
+      }
+      setHotel(data)
+    } catch (error) {
+      if (error instanceof Error) {
+        throw new Error(error.message)
+      }
+    }
+  }
+  console.log(hotel)
   return (
     <section className=" py-20 flex gap-4   max-w-6xl mx-auto">
       {/* <SideBar />

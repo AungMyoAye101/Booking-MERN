@@ -5,7 +5,7 @@ import "react-date-range/dist/styles.css"; // main css file
 import "react-date-range/dist/theme/default.css"; // theme css file
 import { format } from "date-fns";
 import { MdCalendarMonth } from "react-icons/md";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 
 
 type OptionsType = {
@@ -14,7 +14,7 @@ type OptionsType = {
   room: number;
 };
 const SearchBox = () => {
-  // const { handleSearch } = useSearch()
+  const [searchParams, setSearchParams] = useSearchParams()
 
   const [destination, setDestination] = useState<string>("");
   const [adultCount, setAdultCount] = useState<number>(0);
@@ -29,18 +29,21 @@ const SearchBox = () => {
       key: "selection",
     },
   ]);
-  console.log(datePicker);
   //option
   const [openOPtions, setOpenOPtions] = useState(false);
   const formatDate = (date: Date) => {
     return format(date, "dd/mm/yyyy");
   };
 
-  // const onSubmit = () => {
-  //   handleSearch(destination, datePicker[0].startDate, datePicker[0].endDate, adultCount + childrenCount);
-  //   navigate(`/search?destination=${destination}&checkIn=${datePicker[0].startDate}&checkOut=${datePicker[0].endDate}&adultCount=${adultCount}&childrenCount=${childrenCount}`);
+  const handleSearch = () => {
+    setSearchParams({
+      destination,
+      checkIn: datePicker[0].startDate.toISOString(),
+      checkOut: datePicker[0].endDate.toISOString(),
+      guest: (adultCount + childrenCount).toString()
+    });
 
-  // }
+  }
 
   return (
     <div
@@ -160,7 +163,7 @@ const SearchBox = () => {
           </div>
         )}
       </div>
-      <button className="btn" >
+      <button className="btn" onClick={() => handleSearch()}>
         search
       </button>
     </div>
