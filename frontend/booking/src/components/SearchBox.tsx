@@ -5,19 +5,13 @@ import "react-date-range/dist/styles.css"; // main css file
 import "react-date-range/dist/theme/default.css"; // theme css file
 import { format } from "date-fns";
 import { MdCalendarMonth } from "react-icons/md";
-import { useNavigate, useSearchParams } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
-
-type OptionsType = {
-  adult: number;
-  children: number;
-  room: number;
-};
 const SearchBox = () => {
-  const [searchParams, setSearchParams] = useSearchParams()
+
 
   const [destination, setDestination] = useState<string>("");
-  const [adultCount, setAdultCount] = useState<number>(0);
+  const [adultCount, setAdultCount] = useState<number>(1);
   const [childrenCount, setChildrenCount] = useState<number>(0);
 
   const navigate = useNavigate();
@@ -36,12 +30,16 @@ const SearchBox = () => {
   };
 
   const handleSearch = () => {
-    setSearchParams({
-      destination,
-      checkIn: datePicker[0].startDate.toISOString(),
-      checkOut: datePicker[0].endDate.toISOString(),
-      guest: (adultCount + childrenCount).toString()
-    });
+    const checkIn = datePicker[0].startDate.toISOString();
+    const checkOut = datePicker[0].endDate.toISOString();
+    const guest = (adultCount + childrenCount).toString();
+    navigate(`/search?destination=${destination}&checkIn=${checkIn}&checkOut=${checkOut}&guests=${guest}`)
+    // setSearchParams({
+    //   destination,
+    //   checkIn,
+    //   checkOut,
+    //   guest,
+    // });
 
   }
 
