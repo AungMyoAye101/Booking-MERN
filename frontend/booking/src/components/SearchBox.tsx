@@ -34,13 +34,6 @@ const SearchBox = () => {
     const checkOut = datePicker[0].endDate.toISOString();
     const guest = (adultCount + childrenCount).toString();
     navigate(`/search?destination=${destination}&checkIn=${checkIn}&checkOut=${checkOut}&guests=${guest}`)
-    // setSearchParams({
-    //   destination,
-    //   checkIn,
-    //   checkOut,
-    //   guest,
-    // });
-
   }
 
   return (

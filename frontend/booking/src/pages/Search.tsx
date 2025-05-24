@@ -25,7 +25,7 @@ const Search = () => {
   useEffect(() => {
     searchHotel()
 
-  }, [destination, checkIn, checkOut, guests])
+  }, [searchParam.toString()])
 
   const searchHotel = async () => {
     try {
@@ -40,7 +40,6 @@ const Search = () => {
       if (!res.ok && success === false) {
         throw new Error(message)
       }
-      console.log(data)
       setHotel(data)
     } catch (error) {
       if (error instanceof Error) {
@@ -69,7 +68,7 @@ const Search = () => {
   </div>))
   return (
     <section className=" py-20 flex gap-4   max-w-6xl mx-auto">
-      {/* <SideBar /> */}
+      <SideBar />
       <div className="w-full flex flex-col gap-4">
         {
           loading ? loadingElem : hotel?.map((item) => (
