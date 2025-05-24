@@ -26,10 +26,38 @@ const SideBar = () => {
     return (
         <section className='w-80  rounded-lg bg-white  shadow-md '>
 
-            {/* <div className='flex flex-col gap-1 border p-4'>
-                 <h3 className="font-roboto text-lg font-semibold">Property rating</h3>
+            <div className='flex flex-col gap-1 border p-4'>
+                <h3 className="font-roboto text-lg font-semibold">Property price</h3>
+                <div className=" flex gap-4 font-roboto text-sm">
+                    <label htmlFor="minPrice">
+                        Min price
+                        <input
+                            id="minPrice"
+                            type="number"
+                            name="minPrice"
+                            placeholder="00.00"
+                            min={0}
+                            onChange={(e) => handleChange(e)}
+                            className="w-24 h-10 shadow focus:shadow-green-200 bg-neutral-300 rounded-lg text-sm "
+                        />
+                    </label>
+                    <label htmlFor="maxPrice">
+                        Max price
+                        <input
+                            id="maxPrice"
+                            type="number"
+                            name="maxPrice"
+                            placeholder="00.00"
+                            min={100}
+                            onChange={(e) => handleChange(e)}
+                            className="w-24 h-10 shadow focus:shadow-green-200 bg-neutral-300 rounded-lg text-sm "
+                        />
+                    </label>
 
-            </div> */}
+
+                </div>
+
+            </div>
 
             {/* filtering by rating */}
             <div className='flex flex-col gap-1 border p-4'>
