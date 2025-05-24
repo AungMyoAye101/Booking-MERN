@@ -3,11 +3,12 @@ const Hotel = require("../models/hotel.model");
 
 const searchController = async (req, res) => {
 
-    const { destination, minPrice, maxPrice, page = 1, limit = 6, rating, sort } = req.query;
+    const { destination, minPrice, maxPrice, page = 1, limit = 6, rating, highestPrice, lowestPrice, highestRating, lowestRating } = req.query;
 
-    if (destination === "" || destination.length === 0) {
-        return;
-    }
+    console.log(req.query)
+    // if (destination === "" || destination.length === 0) {
+    //     return;
+    // }
     const searchQuery = {
         // city: { $regex: new RegExp(destination, 'i') },
     }
@@ -23,13 +24,13 @@ const searchController = async (req, res) => {
     const skip = (parseInt(page) - 1) * parseInt(limit)
     let sortOption = {}
 
-    if (sort === "priceAsc") {
-        sortOption = { price: 1 }
-    } else if (sort === 'priceDesc') {
+    if (highestPrice) {
         sortOption = { price: -1 }
-    } else if (sort === 'highest') {
+    } else if (lowestPrice) {
+        sortOption = { price: 1 }
+    } else if (highestRating) {
         sortOption = { rating: -1 }
-    } else if (sort === 'lowest') {
+    } else if (lowestRating) {
         sortOption = { rating: 1 }
     } else {
         sortOption = {}

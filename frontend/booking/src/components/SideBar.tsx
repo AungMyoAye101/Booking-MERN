@@ -1,6 +1,10 @@
 import { useSearchParams } from "react-router-dom"
 
-
+interface SortingElemsType {
+    placeholder: string,
+    name: string,
+    value: boolean
+}
 const SideBar = () => {
     const [searchParams, setSearchParams] = useSearchParams()
 
@@ -22,7 +26,34 @@ const SideBar = () => {
         fields: [{ value: 5, label: "5 Stars" }, { value: 4, label: "4 Stars" }, { value: 3, label: "3 Stars" }, { value: 2, label: "2 Stars" }, { value: 1, label: "1 Stars" }]
     }
 
+    const sortingElems: SortingElemsType[] = [{
 
+        placeholder: "Highest price",
+        name: "highestPrice",
+        value: true
+
+    }, {
+
+        placeholder: "Lowest price",
+        name: "lowestPrice",
+        value: true
+
+    }, {
+
+        placeholder: "Highest rating",
+        name: "highestRating",
+        value: true
+
+    }, {
+
+        placeholder: "lowestest price",
+        name: "lowestRating",
+        value: true
+
+    },
+
+
+    ]
     return (
         <section className='w-80  rounded-lg bg-white  shadow-md '>
 
@@ -72,6 +103,19 @@ const SideBar = () => {
                 }
 
 
+            </div>
+            {/*             
+            Sorting Property */}
+            <div className='flex flex-col gap-1 border p-4'>
+
+                {
+                    sortingElems.map(field => (
+                        <div key={field.name} className='flex gap-2 items-center '>
+                            <input name={field.name} id={field.name} type="checkbox" value={'true'} checked={searchParams.get(field.name) === 'true'} onChange={(e) => handleChange(e)} className="cursor-pointer" />
+                            <label htmlFor={field.name} className='font-roboto text-sm cursor-pointer'>{field.placeholder}</label>
+                        </div>
+                    ))
+                }
             </div>
         </section>
     )

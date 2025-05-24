@@ -30,7 +30,8 @@ const Search = () => {
   const searchHotel = async () => {
     try {
       setLoading(true)
-      const res = await fetch(base_url + `/api/search?destination=${destination}&checkIn=${checkIn}&checkOut=${checkOut}&guests=${guests}&sort=${sort}&rating=${rating}&minPrice=${minPrice}&maxPrice=${maxPrice}`, {
+      const querySring = searchParam.toString()
+      const res = await fetch(base_url + `/api/search?${querySring}`, {
         method: "GET",
         headers: {
           "Content-type": "application/json"
