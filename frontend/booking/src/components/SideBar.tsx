@@ -26,34 +26,40 @@ const SideBar = () => {
         fields: [{ value: 5, label: "5 Stars" }, { value: 4, label: "4 Stars" }, { value: 3, label: "3 Stars" }, { value: 2, label: "2 Stars" }, { value: 1, label: "1 Stars" }]
     }
 
-    const sortingElems: SortingElemsType[] = [{
+    const sortingElems = [
+        {
+            fieldsName: "sortByPrice",
+            fieldData: [{
+                placeholder: "Highest price",
+                value: "highestPrice",
+                label: "sortbyHighestPrice"
+            }, {
 
-        placeholder: "Highest price",
-        name: "highestPrice",
-        value: true
+                placeholder: "Lowest price",
+                value: "lowestPrice",
+                label: "sortByLowestPrice",
 
-    }, {
+            }]
+        },
+        {
+            fieldsName: "sortByRating",
+            fieldData: [{
+                placeholder: "Highest rating",
+                value: "highestRating",
+                label: "sortbyHighestRating"
+            }, {
 
-        placeholder: "Lowest price",
-        name: "lowestPrice",
-        value: true
+                placeholder: "Lowest rating",
+                value: "lowestRating",
+                label: "sortByLowestRating",
 
-    }, {
-
-        placeholder: "Highest rating",
-        name: "highestRating",
-        value: true
-
-    }, {
-
-        placeholder: "lowestest price",
-        name: "lowestRating",
-        value: true
-
-    },
-
+            }]
+        }
 
     ]
+
+
+
     return (
         <section className='w-80  rounded-lg bg-white  shadow-md '>
 
@@ -107,15 +113,18 @@ const SideBar = () => {
             {/*             
             Sorting Property */}
             <div className='flex flex-col gap-1 border p-4'>
-
+                <h3 className="font-roboto text-lg font-semibold">Property Sorting</h3>
                 {
-                    sortingElems.map(field => (
-                        <div key={field.name} className='flex gap-2 items-center '>
-                            <input name={field.name} id={field.name} type="checkbox" value={'true'} checked={searchParams.get(field.name) === 'true'} onChange={(e) => handleChange(e)} className="cursor-pointer" />
-                            <label htmlFor={field.name} className='font-roboto text-sm cursor-pointer'>{field.placeholder}</label>
-                        </div>
+                    sortingElems.map((fields) => (
+                        fields.fieldData.map((data, i) => (
+                            <div key={i} className='flex gap-2 items-center '>
+                                <input name={fields.fieldsName} id={data.label} type="radio" value={data.value} onChange={(e) => handleChange(e)} className="cursor-pointer" />
+                                <label htmlFor={data.label} className='font-roboto text-sm cursor-pointer'>{data.placeholder}</label>
+                            </div>
+                        ))
                     ))
                 }
+
             </div>
         </section>
     )
