@@ -30,12 +30,12 @@ const SideBar = () => {
         {
             fieldsName: "sortByPrice",
             fieldData: [{
-                placeholder: "Highest price",
+                placeholder: "Highest to lowest price",
                 value: "highestPrice",
                 label: "sortbyHighestPrice"
             }, {
 
-                placeholder: "Lowest price",
+                placeholder: "Lowest to highest price",
                 value: "lowestPrice",
                 label: "sortByLowestPrice",
 
@@ -44,12 +44,12 @@ const SideBar = () => {
         {
             fieldsName: "sortByRating",
             fieldData: [{
-                placeholder: "Highest rating",
+                placeholder: "Highest to lowest rating",
                 value: "highestRating",
                 label: "sortbyHighestRating"
             }, {
 
-                placeholder: "Lowest rating",
+                placeholder: "Lowest to highest rating",
                 value: "lowestRating",
                 label: "sortByLowestRating",
 
@@ -74,6 +74,7 @@ const SideBar = () => {
                             name="minPrice"
                             placeholder="00.00"
                             min={0}
+                            value={searchParams.get('minPrice') ?? ''}
                             onChange={(e) => handleChange(e)}
                             className="w-24 h-10 shadow focus:shadow-green-200 bg-neutral-300 rounded-lg text-sm "
                         />
@@ -85,7 +86,8 @@ const SideBar = () => {
                             type="number"
                             name="maxPrice"
                             placeholder="00.00"
-                            min={100}
+                            value={searchParams.get('maxPrice') ?? ''}
+
                             onChange={(e) => handleChange(e)}
                             className="w-24 h-10 shadow focus:shadow-green-200 bg-neutral-300 rounded-lg text-sm "
                         />
@@ -118,7 +120,7 @@ const SideBar = () => {
                     sortingElems.map((fields) => (
                         fields.fieldData.map((data, i) => (
                             <div key={i} className='flex gap-2 items-center '>
-                                <input name={fields.fieldsName} id={data.label} type="radio" value={data.value} onChange={(e) => handleChange(e)} className="cursor-pointer" />
+                                <input name={fields.fieldsName} id={data.label} type="radio" value={data.value} checked={searchParams.get(fields.fieldsName) === data.value} onChange={(e) => handleChange(e)} className="cursor-pointer" />
                                 <label htmlFor={data.label} className='font-roboto text-sm cursor-pointer'>{data.placeholder}</label>
                             </div>
                         ))

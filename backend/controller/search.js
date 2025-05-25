@@ -3,7 +3,7 @@ const Hotel = require("../models/hotel.model");
 
 const searchController = async (req, res) => {
 
-    const { destination, minPrice, maxPrice, page = 1, limit = 6, rating, highestPrice, lowestPrice, highestRating, lowestRating } = req.query;
+    const { destination, minPrice, maxPrice, page = 1, limit = 6, rating, sortByPrice, sortByRating } = req.query;
 
     console.log(req.query)
     // if (destination === "" || destination.length === 0) {
@@ -24,31 +24,35 @@ const searchController = async (req, res) => {
     const skip = (parseInt(page) - 1) * parseInt(limit)
     let sortOption = {}
 
-    if (highestPrice) {
+    if (sortByPrice === "highestPrice") {
         sortOption = { price: -1 }
-    } else if (lowestPrice) {
+    } else if (sortByPrice === "lowestPrice") {
         sortOption = { price: 1 }
-    } else if (highestRating) {
+    } else {
+        sortOption = {}
+    }
+
+    if (sortByRating === "highestRating") {
         sortOption = { rating: -1 }
-    } else if (lowestRating) {
+    } else if (sortByRating === "lowestRating") {
         sortOption = { rating: 1 }
     } else {
         sortOption = {}
     }
 
-    try {
-        const hotel = await Hotel.find(searchQuery).sort(sortOption).skip(skip).limit(limit);
+    // try {
+    //     const hotel = await Hotel.find(searchQuery).sort(sortOption).skip(skip).limit(limit);
 
-        if (hotel.length === 0) {
-            return res.status(404).json({ success: false, message: "No destination found!" });
-        }
+    //     if (hotel.length === 0) {
+    //         return res.status(404).json({ success: false, message: "No destination found!" });
+    //     }
 
-        return res.status(200).json({ success: true, message: "Success", data: hotel });
+    //     return res.status(200).json({ success: true, message: "Success", data: hotel });
 
-    } catch (error) {
-        console.log(error);
-        return res.status(500).json({ message: "Failed to search!" });
-    }
+    // } catch (error) {
+    //     console.log(error);
+    //     return res.status(500).json({ message: "Failed to search!" });
+    // }
 
 }
 

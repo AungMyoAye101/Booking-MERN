@@ -23,7 +23,7 @@ const Search = () => {
 
 
   useEffect(() => {
-    // searchHotel()
+    searchHotel()
 
   }, [searchParam.toString()])
 
