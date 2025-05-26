@@ -28,6 +28,15 @@ const SideBar = () => {
         setSearchParams(updateParams)
     }
 
+
+    const priceRange = [{
+        name: "minPrice",
+        label: "Min price"
+    }, {
+        name: "maxPrice",
+        label: "Max price"
+    }]
+
     const ratingInputElems = {
         name: "rating",
         fields: [{ value: 5, label: "5 Stars" }, { value: 4, label: "4 Stars" }, { value: 3, label: "3 Stars" }, { value: 2, label: "2 Stars" }, { value: 1, label: "1 Stars" }]
@@ -72,33 +81,25 @@ const SideBar = () => {
 
             <div className='flex flex-col gap-1 border p-4'>
                 <h3 className="font-roboto text-lg font-semibold">Property price</h3>
-                <div className=" flex gap-4 font-roboto text-sm">
-                    <label htmlFor="minPrice">
-                        Min price
-                        <input
-                            id="minPrice"
-                            type="number"
-                            name="minPrice"
-                            placeholder="00.00"
-                            min={0}
-                            value={searchParams.get('minPrice') ?? ''}
-                            onChange={(e) => handleChange(e)}
-                            className="w-24 h-10 shadow focus:shadow-green-200 bg-neutral-300 rounded-lg text-sm "
-                        />
-                    </label>
-                    <label htmlFor="maxPrice">
-                        Max price
-                        <input
-                            id="maxPrice"
-                            type="number"
-                            name="maxPrice"
-                            placeholder="00.00"
-                            value={searchParams.get('maxPrice') ?? ''}
+                <div className=" flex  gap-2 font-roboto text-sm">
+                    {
+                        priceRange.map(field => (
+                            <label htmlFor="minPrice">
+                                {field.label}
+                                <input
+                                    id={field.name}
+                                    type="number"
+                                    name={field.name}
+                                    placeholder="00.00"
+                                    value={searchParams.get(field.name) ?? ''}
+                                    onChange={(e) => handleChange(e)}
+                                    className="w-20 h-8 shadow focus:shadow-green-200 bg-neutral-300 rounded-lg text-sm "
+                                />
+                            </label>
+                        ))
+                    }
 
-                            onChange={(e) => handleChange(e)}
-                            className="w-24 h-10 shadow focus:shadow-green-200 bg-neutral-300 rounded-lg text-sm "
-                        />
-                    </label>
+
 
 
                 </div>
