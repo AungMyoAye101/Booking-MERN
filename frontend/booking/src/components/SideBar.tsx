@@ -11,9 +11,20 @@ const SideBar = () => {
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const updateParams = new URLSearchParams(searchParams)
-        console.log(updateParams)
-        const { name, value } = e.target
-        if (!value || value === '') {
+        const { name, value, checked } = e.target
+
+        if (name === 'rating') {
+            const currentRating = searchParams.get('rating')?.split(',') || []
+            let updateRating = checked ? [...currentRating, value] : currentRating.filter(r => r !== value)
+            updateRating = [...new Set(updateRating)].sort()
+            console.log("update rating", updateRating)
+
+            if (updateRating.length > 0) {
+                updateParams.set("rating", updateRating.join(','))
+            } else {
+                updateParams.delete("rating")
+            }
+        } else if (!value || value === '') {
             updateParams.delete(name)
         } else {
             updateParams.set(name, value)
@@ -104,7 +115,7 @@ const SideBar = () => {
                 {
                     ratingInputElems.fields.map((field) => (
                         <div key={field.value} className='flex gap-2 items-center '>
-                            <input name={ratingInputElems.name} id={ratingInputElems.name + field.value} value={field.value} type="radio" onChange={(e) => handleChange(e)} className="cursor-pointer" />
+                            <input name={ratingInputElems.name} id={ratingInputElems.name + field.value} value={field.value} type="checkbox" onChange={(e) => handleChange(e)} className="cursor-pointer" />
                             <label htmlFor={ratingInputElems.name + field.value} className='font-roboto text-sm cursor-pointer'>{field.label}</label>
                         </div>
                     ))
