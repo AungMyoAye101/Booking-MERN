@@ -6,11 +6,11 @@ const searchController = async (req, res) => {
     const { destination, minPrice, maxPrice, page = 1, limit = 6, rating, sortByPrice, sortByRating } = req.query;
     console.log(sortByPrice)
 
-    // if (destination === "" || destination.length === 0) {
-    //     return;
-    // }
+    if (destination === "" || destination.length === 0) {
+        return res.status(400).json({ success: false, message: "Destination is required and cannot be empty!" });
+    }
     const searchQuery = {
-        // city: { $regex: new RegExp(destination, 'i') },
+        city: { $regex: new RegExp(destination, 'i') },
     }
 
     if (rating) {
