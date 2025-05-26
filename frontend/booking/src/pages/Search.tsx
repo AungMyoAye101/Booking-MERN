@@ -10,20 +10,17 @@ import { HotelType } from "../lib/types";
 const Search = () => {
   const [hotel, setHotel] = useState<HotelType[]>([])
   const [searchParam] = useSearchParams()
-  const destination = searchParam.get('destination')
-  const checkIn = searchParam.get('checkIn')
-  const checkOut = searchParam.get('checkOut')
-  const guests = searchParam.get('guests')
-  const rating = searchParam.get('rating')
-  const sort = searchParam.get('sort')
-  const minPrice = searchParam.get('minPrice')
-  const maxPrice = searchParam.get('maxPrice')
+
 
   const [loading, setLoading] = useState(false)
 
 
   useEffect(() => {
-    searchHotel()
+    const debonceFunc = setTimeout(() => {
+      searchHotel()
+    }, 5000)
+
+    return () => clearTimeout(debonceFunc)
 
   }, [searchParam.toString()])
 
