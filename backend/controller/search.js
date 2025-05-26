@@ -12,10 +12,12 @@ const searchController = async (req, res) => {
     const searchQuery = {
         // city: { $regex: new RegExp(destination, 'i') },
     }
-    const ratingNum = parseInt(rating)
-    if (!isNaN(Number(ratingNum))) {
-        searchQuery.rating = ratingNum
+
+    if (rating) {
+        const ratingNum = rating.split(',').map(Number)
+        searchQuery.rating = { $in: ratingNum }
     }
+    console.log(searchQuery)
     if (minPrice || maxPrice) {
         searchQuery.price = {}
         if (minPrice) searchQuery.price.$gte = parseInt(minPrice) || 1

@@ -1,10 +1,6 @@
 import { useSearchParams } from "react-router-dom"
 
-interface SortingElemsType {
-    placeholder: string,
-    name: string,
-    value: boolean
-}
+
 const SideBar = () => {
     const [searchParams, setSearchParams] = useSearchParams()
 
@@ -115,7 +111,12 @@ const SideBar = () => {
                 {
                     ratingInputElems.fields.map((field) => (
                         <div key={field.value} className='flex gap-2 items-center '>
-                            <input name={ratingInputElems.name} id={ratingInputElems.name + field.value} value={field.value} type="checkbox" onChange={(e) => handleChange(e)} className="cursor-pointer" />
+                            <input
+                                type="checkbox"
+                                name={ratingInputElems.name}
+                                id={ratingInputElems.name + field.value} value={field.value}
+                                checked={searchParams.get(ratingInputElems.name)?.includes(field.value.toString())}
+                                onChange={(e) => handleChange(e)} className="cursor-pointer" />
                             <label htmlFor={ratingInputElems.name + field.value} className='font-roboto text-sm cursor-pointer'>{field.label}</label>
                         </div>
                     ))
