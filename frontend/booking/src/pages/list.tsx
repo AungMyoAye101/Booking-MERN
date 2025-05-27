@@ -81,19 +81,22 @@ const List = () => {
           data.map((item) => (
             <div
               key={item._id}
-              className="flex-1 flex gap-4 bg-white rounded-lg p-4 shadow-lg "
+              className="flex-1 flex flex-col md:flex-row gap-4 bg-white rounded-lg p-4 shadow-lg border  "
 
             >
               <Link
                 to={`/hotel/${item._id}`}
-                className="w-40 aspect-square rounded-lg overflow-hidden "
+                className="w-fll aspect-video md:w-40 md:aspect-square rounded-lg overflow-hidden "
               >
                 <img src={item.photos[0]} alt="hotel image" className="w-full h-full object-cover" />
               </Link>
               <div className="flex flex-col gap-2 flex-1">
-                <h1 className="text-2xl font-roboto font-semibold">{item.name}</h1>
-                <h2 className="font-roboto text-sm font-semibold">{item.title} </h2>
-                <p className="text-xs ">{item.description}</p>
+                <div className="w-full md:w-[50%]">
+                  <h1 className="text-2xl font-roboto font-semibold">{item.name}</h1>
+                  <h2 className="font-roboto text-neutral-600 text-lg ">{item.title} </h2>
+                  <p className="">{item.description}</p>
+
+                </div>
                 <div className="self-end flex gap-4">
                   <Link to={`/admin/updateHotel/${item._id}`} className="btn">
                     Update

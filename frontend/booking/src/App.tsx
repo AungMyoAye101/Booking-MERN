@@ -5,7 +5,6 @@ import NavBar from "./components/NavBar";
 import Login from "./pages/Login";
 import Signup from "./pages/Signup";
 import HotelDetail from "./pages/HotelDetail";
-import Hotel from "./pages/Hotel";
 import Admin from "./pages/Admin";
 import CreateHotel from "./pages/CreateHotel";
 import Dashboard from "./components/Dashboard";
@@ -23,7 +22,7 @@ function App() {
 
       <Routes>
         <Route path="/" element={<Home />} />
-        <Route path="/hotel" element={<Hotel />} />
+
         <Route path="/hotel/:id" element={<HotelDetail />} />
         <Route path="/list" element={<List />} />
         <Route path="/search" element={<Search />} />

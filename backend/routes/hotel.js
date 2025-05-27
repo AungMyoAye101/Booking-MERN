@@ -9,11 +9,11 @@ const {
   getHotelByType,
   getHotelByCity,
 } = require("../controller/hotel");
-const { verifyAdmin, verifyToken, verifyUser } = require("../utils/verifyToken");
+
 const router = express.Router();
 
 router.get("/", getAllHotels);
-router.post("/create-hotel", verifyToken, createHotel);
+router.post("/create-hotel", createHotel);
 router.put("/:id", updateHotel);
 router.delete("/:id", deleteHotel);
 router.get("/:id", getHotelById);

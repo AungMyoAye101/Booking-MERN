@@ -2,6 +2,7 @@ import { useState } from "react";
 import { CreateHotelType } from "../lib/types";
 import { useNavigate } from "react-router-dom";
 import HotelCreateForm from "../components/HotelCreateForm";
+import { base_url } from "../lib/helper";
 
 
 const CreateHotel = () => {
@@ -43,17 +44,18 @@ const CreateHotel = () => {
       console.log('creating hotel...')
       setLoading(true)
 
-      const res = await fetch("http://localhost:5000/api/hotel/create-hotel", {
+      const res = await fetch(base_url + "/api/hotel/create-hotel", {
         method: "POST",
         headers: { "Content-Type": "application/json", },
         body: JSON.stringify(hotel),
       });
-      if (!res.ok) {
-        throw new Error("Failed to create hotel");
+      const data = await res.json();
+      if (!res.ok && data.success === false) {
+        throw new Error(data.message);
       }
 
-      const data = await res.json();
-      console.log("hotel create successfullly", data);
+
+      console.log(data.message, data.data);
       navigate("/admin/hotels")
       setLoading(false)
 
