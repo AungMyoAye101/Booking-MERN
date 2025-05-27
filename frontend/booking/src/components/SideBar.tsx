@@ -77,15 +77,28 @@ const SideBar = () => {
 
 
     return (
-        <section className='w-80  rounded-lg bg-white  shadow-md '>
+        <section className='w-64  rounded-lg bg-white  shadow-md '>
 
+            <div className='flex flex-col gap-1 border p-4'>
+                <label htmlFor="destination">Destination</label>
+                <input
+                    type="text"
+                    id="destination"
+                    name="destination"
+                    value={searchParams.get("destination") ?? ""}
+                    onChange={e => handleChange(e)}
+                    className="bg-neutral-200 p-1 rounded" />
+            </div>
             <div className='flex flex-col gap-1 border p-4'>
                 <h3 className="font-roboto text-lg font-semibold">Property price</h3>
                 <div className=" flex  gap-2 font-roboto text-sm">
                     {
                         priceRange.map(field => (
-                            <label htmlFor="minPrice">
-                                {field.label}
+                            <div className="space-y-1" key={field.name}>
+
+                                <label htmlFor={field.name}>
+                                    {field.label}
+                                </label>
                                 <input
                                     id={field.name}
                                     type="number"
@@ -93,9 +106,9 @@ const SideBar = () => {
                                     placeholder="00.00"
                                     value={searchParams.get(field.name) ?? ''}
                                     onChange={(e) => handleChange(e)}
-                                    className="w-20 h-8 shadow focus:shadow-green-200 bg-neutral-300 rounded-lg text-sm "
+                                    className="w-20 h-8 shadow focus:shadow-green-200 bg-neutral-200 rounded     text-sm "
                                 />
-                            </label>
+                            </div>
                         ))
                     }
 

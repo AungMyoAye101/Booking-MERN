@@ -4,11 +4,11 @@ const Hotel = require("../models/hotel.model");
 const searchController = async (req, res) => {
 
     const { destination, minPrice, maxPrice, page = 1, limit = 6, rating, sortByPrice, sortByRating } = req.query;
-    console.log(sortByPrice)
+    console.log(destination)
 
-    if (destination === "" || destination.length === 0) {
-        return res.status(400).json({ success: false, message: "Destination is required and cannot be empty!" });
-    }
+    // if (destination === "" || destination.length === 0) {
+    //     return res.status(400).json({ success: false, message: "Destination is required and cannot be empty!" });
+    // }
     const searchQuery = {
         city: { $regex: new RegExp(destination, 'i') },
     }
@@ -38,7 +38,6 @@ const searchController = async (req, res) => {
         sortOption.rating = 1
     }
 
-    console.log(sortOption)
     try {
         const hotel = await Hotel.find(searchQuery).sort(sortOption).skip(skip).limit(limit);
 
