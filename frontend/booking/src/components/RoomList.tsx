@@ -4,7 +4,7 @@ import { format } from "date-fns";
 import { MdCalendarMonth } from "react-icons/md";
 import { DateRange } from "react-date-range";
 import { BsPeople } from "react-icons/bs";
-import { roomBooking } from "../lib/room.booking";
+
 import { useAuth } from "../context/authContext";
 import { Link } from "react-router-dom";
 

@@ -12,6 +12,7 @@ import UpdateHotel from "./components/UpdateHotel";
 import Search from "./pages/Search";
 import Room from "./pages/Room";
 import MyBooking from "./pages/MyBooking";
+import Payment from "./pages/Payment";
 
 
 function App() {
@@ -28,6 +29,7 @@ function App() {
         <Route path="/search" element={<Search />} />
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<Signup />} />
+        <Route path="/payment" element={<Payment />} />
         <Route path="/mybooking/:id" element={<MyBooking />} />
         <Route path="/admin" element={<Admin />}>
           <Route path="" element={<Dashboard />} />
