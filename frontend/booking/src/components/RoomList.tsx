@@ -6,6 +6,7 @@ import { DateRange } from "react-date-range";
 import { BsPeople } from "react-icons/bs";
 import { roomBooking } from "../lib/room.booking";
 import { useAuth } from "../context/authContext";
+import { Link } from "react-router-dom";
 
 const RoomList = ({ hotelId }: { hotelId: string }) => {
 
@@ -198,9 +199,8 @@ const RoomList = ({ hotelId }: { hotelId: string }) => {
                                     <td className="table-border"> {room.maxPeople}</td>
                                     <td className="table-border"> ${room.price}</td>
                                     <td className="table-border">
-                                        <button className="btn"
-                                            onClick={() => roomBooking(room._id, r.number, user._id, roomSearch.checkIn, roomSearch.checkOut)}
-                                        >Reserve</button>
+                                        <Link to={`/payment?room=${room._id}&user=${user._id}&checkIn=${roomSearch.checkIn}&checkOut=${roomSearch.checkOut}&roomNumber=${r.number}`} className="btn"
+                                        >Reserve</Link>
                                     </td>
                                 </tr>
                             ))

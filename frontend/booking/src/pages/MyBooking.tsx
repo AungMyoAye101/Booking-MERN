@@ -72,7 +72,7 @@ const MyBooking = () => {
                                 <td className='border border-neutral-200 text-center p-2'>{item.checkIn instanceof Date ? item.checkIn.toLocaleDateString() : new Date(item.checkIn).toLocaleDateString()}</td>
                                 <td className='border border-neutral-200 text-center p-2'>{item.checkOut instanceof Date ? item.checkOut.toLocaleDateString() : new Date(item.checkOut).toLocaleDateString()}</td>
                                 <td className='border border-neutral-200 text-center p-2'>{item.totalPrice}</td>
-                                <td className='border border-neutral-200 text-center p-2'><button className='bg-green-400 hover:bg-green-600 px-4 py-1.5 text-sm rounded-lg text-white'>pay now</button></td>
+                                <td className='border border-neutral-200 text-center p-2'><button className='bg-green-500 hover:bg-green-600 px-4 py-1.5 text-sm rounded-lg text-white'>pay now</button></td>
                             </tr>
                         ))
                     }

@@ -22,7 +22,7 @@ router.get('/mybooking/:userId', async (req, res) => {
   if (!mongoose.Types.ObjectId.isValid(userId)) {
     return res.status(404).json({ success: false, message: "Userid is not valid!" })
   }
-  console.log(userId, "user Id is valid")
+
   try {
     const myBooking = await Booking.find({ user: userId }).populate("room", "title price _id")
 
