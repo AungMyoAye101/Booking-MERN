@@ -35,6 +35,9 @@ const NavBar = () => {
           {user._id ? (
             <>
 
+              <Link to={`/mybooking/${user._id}`} className="btn bg-white text-blue-800 hover:bg-blue-200">
+                My Booking
+              </Link>
               <Link to={"/admin"} className="btn bg-white text-blue-800 hover:bg-blue-200">
                 Dashboard
               </Link>

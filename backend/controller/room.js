@@ -176,7 +176,7 @@ const bookingRoom = async (req, res) => {
 
 
     const booking = await Booking.create({
-      roomId: room._id, roomNumber, userId, checkIn, checkOut, totalPrice
+      room: room._id, user: userId, roomNumber, checkIn, checkOut, totalPrice
     })
 
     console.log(booking, "Booking success")
