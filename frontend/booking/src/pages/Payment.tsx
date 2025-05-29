@@ -1,16 +1,19 @@
-import React from 'react'
+
 import { useSearchParams } from 'react-router-dom'
 import { showToast } from '../context/ToastProvider'
+import { useAuth } from '../context/authContext'
 
 const Payment = () => {
     const [searchParams] = useSearchParams()
     const hotel = searchParams.get('hotel') || ""
-    const roomName = searchParams.get('roomName') || ""
+    const room = searchParams.get('room') || ""
     const roomId = searchParams.get('roomId') || ""
-    const user = searchParams.get('user') || ""
     const roomNumber = searchParams.get('roomNumber') || ""
-    const checkIn = searchParams.get('checkIn') || ""
-    const checkOut = searchParams.get('checkOut') || ""
+    const price = searchParams.get('price') || ""
+    const checkIn = searchParams.get('checkIn')
+    const checkOut = searchParams.get('checkOut')
+
+    const { user } = useAuth()
 
 
 
@@ -48,36 +51,21 @@ const Payment = () => {
             <main>
 
             </main>
-            <div>
-                <div className='bg-white shadow border rounded w-96 p-4 flex flex-col gap-2'>
-                    <h1 className='font-roboto text-2xl font-semibold mb-2'>Comfrim Your Detail</h1>
-                    <div>
-                        <label htmlFor="name" className='font-medium '>Your Name</label>
-                        <input className='border bg-neutral-200 p-1.5  w-full rounded' type="text" name='name' value={"your name"} placeholder='your name' />
-                    </div>
-                    <div>
-                        <label htmlFor="email" className='font-medium '>Your Email</label>
-                        <input className='border bg-neutral-200 p-1.5  w-full rounded' type="email" id='email' name='email' value={"your email"} placeholder='exampe@gmail.com' />
-                    </div>
-                    <div className='self-end'>
-                        <button className='btn '>Comfrim your booking</button>
-                    </div>
-                </div>
-            </div>
+
             <div>
                 <div className='bg-white shadow border rounded w-80 p-4'>
                     <h1 className='font-roboto text-2xl font-semibold mb-2'>Your Booking Summary</h1>
                     <div className='flex justify-between items-center border-b py-1.5'>
-                        <h2 className='font-roboto font-semibold'>Hotel</h2>
+                        <h2 className='font-roboto font-semibold'>{hotel}</h2>
                         <p className='font-roboto'>Hotel </p>
                     </div>
                     <div className='flex justify-between items-center border-b py-1.5'>
                         <h2 className='font-roboto font-semibold'>Room</h2>
-                        <p className='font-roboto'>Room</p>
+                        <p className='font-roboto'>{room}</p>
                     </div>
                     <div className='flex justify-between items-center border-b py-1.5'>
                         <h2 className='font-roboto font-semibold'>Room Numbers</h2>
-                        <p className='font-roboto'>12</p>
+                        <p className='font-roboto'>{roomNumber}</p>
                     </div>
                     <div className='flex justify-between items-center border-b py-1.5'>
                         <h2 className='font-roboto font-semibold'>CheckIn</h2>
@@ -89,15 +77,48 @@ const Payment = () => {
                     </div>
                     <div className='flex justify-between items-center  py-1.5'>
                         <h2 className='font-roboto font-bold text-xl'>Total</h2>
-                        <p className='font-roboto font-semibold text-lg'>120 $</p>
+                        <p className='font-roboto font-semibold text-lg'>{price} $</p>
                     </div>
 
+                </div>
+            </div>
+            <div>
+                <div className='bg-white shadow border rounded w-96 p-4 flex flex-col gap-2'>
+                    <h1 className='font-roboto text-2xl font-semibold mb-2'>Comfrim Your Detail</h1>
+                    <div>
+                        <label htmlFor="name" className='font-medium '>Your Name</label>
+                        <input className='border bg-neutral-200 p-1.5  w-full rounded' type="text" name='name' value={user.name} placeholder='your name' />
+                    </div>
+                    <div>
+                        <label htmlFor="email" className='font-medium '>Your Email</label>
+                        <input className='border bg-neutral-200 p-1.5  w-full rounded' type="email" id='email' name='email' value={user.email} placeholder='exampe@gmail.com' />
+                    </div>
+                    <div>
+                        <h2 className='font-roboto text-lg font-semibold'>Your Price Summary</h2>
+                        <div className='bg-blue-100 p-2 rounded'>
+                            <h1 className='font-roboto text-xl font-bold'>Total Cost : 122$</h1>
+                            <p className='text-xs'>Includes taxes and charges </p>
+                        </div>
+                    </div>
+                    <div className='self-end'>
+                        <button
+                            onClick={() => roomBooking(
+                                roomId,
+                                Number(roomNumber),
+                                user._id,
+                                new Date(checkIn!),
+                                new Date(checkOut!)
+                            )}
+                            className='btn '
+
+                        > Comfrim booking</button>
+                    </div>
                 </div>
             </div>
             {/*          
             <button className='bg-red-400' onClick={() => roomBooking(room, Number(roomNumber), user!, checkInDate, checkOutDate)} >Pay Now</button> */}
 
-        </section>
+        </section >
     )
 }
 

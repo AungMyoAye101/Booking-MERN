@@ -199,7 +199,7 @@ const RoomList = ({ hotelId }: { hotelId: string }) => {
                                     <td className="table-border"> {room.maxPeople}</td>
                                     <td className="table-border"> ${room.price}</td>
                                     <td className="table-border">
-                                        <Link to={`/payment?room=${room._id}&user=${user._id}&checkIn=${roomSearch.checkIn}&checkOut=${roomSearch.checkOut}&roomNumber=${r.number}`} className="btn"
+                                        <Link to={`/payment?hotel=${hotelId}&room=${room.title}&roomId=${room._id}&user=${user._id}&checkIn=${roomSearch.checkIn}&checkOut=${roomSearch.checkOut}&roomNumber=${r.number}&price=${room.price}`} className="btn"
                                         >Reserve</Link>
                                     </td>
                                 </tr>

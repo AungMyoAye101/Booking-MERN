@@ -1,5 +1,5 @@
 import { BiHeart, BiShareAlt } from "react-icons/bi";
-import { FaParking } from "react-icons/fa";
+// import { FaParking } from "react-icons/fa";
 import { FaLocationDot } from "react-icons/fa6";
 import Review from "../components/Review";
 import { useParams } from "react-router-dom";
