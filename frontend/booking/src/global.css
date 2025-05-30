@@ -40,4 +40,8 @@ body {
     @apply text-red-500 text-sm
   }
 
+  .font_semibold {
+    @apply font-semibold font-roboto
+  }
+
 }

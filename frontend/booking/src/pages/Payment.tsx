@@ -14,10 +14,15 @@ const Payment = () => {
     const checkIn = searchParams.get('checkIn')
     const checkOut = searchParams.get('checkOut')
 
+
     const { user } = useAuth()
 
-
-
+    const validCheckIn = checkIn ? new Date(checkIn) : new Date();
+    const validCheckOut = checkOut ? new Date(checkOut) : new Date(validCheckIn.getTime() + 24 * 60 * 60 * 1000);
+    const numberOfNights = Math.abs(
+        validCheckIn.getTime() - validCheckOut.getTime()
+    ) / (24 * 60 * 60 * 1000);
+    const totalPrice = Number(price) * numberOfNights;
     const roomBooking = async (roomId: string, roomNumber: number, userId: string, checkIn: Date, checkOut: Date) => {
         if (!userId || !roomId) {
             return showToast('warn', "You need to login first!")
@@ -49,45 +54,48 @@ const Payment = () => {
 
 
     return (
-        <section className=" py-20 flex gap-4   max-w-6xl mx-auto">
-            <main>
+        <section className=" py-20 flex justify-center  max-w-6xl mx-auto">
+            <main className='flex  gap-4'>
+                <div>
+                    <div className='bg-white shadow border rounded w-96 p-4'>
+                        <h1 className='font-roboto text-2xl font-semibold mb-2'>Your Booking Summary</h1>
+                        <div className='flex justify-between items-center border-b py-1.5'>
+                            <h2 className='font-roboto'>Hotel</h2>
+                            <p className='font_semibold'>{hotel} </p>
+                        </div>
+                        <div className='flex justify-between items-center border-b py-1.5'>
+                            <h2 className='font-roboto '>Room</h2>
+                            <p className='font_semibold'>{room}</p>
+                        </div>
+                        <div className='flex justify-between items-center border-b py-1.5'>
+                            <h2 className='font-roboto'>Room Numbers</h2>
+                            <p className='font_semibold'>{roomNumber}</p>
+                        </div>
+                        <div className='flex justify-between items-center border-b py-1.5'>
+                            <h2 className='font-roboto'>CheckIn</h2>
+                            <p className='font_semibold'>{checkIn ? formatDate(new Date(checkIn)) : ''}</p>
+                        </div>
+                        <div className='flex justify-between items-center border-b py-1.5'>
+                            <h2 className='font-roboto '>CheckOut</h2>
+                            <p className='font_semibold'>{checkOut ? formatDate(new Date(checkOut)) : ''}</p>
+                        </div>
+                        <div className='flex justify-between items-center border-b py-1.5'>
+                            <h2 className='font-roboto '>Length of nights</h2>
+                            <p className='font_semibold'>{numberOfNights}</p>
+                        </div>
+                        <div className='flex justify-between items-center border-b py-1.5'>
+                            <h2 className='font-roboto '>Total Price</h2>
+                            <p className='font_semibold'>{totalPrice}</p>
+                        </div>
 
-            </main>
 
-            <div>
-                <div className='bg-white shadow border rounded w-80 p-4'>
-                    <h1 className='font-roboto text-2xl font-semibold mb-2'>Your Booking Summary</h1>
-                    <div className='flex justify-between items-center border-b py-1.5'>
-                        <h2 className='font-roboto font-semibold'>Hotel</h2>
-                        <p className='font-roboto'>{hotel} </p>
                     </div>
-                    <div className='flex justify-between items-center border-b py-1.5'>
-                        <h2 className='font-roboto font-semibold'>Room</h2>
-                        <p className='font-roboto'>{room}</p>
-                    </div>
-                    <div className='flex justify-between items-center border-b py-1.5'>
-                        <h2 className='font-roboto font-semibold'>Room Numbers</h2>
-                        <p className='font-roboto'>{roomNumber}</p>
-                    </div>
-                    <div className='flex justify-between items-center border-b py-1.5'>
-                        <h2 className='font-roboto font-semibold'>CheckIn</h2>
-                        <p className='font-roboto'>{checkIn ? formatDate(new Date(checkIn)) : ''}</p>
-                    </div>
-                    <div className='flex justify-between items-center border-b py-1.5'>
-                        <h2 className='font-roboto font-semibold'>CheckOut</h2>
-                        <p className='font-roboto'>{checkOut ? formatDate(new Date(checkOut)) : ''}</p>
-                    </div>
-                    <div className='flex justify-between items-center  py-1.5'>
-                        <h2 className='font-roboto font-bold text-xl'>Total</h2>
-                        <p className='font-roboto font-semibold text-lg'>{price} $</p>
-                    </div>
-
                 </div>
-            </div>
-            <div>
-                <div className='bg-white shadow border rounded w-96 p-4 flex flex-col gap-2'>
-                    <h1 className='font-roboto text-2xl font-semibold mb-2'>Comfrim Your Detail</h1>
-                    <div>
+                <div>
+                    <h1 className='font-roboto text-2xl font-semibold mb-2'>Confirm Your Detail</h1>
+                    <div className='bg-white shadow border rounded min-w-[32rem] p-4 flex flex-col gap-2'>
+                        <h1 className='font-roboto text-2xl font-semibold mb-2'>Comfrim Your Detail</h1>
+                        <input id="name" className='border bg-neutral-200 p-1.5  w-full rounded' type="text" name='name' value={user.name} placeholder='your name' />
                         <label htmlFor="name" className='font-medium '>Your Name</label>
                         <input className='border bg-neutral-200 p-1.5  w-full rounded' type="text" name='name' value={user.name} placeholder='your name' />
                     </div>
@@ -112,7 +120,7 @@ const Payment = () => {
                     <div>
                         <h2 className='font-roboto text-lg font-semibold'>Your Price Summary</h2>
                         <div className='bg-blue-200 p-2 rounded'>
-                            <h1 className='font-roboto text-xl font-bold'>Total Cost : 122$</h1>
+                            <h1 className='font-roboto text-xl font-bold'>Total Cost : {totalPrice}</h1>
                             <p className='text-xs'>Includes taxes and charges </p>
                         </div>
                     </div>
@@ -127,11 +135,12 @@ const Payment = () => {
                         )}
                         className='btn '
 
-                    > Comfrim booking</button>
+                    > Confirm booking</button>
 
                 </div>
-            </div>
-            {/*          
+
+            </main >
+            {/* 
             <button className='bg-red-400' onClick={() => roomBooking(room, Number(roomNumber), user!, checkInDate, checkOutDate)} >Pay Now</button> */}
 
         </section >
