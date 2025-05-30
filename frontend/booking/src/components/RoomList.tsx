@@ -1,14 +1,15 @@
 import { useEffect, useState } from "react";
 import { RoomType } from "../lib/types";
-import { format } from "date-fns";
 import { MdCalendarMonth } from "react-icons/md";
 import { DateRange } from "react-date-range";
 import { BsPeople } from "react-icons/bs";
 
 import { useAuth } from "../context/authContext";
 import { Link } from "react-router-dom";
+import { formatDate } from "../lib/helper";
 
-const RoomList = ({ hotelId }: { hotelId: string }) => {
+
+const RoomList = ({ hotelId, hotelName }: { hotelId: string, hotelName: string }) => {
 
     const [rooms, setRooms] = useState<RoomType[]>([])
     const [roomSearch, setRoomSearch] = useState({
@@ -31,9 +32,6 @@ const RoomList = ({ hotelId }: { hotelId: string }) => {
 
     //option
     const [openOPtions, setOpenOPtions] = useState(false);
-    const formatDate = (date: Date) => {
-        return format(date, "dd/mm/yyyy");
-    };
 
     //Set room search data for check available rooms
 
@@ -199,7 +197,7 @@ const RoomList = ({ hotelId }: { hotelId: string }) => {
                                     <td className="table-border"> {room.maxPeople}</td>
                                     <td className="table-border"> ${room.price}</td>
                                     <td className="table-border">
-                                        <Link to={`/payment?hotel=${hotelId}&room=${room.title}&roomId=${room._id}&user=${user._id}&checkIn=${roomSearch.checkIn}&checkOut=${roomSearch.checkOut}&roomNumber=${r.number}&price=${room.price}`} className="btn"
+                                        <Link to={`/payment?hotel=${hotelName}&room=${room.title}&roomId=${room._id}&user=${user._id}&checkIn=${roomSearch.checkIn}&checkOut=${roomSearch.checkOut}&roomNumber=${r.number}&price=${room.price}`} className="btn"
                                         >Reserve</Link>
                                     </td>
                                 </tr>

@@ -111,7 +111,7 @@ const HotelDetail = () => {
 
         <Review hotelId={id!} />
         <ReviewForm hotelId={id!} />
-        <RoomList hotelId={id!} />
+        <RoomList hotelId={id!} hotelName={hotel.name} />
       </div>
 
     </section>
