@@ -6,6 +6,7 @@ const hotelRouter = require("./routes/hotel");
 const searchRouter = require("./routes/search");
 const roomRouter = require("./routes/room");
 const reviewRouter = require("./routes/review.route");
+const bookingRouter = require("./routes/booking.route");
 const { default: mongoose } = require("mongoose");
 const cookieParser = require("cookie-parser");
 const cors = require("cors");
@@ -58,6 +59,7 @@ app.use("/api/hotel", hotelRouter);
 app.use("/api/search", searchRouter);
 app.use("/api/room", roomRouter);
 app.use("/api/review", reviewRouter)
+app.use("/api/booking", bookingRouter)
 
 app.get('/', (req, res) => {
   res.send("Server is running on port 5000")

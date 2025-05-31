@@ -154,7 +154,7 @@ const Payment = () => {
                                 new Date(checkIn!),
                                 new Date(checkOut!)
                             )}
-                            className='btn '
+                            className='btn flex justify-center items-center'
 
                         >{loading ? spinner : " Confirm booking"} </button>
                     </div>

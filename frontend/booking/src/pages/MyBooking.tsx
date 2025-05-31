@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react"
 import { base_url } from "../lib/helper"
 import { useParams } from "react-router-dom"
+import { showToast } from "../context/ToastProvider"
 
 interface MyBookingTypes {
     _id: string,
@@ -19,6 +20,7 @@ const MyBooking = () => {
     const [booking, setBooking] = useState<MyBookingTypes[]>([])
     const [loading, setLoading] = useState(false)
     console.log(id)
+
     const fetchMyBooking = async () => {
         try {
             const res = await fetch(base_url + `/api/user/mybooking/${id}`, {
@@ -48,7 +50,28 @@ const MyBooking = () => {
         fetchMyBooking()
     }, [])
 
-    console.log(booking)
+    const cancelBooking = async (bookingId: string, userId: string, roomId: string) => {
+        try {
+            const res = await fetch(base_url + '/api/booking/cancel-booking', {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({ bookingId, userId, roomId }),
+                credentials: "include"
+            })
+            const { success, message } = await res.json()
+            if (!res.ok && success === false) {
+                showToast('error', message)
+                throw new Error(message)
+            }
+            showToast('success', message)
+        } catch (error) {
+            if (error instanceof Error) {
+                console.error(error.message)
+            }
+        }
+    }
 
     return (
         <section className='h-screen  mt-20 max-w-6xl  mx-auto'>
@@ -56,10 +79,10 @@ const MyBooking = () => {
                 <thead>
                     <tr className='bg-blue-600  border border-neutral-200 text-lg  font-serif  text-white'>
                         <th className='border border-neutral-200 p-1'>Room</th>
-                        <th className='border border-neutral-200 p-1'>check in</th>
+                        <th className='border border-neutral-200 p-1'>Check in</th>
                         <th className='border border-neutral-200 p-1'>Check out</th>
                         <th className='border border-neutral-200 p-1'>Total Price</th>
-                        <th className='border border-neutral-200 p-1'>Payment</th>
+                        <th className='border border-neutral-200 p-1'>Status</th>
                     </tr>
 
                 </thead>
@@ -72,7 +95,14 @@ const MyBooking = () => {
                                 <td className='border border-neutral-200 text-center p-2'>{item.checkIn instanceof Date ? item.checkIn.toLocaleDateString() : new Date(item.checkIn).toLocaleDateString()}</td>
                                 <td className='border border-neutral-200 text-center p-2'>{item.checkOut instanceof Date ? item.checkOut.toLocaleDateString() : new Date(item.checkOut).toLocaleDateString()}</td>
                                 <td className='border border-neutral-200 text-center p-2'>{item.totalPrice}</td>
-                                <td className='border border-neutral-200 text-center p-2'><button className='bg-green-500 hover:bg-green-600 px-4 py-1.5 text-sm rounded-lg text-white'>pay now</button></td>
+                                <td className='border border-neutral-200 text-center p-2'>
+                                    <button
+                                        onClick={() => cancelBooking(item._id, item.user, item.room._id)}
+                                        className='bg-red-500 hover:bg-red-600 px-4 py-1.5 text-sm rounded-lg text-white'
+                                    >
+                                        Cancel
+                                    </button>
+                                </td>
                             </tr>
                         ))
                     }
