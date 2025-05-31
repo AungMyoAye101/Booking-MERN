@@ -8,3 +8,5 @@ export const formatDate = (date: Date) => {
     return `${day}/${month}/${year}`;
 };
 
+
+export const spinner = <div className="w-4 h-4 rounded-full border-2 border-white border-r-0 bg-transparent animate-spin"></div>

@@ -152,12 +152,16 @@ const bookingRoom = async (req, res) => {
 
     const checkInDate = new Date(checkIn)
     const checkOutDate = new Date(checkOut)
+    if (checkOutDate <= checkInDate) {
+      return res.status(400).json({ success: false, message: "CheckOut must be after checkIn date!" });
+    }
     const hasConflict = await Booking.exists({
-      roomId,
+      room: roomId,
       roomNumber,
-      $or: [
-        { checkIn: { $lt: checkOutDate }, checkOut: { $gt: checkInDate } }
-      ]
+
+      checkIn: { $lt: checkOutDate },
+      checkOut: { $gt: checkInDate }
+
     })
 
     if (hasConflict) {
@@ -179,9 +183,9 @@ const bookingRoom = async (req, res) => {
       room: room._id, user: userId, roomNumber, checkIn, checkOut, totalPrice
     })
 
-    console.log(booking, "Booking success")
+    console.log("Booking success")
 
-    return res.status(200).json({ success: true, message: "room booking successfull", booking })
+    return res.status(200).json({ success: true, message: "room booking successfull", data: booking })
   } catch (error) {
     console.log(error.message)
     return res.status(500).json({ success: false, message: error.message });
