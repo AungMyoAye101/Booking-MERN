@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+const Booking = require("./booking.model");
 
 const roomSchema = new mongoose.Schema(
   {
@@ -24,7 +25,11 @@ const roomSchema = new mongoose.Schema(
     roomNumbers: [{
       number: {
         type: Number, required: true
-      }
+      },
+      booking: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Booking",
+      }]
     }],
     hotel: {
       type: mongoose.Schema.Types.ObjectId,

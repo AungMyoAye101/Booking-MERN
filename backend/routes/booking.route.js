@@ -41,7 +41,7 @@ router.post('/', async (req, res) => {
             return res.status(404).json({ success: false, message: "Room not found" });
         }
         console.log(room)
-        const totalPrice = checkInDate === checkOutDate ? room.price : (checkOutDate - checkInDate) / (1000 * 60 * 60 * 24) * room.price
+        const totalPrice = checkIn === checkOut ? room.price : (checkOutDate - checkInDate) / (1000 * 60 * 60 * 24) * room.price
 
         console.log(totalPrice)
 
@@ -50,7 +50,7 @@ router.post('/', async (req, res) => {
             room: room._id, user: userId, roomNumber, checkIn, checkOut, totalPrice
         })
 
-        console.log("Booking success")
+
 
         return res.status(200).json({ success: true, message: "room booking successfull", data: booking })
     } catch (error) {
@@ -67,7 +67,6 @@ router.get('/mybooking/:userId', async (req, res) => {
     try {
         const myBooking = await Booking.find({ user: userId }).populate("room", "title price _id")
 
-        console.log(myBooking)
         if (!myBooking && myBooking.length <= 0) {
             return res.status(404).json({ success: false, message: "No Booking found" })
         }
@@ -87,7 +86,26 @@ router.post('/cancel-booking', async (req, res) => {
     }
     try {
 
-        await Booking.findByIdAndDelete(bookingId)
+        const booking = await Booking.findByIdAndDelete(bookingId)
+        const room = await Room.findById(roomId)
+        if (!room) {
+            return res.status(400).json({ success: false, message: "RoomId is not valid" })
+        }
+
+
+
+        // Find the correct roomNumber object
+        const rn = room.roomNumbers.find(rn => rn.number === booking.roomNumber);
+        if (rn) {
+            // Remove the booking entry (by matching checkIn/checkOut)
+            rn.booking = rn.booking.filter(b =>
+                String(new Date(b.checkIn)) !== String(new Date(booking.checkIn)) ||
+                String(new Date(b.checkOut)) !== String(new Date(booking.checkOut))
+            );
+        }
+        console.log(rn)
+        // Save the updated room
+        await room.save();
 
         res.status(200).json({ success: true, message: "Your booking is canceled" })
     } catch (error) {
