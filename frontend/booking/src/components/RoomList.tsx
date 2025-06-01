@@ -15,7 +15,7 @@ const RoomList = ({ hotelId, hotelName }: { hotelId: string, hotelName: string }
     const [roomSearch, setRoomSearch] = useState({
         checkIn: new Date(),
         checkOut: new Date(),
-        guests: 2,
+        guests: 0,
         hotel: hotelId
     })
     const { user } = useAuth()

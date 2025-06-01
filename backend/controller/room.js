@@ -138,59 +138,7 @@ const getRoomById = async (req, res, next) => {
 };
 // Booking Room
 
-const bookingRoom = async (req, res) => {
-  const { roomId, roomNumber, userId, checkIn, checkOut } = req.body;
-  console.log(req.body)
-  try {
 
-    if (!mongoose.Types.ObjectId.isValid(roomId)) {
-      return res.status(400).json({ sucess: false, message: "Room id is not valid" });
-    }
-    if (!mongoose.Types.ObjectId.isValid(userId)) {
-      return res.status(400).json({ success: false, message: "User id is not valid!" });
-    }
-
-    const checkInDate = new Date(checkIn)
-    const checkOutDate = new Date(checkOut)
-    if (checkOutDate <= checkInDate) {
-      return res.status(400).json({ success: false, message: "CheckOut must be after checkIn date!" });
-    }
-    const hasConflict = await Booking.exists({
-      room: roomId,
-      roomNumber,
-
-      checkIn: { $lt: checkOutDate },
-      checkOut: { $gt: checkInDate }
-
-    })
-
-    if (hasConflict) {
-      return res.status(400).json({ success: false, message: "This room is not available for this date." })
-    }
-
-    console.log("checked conflict")
-    const room = await Room.findById(roomId);
-    if (!room) {
-      return res.status(404).json({ success: false, message: "Room not found" });
-    }
-    console.log(room)
-    const totalPrice = (checkOutDate - checkInDate) / (1000 * 60 * 60 * 24) * room.price
-
-    console.log(totalPrice)
-
-
-    const booking = await Booking.create({
-      room: room._id, user: userId, roomNumber, checkIn, checkOut, totalPrice
-    })
-
-    console.log("Booking success")
-
-    return res.status(200).json({ success: true, message: "room booking successfull", data: booking })
-  } catch (error) {
-    console.log(error.message)
-    return res.status(500).json({ success: false, message: error.message });
-  }
-}
 
 const checkAvailability = async (req, res) => {
   const { roomId } = req.params
@@ -225,6 +173,5 @@ module.exports = {
   deleteRoom,
   getAllRoomsByHotelId,
   getRoomById,
-  bookingRoom,
   checkAvailability
 };

@@ -26,10 +26,10 @@ const Payment = () => {
     const validCheckOut = checkOut ? new Date(checkOut) : new Date(validCheckIn.getTime() + 24 * 60 * 60 * 1000);
 
     //count how many night will book
-    const numberOfNights = Math.abs(
+    const numberOfNights = checkIn === checkOut ? 1 : Math.abs(
         validCheckIn.getTime() - validCheckOut.getTime()
     ) / (24 * 60 * 60 * 1000);
-
+    console.log(numberOfNights)
     //calculate total price
     const totalPrice = Number(price) * numberOfNights;
 
@@ -40,7 +40,7 @@ const Payment = () => {
         }
         try {
             setLoading(true)
-            const res = await fetch("http://localhost:5000/api/room/book", {
+            const res = await fetch("http://localhost:5000/api/booking", {
                 method: "POST",
                 headers: {
                     'Content-Type': 'application/json'

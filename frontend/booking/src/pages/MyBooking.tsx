@@ -23,7 +23,7 @@ const MyBooking = () => {
 
     const fetchMyBooking = async () => {
         try {
-            const res = await fetch(base_url + `/api/user/mybooking/${id}`, {
+            const res = await fetch(base_url + `/api/booking/mybooking/${id}`, {
                 method: "GET",
                 headers: {
                     "Content-type": "application/json"
