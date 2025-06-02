@@ -82,24 +82,6 @@ const deleteHotel = async (req, res) => {
 };
 //Get all hotel
 const getAllHotels = async (req, res,) => {
-  // const {
-  //   destination,
-  //   min = 0,
-  //   max = 99999,
-  //   limit = 10,
-  //   ...others
-  // } = req.query;
-
-  // let filter = {};
-  // if (destination) {
-  //   filter.city = { $regex: destination, $options: "i" };
-  // }
-  // if (min || max) {
-  //   filters.CheapPrice = {};
-  //   if (min) filters.price.$gte = parseFloat(min);
-  //   if (max) filters.price.$lte = parseFloat(max);
-  // }
-
   try {
     const hotels = await Hotel.find({}).limit(10);
     return res.status(200).json({ success: true, message: "Get all hotels success.", data: hotels });
@@ -157,6 +139,28 @@ const getHotelByCity = async (req, res) => {
   }
 }
 
+//get hotels base on type
+const hotelsByType = async (req, res) => {
+
+  const { type } = req.params
+  const { skip = 10, page = 1 } = req.query
+  if (!type || type === '') {
+    return res.status(400).json({ success: false, message: "type is required!" })
+  }
+  const skipAmount = (page - 1) * skip
+  try {
+
+    const hotel = await Hotel.find({ type: { $regex: type, $options: "i" } }).skip(skipAmount).limit(page)
+    if (!hotel) {
+      return res.status(404).json({ success: false, mesage: "No hotel found in this type." })
+    }
+
+    res.status(200).json({ success: true, message: "get hotels by type is success", data: hotel })
+  } catch (error) {
+    res.status(500).json({ success: false, message: error.message })
+  }
+}
+
 
 module.exports = {
   createHotel,
@@ -165,5 +169,6 @@ module.exports = {
   getAllHotels,
   getHotelById,
   getHotelByType,
-  getHotelByCity
+  getHotelByCity,
+  hotelsByType
 };
