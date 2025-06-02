@@ -82,7 +82,6 @@ router.get('/mybooking/:userId', async (req, res) => {
 
 router.post('/cancel-booking', async (req, res) => {
     const { userId, roomId, bookingId } = req.body
-    console.log(req.body)
     if (!mongoose.Types.ObjectId.isValid(bookingId)) {
         return res.status(400).json({ success: false, message: "Id is not valid" })
     }
@@ -93,21 +92,19 @@ router.post('/cancel-booking', async (req, res) => {
         if (!room) {
             return res.status(400).json({ success: false, message: "RoomId is not valid" })
         }
-
-
-
         // Find the correct roomNumber object
         const rn = room.roomNumbers.find(rn => rn.number === booking.roomNumber);
+
         if (rn) {
             // Remove the booking entry (by matching checkIn/checkOut)
             rn.booking = rn.booking.filter(b =>
-                String(new Date(b.checkIn)) !== String(new Date(booking.checkIn)) ||
-                String(new Date(b.checkOut)) !== String(new Date(booking.checkOut))
+                b._id.toString() !== booking._id.toString()
             );
         }
-        console.log(rn)
+
         // Save the updated room
         await room.save();
+
 
         res.status(200).json({ success: true, message: "Your booking is canceled" })
     } catch (error) {
