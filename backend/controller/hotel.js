@@ -27,7 +27,7 @@ const createHotel = async (req, res) => {
     });
     const savedHotel = await newHotel.save();
     console.log("hotel saved")
-    return res.status(201).json({ success: true, message: "Hotel created successfull", hotels: savedHotel });
+    return res.status(201).json({ success: true, message: "Hotel created successful", data: savedHotel });
   } catch (error) {
     console.log(error.message)
     return res.status(500).json({ success: false, message: error.message })
@@ -66,7 +66,7 @@ const updateHotel = async (req, res) => {
 
     );
 
-    return res.status(200).json({ success: true, message: "Hotel updated successfull ", hotels: updatedHotel });
+    return res.status(200).json({ success: true, message: "Hotel updated successful", data: updatedHotel });
   } catch (error) {
     return res.status(500).json({ success: false, message: error.message });
   }
@@ -153,13 +153,13 @@ const hotelsByType = async (req, res) => {
 
     const hotel = await Hotel.find({ type: { $regex: type, $options: "i" } }).skip(skip).limit(limit)
 
-    if (!hotel) {
-      return res.status(404).json({ success: false, mesage: "No hotel found in this type." })
+    if (hotel.length === 0) {
+      return res.status(404).json({ success: false, message: "No hotel found in this type." })
     }
     const totalHotel = await Hotel.countDocuments({ type: { $regex: type, $options: "i" } })
     const totalPages = Math.ceil(totalHotel / limit)
 
-    const hasNextPage = page * limit < totalPages
+    const hasNextPage = page < totalPages
     const hasPrevPage = page > 1
     res.status(200).json({
       success: true, message: "get hotels by type is success", data: hotel, pagination: {

@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import { useParams, useSearchParams } from 'react-router-dom'
 import { base_url } from '../lib/helper'
 import { HotelType } from '../lib/types'
+import HotelCard from '../components/HotelCard'
 
 const TypeResult = () => {
     const { type } = useParams()
@@ -48,8 +49,13 @@ const TypeResult = () => {
     console.log(hotel)
 
     return (
-        <section className='min-h-screen  mt-10'>
-            <div>
+        <section className='page_con'>
+            <div className='flex flex-col gap-4'>
+                {
+                    hotel.map((data) => (
+                        <HotelCard item={data} key={data._id} />
+                    ))
+                }
             </div>
         </section>
     )

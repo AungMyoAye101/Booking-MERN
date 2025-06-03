@@ -16,6 +16,10 @@ body {
     @apply focus:outline-none px-2;
   }
 
+  .page_con {
+    @apply py-16 max-w-6xl m-auto p-4
+  }
+
   .label {
     @apply font-roboto text-sm capitalize font-semibold;
   }

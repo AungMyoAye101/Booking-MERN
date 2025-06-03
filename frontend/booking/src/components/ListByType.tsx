@@ -72,7 +72,7 @@ const ListByType = () => {
           {loading ? <HotelLoading /> : data.map((item, i) => (
             <Link
               to={`/type/${item.type}?limit=6&page=1`}
-              key={i}
+              key={item.type}
               className="min-w-[250px]  relative rounded-lg overflow-hidden shadow-lg cursor-pointer bg-white"
             >
               <div className=" overflow-hidden">
