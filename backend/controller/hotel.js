@@ -143,19 +143,32 @@ const getHotelByCity = async (req, res) => {
 const hotelsByType = async (req, res) => {
 
   const { type } = req.params
-  const { skip = 10, page = 1 } = req.query
+  const { page = 1, limit = 5 } = req.query
+
   if (!type || type === '') {
     return res.status(400).json({ success: false, message: "type is required!" })
   }
-  const skipAmount = (page - 1) * skip
+  const skip = (page - 1) * limit
   try {
 
-    const hotel = await Hotel.find({ type: { $regex: type, $options: "i" } }).skip(skipAmount).limit(page)
+    const hotel = await Hotel.find({ type: { $regex: type, $options: "i" } }).skip(skip).limit(limit)
+
     if (!hotel) {
       return res.status(404).json({ success: false, mesage: "No hotel found in this type." })
     }
+    const totalHotel = await Hotel.countDocuments({ type: { $regex: type, $options: "i" } })
+    const totalPages = Math.ceil(totalHotel / limit)
 
-    res.status(200).json({ success: true, message: "get hotels by type is success", data: hotel })
+    const hasNextPage = page * limit < totalPages
+    const hasPrevPage = page > 1
+    res.status(200).json({
+      success: true, message: "get hotels by type is success", data: hotel, pagination: {
+        totalPages,
+        hasNextPage,
+        hasPrevPage,
+        page, limit
+      }
+    })
   } catch (error) {
     res.status(500).json({ success: false, message: error.message })
   }

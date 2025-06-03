@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import { PiGreaterThan, PiLessThan } from "react-icons/pi";
 import { base_url } from "../lib/helper";
 import HotelLoading from "./HotelLoading";
+import { Link } from "react-router-dom";
 
 type HotelList = {
   type: string,
@@ -69,7 +70,8 @@ const ListByType = () => {
           className="flex gap-4 overflow-hidden flex-nowrap  relative py-4"
         >
           {loading ? <HotelLoading /> : data.map((item, i) => (
-            <div
+            <Link
+              to={`/type/${item.type}?limit=6&page=1`}
               key={i}
               className="min-w-[250px]  relative rounded-lg overflow-hidden shadow-lg cursor-pointer bg-white"
             >
@@ -86,7 +88,7 @@ const ListByType = () => {
                 </h2>
                 <p className="text-sm "> <b>{item.count}</b> properties</p>
               </div>
-            </div>
+            </Link>
           ))}
         </main>
       </div>
