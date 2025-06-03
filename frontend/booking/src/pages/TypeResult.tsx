@@ -3,11 +3,14 @@ import { useParams, useSearchParams } from 'react-router-dom'
 import { base_url } from '../lib/helper'
 import { HotelType } from '../lib/types'
 import HotelCard from '../components/HotelCard'
+import Pagination, { PaginationType } from '../components/Pagination'
+
 
 const TypeResult = () => {
     const { type } = useParams()
     const [searchParam, setSearchParams] = useSearchParams()
     const [hotel, setHotel] = useState<HotelType[]>([])
+    const [pagination, setPagination] = useState<PaginationType>()
     const [loading, setloading] = useState(false)
     const [error, setError] = useState(false)
     const page = searchParam.get('page') || 1
@@ -23,12 +26,14 @@ const TypeResult = () => {
                 }
 
             })
-            const { success, message, data } = await res.json()
+            const { success, message, data, pagination } = await res.json()
 
             if (!res.ok && success === false) {
                 setError(true)
                 throw new Error(message)
             }
+
+            setPagination(pagination)
             setHotel(data)
         } catch (error) {
             setError(true)
@@ -46,7 +51,7 @@ const TypeResult = () => {
     useEffect(() => {
         fetchType()
     }, [type, page, limit])
-    console.log(hotel)
+    console.log(pagination)
 
     return (
         <section className='page_con'>
@@ -57,6 +62,11 @@ const TypeResult = () => {
                     ))
                 }
             </div>
+            <Pagination
+                page={1}
+                hasNextPage={pagination?.hasNextPage ?? false}
+                hasPrevPage={pagination?.hasPrevPage ?? false}
+            />
         </section>
     )
 }
