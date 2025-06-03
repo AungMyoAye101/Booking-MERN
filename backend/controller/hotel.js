@@ -144,6 +144,7 @@ const hotelsByType = async (req, res) => {
 
   const { type } = req.params
   const { page = 1, limit = 5 } = req.query
+  console.log(req.query)
 
   if (!type || type === '') {
     return res.status(400).json({ success: false, message: "type is required!" })

@@ -19,7 +19,7 @@ const TypeResult = () => {
     const fetchType = async () => {
         try {
             setloading(true)
-            const res = await fetch(`${base_url}/api/hotel/type/${type}?linmit=${limit}&page=${page}`, {
+            const res = await fetch(`${base_url}/api/hotel/type/${type}?limit=${limit}&page=${page}`, {
                 method: "GET",
                 headers: {
                     "Content-type": "application/json"
@@ -51,7 +51,7 @@ const TypeResult = () => {
     useEffect(() => {
         fetchType()
     }, [type, page, limit])
-    console.log(pagination)
+
 
     return (
         <section className='page_con'>
@@ -63,7 +63,7 @@ const TypeResult = () => {
                 }
             </div>
             <Pagination
-                page={1}
+                page={Number(pagination?.page)}
                 hasNextPage={pagination?.hasNextPage ?? false}
                 hasPrevPage={pagination?.hasPrevPage ?? false}
             />
