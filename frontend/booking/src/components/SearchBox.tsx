@@ -29,15 +29,17 @@ const SearchBox = () => {
     return format(date, "dd/mm/yyyy");
   };
 
-  const handleSearch = () => {
+  const handleSearch = (e: React.FormEvent) => {
+    e.preventDefault()
     const checkIn = datePicker[0].startDate.toISOString();
     const checkOut = datePicker[0].endDate.toISOString();
     const guest = (adultCount + childrenCount).toString();
-    navigate(`/search?destination=${destination}&checkIn=${checkIn}&checkOut=${checkOut}&guests=${guest}&limit=6&page=1`)
+    navigate(`/search?destination=${destination}&checkIn=${checkIn}&checkOut=${checkOut}&guests=${guest}&limit=${4}&page=${1}`)
   }
 
   return (
     <form
+      onSubmit={handleSearch}
       className="w-full   bg-blue-300 border-4 border-blue-300 flex flex-wrap gap-1 rounded-lg  "
     >
       <div className="flex-1 min-w-60 bg-white  h-10 flex items-center rounded-md px-2">
@@ -154,7 +156,7 @@ const SearchBox = () => {
           </div>
         )}
       </div>
-      <button className="btn" onClick={() => handleSearch()}>
+      <button className="btn" type="submit">
         search
       </button>
     </form >

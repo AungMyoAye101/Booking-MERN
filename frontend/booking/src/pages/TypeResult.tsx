@@ -4,11 +4,12 @@ import { base_url, loadingElem } from '../lib/helper'
 import { HotelType } from '../lib/types'
 import HotelCard from '../components/HotelCard'
 import Pagination, { PaginationType } from '../components/Pagination'
+import NotFound from './NotFound'
 
 
 const TypeResult = () => {
     const { type } = useParams()
-    const [searchParam, setSearchParams] = useSearchParams()
+    const [searchParam] = useSearchParams()
     const [hotel, setHotel] = useState<HotelType[]>([])
     const [pagination, setPagination] = useState<PaginationType>()
     const [loading, setloading] = useState(false)
@@ -55,18 +56,25 @@ const TypeResult = () => {
 
     return (
         <section className='page_con'>
-            <div className='flex flex-col gap-4'>
+            <div className='flex flex-col gap-4 '>
                 {
-                    loading ? loadingElem : hotel.map((data) => (
-                        <HotelCard item={data} key={data._id} />
-                    ))
+                    error ? <div className='h-[calc(100vh-200px)] flex justify-center items-center'><NotFound /></div> :
+                        <div>
+                            {
+
+                                loading ? loadingElem : hotel.map((data) => (
+                                    <HotelCard item={data} key={data._id} />
+                                ))
+                            }
+                            <Pagination
+                                page={Number(pagination?.page)}
+                                hasNextPage={pagination?.hasNextPage ?? false}
+                                hasPrevPage={pagination?.hasPrevPage ?? false}
+                            />
+                        </div>
                 }
             </div>
-            <Pagination
-                page={Number(pagination?.page)}
-                hasNextPage={pagination?.hasNextPage ?? false}
-                hasPrevPage={pagination?.hasPrevPage ?? false}
-            />
+
         </section>
     )
 }
