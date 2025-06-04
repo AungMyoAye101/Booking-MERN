@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { base_url } from "../lib/helper";
 import { HotelType } from "../lib/types";
+import { Link } from "react-router-dom";
 
 
 
@@ -57,7 +58,8 @@ const Destination = () => {
         >
           {loading ? loadingElem : data.map((field) => (
             field.map((item) => (
-              <div
+              <Link
+                to={`/search?destination=${item.city}`}
                 key={item._id}
                 className="min-w-[200px]  flex-1 h-auto  aspect-video rounded-lg overflow-hidden relative bg-white"
               >
@@ -69,7 +71,7 @@ const Destination = () => {
                 <h2 className="absolute top-4 left-4 text-white font-roboto text-2xl font-bold">
                   {item.city}
                 </h2>
-              </div>
+              </Link>
             ))
 
           ))}
