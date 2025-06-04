@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import { useParams, useSearchParams } from 'react-router-dom'
-import { base_url } from '../lib/helper'
+import { base_url, loadingElem } from '../lib/helper'
 import { HotelType } from '../lib/types'
 import HotelCard from '../components/HotelCard'
 import Pagination, { PaginationType } from '../components/Pagination'
@@ -57,7 +57,7 @@ const TypeResult = () => {
         <section className='page_con'>
             <div className='flex flex-col gap-4'>
                 {
-                    hotel.map((data) => (
+                    loading ? loadingElem : hotel.map((data) => (
                         <HotelCard item={data} key={data._id} />
                     ))
                 }

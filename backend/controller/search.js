@@ -44,8 +44,19 @@ const searchController = async (req, res) => {
         if (hotel.length === 0) {
             return res.status(404).json({ success: false, message: "No destination found!" });
         }
-
-        return res.status(200).json({ success: true, message: "Success", data: hotel });
+        const total = await Hotel.countDocuments(searchQuery)
+        const totalPages = Math.ceil(total / limit)
+        const hasNextPage = page < totalPages
+        const hasPrevPage = page > 1
+        console.log(totalPages)
+        return res.status(200).json({
+            success: true, message: "Success", data: hotel, pagination: {
+                totalPages,
+                hasPrevPage,
+                hasNextPage,
+                page
+            }
+        });
 
     } catch (error) {
         console.log(error);
