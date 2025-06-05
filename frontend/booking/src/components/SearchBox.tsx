@@ -31,6 +31,10 @@ const SearchBox = () => {
 
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault()
+    if (!destination) {
+      alert("Please enter a destination.");
+      return;
+    }
     const checkIn = datePicker[0].startDate.toISOString();
     const checkOut = datePicker[0].endDate.toISOString();
     const guest = (adultCount + childrenCount).toString();
@@ -40,7 +44,7 @@ const SearchBox = () => {
   return (
     <form
       onSubmit={handleSearch}
-      className="w-full   bg-blue-300 border-4 border-blue-300 flex flex-wrap gap-1 rounded-lg  "
+      className="w-full  bg-blue-200 p-2 border-blue-300 flex flex-wrap gap-2 rounded-lg text-gray-800 "
     >
       <div className="flex-1 min-w-60 bg-white  h-10 flex items-center rounded-md px-2">
         <IoBedOutline className="text-xl " />
@@ -75,21 +79,21 @@ const SearchBox = () => {
         )}
       </div>
       {/* Room option here */}
-      <div className="flex-1 min-w-60 bg-white  h-10 flex items-center rounded-md relative">
+      <div className="flex-1 min-w-60 bg-white text-gray-800  h-10 flex items-center rounded-md relative">
         <div
           className="px-4 cursor-pointer text-xs text-nowrap line-clamp-1 font-roboto"
           onClick={() => setOpenOPtions(!openOPtions)}
         >
-          1 Adult 0 Children 1 Room
+          {adultCount} Adult {childrenCount} Children 1 Room
         </div>
         {openOPtions && (
-          <div className="absolute top-12  w-full px-6 py-8 bg-white rounded-lg shadow-lg border flex flex-col gap-4">
+          <div className="absolute top-12  w-full px-6 py-8  bg-white rounded-lg shadow-lg border flex flex-col gap-4">
             <div className="flex justify-between items-center ">
               <h3 className="font-semibold font-roboto">Adults</h3>
               <div className="flex items-center gap-2">
                 <button
 
-                  onClick={() => setAdultCount((pre) => pre - 1)}
+                  onClick={() => setAdultCount((pre) => pre <= 1 ? pre : pre - 1)}
                   className="bg-transparent text-blue-700 border border-blue-700 rounded hover:bg-blue-200 w-6 h-8  flex justify-center items-center"
                 >
                   -
@@ -110,7 +114,7 @@ const SearchBox = () => {
               <div className="flex items-center gap-2">
                 <button
                   // disabled={options.children <= 0}
-                  onClick={() => setChildrenCount((pre) => pre - 1)}
+                  onClick={() => setChildrenCount((pre) => pre <= 0 ? pre : pre - 1)}
                   className="bg-transparent text-blue-700 border border-blue-700 rounded hover:bg-blue-200 w-6 h-8  flex justify-center items-center"
                 >
                   -
@@ -156,8 +160,8 @@ const SearchBox = () => {
           </div>
         )}
       </div>
-      <button className="btn" type="submit">
-        search
+      <button className="btn flex-1 font-roboto" type="submit">
+        Search
       </button>
     </form >
   );

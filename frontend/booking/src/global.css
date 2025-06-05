@@ -33,7 +33,7 @@ body {
   }
 
   .btn {
-    @apply px-4 py-2 bg-blue-800 rounded-md text-white text-sm hover:bg-blue-600;
+    @apply px-4 py-2 bg-blue-600 rounded-md text-white text-sm hover:bg-blue-800;
   }
 
   .table-border {
@@ -46,6 +46,14 @@ body {
 
   .font_semibold {
     @apply font-semibold font-roboto
+  }
+
+  .hero-stroke {
+    text-shadow:
+      1px 1px 2px #222,
+      -1px -1px 2px #222,
+      1px -1px 2px #222,
+      -1px 1px 2px #222;
   }
 
 }
