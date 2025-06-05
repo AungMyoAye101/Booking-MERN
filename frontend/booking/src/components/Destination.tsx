@@ -47,9 +47,13 @@ const Destination = () => {
 
   return (
     <section className="mb-4">
-      <h1 className="text-4xl font-roboto font-semibold mb-2 ">
-        Trending destination
-      </h1>
+      <div className="mb-2 space-y-1">
+
+        <h1 className="text-4xl font-roboto font-semibold ">
+          Trending destination
+        </h1>
+        <p className="font-roboto text-gray-600 text-lg px-2">Most popular choices for travelers</p>
+      </div>
       <div className="relative">
 
         <main
