@@ -1,10 +1,26 @@
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { useAuth } from "../context/authContext";
+import { useEffect, useState } from "react";
 
 
 const NavBar = () => {
-
+  const [isScroll, setIsScroll] = useState(false)
   const { user, dispatch } = useAuth()
+  const location = useLocation()
+  const isHome = location.pathname === ('/')
+  const navBg = isHome ? isScroll ? "bg-blue-400" : "bg-transprent" : "bg-blue-400"
+  useEffect(() => {
+    const handleScroll = () => {
+      const offest = window.scrollY;
+      setIsScroll(offest > 100)
+    }
+    window.addEventListener("scroll", handleScroll)
+
+
+    return () => window.removeEventListener("scroll", handleScroll)
+  }, [])
+
+
 
   const handleLogout = async () => {
     try {
@@ -24,7 +40,7 @@ const NavBar = () => {
     }
   };
   return (
-    <nav className="backdrop-blur fixed top-0 left-0 w-full  z-50">
+    <nav className={`fixed top-0 left-0 w-full  z-50 transition-all duration-500 ease-in-out  ${navBg}`}>
       <div className="flex justify-between items-center max-w-6xl px-4 py-2 m-auto">
         <Link to="/">
           <h1 className="text-3xl font-bold uppercase text-white font-roboto">
