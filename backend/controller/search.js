@@ -5,7 +5,7 @@ const searchController = async (req, res) => {
 
     const { destination, minPrice, maxPrice, page = 1, limit = 4, rating, sortByPrice, sortByRating } = req.query;
 
-    if (destination === "" || destination.length === 0) {
+    if (destination === "") {
         return res.status(400).json({ success: false, message: "Destination is required and cannot be empty!" });
     }
     const searchQuery = {
