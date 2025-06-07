@@ -10,6 +10,8 @@ const bookingRouter = require("./routes/booking.route");
 const { default: mongoose } = require("mongoose");
 const cookieParser = require("cookie-parser");
 const cors = require("cors");
+const Hotel = require("./models/hotel.model");
+const User = require("./models/user.model");
 const cloudinary = require("cloudinary").v2
 const app = express();
 
@@ -60,6 +62,20 @@ app.use("/api/search", searchRouter);
 app.use("/api/room", roomRouter);
 app.use("/api/review", reviewRouter)
 app.use("/api/booking", bookingRouter)
+app.get("/api/total", async (req, res) => {
+  try {
+    const hotelCount = await Hotel.countDocuments()
+    const usersCount = await User.countDocuments()
+    res.status(200).json({
+      sucess: true, message: "successfull", data: {
+        totalUsers: usersCount,
+        totalHotels: hotelCount
+      }
+    })
+  } catch (error) {
+    res.status(500).json({ sucess: false, message: error.message })
+  }
+})
 
 app.get('/', (req, res) => {
   res.send("Server is running on port 5000")

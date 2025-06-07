@@ -4,7 +4,7 @@ import Hero from "../components/Hero";
 import ListByType from "../components/ListByType";
 import HotelList from "../components/HotelList";
 import Offer from "../components/Offer";
-import Footer from "../components/Footer";
+
 
 
 const Home = () => {

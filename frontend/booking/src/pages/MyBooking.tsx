@@ -82,8 +82,11 @@ const MyBooking = () => {
 
                         <h1 className="font-roboto text-2xl md:text-4xl font-semibold ">You have not booked a room yet.</h1>
 
-                        <p className="font-roboto">Please book a room from your interest hotel.</p>
-                        <Link to={'/'} className="btn">Go to home page</Link>
+                        <p className="font-roboto ">Please book a room from your interest hotel.</p>
+                        <div>
+
+                            <Link to={'/'} className="btn">Go to home page</Link>
+                        </div>
                     </div> :
                         <table className='w-full border-collapse border border-neutral-200 shadow-lg  rounded-lg'>
                             <thead>
