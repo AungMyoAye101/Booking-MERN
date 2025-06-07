@@ -14,6 +14,7 @@ import Room from "./pages/Room";
 import MyBooking from "./pages/MyBooking";
 import Payment from "./pages/Payment";
 import TypeResult from "./pages/TypeResult";
+import Footer from "./components/Footer";
 
 
 function App() {
@@ -41,7 +42,7 @@ function App() {
           <Route path="updateHotel/:id" element={<UpdateHotel />} />
         </Route>
       </Routes>
-
+      <Footer />
 
     </BrowserRouter>
   );

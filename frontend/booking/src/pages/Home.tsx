@@ -18,10 +18,10 @@ const Home = () => {
         <ListByType />
         <Offer />
         <HotelList />
+        <Contact />
       </div>
 
-      <Contact />
-      <Footer />
+
     </section>
   );
 };

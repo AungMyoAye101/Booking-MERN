@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react"
 import { base_url } from "../lib/helper"
-import { useParams } from "react-router-dom"
+import { Link, useParams } from "react-router-dom"
 import { showToast } from "../context/ToastProvider"
 
 interface MyBookingTypes {
@@ -19,7 +19,6 @@ const MyBooking = () => {
     const { id } = useParams()
     const [booking, setBooking] = useState<MyBookingTypes[]>([])
     const [loading, setLoading] = useState(false)
-    console.log(id)
 
     const fetchMyBooking = async () => {
         try {
@@ -75,41 +74,54 @@ const MyBooking = () => {
 
     return (
         <section className='h-screen  mt-20 max-w-6xl  mx-auto'>
-            <table className='w-full border-collapse border border-neutral-200 shadow-lg  rounded-lg'>
-                <thead>
-                    <tr className='bg-blue-600  border border-neutral-200 text-lg  font-serif  text-white'>
-                        <th className='border border-neutral-200 p-1'>Room</th>
-                        <th className='border border-neutral-200 p-1'>Check in</th>
-                        <th className='border border-neutral-200 p-1'>Check out</th>
-                        <th className='border border-neutral-200 p-1'>Total Price</th>
-                        <th className='border border-neutral-200 p-1'>Status</th>
-                    </tr>
+            {
+                loading ? <div className="w-full h-full flex justify-center items-center">
+                    <div className="w-40 h-40 border-4 border-blue-600 border-t-0 bg-transparent rounded-full animate-spin" />
+                </div>
+                    : booking.length === 0 ? <div className="mx-auto py-12 text-center space-y-4">
 
-                </thead>
-                <tbody>
+                        <h1 className="font-roboto text-2xl md:text-4xl font-semibold ">You have not booked a room yet.</h1>
 
-                    {
-                        booking.map(item => (
-                            <tr key={item._id}>
-                                <td className='border border-neutral-200 text-center p-2 text-lg'>{item.room.title}</td>
-                                <td className='border border-neutral-200 text-center p-2'>{item.checkIn instanceof Date ? item.checkIn.toLocaleDateString() : new Date(item.checkIn).toLocaleDateString()}</td>
-                                <td className='border border-neutral-200 text-center p-2'>{item.checkOut instanceof Date ? item.checkOut.toLocaleDateString() : new Date(item.checkOut).toLocaleDateString()}</td>
-                                <td className='border border-neutral-200 text-center p-2'>{item.totalPrice}</td>
-                                <td className='border border-neutral-200 text-center p-2'>
-                                    <button
-                                        onClick={() => cancelBooking(item._id, item.user, item.room._id)}
-                                        className='bg-red-500 hover:bg-red-600 px-4 py-1.5 text-sm rounded-lg text-white'
-                                    >
-                                        Cancel
-                                    </button>
-                                </td>
-                            </tr>
-                        ))
-                    }
+                        <p className="font-roboto">Please book a room from your interest hotel.</p>
+                        <Link to={'/'} className="btn">Go to home page</Link>
+                    </div> :
+                        <table className='w-full border-collapse border border-neutral-200 shadow-lg  rounded-lg'>
+                            <thead>
+                                <tr className='bg-blue-600  border border-neutral-200 text-lg  font-serif  text-white'>
+                                    <th className='border border-neutral-200 p-1'>Room</th>
+                                    <th className='border border-neutral-200 p-1'>Check in</th>
+                                    <th className='border border-neutral-200 p-1'>Check out</th>
+                                    <th className='border border-neutral-200 p-1'>Total Price</th>
+                                    <th className='border border-neutral-200 p-1'>Status</th>
+                                </tr>
+
+                            </thead>
+                            <tbody>
+
+                                {
+                                    booking.map(item => (
+                                        <tr key={item._id}>
+                                            <td className='border border-neutral-200 text-center p-2 text-lg'>{item.room.title}</td>
+                                            <td className='border border-neutral-200 text-center p-2'>{item.checkIn instanceof Date ? item.checkIn.toLocaleDateString() : new Date(item.checkIn).toLocaleDateString()}</td>
+                                            <td className='border border-neutral-200 text-center p-2'>{item.checkOut instanceof Date ? item.checkOut.toLocaleDateString() : new Date(item.checkOut).toLocaleDateString()}</td>
+                                            <td className='border border-neutral-200 text-center p-2'>{item.totalPrice}</td>
+                                            <td className='border border-neutral-200 text-center p-2'>
+                                                <button
+                                                    onClick={() => cancelBooking(item._id, item.user, item.room._id)}
+                                                    className='bg-red-500 hover:bg-red-600 px-4 py-1.5 text-sm rounded-lg text-white'
+                                                >
+                                                    Cancel
+                                                </button>
+                                            </td>
+                                        </tr>
+                                    ))
+                                }
 
 
-                </tbody>
-            </table>
+                            </tbody>
+                        </table>
+            }
+
         </section>
     )
 }

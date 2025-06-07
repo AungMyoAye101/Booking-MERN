@@ -49,7 +49,7 @@ const HotelDetail = () => {
           </div>
           <div className="flex gap-1">
             {
-              [1, 2, 3, 4, 5].map(star => <FaStar key={star} className={` ${star <= Number(hotel.rating) ? "text-amber-400" : "text-gray-600"}`} />)
+              [1, 2, 3, 4, 5].map(star => <FaStar key={star} className={` ${star <= Number(hotel.rating) ? "text-amber-400" : "text-gray-400"}`} />)
             }
           </div>
         </div>
@@ -67,14 +67,14 @@ const HotelDetail = () => {
       <div className="flex flex-col gap-4">
 
 
-        <div className="grid grid-cols-4 ">
+        <div className="flex gap-4 ">
           {hotel.photos.map((img, i) => (
             <img
               key={i}
               src={img}
               alt={hotel.name + " room photo"}
               className={`
-                  rounded-lg object-cover aspect-video ${i === 1 ? "col-span-2" : ""}`}
+                  rounded-lg object-cover aspect-video `}
             />
           ))}
         </div>
