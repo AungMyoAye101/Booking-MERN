@@ -20,7 +20,7 @@ const Dashboard = () => {
         if (!res.ok && !success) {
           throw new Error(message)
         }
-        console.log(data)
+
         setTotalData(data)
       } catch (error) {
         if (error instanceof Error) console.error(error.message)
@@ -29,7 +29,6 @@ const Dashboard = () => {
 
     fetchData()
   }, [])
-  console.log(totalData, "intotal")
   return (
     <section className="flex flex-wrap gap-4 font-roboto ">
       <div className="bg-white w-96 h-60 rounded-lg shadow-lg p-4 relative">

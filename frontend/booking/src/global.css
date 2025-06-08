@@ -48,6 +48,10 @@ body {
     @apply font-semibold font-roboto
   }
 
+  .link_text {
+    @apply text-neutral-900 font-roboto hover:bg-purple-200 cursor-pointer px-4 py-1.5 rounded
+  }
+
   .hero-stroke {
     text-shadow:
       1px 1px 1px #222222,
