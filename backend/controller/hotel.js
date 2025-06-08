@@ -82,9 +82,23 @@ const deleteHotel = async (req, res) => {
 };
 //Get all hotel
 const getAllHotels = async (req, res,) => {
+  const { page = 1, limit = 6 } = req.query
   try {
-    const hotels = await Hotel.find({}).limit(10);
-    return res.status(200).json({ success: true, message: "Get all hotels success.", data: hotels });
+    const skip = (page - 1) * limit
+    const hotels = await Hotel.find().skip(skip).limit(limit);
+    if (!hotels) {
+      return res.status(404).json({ success: false, message: "No hotels found!" })
+    }
+    const total = await Hotel.countDocuments()
+    const totalPage = Math.ceil(total / limit)
+
+    return res.status(200).json({
+      success: true, message: "Get all hotels success.", data: hotels, pagination: {
+        page,
+        hasNextPage: page < totalPage,
+        hasPrevPage: page > 1
+      }
+    });
   } catch (error) {
     return res.status(500).json({ success: false, message: error.message });
   }

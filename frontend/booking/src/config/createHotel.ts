@@ -10,13 +10,7 @@ export const hotelInput = [
 export const hotelTypes = [
     "Hotel",
     "Apartment",
-    "Budget",
-    "Luxury",
-    "Business",
-    "Family",
-    "Romantic",
-    "Cabin",
-    "Beach Resort",
+    "Resort",
     "Motel",
 
 ];

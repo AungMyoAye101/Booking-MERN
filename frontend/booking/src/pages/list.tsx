@@ -1,10 +1,18 @@
-import { Link } from "react-router-dom";
+import { Link, useSearchParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { HotelType } from "../lib/types";
-import { base_url } from "../lib/helper";
-
+import { base_url, loadingElem } from "../lib/helper";
+import Pagination, { PaginationType } from "../components/Pagination";
+import { showToast } from "../context/ToastProvider";
 const List = () => {
+
+  const [search] = useSearchParams()
   const [data, setData] = useState<HotelType[]>([])
+  const [pagination, setPagination] = useState<PaginationType>({
+    page: 1,
+    hasNextPage: false,
+    hasPrevPage: false
+  })
   const [loading, setLoading] = useState(false)
   const [toggleDelete, setToggleDelete] = useState(false)
   const [selection, setSelection] = useState({
@@ -16,17 +24,18 @@ const List = () => {
   const fetchHotel = async () => {
     try {
       setLoading(true)
-      const res = await fetch(base_url + "/api/hotel", {
+      const res = await fetch(base_url + "/api/hotel?page=1&limit=2", {
         method: "GET",
         headers: {
           "Content-type": "application/json"
         }
       })
-      const { success, message, data } = await res.json()
+      const { success, message, data, pagination } = await res.json()
       if (!res.ok && success === false) {
         throw new Error(message)
       }
       setData(data)
+      setPagination(pagination)
     } catch (error) {
       if (error instanceof Error) console.error(error.message)
     } finally {
@@ -35,7 +44,7 @@ const List = () => {
   }
   useEffect(() => {
     fetchHotel()
-  }, [])
+  }, [search])
 
 
   useEffect(() => {
@@ -66,8 +75,8 @@ const List = () => {
         throw Error("Failed to delete hotel");
       }
       setToggleDelete(false);
+      showToast('info', "Hotel was deleted")
 
-      console.log("hotel was deleted");
     } catch (error) {
       console.log(error);
     }
@@ -76,7 +85,7 @@ const List = () => {
     <section className="w-full flex flex-col gap-6 ">
 
       {
-        loading ? <div>Loading...</div> :
+        loading ? loadingElem :
 
           data.map((item) => (
             <div
@@ -134,6 +143,7 @@ const List = () => {
 
       }
 
+      <Pagination page={Number(pagination?.page)} hasNextPage={pagination?.hasNextPage} hasPrevPage={pagination?.hasPrevPage} />
 
     </section>
   );
