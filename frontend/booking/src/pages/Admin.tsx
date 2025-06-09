@@ -9,7 +9,7 @@ const Admin = () => {
         <Link to={"/admin"}
           className={`link_text ${pathname === "/admin" ? "bg-blue-400" : ''}`}
         >Dashboard</Link>
-        <Link to={"/admin/hotels"}
+        <Link to={"/admin/hotels?page=1&limit=4"}
           className={`link_text ${pathname === "/admin/hotels" ? "bg-blue-400" : ''}`}
         >Hotels</Link>
         <Link to={"/admin/createHotel"}

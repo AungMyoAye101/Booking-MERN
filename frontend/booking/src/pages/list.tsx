@@ -7,6 +7,8 @@ import { showToast } from "../context/ToastProvider";
 const List = () => {
 
   const [search] = useSearchParams()
+  const page = search.get("page") || "1";
+  const limit = search.get("limit") || "4";
   const [data, setData] = useState<HotelType[]>([])
   const [pagination, setPagination] = useState<PaginationType>({
     page: 1,
@@ -20,11 +22,10 @@ const List = () => {
     name: "",
     type: "",
   })
-
   const fetchHotel = async () => {
     try {
       setLoading(true)
-      const res = await fetch(base_url + "/api/hotel?page=1&limit=2", {
+      const res = await fetch(base_url + `/api/hotel?page=${page}&limit=${limit}`, {
         method: "GET",
         headers: {
           "Content-type": "application/json"
@@ -44,7 +45,7 @@ const List = () => {
   }
   useEffect(() => {
     fetchHotel()
-  }, [search])
+  }, [search.toString()])
 
 
   useEffect(() => {
@@ -78,7 +79,7 @@ const List = () => {
       showToast('info', "Hotel was deleted")
 
     } catch (error) {
-      console.log(error);
+      if (error instanceof Error) console.error(error.message)
     }
   };
   return (
@@ -111,7 +112,7 @@ const List = () => {
                     Update
                   </Link>
                   <Link to={`/admin/room/${item._id}`} className="btn">
-                    add room
+                    Add room
                   </Link>
                   <button onClick={() => handleOpen(item._id, item.name, item.type)} className="btn bg-rose-600">
                     Delete
@@ -143,7 +144,7 @@ const List = () => {
 
       }
 
-      <Pagination page={Number(pagination?.page)} hasNextPage={pagination?.hasNextPage} hasPrevPage={pagination?.hasPrevPage} />
+      <Pagination page={Number(pagination?.page) || 1} hasNextPage={pagination?.hasNextPage} hasPrevPage={pagination?.hasPrevPage} />
 
     </section>
   );
