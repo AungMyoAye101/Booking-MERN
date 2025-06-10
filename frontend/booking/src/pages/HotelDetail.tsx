@@ -67,33 +67,35 @@ const HotelDetail = () => {
       <div className="flex flex-col gap-4">
 
 
-        <div className="flex gap-4 ">
+        <div className="mt-4 grid grid-cols-1 md:grid-cols-2 gap-1">
           {hotel.photos.map((img, i) => (
             <img
               key={i}
               src={img}
               alt={hotel.name + " room photo"}
               className={`
-                  rounded-lg object-cover aspect-video `}
+                  w-full h-full rounded-lg object-cover aspect-video `}
             />
           ))}
         </div>
-        <div className="flex justify-between">
 
-          <div className="space-y-2">
+
+        <div className="space-y-2">
+          <div className="flex flex-col md:flex-row  justify-between">
             <h1 className=" font-roboto text-2xl  ">{hotel.title}</h1>
-            <p className=" font-roboto text-lg ">{hotel.description}</p>
-            <div className="flex flex-wrap gap-2 items-center">
-
-              {
-                hotel.amenities.map((item) => (<div key={item} className="font-serif text-sm bg-blue-600 text-white py-1 px-2 rounded">{item}</div>))
-              }
-            </div>
+            <p className="font-roboto text-xl font-semibold text-amber-500">
+              $ {hotel.price} / night
+            </p>
           </div>
-          <p className="font-roboto text-xl font-semibold">
-            $ {hotel.price} / night
-          </p>
+          <p className=" font-roboto text-lg ">{hotel.description}</p>
+          <div className="flex flex-wrap gap-2 items-center">
+
+            {
+              hotel.amenities.map((item) => (<div key={item} className="font-serif text-sm bg-blue-600 text-white py-1 px-2 rounded">{item}</div>))
+            }
+          </div>
         </div>
+
 
       </div>
 

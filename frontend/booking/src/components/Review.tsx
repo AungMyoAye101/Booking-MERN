@@ -31,39 +31,38 @@ const Review = ({ hotelId }: { hotelId: string }) => {
 
 
   return (
-    <section className="flex gap-4 w-full">
+    <section className="flex gap-4 justify-center">
       {
         reviews.map((item, i) => (
-          <div key={i} className="min-w-52 max-w-64 py-4 ">
-            <div className="bg-white rounded-xl shadow-xl">
-              <div className="flex flex-col gap-2 px-2 py-1">
-                <div className=" flex items-center gap-2">
-                  <img
-                    src="https://img.freepik.com/free-photo/colonial-style-house-night-scene_1150-17925.jpg?t=st=1739537537~exp=1739541137~hmac=4ea038e25fe4731404bfcdd8bc276c05b04c8e65c734e586c23ad03f815409e3&w=740"
-                    alt="user profile photo"
-                    className="w-10 h-10 rounded-full "
-                  />
-                  <div className="font-roboto flex flex-col ">
-                    <h2 className="text-sm font-semibold">{item.userId.name}</h2>
-                    <p className="text-xs">{item.userId.email}</p>
-                  </div>
+
+          <div key={i} className="bg-white rounded-lg shadow-lg w-64 border border-gray-300">
+            <div className="flex flex-col gap-2 p-2">
+              <div className=" flex items-center gap-2">
+                <img
+                  src="/assets/images/user-icon.svg"
+                  alt="user profile photo"
+                  className="w-10 h-10 rounded-full "
+                />
+                <div className="font-roboto flex flex-col ">
+                  <h2 className="text-sm font-semibold">{item.userId.name}</h2>
+                  <p className="text-xs">{item.userId.email}</p>
                 </div>
-                <p className="font-serif text-sm">
-                  {item.review}
-                </p>
               </div>
-              <div className="flex items-center justify-end gap-1  border-t border-t-gray-400 p-2">
-                <div className="font-roboto">
-                  <h3 className="text-sm text-right font-semibold">Good</h3>
-                  <p className="text-xs">{reviews.length} reviews</p>
-                </div>
-                <div className="font-roboto bg-blue-700 py-2 px-3 text-sm rounded-lg text-white">
-                  {item.ratings}
-                </div>
+              <p className="font-roboto px-2">
+                {item.review}
+              </p>
+            </div>
+            <div className="flex items-center justify-end gap-1  border-t border-t-gray-400 p-2">
+              <div className="font-roboto">
+                <h3 className="text-sm text-right font-semibold">Good</h3>
+                <p className="text-xs">{reviews.length} reviews</p>
+              </div>
+              <div className="font-roboto bg-blue-700 py-2 px-3 text-sm rounded-lg text-white">
+                {item.ratings}
               </div>
             </div>
-          </div>
-        ))
+          </div>))
+
       }
 
     </section>
