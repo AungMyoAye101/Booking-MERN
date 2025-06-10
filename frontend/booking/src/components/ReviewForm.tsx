@@ -58,8 +58,8 @@ const ReviewForm = ({ hotelId }: { hotelId: string }) => {
 
 
     return (
-        <form onSubmit={onSubmit} className='flex flex-col gap-2 w-full min-w-52 max-w-60 py-4 bg-white p-2 rounded-lg shadow-lg'>
-            <h1 className="font-roboto font-lg font-medium">Please Leave your review</h1>
+        <form onSubmit={onSubmit} className='flex flex-col gap-2  w-64 py-4 bg-white p-2 rounded-lg shadow-lg border'>
+            <h1 className="font-roboto text-lg font-medium">Please Leave your review</h1>
             {/* Stars rating for reviews */}
             <div className="flex items-center  gap-1 text-xl">
                 {

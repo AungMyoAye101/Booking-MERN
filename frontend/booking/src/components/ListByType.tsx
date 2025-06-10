@@ -3,12 +3,15 @@ import { PiGreaterThan, PiLessThan } from "react-icons/pi";
 import { base_url } from "../lib/helper";
 import HotelLoading from "./HotelLoading";
 import { Link } from "react-router-dom";
+import { hotelTypes } from "../config/createHotel";
 
 type HotelList = {
   type: string,
   count: number,
   photo: string
 }
+const hotelListTypes = hotelTypes.join(',')
+
 const ListByType = () => {
   const [data, setData] = useState<HotelList[]>([])
   const [loading, setLoading] = useState(false)
@@ -23,10 +26,11 @@ const ListByType = () => {
     }
   };
 
+
   const fetchHotelBytype = async () => {
     try {
       setLoading(true)
-      const res = await fetch(base_url + "/api/hotel/type/hotelType?type=Hotel,Apartment,Beach Resort,Luxury,Business,Cabin,Motel", {
+      const res = await fetch(base_url + `/api/hotel/type/hotelType?type=${hotelListTypes}`, {
         method: "GET",
         headers: {
           "Content-type": "application/json"

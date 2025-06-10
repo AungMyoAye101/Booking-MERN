@@ -116,11 +116,10 @@ const getHotelById = async (req, res) => {
 
 const getHotelByType = async (req, res) => {
   const types = req.query.type.split(',')
+  console.log(types)
   if (!types) {
     return res.status(404).json({ success: false, message: "Hotel types are required!" })
   }
-
-
   try {
 
     const results = await Promise.all(
