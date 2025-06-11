@@ -7,13 +7,13 @@ const Admin = () => {
     <section className="flex flex-col mt-16 gap-4 max-w-6xl mx-auto h-[calc(100vh-60px)] px-4 ">
       <div className="flex gap-2 ">
         <Link to={"/admin"}
-          className={`link_text ${pathname === "/admin" ? "bg-blue-400" : ''}`}
+          className={`link_text ${pathname === "/admin" ? "bg-blue-400 text-white" : ''}`}
         >Dashboard</Link>
         <Link to={"/admin/hotels?page=1&limit=4"}
-          className={`link_text ${pathname === "/admin/hotels" ? "bg-blue-400" : ''}`}
+          className={`link_text ${pathname === "/admin/hotels" ? "bg-blue-400 text-white" : ''}`}
         >Hotels</Link>
         <Link to={"/admin/createHotel"}
-          className={`link_text ${pathname === "/admin/createHotel" ? "bg-blue-400" : ''}`}
+          className={`link_text ${pathname === "/admin/createHotel" ? "bg-blue-400 text-white" : ''}`}
         >Create hotel</Link>
       </div>
       <div className=" overflow-hidden overflow-y-scroll">

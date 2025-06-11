@@ -2,6 +2,7 @@
 import { CreateHotelType } from "../lib/types";
 import { hotelFacilities, hotelInput, hotelTypes } from "../config/createHotel";
 import { MdOutlineCloudUpload } from "react-icons/md";
+import { spinner } from "../lib/helper";
 
 type HotelFormType = {
     hotel: CreateHotelType,
@@ -179,10 +180,10 @@ const HotelCreateForm = ({ hotel, setHotel, loading, handleSubmit, photoArray, s
 
             <button
                 type="submit"
-                className={`btn self-end ${loading ? "cursor-not-allowed" : "cursor-pointer"}`}
+                className={`bg-blue-500 w-40 h-10 rounded-md text-white flex justify-center items-center self-end ${loading ? "cursor-not-allowed" : "cursor-pointer"}`}
                 disabled={loading}
             >
-                {loading ? "creating hotel..." : "Create Hotel"}
+                {loading ? spinner : "Create Hotel"}
 
             </button>
         </form>

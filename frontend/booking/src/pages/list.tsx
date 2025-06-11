@@ -4,6 +4,7 @@ import { HotelType } from "../lib/types";
 import { base_url, loadingElem } from "../lib/helper";
 import Pagination, { PaginationType } from "../components/Pagination";
 import { showToast } from "../context/ToastProvider";
+import { RiHotelLine } from "react-icons/ri";
 const List = () => {
 
   const [search] = useSearchParams()
@@ -65,8 +66,6 @@ const List = () => {
     })//toggle the delete modal
   };
 
-
-
   const handleDelete = async (id: string) => {
     try {
       const res = await fetch(`http://localhost:5000/api/hotel/${id}`, {
@@ -77,11 +76,14 @@ const List = () => {
       }
       setToggleDelete(false);
       showToast('info', "Hotel was deleted")
+      const filterHotel = data.filter(item => item._id !== id)
+      setData(filterHotel)
 
     } catch (error) {
       if (error instanceof Error) console.error(error.message)
     }
   };
+
   return (
     <section className="w-full flex flex-col gap-6 ">
 
@@ -103,6 +105,7 @@ const List = () => {
               <div className="flex flex-col gap-2 flex-1">
                 <div className="w-full md:w-[50%]">
                   <h1 className="text-2xl font-roboto font-semibold">{item.name}</h1>
+                  <div className="flex gap-1 items-center "><RiHotelLine /> <span>{item.type}</span></div>
                   <h2 className="font-roboto text-neutral-600 text-lg ">{item.title} </h2>
                   <p className="">{item.description}</p>
 

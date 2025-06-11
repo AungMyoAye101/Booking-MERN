@@ -77,7 +77,7 @@ const ReviewForm = ({ hotelId }: { hotelId: string }) => {
             {
                 validationError && <p className="error_message">{validationError}</p>
             }
-            <button disabled={loading} type="submit" className='btn'>{loading ? 'Submiting...' : 'Submit'}</button>
+            <button disabled={loading} type="submit" className='btn'>{loading ? 'Submitting...' : 'Submit'}</button>
         </form>
     )
 }

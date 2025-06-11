@@ -50,7 +50,6 @@ const ListByType = () => {
   useEffect(() => {
     fetchHotelBytype()
   }, [])
-  console.log(data)
 
   return (
     <section className="my-4 py-10">

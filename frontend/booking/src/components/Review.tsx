@@ -14,7 +14,7 @@ const Review = ({ hotelId }: { hotelId: string }) => {
       })
 
       const { success, message, data } = await res.json()
-      if (!res.ok && success === 'false') {
+      if (!res.ok && success === false) {
         throw new Error(message)
       }
       setReviews(data)
