@@ -9,7 +9,7 @@ const links = [
 const Footer = () => {
   return (
     <section className=" bg-purple-100">
-      <div className="max-w-6xl mx-auto flex justify-between  px-4 py-12">
+      <div className="max-w-6xl mx-auto flex flex-col md:flex-row gap-4 justify-between  px-4 py-12">
         <Link to={'/'} className=" text-2xl md:text-4xl font-bold font-roboto ">Booking.com</Link>
         <div className="flex flex-col gap-2">
           {

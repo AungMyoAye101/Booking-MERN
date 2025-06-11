@@ -10,6 +10,7 @@ interface MyBookingTypes {
         _id: string,
         title: string,
     },
+    roomNumber: number,
     totalPrice: number,
     checkIn: Date,
     checkOut: Date
@@ -34,7 +35,6 @@ const MyBooking = () => {
                 console.log(message)
                 throw new Error(message)
             }
-            console.log(data)
             setBooking(data)
         } catch (error) {
             if (error instanceof Error) {
@@ -49,6 +49,7 @@ const MyBooking = () => {
         fetchMyBooking()
     }, [])
 
+    console.log(booking)
     const cancelBooking = async (bookingId: string, userId: string, roomId: string) => {
         try {
             const res = await fetch(base_url + '/api/booking/cancel-booking', {
@@ -64,6 +65,8 @@ const MyBooking = () => {
                 showToast('error', message)
                 throw new Error(message)
             }
+            const filterBooking = booking.filter(i => i._id !== bookingId)
+            setBooking(filterBooking)
             showToast('success', message)
         } catch (error) {
             if (error instanceof Error) {
@@ -91,9 +94,11 @@ const MyBooking = () => {
                         <table className='w-full border-collapse border border-neutral-200 shadow-lg  rounded-lg'>
                             <thead>
                                 <tr className='bg-blue-600  border border-neutral-200 text-lg  font-serif  text-white'>
-                                    <th className='border border-neutral-200 p-1'>Room</th>
+                                    <th className='border border-neutral-200 p-1'>Room Name</th>
+                                    <th className='border border-neutral-200 p-1'>Room Number</th>
                                     <th className='border border-neutral-200 p-1'>Check in</th>
                                     <th className='border border-neutral-200 p-1'>Check out</th>
+
                                     <th className='border border-neutral-200 p-1'>Total Price</th>
                                     <th className='border border-neutral-200 p-1'>Status</th>
                                 </tr>
@@ -105,9 +110,10 @@ const MyBooking = () => {
                                     booking.map(item => (
                                         <tr key={item._id}>
                                             <td className='border border-neutral-200 text-center p-2 text-lg'>{item.room.title}</td>
+                                            <td className='border border-neutral-200 text-center p-2 text-lg'>{item.roomNumber}</td>
                                             <td className='border border-neutral-200 text-center p-2'>{item.checkIn instanceof Date ? item.checkIn.toLocaleDateString() : new Date(item.checkIn).toLocaleDateString()}</td>
                                             <td className='border border-neutral-200 text-center p-2'>{item.checkOut instanceof Date ? item.checkOut.toLocaleDateString() : new Date(item.checkOut).toLocaleDateString()}</td>
-                                            <td className='border border-neutral-200 text-center p-2'>{item.totalPrice}</td>
+                                            <td className='border border-neutral-200 text-center p-2'>{item.totalPrice} $</td>
                                             <td className='border border-neutral-200 text-center p-2'>
                                                 <button
                                                     onClick={() => cancelBooking(item._id, item.user, item.room._id)}
