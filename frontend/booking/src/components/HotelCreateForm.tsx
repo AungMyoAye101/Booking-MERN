@@ -35,22 +35,25 @@ const HotelCreateForm = ({ hotel, setHotel, loading, handleSubmit, photoArray, s
 
 
     const handlePhotoChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const files = Array.from(e.target.files || []);
+        const { name, files } = e.target;
+        console.log(files)
+        setHotel(pre => ({ ...pre, [name]: files }))
+        // const files = Array.from(e.target.files || []);
 
-        if (files.length === 0) return;
+        // if (files.length === 0) return;
 
-        const promise = files.map((file) => {
-            const reader = new FileReader();
-            return new Promise<string | ArrayBuffer | null>((resolve, reject) => {
-                reader.onloadend = () => {
-                    resolve(reader.result);
-                };
-                reader.onerror = () => reject(new Error("Failed to read file"));
-                reader.readAsDataURL(file);
-            });
-        });
+        // const promise = files.map((file) => {
+        //     const reader = new FileReader();
+        //     return new Promise<string | ArrayBuffer | null>((resolve, reject) => {
+        //         reader.onloadend = () => {
+        //             resolve(reader.result);
+        //         };
+        //         reader.onerror = () => reject(new Error("Failed to read file"));
+        //         reader.readAsDataURL(file);
+        //     });
+        // });
 
-        Promise.all(promise).then((result) => setPhotoArray((pre: any) => [...pre, ...result]));
+        // Promise.all(promise).then((result) => setPhotoArray((pre: any) => [...pre, ...result]));
     };
 
     return (
@@ -151,7 +154,7 @@ const HotelCreateForm = ({ hotel, setHotel, loading, handleSubmit, photoArray, s
                         disabled={photoArray.length >= 5}
                         id="photo"
                         type="file"
-                        name="photo"
+                        name="photos"
                         multiple
                         onChange={handlePhotoChange}
                         className="hidden"

@@ -5,25 +5,31 @@ const cloudinary = require("cloudinary").v2;
 const createHotel = async (req, res) => {
   console.log("uploading file from browser")
 
-  const { photos } = req.body;
-  let urls;
-  try {
-    const uploadedImages = photos.map((img) => {
-      return cloudinary.uploader.upload(img, { folder: "hotels" })
-    })
-    const uploadResponse = await Promise.all(uploadedImages)
-    urls = uploadResponse.map((img) => img.secure_url)
-    console.log("image uploaded")
-  } catch (error) {
-    return res.status(500).json({ success: false, message: error.message })
+  // const { photos } = req.body;
+  // let urls;
+  // try {
+  //   const uploadedImages = photos.map((img) => {
+  //     return cloudinary.uploader.upload(img, { folder: "hotels" })
+  //   })
+  //   const uploadResponse = await Promise.all(uploadedImages)
+  //   urls = uploadResponse.map((img) => img.secure_url)
+  //   console.log("image uploaded")
+  // } catch (error) {
+  //   return res.status(500).json({ success: false, message: error.message })
 
-  }
+  // }
 
   // add hotel with uploaded image urls to database
   try {
+    console.log(req.files)
+    const images = req.files.map(file => ({
+      url: file.path,
+      public_id: file.filename
+    }))
+    console.log(images)
     const newHotel = new Hotel({
       ...req.body,
-      photos: urls
+      photos: images
     });
     const savedHotel = await newHotel.save();
     console.log("hotel saved")
@@ -116,7 +122,7 @@ const getHotelById = async (req, res) => {
 
 const getHotelByType = async (req, res) => {
   const types = req.query.type.split(',')
-  console.log(types)
+
   if (!types) {
     return res.status(404).json({ success: false, message: "Hotel types are required!" })
   }
@@ -135,7 +141,7 @@ const getHotelByType = async (req, res) => {
 
       })
     )
-    console.log(results)
+
     return res.status(200).json({
       success: true, message: "Success to get hotel by type", data: results
     });

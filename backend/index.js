@@ -12,7 +12,7 @@ const cookieParser = require("cookie-parser");
 const cors = require("cors");
 const Hotel = require("./models/hotel.model");
 const User = require("./models/user.model");
-const cloudinary = require("cloudinary").v2
+
 const app = express();
 
 dotenv.config();
@@ -34,11 +34,7 @@ const connectToDb = async () => {
     throw error;
   }
 };
-cloudinary.config({
-  cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
-  api_key: process.env.CLOUDINARY_API_KEY,
-  api_secret: process.env.CLOUDINARY_API_SECRET
-})
+
 
 // DB connection error
 mongoose.connection.on("disconnected", () => {

@@ -30,9 +30,9 @@ const CreateHotel = () => {
     e.preventDefault();
 
 
-    setHotel((pre) => ({ ...pre, amenities: amenities, photos: photoArray.filter((item): item is string => typeof item === "string") }));
+    setHotel((pre) => ({ ...pre, amenities: amenities }));
 
-    if (hotel.photos.length === 0) return
+    if (hotel.photos.length === 0) return console.log("no photos")
 
     // const validateHotel = createHotelValidation.safeParse(hotel);
     // if (!validateHotel.success) {
