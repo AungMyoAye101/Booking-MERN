@@ -126,15 +126,16 @@ const getHotelByType = async (req, res) => {
       types.map(async (type) => {
         const count = await Hotel.countDocuments({ type: { $regex: type, $options: 'i' } })
         const hotel = await Hotel.findOne({ type: { $regex: type, $options: 'i' } })
+        console.log(hotel, "in hotel ")
         return {
           type,
           count,
-          photo: hotel && hotel.photos && hotel.photos.length > 1 ? hotel.photos[0] : null
+          photo: hotel && hotel.photos && hotel.photos.length >= 1 ? hotel.photos[0] : null
         }
 
       })
     )
-
+    console.log(results)
     return res.status(200).json({
       success: true, message: "Success to get hotel by type", data: results
     });

@@ -77,9 +77,9 @@ const ListByType = () => {
             <Link
               to={`/type/${item.type}?limit=6&page=1`}
               key={item.type}
-              className="min-w-[250px]  relative rounded-lg overflow-hidden shadow-lg cursor-pointer bg-white"
+              className="min-w-[300px]  relative rounded-lg overflow-hidden shadow-lg cursor-pointer bg-white border border-gray-200"
             >
-              <div className=" overflow-hidden">
+              <div className="w-full aspect-square overflow-hidden">
                 <img
                   src={item.photo}
                   alt="image"
