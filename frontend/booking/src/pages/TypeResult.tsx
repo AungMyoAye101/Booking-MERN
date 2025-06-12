@@ -55,11 +55,11 @@ const TypeResult = () => {
 
 
     return (
-        <section className='page_con'>
+        <section className='page_con min-h-screen'>
             <div className='flex flex-col gap-4 '>
                 {
                     error ? <div className='h-[calc(100vh-200px)] flex justify-center items-center'><NotFound /></div> :
-                        <div>
+                        <div className='mt-4'>
                             {
 
                                 loading ? loadingElem : hotel.map((data) => (

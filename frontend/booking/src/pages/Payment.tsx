@@ -29,7 +29,6 @@ const Payment = () => {
     const numberOfNights = checkIn === checkOut ? 1 : Math.abs(
         validCheckIn.getTime() - validCheckOut.getTime()
     ) / (24 * 60 * 60 * 1000);
-    console.log(numberOfNights)
     //calculate total price
     const totalPrice = Number(price) * numberOfNights;
 
@@ -71,97 +70,80 @@ const Payment = () => {
 
 
     return (
-        <section className=" py-20 flex justify-center  max-w-6xl mx-auto">
-            <main className='flex  gap-4'>
-                <div>
-                    <div className='bg-white shadow border rounded w-96 p-4'>
-                        <h1 className='font-roboto text-2xl font-semibold mb-2'>Your Booking Summary</h1>
-                        <div className='flex justify-between items-center border-b py-1.5'>
-                            <h2 className='font-roboto'>Hotel</h2>
-                            <p className='font_semibold'>{hotel} </p>
-                        </div>
-                        <div className='flex justify-between items-center border-b py-1.5'>
-                            <h2 className='font-roboto '>Room</h2>
-                            <p className='font_semibold'>{room}</p>
-                        </div>
-                        <div className='flex justify-between items-center border-b py-1.5'>
-                            <h2 className='font-roboto'>Room Numbers</h2>
-                            <p className='font_semibold'>{roomNumber}</p>
-                        </div>
-                        <div className='flex justify-between items-center border-b py-1.5'>
-                            <h2 className='font-roboto'>CheckIn</h2>
-                            <p className='font_semibold'>{checkIn ? formatDate(new Date(checkIn)) : ''}</p>
-                        </div>
-                        <div className='flex justify-between items-center border-b py-1.5'>
-                            <h2 className='font-roboto '>CheckOut</h2>
-                            <p className='font_semibold'>{checkOut ? formatDate(new Date(checkOut)) : ''}</p>
-                        </div>
-                        <div className='flex justify-between items-center border-b py-1.5'>
-                            <h2 className='font-roboto '>Length of nights</h2>
-                            <p className='font_semibold'>{numberOfNights} {numberOfNights > 1 ? "days" : "day"}</p>
-                        </div>
-                        <div className='flex justify-between items-center border-b py-1.5'>
-                            <h2 className='font-roboto '>Total Price</h2>
-                            <p className='font_semibold text-amber-600'>{totalPrice} $</p>
-                        </div>
+        <section className=" min-h-screen flex justify-center items-center  max-w-6xl mx-auto ">
+            <img src="/assets/images/hotel-bg.jpg" alt="hotel background photo" className='absolute w-full h-screen object-cover -z-0' />
 
-
+            <div>
+                <div className='bg-white shadow border rounded min-w-80 max-w-2xl px-4 py-6 relative z-10'>
+                    <h1 className='font-roboto text-2xl font-semibold mb-2'>Your Booking Summary</h1>
+                    <div className='flex justify-between items-center border-b py-1.5'>
+                        <h2 className='font-roboto'>Hotel</h2>
+                        <p className='font_semibold'>{hotel} </p>
                     </div>
-                </div>
-                <div>
-
-                    <div className='bg-white shadow border rounded min-w-[32rem] p-4 flex flex-col gap-2'>
-                        <h1 className='font-roboto text-2xl font-semibold mb-2'>Comfrim Your Detail</h1>
-                        <div>
-
-                            <label htmlFor="name" className='font-medium '>Your Name</label>
-                            <input readOnly className='border bg-neutral-200 p-1.5  w-full rounded' type="text" name='name' value={user.name} placeholder='your name' />
-                        </div>
-
-                        <div>
-                            <label htmlFor="email" className='font-medium '>Your Email</label>
-                            <input readOnly className='border bg-neutral-200 p-1.5  w-full rounded' type="email" id='email' name='email' value={user.email} placeholder='exampe@gmail.com' />
-                        </div>
-                        <div>
-                            <label htmlFor="card " className='font-medium'>Card Number</label>
-                            <input type="text" name='card' className='border bg-neutral-200 p-1.5  w-full rounded' placeholder='0000 0000 0000 0000' />
-                        </div>
-                        <div className='flex gap-4 items-center '>
-                            <div className='flex flex-col gap-1'>
-                                <label htmlFor="date" className='font-medium'>Expire Date</label>
-                                <input type="text" name='date' className='border bg-neutral-200 p-1.5  w-full rounded' placeholder='mm/yy ' />
-                            </div>
-                            <div className='flex flex-col gap-1'>
-                                <label htmlFor="scurity" className='font-medium' >CVC</label>
-                                <input type="text" name='scurity' className='border bg-neutral-200 p-1.5  w-full rounded' placeholder='code' />
-                            </div>
-                        </div>
-                        <div>
-                            <h2 className='font-roboto  font-semibold'>Your Price Summary</h2>
-                            <div className='bg-blue-50 p-2 rounded'>
-                                <h1 className='font-roboto text-xl font-bold'>Total Cost : <span className='text-amber-500'>{totalPrice} $</span></h1>
-                                <p className='text-xs'>Includes taxes and charges </p>
-                            </div>
-
-
-                        </div>
-                        <button
-                            disabled={loading}
-                            onClick={() => roomBooking(
-                                roomId,
-                                Number(roomNumber),
-                                user._id,
-                                new Date(checkIn!),
-                                new Date(checkOut!)
-                            )}
-                            className='btn flex justify-center items-center'
-
-                        >{loading ? spinner : " Confirm booking"} </button>
+                    <div className='flex justify-between items-center border-b py-1.5'>
+                        <h2 className='font-roboto '>Room</h2>
+                        <p className='font_semibold'>{room}</p>
+                    </div>
+                    <div className='flex justify-between items-center border-b py-1.5'>
+                        <h2 className='font-roboto'>Room Number</h2>
+                        <p className='font_semibold'>{roomNumber}</p>
+                    </div>
+                    <div className='flex justify-between items-center border-b py-1.5'>
+                        <h2 className='font-roboto'>CheckIn</h2>
+                        <p className='font_semibold'>{checkIn ? formatDate(new Date(checkIn)) : ''}</p>
+                    </div>
+                    <div className='flex justify-between items-center border-b py-1.5'>
+                        <h2 className='font-roboto '>CheckOut</h2>
+                        <p className='font_semibold'>{checkOut ? formatDate(new Date(checkOut)) : ''}</p>
+                    </div>
+                    <div className='flex justify-between items-center border-b py-1.5'>
+                        <h2 className='font-roboto '>Length of nights</h2>
+                        <p className='font_semibold'>{numberOfNights} {numberOfNights > 1 ? "days" : "day"}</p>
+                    </div>
+                    <div className='flex justify-between items-center border-b py-1.5'>
+                        <h2 className='font-roboto font-semibold text-2xl'>Total</h2>
+                        <p className='font-semibold text-2xl text-amber-600'>{totalPrice} $</p>
                     </div>
 
+
+
+                    <div className='input_container'>
+
+                        <label htmlFor="name" className='font-medium '>Your Name</label>
+                        <input readOnly className='input_con' type="text" name='name' value={user.name} placeholder='your name' />
+                    </div>
+                    <div className='input_container'>
+                        <label htmlFor="card " className='font-medium'>Card Number</label>
+                        <input type="text" name='card' className='input_con' placeholder='0000 0000 0000 0000' />
+                    </div>
+                    <div className='flex gap-4 items-center '>
+                        <div className='input_container'>
+                            <label htmlFor="date" className='font-medium'>Expire Date</label>
+                            <input type="text" name='date' className='input_con' placeholder='mm/yy ' />
+                        </div>
+                        <div className='input_container'>
+                            <label htmlFor="scurity" className='font-medium' >CVC</label>
+                            <input type="text" name='scurity' className='input_con ' placeholder='code' />
+                        </div>
+                    </div>
+
+                    <button
+                        disabled={loading}
+                        onClick={() => roomBooking(
+                            roomId,
+                            Number(roomNumber),
+                            user._id,
+                            new Date(checkIn!),
+                            new Date(checkOut!)
+                        )}
+                        className='w-full bg-orange-500 h-10 rounded-md text-white flex justify-center items-center mt-4'
+
+                    >{loading ? spinner : " Confirm booking"} </button>
                 </div>
 
-            </main >
+            </div>
+
+
             {/* 
             <button className='bg-red-400' onClick={() => roomBooking(room, Number(roomNumber), user!, checkInDate, checkOutDate)} >Pay Now</button> */}
 

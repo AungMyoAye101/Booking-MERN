@@ -14,7 +14,7 @@ const Destination = () => {
   const fetchHotelBytype = async () => {
     try {
       setLoading(true)
-      const res = await fetch(base_url + "/api/hotel/type/getHotelByCity?city=Tokyo,Denver,Miami", {
+      const res = await fetch(base_url + "/api/hotel/type/getHotelByCity?city=Mandalay,miami", {
         method: "GET",
         headers: {
           "Content-type": "application/json"
