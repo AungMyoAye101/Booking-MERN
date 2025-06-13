@@ -38,10 +38,16 @@ cloudinary.config({
 })
 
 
-app.post('/post', upload.single('photo'), async (req, res) => {
-  if (!req.file) {
+app.post('/post', upload.array('photo', 4), async (req, res) => {
+  console.log(req.files)
+  if (!req.files) {
     return res.status(400).json({ message: "failed" })
   }
+  const images = req.files.map(file => ({
+    url: file.path,
+    public_id: file.filename,
+  }));
+  console.log(images)
   res.status(200).json({ message: "success" })
 })
 const connectToDb = async () => {

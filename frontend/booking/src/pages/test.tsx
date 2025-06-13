@@ -2,13 +2,14 @@ import { useState } from "react"
 
 
 const Test = () => {
-    const [image, setImage] = useState<File | null>()
+    const [image, setImage] = useState<File[]>([])
     console.log(image)
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault()
         if (!image) return
         const formData = new FormData()
-        formData.append("photo", image)
+        image.forEach(img => (formData.append("photo", img)))
+        console.log(formData)
         try {
             const res = await fetch("http://localhost:5000/post", {
                 method: "POST",
@@ -31,13 +32,8 @@ const Test = () => {
                 type="file"
                 name="file"
                 className="w-30 h-40 bg-blue-100"
-                onChange={(e) => {
-                    if (e.target.files && e.target.files[0]) {
-                        setImage(e.target.files[0]);
-                    } else {
-                        setImage(null);
-                    }
-                }}
+                multiple
+                onChange={(e) => setImage(Array.from(e.target.files))}
             />
             <button type="submit">POST</button>
         </form>
