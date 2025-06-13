@@ -12,17 +12,38 @@ const cookieParser = require("cookie-parser");
 const cors = require("cors");
 const Hotel = require("./models/hotel.model");
 const User = require("./models/user.model");
-
+const cloudinary = require("cloudinary").v2
+const { upload } = require("./utils/cloudinary")
 const app = express();
 
 dotenv.config();
 
 app.use(express.json({ limit: "50mb" }));
 app.use(express.urlencoded({ limit: "50mb", extended: true }));
+//Middleware for route handler
+app.use(cookieParser());
+app.use(cors({
+  origin: "http://localhost:5173",
+  credentials: true,
+}
+));
+
 
 const port = process.env.PORT || 8080;
 const DB_URI = process.env.MONGODB_URI;
+cloudinary.config({
+  cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+  api_key: process.env.CLOUDINARY_API_KEY,
+  api_secret: process.env.CLOUDINARY_API_SECRET
+})
 
+
+app.post('/post', upload.single('photo'), async (req, res) => {
+  if (!req.file) {
+    return res.status(400).json({ message: "failed" })
+  }
+  res.status(200).json({ message: "success" })
+})
 const connectToDb = async () => {
   if (!DB_URI) {
     throw error("Mongodb uri is invalid");
@@ -41,13 +62,7 @@ mongoose.connection.on("disconnected", () => {
   console.log("Mongo DB is disconnected !");
 });
 
-//Middleware for route handler
-app.use(cookieParser());
-app.use(cors({
-  origin: "http://localhost:5173",
-  credentials: true,
-}
-));
+
 
 
 
