@@ -1,6 +1,6 @@
 
 import { CreateHotelType } from "../lib/types";
-import { hotelFacilities, hotelInput, hotelTypes } from "../config/createHotel";
+import { hotelFacilities, hotelInput, hotelInputValidation, hotelTypes } from "../config/createHotel";
 import { MdOutlineCloudUpload } from "react-icons/md";
 import { spinner } from "../lib/helper";
 
@@ -60,16 +60,16 @@ const HotelCreateForm = ({ hotel, setHotel, loading, handleSubmit, setPhotoArray
             <h1 className="text-2xl font-semibold font-roboto capitalize ">{type} hotel</h1>
 
             {
-                hotelInput.map((item) => (
+                hotelInputValidation.map((filed) => (
 
-                    <label htmlFor={item} className="flex flex-col gap-1  " key={item}>
-                        <span className="font-roboto text-sm capitalize font-semibold">{item}</span>
+                    <label htmlFor={filed.name} className="flex flex-col gap-1  " key={filed.name}>
+                        <span className="font-roboto text-sm capitalize font-semibold">{filed.label}</span>
                         <input
-                            id={item}
-                            type={item === "price" ? "number" : "text"}
-                            name={item}
-                            value={hotel[item as keyof CreateHotelType] || ''}
-                            placeholder={item}
+                            id={filed.name}
+                            type={filed.name === "price" ? "number" : "text"}
+                            name={filed.name}
+                            value={hotel[filed.name as keyof CreateHotelType] || ''}
+                            placeholder={filed.placeholder}
                             className="bg-neutral-100 rounded p-2 border w-full"
                             onChange={(e) => handleChange(e)}
                         />

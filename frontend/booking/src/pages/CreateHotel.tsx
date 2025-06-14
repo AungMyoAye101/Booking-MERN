@@ -1,9 +1,10 @@
 import { useState } from "react";
-import { CreateHotelType } from "../lib/types";
+import { CreateHotelType, HotelType } from "../lib/types";
 import { useNavigate } from "react-router-dom";
 import HotelCreateForm from "../components/HotelCreateForm";
 import { base_url } from "../lib/helper";
 import { useForm } from "react-hook-form";
+import { hotelInput, hotelInputValidation } from "../config/createHotel";
 
 
 const CreateHotel = () => {
@@ -35,6 +36,13 @@ const CreateHotel = () => {
 
     if (photoArray.length <= 0) return console.log("no photos")
     photoArray.forEach(img => (formData.append("photos", img)))
+
+    // Append other fields to formData
+    Object.keys(data).forEach((key) => {
+      if (key !== "photos") {
+        formData.append(key, data[key]);
+      }
+    });
 
     console.log(formData)
     try {
@@ -82,8 +90,38 @@ const CreateHotel = () => {
     //   handleSubmit={handleSubmit}
     //   type="create"
     // />
-    <form onSubmit={handleSubmit(onSubmit)} encType="multipart/form-data" className="bg-white border p-12 w-96  mx-auto mt-20 flex flex-col gap-4">
+    <form onSubmit={handleSubmit(onSubmit)} encType="multipart/form-data" className="min-h-screen bg-white border p-12 w-96  mx-auto mt-20 flex flex-col gap-4 font-roboto">
+      {
+        hotelInputValidation.map(field => (
+          <div className="flex flex-col gap-1 " key={field.name}>
+            <label htmlFor={field.name} className="capitalize font-medium">
 
+              {field.label}
+            </label>
+            <input
+              type="text"
+              {...register(field.name, field.config)}
+              placeholder={field.placeholder}
+              className="input_con"
+            />
+            {
+              errors[field.name] && <p className="text-red-600 ">{errors[field.name]?.message as string}</p>
+            }
+
+          </div>
+        ))
+
+      }
+      <div className="flex flex-col gap-1">
+        <label htmlFor="description">Description</label>
+        <textarea
+          placeholder="Description"
+          {...register("description", { required: "Description is required." })}
+          className="min-h-20 bg-neutral-200 focus:outline-blue-400 p-2" />
+        {
+          errors.description && <p className="text-red-600 ">{errors.description.message as string}</p>
+        }
+      </div>
       <input type="file" name="photos" multiple onChange={e => setPhotoArray(Array.from(e.target.files))} className="input_con" />
       <button className="btn " type="submit">Post</button>
     </form>
