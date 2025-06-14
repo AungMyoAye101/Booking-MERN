@@ -15,7 +15,7 @@ const { upload } = require("../utils/cloudinary");
 const router = express.Router();
 
 router.get("/", getAllHotels);
-router.post("/create-hotel", upload.array("images", 10), createHotel);
+router.post("/create-hotel", upload.array("photos", 4), createHotel);
 router.put("/:id", updateHotel);
 router.delete("/:id", deleteHotel);
 router.get("/:id", getHotelById);

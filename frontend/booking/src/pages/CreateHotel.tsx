@@ -3,6 +3,7 @@ import { CreateHotelType } from "../lib/types";
 import { useNavigate } from "react-router-dom";
 import HotelCreateForm from "../components/HotelCreateForm";
 import { base_url } from "../lib/helper";
+import { useForm } from "react-hook-form";
 
 
 const CreateHotel = () => {
@@ -20,34 +21,30 @@ const CreateHotel = () => {
     type: "",
   });
 
-  const [photoArray, setPhotoArray] = useState<(string | ArrayBuffer | null)[]>([]);
+  const [photoArray, setPhotoArray] = useState<(File[])>([]);
   const [amenities, setAmenities] = useState<string[]>([])
   const [loading, setLoading] = useState(false)
   const navigate = useNavigate()
+  const { register, handleSubmit, formState: { errors } } = useForm()
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const onSubmit = async (data: any) => {
 
-    e.preventDefault();
+    console.log(photoArray)
+    // setHotel((pre) => ({ ...pre, amenities: amenities }));
+    const formData = new FormData();
 
+    if (photoArray.length <= 0) return console.log("no photos")
+    photoArray.forEach(img => (formData.append("photos", img)))
 
-    setHotel((pre) => ({ ...pre, amenities: amenities }));
-
-    if (hotel.photos.length === 0) return console.log("no photos")
-
-    // const validateHotel = createHotelValidation.safeParse(hotel);
-    // if (!validateHotel.success) {
-    //   console.log(validateHotel.error);
-    //   return;
-    // }
-
+    console.log(formData)
     try {
       console.log('creating hotel...')
       setLoading(true)
 
       const res = await fetch(base_url + "/api/hotel/create-hotel", {
         method: "POST",
-        headers: { "Content-Type": "application/json", },
-        body: JSON.stringify(hotel),
+        body: formData
+
       });
       const data = await res.json();
       if (!res.ok && data.success === false) {
@@ -55,8 +52,8 @@ const CreateHotel = () => {
       }
 
 
-      console.log(data.message, data.data);
-      navigate("/admin/hotels")
+      console.log(data.message);
+      // navigate("/admin/hotels")
       setLoading(false)
 
     }
@@ -75,17 +72,21 @@ const CreateHotel = () => {
 
 
   return (
-    <HotelCreateForm
-      hotel={hotel}
-      setHotel={setHotel}
-      photoArray={photoArray}
-      setPhotoArray={setPhotoArray}
-      amenities={amenities}
-      setAmenities={setAmenities}
-      loading={loading}
-      handleSubmit={handleSubmit}
-      type="create"
-    />
+    // <HotelCreateForm
+    //   hotel={hotel}
+    //   setHotel={setHotel}
+    //   setPhotoArray={setPhotoArray}
+    //   amenities={amenities}
+    //   setAmenities={setAmenities}
+    //   loading={loading}
+    //   handleSubmit={handleSubmit}
+    //   type="create"
+    // />
+    <form onSubmit={handleSubmit(onSubmit)} encType="multipart/form-data" className="bg-white border p-12 w-96  mx-auto mt-20 flex flex-col gap-4">
+
+      <input type="file" name="photos" multiple onChange={e => setPhotoArray(Array.from(e.target.files))} className="input_con" />
+      <button className="btn " type="submit">Post</button>
+    </form>
   );
 };
 export default CreateHotel

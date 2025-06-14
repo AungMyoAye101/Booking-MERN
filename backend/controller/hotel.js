@@ -4,6 +4,11 @@ const cloudinary = require("cloudinary").v2;
 //Create hotel
 const createHotel = async (req, res) => {
   console.log("uploading file from browser")
+  console.log(req.files)
+  if (!req.files) {
+    return res.status(400).json({ message: "Failed" })
+  }
+  res.status(200).json({ message: "uploaded" })
 
   // const { photos } = req.body;
   // let urls;
@@ -20,24 +25,24 @@ const createHotel = async (req, res) => {
   // }
 
   // add hotel with uploaded image urls to database
-  try {
-    console.log(req.files)
-    const images = req.files.map(file => ({
-      url: file.path,
-      public_id: file.filename
-    }))
-    console.log(images)
-    const newHotel = new Hotel({
-      ...req.body,
-      photos: images
-    });
-    const savedHotel = await newHotel.save();
-    console.log("hotel saved")
-    return res.status(201).json({ success: true, message: "Hotel created successful", data: savedHotel });
-  } catch (error) {
-    console.log(error.message)
-    return res.status(500).json({ success: false, message: error.message })
-  }
+  // try {
+  //   console.log(req.files)
+  //   const images = req.files.map(file => ({
+  //     url: file.path,
+  //     public_id: file.filename
+  //   }))
+  //   console.log(images)
+  //   const newHotel = new Hotel({
+  //     ...req.body,
+  //     photos: images
+  //   });
+  //   const savedHotel = await newHotel.save();
+  //   console.log("hotel saved")
+  //   return res.status(201).json({ success: true, message: "Hotel created successful", data: savedHotel });
+  // } catch (error) {
+  //   console.log(error.message)
+  //   return res.status(500).json({ success: false, message: error.message })
+  // }
 
 };
 

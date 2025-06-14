@@ -9,7 +9,6 @@ type HotelFormType = {
     setHotel: React.Dispatch<React.SetStateAction<CreateHotelType>>,
     loading: boolean,
     handleSubmit: (e: React.FormEvent) => void,
-    photoArray: (string | ArrayBuffer | null)[],
     setPhotoArray: React.Dispatch<React.SetStateAction<any>>,
     amenities: string[],
     setAmenities: React.Dispatch<React.SetStateAction<string[]>>,
@@ -17,7 +16,7 @@ type HotelFormType = {
 
 }
 
-const HotelCreateForm = ({ hotel, setHotel, loading, handleSubmit, photoArray, setPhotoArray, amenities, setAmenities, type }: HotelFormType) => {
+const HotelCreateForm = ({ hotel, setHotel, loading, handleSubmit, setPhotoArray, amenities, setAmenities, type }: HotelFormType) => {
 
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
@@ -35,9 +34,9 @@ const HotelCreateForm = ({ hotel, setHotel, loading, handleSubmit, photoArray, s
 
 
     const handlePhotoChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const { name, files } = e.target;
-        console.log(files)
-        setHotel(pre => ({ ...pre, [name]: files }))
+        const { files } = e.target;
+        if (!files) return console.error("no photo")
+        setPhotoArray(Array.from(files))
         // const files = Array.from(e.target.files || []);
 
         // if (files.length === 0) return;
@@ -151,7 +150,7 @@ const HotelCreateForm = ({ hotel, setHotel, loading, handleSubmit, photoArray, s
                     </div>
                     <span className="font-roboto text-sm ">Please upload photo</span>
                     <input
-                        disabled={photoArray.length >= 5}
+
                         id="photo"
                         type="file"
                         name="photos"
@@ -162,6 +161,10 @@ const HotelCreateForm = ({ hotel, setHotel, loading, handleSubmit, photoArray, s
                     />
                 </label>
                 {
+                    /* 
+
+
+                
                     photoArray.length > 0 && photoArray
                         .filter((item): item is string => typeof item === "string")
                         .map((item, index) => (
@@ -177,7 +180,8 @@ const HotelCreateForm = ({ hotel, setHotel, loading, handleSubmit, photoArray, s
                             </div>
 
                         ))
-                }
+                            */}
+
             </div>
 
 
