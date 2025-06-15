@@ -29,7 +29,7 @@ body {
   }
 
   .input_con {
-    @apply w-full bg-neutral-200 rounded p-2 border;
+    @apply w-full bg-neutral-100 rounded p-2 border;
   }
 
   .btn {
@@ -41,11 +41,11 @@ body {
   }
 
   .error_message {
-    @apply text-red-500 text-sm
+    @apply text-red-500 font-medium
   }
 
   .font_semibold {
-    @apply font-semibold font-roboto
+    @apply font-semibold font-roboto capitalize
   }
 
   .link_text {

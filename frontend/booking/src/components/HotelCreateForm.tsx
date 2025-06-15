@@ -1,6 +1,6 @@
 
 import { CreateHotelType } from "../lib/types";
-import { hotelFacilities, hotelInput, hotelInputValidation, hotelTypes } from "../config/createHotel";
+import { hotelAmenities, hotelInput, hotelInputValidation, hotelTypes } from "../config/createHotel";
 import { MdOutlineCloudUpload } from "react-icons/md";
 import { spinner } from "../lib/helper";
 
@@ -131,7 +131,7 @@ const HotelCreateForm = ({ hotel, setHotel, loading, handleSubmit, setPhotoArray
                 <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4  gap-2">
 
                     {
-                        hotelFacilities.map((item) => (
+                        hotelAmenities.map((item) => (
                             <label key={item} className={`font-serif px-4 py-1.5 text-sm flex items-center gap-1`}>
 
                                 <input type="checkbox" value={item} name="amenities" checked={hotel.amenities.includes(item) || amenities.includes(item)} onChange={() => handleAmenitesChange(item)} />

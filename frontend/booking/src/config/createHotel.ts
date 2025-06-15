@@ -67,14 +67,47 @@ export const hotelTypes = [
     "Motel",
 
 ];
-export const hotelFacilities = [
-    "Free Breakfast",
-    "Free WiFi",
-    "Parking",
-    "Airport Shuttle",
-    "Family Rooms",
-    "Non-Smoking Rooms",
-    "Outdoor Pool",
-    "Spa",
-    "Fitness Center",
+export const hotelAmenities = [
+    {
+        value: "Free Breakfast",
+        label: 'freebreakfast'
+    },
+    {
+        value: "Free WiFi",
+        label: "FreeWiFi",
+    },
+    {
+        value: "Parking",
+        label: "Parking",
+    },
+    {
+        value: "Airport Shuttle",
+        label: "Airport-Shuttle",
+    },
+    {
+        value: "Family Rooms",
+        label: "Family-Rooms",
+    },
+    {
+        value: "Non-Smoking Rooms",
+        label: "Non-Smoking-Rooms",
+    },
+    {
+        value: "Outdoor Pool",
+        label: "Outdoor-Pool"
+    },
+    {
+        value: "Spa",
+        label: "Spa",
+    }, {
+        value: "Fitness Center",
+        label: "Fitness-Center",
+    }
+
+
+
+
+
+
+
 ];
