@@ -5,6 +5,7 @@ const cloudinary = require("cloudinary").v2;
 const createHotel = async (req, res) => {
   console.log("uploading file from browser")
   console.log(req.files)
+  console.log(req.body)
   if (!req.files) {
     return res.status(400).json({ message: "Failed" })
   }

@@ -4,19 +4,22 @@ const Admin = () => {
   const location = useLocation()
   const pathname = location.pathname
   return (
-    <section className="flex flex-col mt-16 gap-4 max-w-6xl mx-auto h-[calc(100vh-60px)] px-4 ">
-      <div className="flex gap-2 ">
-        <Link to={"/admin"}
-          className={`link_text ${pathname === "/admin" ? "bg-blue-400 text-white" : ''}`}
-        >Dashboard</Link>
-        <Link to={"/admin/hotels?page=1&limit=4"}
-          className={`link_text ${pathname === "/admin/hotels" ? "bg-blue-400 text-white" : ''}`}
-        >Hotels</Link>
-        <Link to={"/admin/createHotel"}
-          className={`link_text ${pathname === "/admin/createHotel" ? "bg-blue-400 text-white" : ''}`}
-        >Create hotel</Link>
+    <section className=" gap-4 max-w-6xl mx-auto  px-4 relative ">
+      <div className=" sticky top-14 p-4 bg-neutral-50 ">
+        <div className="flex border rounded-lg overflow-hidden w-fit">
+
+          <Link to={"/admin"}
+            className={`p-2 px-4 font-roboto hover:bg-purple-100 hover:text-black ${pathname === "/admin" ? "bg-blue-400 text-white" : 'bg-white'}`}
+          >Dashboard</Link>
+          <Link to={"/admin/hotels?page=1&limit=4"}
+            className={`p-2 px-4 font-roboto hover:bg-purple-100 hover:text-black ${pathname === "/admin/hotels" ? "bg-blue-400 text-white" : 'bg-white'}`}
+          >Hotels</Link>
+          <Link to={"/admin/createHotel"}
+            className={`p-2 px-4 font-roboto hover:bg-purple-100 hover:text-black ${pathname === "/admin/createHotel" ? "bg-blue-400 text-white" : 'bg-white'}`}
+          >Create hotel</Link>
+        </div>
       </div>
-      <div className=" overflow-hidden overflow-y-scroll">
+      <div className="">
         <Outlet />
       </div>
     </section>

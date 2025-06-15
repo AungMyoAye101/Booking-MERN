@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import HotelCreateForm from "../components/HotelCreateForm";
 import { base_url } from "../lib/helper";
 import { useForm } from "react-hook-form";
-import { hotelInput, hotelInputValidation } from "../config/createHotel";
+import { hotelInput, hotelInputValidation, hotelTypes } from "../config/createHotel";
 
 
 const CreateHotel = () => {
@@ -26,7 +26,8 @@ const CreateHotel = () => {
   const [amenities, setAmenities] = useState<string[]>([])
   const [loading, setLoading] = useState(false)
   const navigate = useNavigate()
-  const { register, handleSubmit, formState: { errors } } = useForm()
+  const { register, handleSubmit, watch, formState: { errors } } = useForm()
+  const selectType = watch('type')
 
   const onSubmit = async (data: any) => {
 
@@ -120,6 +121,17 @@ const CreateHotel = () => {
           className="min-h-20 bg-neutral-200 focus:outline-blue-400 p-2" />
         {
           errors.description && <p className="text-red-600 ">{errors.description.message as string}</p>
+        }
+      </div>
+      <div className="flex flex-wrap gap-4">
+
+        {
+          hotelTypes.map((field) => (<label htmlFor={field}
+            className={`font-roboto px-4 py-2 rounded-lg cursor-pointer ${selectType === field ? "bg-blue-400 text-white" : "bg-neutral-200"}`}
+          >
+            {field}
+            <input type="radio" id={field} value={field} {...register("type", { required: "Type is required." })} className="hidden" />
+          </label>))
         }
       </div>
       <input type="file" name="photos" multiple onChange={e => setPhotoArray(Array.from(e.target.files))} className="input_con" />
