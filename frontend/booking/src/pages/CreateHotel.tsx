@@ -1,7 +1,6 @@
 import { useState } from "react";
-import { CreateHotelType, HotelType } from "../lib/types";
 import { useNavigate } from "react-router-dom";
-import { base_url } from "../lib/helper";
+import { base_url, spinner } from "../lib/helper";
 import { useForm } from "react-hook-form";
 import { hotelAmenities, hotelInputValidation, hotelTypes } from "../config/createHotel";
 
@@ -25,24 +24,11 @@ const CreateHotel = () => {
 
   const [loading, setLoading] = useState(false)
   const navigate = useNavigate()
-  const { register, handleSubmit, watch, formState: { errors } } = useForm<CreateHotelFormType>({
-    defaultValues: {
-      name: "",
-      title: "",
-      description: "",
-      address: "",
-      price: 0,
-      city: "",
-      rating: 0,
-      distance: '',
-      amenities: [],
-      type: "",
-    }
-  });
+  const { register, handleSubmit, watch, formState: { errors } } = useForm<CreateHotelFormType>();
   const selectType = watch('type');
   const selectAmenities = watch("amenities", []) || [];
 
-  const onSubmit = async (data: CreateHotelFormType) => {
+  const onSubmit = handleSubmit(async (data) => {
     // Build CreateHotelType object
 
 
@@ -58,6 +44,8 @@ const CreateHotel = () => {
         formData.append(key, String(value));
       }
     });
+
+    photoArray.forEach(img => formData.append("photos", img))
 
 
 
@@ -91,21 +79,11 @@ const CreateHotel = () => {
     }
 
 
-  };
+  });
 
 
   return (
-    // <HotelCreateForm
-    //   hotel={hotel}
-    //   setHotel={setHotel}
-    //   setPhotoArray={setPhotoArray}
-    //   amenities={amenities}
-    //   setAmenities={setAmenities}
-    //   loading={loading}
-    //   handleSubmit={handleSubmit}
-    //   type="create"
-    // />
-    <form onSubmit={handleSubmit(onSubmit)} encType="multipart/form-data" className=" bg-white border py-8 px-4 md:px-6 min-w-96  mx-auto mt-20 flex flex-col gap-4 font-roboto">
+    <form onSubmit={onSubmit} encType="multipart/form-data" className=" bg-white border py-8 px-4 md:px-6 min-w-96  mx-auto mt-20 flex flex-col gap-4 font-roboto">
       {
         hotelInputValidation.map(field => (
           <div className="flex flex-col gap-1 " key={field.name}>
@@ -120,7 +98,7 @@ const CreateHotel = () => {
               className="input_con"
             />
             {
-              errors[field.name] && <p className="error_message ">{errors[field.name]?.message as string}</p>
+              errors[field.name as keyof CreateHotelFormType] && <p className="error_message ">{errors[field.name as keyof CreateHotelFormType]?.message as string}</p>
             }
 
           </div>
@@ -197,7 +175,7 @@ const CreateHotel = () => {
         onChange={e => setPhotoArray(e.target.files ? Array.from(e.target.files) : [])}
         className="input_con"
       />
-      <button className="btn " type="submit">Post</button>
+      <button disabled={loading} className="btn flex justify-center items-center " type="submit">{loading ? spinner : "Post"}</button>
     </form>
   );
 };
