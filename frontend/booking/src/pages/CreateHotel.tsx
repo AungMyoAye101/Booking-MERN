@@ -6,48 +6,62 @@ import { useForm } from "react-hook-form";
 import { hotelAmenities, hotelInputValidation, hotelTypes } from "../config/createHotel";
 
 
-const CreateHotel = () => {
-  const [hotel, setHotel] = useState<CreateHotelType>({
-    name: "",
-    title: "",
-    description: "",
-    photos: [],
-    address: "",
-    price: 0,
-    city: "",
-    rating: 0,
-    distance: '',
-    amenities: [],
-    type: "",
-  });
+type CreateHotelFormType = {
+  name: string;
+  title: string;
+  description: string;
+  address: string;
+  price: number;
+  city: string;
+  rating: number;
+  distance: string;
+  amenities: string[];
+  type: string;
+};
 
-  const [photoArray, setPhotoArray] = useState<(File[])>([]);
+const CreateHotel = () => {
+
+  const [photoArray, setPhotoArray] = useState<File[]>([]);
 
   const [loading, setLoading] = useState(false)
   const navigate = useNavigate()
-  const { register, handleSubmit, watch, formState: { errors } } = useForm()
-  const selectType = watch('type')
-  const selectAmenities = watch("amenities", []) || []
-  console.log(selectAmenities)
-  console.log(selectAmenities.includes("Parking"), "check")
+  const { register, handleSubmit, watch, formState: { errors } } = useForm<CreateHotelFormType>({
+    defaultValues: {
+      name: "",
+      title: "",
+      description: "",
+      address: "",
+      price: 0,
+      city: "",
+      rating: 0,
+      distance: '',
+      amenities: [],
+      type: "",
+    }
+  });
+  const selectType = watch('type');
+  const selectAmenities = watch("amenities", []) || [];
 
-  const onSubmit = async (data: any) => {
+  const onSubmit = async (data: CreateHotelFormType) => {
+    // Build CreateHotelType object
 
-    console.log(photoArray)
-    // setHotel((pre) => ({ ...pre, amenities: amenities }));
+
+
     const formData = new FormData();
 
-    if (photoArray.length <= 0) return console.log("no photos")
-    photoArray.forEach(img => (formData.append("photos", img)))
 
-    // Append other fields to formData
-    Object.keys(data).forEach((key) => {
-      if (key !== "photos") {
-        formData.append(key, data[key]);
+
+    Object.entries(data).forEach(([key, value]) => {
+      if (Array.isArray(value)) {
+        value.forEach((item) => formData.append(key, item));
+      } else {
+        formData.append(key, String(value));
       }
     });
 
-    console.log(formData)
+
+
+
     try {
       console.log('creating hotel...')
       setLoading(true)
@@ -66,16 +80,14 @@ const CreateHotel = () => {
       console.log(data.message);
       // navigate("/admin/hotels")
       setLoading(false)
-
-    }
-    catch (error) {
+    } catch (error) {
 
       console.log(error);
-      setLoading(false)
       throw new Error("Failed to create !")
     } finally {
 
       setLoading(false)
+
     }
 
 
@@ -103,7 +115,7 @@ const CreateHotel = () => {
             </label>
             <input
               type="text"
-              {...register(field.name, field.config)}
+              {...register(field.name as keyof CreateHotelFormType, field.config)}
               placeholder={field.placeholder}
               className="input_con"
             />
@@ -178,7 +190,13 @@ const CreateHotel = () => {
         }
       </div>
 
-      <input type="file" name="photos" multiple onChange={e => setPhotoArray(Array.from(e.target.files))} className="input_con" />
+      <input
+        type="file"
+        name="photos"
+        multiple
+        onChange={e => setPhotoArray(e.target.files ? Array.from(e.target.files) : [])}
+        className="input_con"
+      />
       <button className="btn " type="submit">Post</button>
     </form>
   );
