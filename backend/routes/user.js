@@ -9,13 +9,14 @@ const {
 
 const { default: mongoose } = require("mongoose");
 const Booking = require('../models/booking.model');
-const { verifyToken } = require("../utils/verifyToken");
+const { verifyUser, verifyAdmin } = require("../utils/verifyToken");
 
 const router = express.Router();
 
 router.get("/", getAllUsers);
-router.put("/:id", verifyToken, updateUser);
-router.delete("/:id", verifyToken, deleteUser);
+router.put("/:id", verifyUser, updateUser);
+router.delete("/:id", verifyUser, deleteUser);
 router.get("/:id", getUserById);
+
 
 module.exports = router;

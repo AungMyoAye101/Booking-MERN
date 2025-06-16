@@ -3,15 +3,13 @@ const Hotel = require("../models/hotel.model");
 const cloudinary = require("cloudinary").v2;
 //Create hotel
 const createHotel = async (req, res) => {
-  console.log("uploading file from browser")
-  console.log(req.files)
-  console.log(req.body)
+  // Removed console.log statements for cleaner production logs
   if (!req.files) {
     return res.status(400).json({ message: "Failed" })
   }
   try {
     const url = req.files.map(img => img.path)
-    console.log(url)
+    // Removed console.log statement for cleaner production logs
     res.status(200).json({ message: "uploaded" })
   } catch (error) {
     res.status(500).json({ message: error.message })
@@ -35,21 +33,17 @@ const createHotel = async (req, res) => {
 
   // add hotel with uploaded image urls to database
   // try {
-  //   console.log(req.files)
   //   const images = req.files.map(file => ({
   //     url: file.path,
   //     public_id: file.filename
   //   }))
-  //   console.log(images)
   //   const newHotel = new Hotel({
   //     ...req.body,
   //     photos: images
   //   });
   //   const savedHotel = await newHotel.save();
-  //   console.log("hotel saved")
   //   return res.status(201).json({ success: true, message: "Hotel created successful", data: savedHotel });
   // } catch (error) {
-  //   console.log(error.message)
   //   return res.status(500).json({ success: false, message: error.message })
   // }
 
@@ -58,7 +52,7 @@ const createHotel = async (req, res) => {
 //Update hotel
 
 const updateHotel = async (req, res) => {
-  console.log("updating hotel...")
+  // Removed console.log statement for cleaner production logs
   const { photos, amenities } = req.body
 
 
@@ -70,7 +64,7 @@ const updateHotel = async (req, res) => {
     })
     const uploadResponse = await Promise.all(uploadedImages)
     urls = uploadResponse.map((img) => img.secure_url)
-    console.log("image uploaded")
+    // Removed console.log statement for cleaner production logs
     if (urls.length === 0) {
       return res.status(400).json({ success: false, message: "Please upload at least one image" })
     }
@@ -177,7 +171,6 @@ const getHotelByCity = async (req, res) => {
     res.status(500).json({ success: false, message: error.message })
   }
 }
-
 //get hotels base on type
 const hotelsByType = async (req, res) => {
 

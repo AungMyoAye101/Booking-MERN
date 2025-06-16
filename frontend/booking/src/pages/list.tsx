@@ -85,7 +85,7 @@ const List = () => {
   };
 
   return (
-    <section className="w-full flex flex-col gap-6 ">
+    <section className="w-full flex flex-col gap-6  py-12">
 
       {
         loading ? loadingElem :

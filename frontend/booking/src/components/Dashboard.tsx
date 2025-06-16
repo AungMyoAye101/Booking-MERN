@@ -30,7 +30,7 @@ const Dashboard = () => {
     fetchData()
   }, [])
   return (
-    <section className="flex flex-wrap gap-4 font-roboto mt-14 h-screen">
+    <section className="flex flex-wrap gap-4 font-roboto mt-14 min-h-screen ">
       <div className="border border-gray-300 bg-white w-96 h-60 rounded-lg shadow-lg p-4 relative">
         <h2 className="font-semibold text-lg absolute left-4 top-4  ">Total Hotels </h2>
 

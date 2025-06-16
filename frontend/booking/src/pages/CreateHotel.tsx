@@ -29,14 +29,9 @@ const CreateHotel = () => {
   const selectAmenities = watch("amenities", []) || [];
 
   const onSubmit = handleSubmit(async (data) => {
-    // Build CreateHotelType object
-
-
 
     const formData = new FormData();
-
-
-
+    // Add data object with key ,value pair
     Object.entries(data).forEach(([key, value]) => {
       if (Array.isArray(value)) {
         value.forEach((item) => formData.append(key, item));
@@ -60,13 +55,13 @@ const CreateHotel = () => {
 
       });
       const data = await res.json();
-      if (!res.ok && data.success === false) {
+      if (!res.ok || data.success === false) {
         throw new Error(data.message);
       }
 
 
       console.log(data.message);
-      // navigate("/admin/hotels")
+      navigate("/admin/hotels")
       setLoading(false)
     } catch (error) {
 

@@ -4,8 +4,8 @@ const Admin = () => {
   const location = useLocation()
   const pathname = location.pathname
   return (
-    <section className=" gap-4 max-w-6xl mx-auto  px-4 relative ">
-      <div className=" sticky top-14 py-4 bg-neutral-50 ">
+    <section className=" gap-4 max-w-6xl mx-auto  px-4  ">
+      <div className=" sticky top-14 py-4 z-10 bg-neutral-50 px-4">
         <div className="flex border rounded-lg overflow-hidden w-fit">
 
           <Link to={"/admin"}
@@ -19,7 +19,7 @@ const Admin = () => {
           >Create hotel</Link>
         </div>
       </div>
-      <div className="">
+      <div className="p-4">
         <Outlet />
       </div>
     </section>
