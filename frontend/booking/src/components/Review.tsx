@@ -34,7 +34,7 @@ const Review = ({ hotelId }: { hotelId: string }) => {
     <section className="space-y-4">
       <h1 className="text-3xl font-roboto font-semibold">Guests who stayed here loved</h1>
 
-      <div className="flex gap-4 ">
+      <div className="flex flex-wrap gap-4 ">
         {
           reviews.map((item, i) => (
 

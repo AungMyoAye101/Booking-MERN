@@ -1,12 +1,13 @@
 import { useEffect, useState } from "react";
 import { RoomType } from "../lib/types";
-import { MdCalendarMonth } from "react-icons/md";
+import { MdBed, MdCalendarMonth, MdOutlinePublishedWithChanges } from "react-icons/md";
 import { DateRange } from "react-date-range";
 import { BsPeople } from "react-icons/bs";
 
 import { useAuth } from "../context/authContext";
 import { Link } from "react-router-dom";
 import { formatDate } from "../lib/helper";
+import { FaUser } from "react-icons/fa6";
 
 
 const RoomList = ({ hotelId, hotelName }: { hotelId: string, hotelName: string }) => {
@@ -76,7 +77,7 @@ const RoomList = ({ hotelId, hotelName }: { hotelId: string, hotelName: string }
 
     return (
         <section className="w-full space-y-4" id="room">
-            <div className="w-fit flex items-center bg-yellow-400 gap-4 p-2 rounded-lg">
+            <div className="w-fit flex flex-wrap items-center bg-yellow-400 gap-2 p-1.5 rounded-lg">
                 <div className="flex-1 min-w-60 bg-white  h-10 flex items-center gap-2 rounded-md relative">
                     <div
                         onClick={() => setIsDateOpen(!isDateOpen)}
@@ -161,53 +162,82 @@ const RoomList = ({ hotelId, hotelName }: { hotelId: string, hotelName: string }
                         </div>
                     )}
                 </div>
-                <button className="btn" onClick={handleRoomSearch}>
-                    Change Search
+                <button className="btn flex items-center gap-1" onClick={handleRoomSearch}>
+                    <MdOutlinePublishedWithChanges />  Change Search
                 </button>
             </div>
-            <table className="w-full border-collapse ">
-                <thead>
-                    <tr className="bg-blue-600 text-white rounded-lg">
-                        <th className="table-border">Room Name</th>
-                        <th className="table-border">Room No</th>
-                        <th className="table-border">Guests</th>
-                        <th className="table-border">Total Price</th>
-                        <th className="table-border">Available</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {
-                        rooms.map((room) => (
-                            room?.roomNumbers.map((r, i) => (
-                                <tr key={i} className="text-center rounded-lg">
-                                    {
-                                        i === 0 && (<td rowSpan={room.roomNumbers.length} className="table-border max-w-20">
-                                            <div className="font-roboto ">
-                                                {room.title}
-                                            </div>
-                                            <div className="text-sm ">
-                                                {room.description}
-                                            </div>
+            {/* Room List table */}
+            <div className="hidden md:block">
+
+                <table className="w-full border-collapse ">
+                    <thead >
+                        <tr className="bg-blue-600 text-white rounded-lg">
+                            <th className="table-border">Room Name</th>
+                            <th className="table-border">Room No</th>
+                            <th className="table-border">Guests</th>
+                            <th className="table-border">Total Price</th>
+                            <th className="table-border">Available</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {
+                            rooms.map((room) => (
+                                room?.roomNumbers.map((r, i) => (
+                                    <tr key={i} className="text-center rounded-lg">
+                                        {
+                                            i === 0 && (<td rowSpan={room.roomNumbers.length} className="table-border max-w-20">
+                                                <div className="font-roboto text-xl font-semibold ">
+                                                    {room.title}
+                                                </div>
+                                                <div className="">
+                                                    {room.description}
+                                                </div>
 
 
-                                        </td>)
-                                    }
+                                            </td>)
+                                        }
 
-                                    <td className="table-border"> {r.number}</td>
-                                    <td className="table-border"> {room.maxPeople}</td>
-                                    <td className="table-border"> ${room.price}</td>
-                                    <td className="table-border">
-                                        <Link to={`/payment?hotel=${hotelName}&room=${room.title}&roomId=${room._id}&user=${user._id}&checkIn=${roomSearch.checkIn}&checkOut=${roomSearch.checkOut}&roomNumber=${r.number}&price=${room.price}`} className="btn"
-                                        >Reserve</Link>
-                                    </td>
-                                </tr>
+                                        <td className="table-border"> {r.number}</td>
+                                        <td className="table-border"> {room.maxPeople}</td>
+                                        <td className="table-border text-amber-600 font-semibold text-lg"> ${room.price}</td>
+                                        <td className="table-border">
+                                            <Link to={`/payment?hotel=${hotelName}&room=${room.title}&roomId=${room._id}&user=${user._id}&checkIn=${roomSearch.checkIn}&checkOut=${roomSearch.checkOut}&roomNumber=${r.number}&price=${room.price}`} className="btn"
+                                            >Reserve</Link>
+                                        </td>
+                                    </tr>
+                                ))
+
+
                             ))
+                        }
+                    </tbody>
+                </table>
+            </div>
 
+            <div className="flex flex-col gap-4 md:hidden">
+                {
+                    rooms.map((room) => (
+                        room.roomNumbers.map((r, i) => (
+                            <div key={i} className="flex flex-col gap-2 px-4 py-6 bg-white shadow-lg rounded-lg border font-roboto">
+                                <h1 className="text-2xl font-semibold font-roboto flex gap-1 items-center "><MdBed />{room.title}</h1>
+                                <p className="text-sm font-serif ">{room.description}</p>
+                                <div className="flex gap-1 items-center">
+                                    <span className="text-lg">Guest-</span>
+                                    {Array(room.maxPeople).fill(null).map((_, i) => (
+                                        <FaUser key={i} className="text-lg" />
+                                    ))}</div>
+                                <div className="flex justify-between">
 
+                                    <p className="font-semibold  font-roboto">Room No : {r.number}</p>
+                                    <p className="text-xl font-bold  text-amber-600">${room.price}/night</p>
+                                </div>
+                                <Link to={`/payment?hotel=${hotelName}&room=${room.title}&roomId=${room._id}&user=${user._id}&checkIn=${roomSearch.checkIn}&checkOut=${roomSearch.checkOut}&roomNumber=${r.number}&price=${room.price}`} className="btn"
+                                >Reserve</Link>
+                            </div>
                         ))
-                    }
-                </tbody>
-            </table>
+                    ))
+                }
+            </div>
 
         </section>
     );

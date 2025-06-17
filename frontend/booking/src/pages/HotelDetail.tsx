@@ -83,7 +83,7 @@ const HotelDetail = () => {
         <div className="space-y-2">
           <div className="flex flex-col md:flex-row  justify-between">
             <h1 className=" font-roboto text-2xl  ">{hotel.title}</h1>
-            <p className="font-roboto text-xl font-semibold text-amber-500">
+            <p className="font-roboto text-2xl font-bold text-black">
               $ {hotel.price} / night
             </p>
           </div>

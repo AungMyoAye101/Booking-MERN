@@ -3,13 +3,27 @@ const Hotel = require("../models/hotel.model");
 const cloudinary = require("cloudinary").v2;
 //Create hotel
 const createHotel = async (req, res) => {
-  // Removed console.log statements for cleaner production logs
-  if (!req.files) {
-    return res.status(400).json({ message: "Failed" })
+
+  const photos = req.files
+  if (!photos) {
+    return res.status(400).json({ success: false, message: "No images!" })
   }
   try {
-    const url = req.files.map(img => img.path)
-    // Removed console.log statement for cleaner production logs
+    const url = photos.map(img => img.path)
+
+    // add hotel with uploaded image urls to database
+    try {
+
+      const newHotel = new Hotel({
+        ...req.body,
+        photos: url
+      });
+      const savedHotel = await newHotel.save();
+      return res.status(201).json({ success: true, message: "Hotel created successful", data: savedHotel });
+    } catch (error) {
+      return res.status(500).json({ success: false, message: error.message })
+    }
+
     res.status(200).json({ message: "uploaded" })
   } catch (error) {
     res.status(500).json({ message: error.message })
@@ -31,21 +45,7 @@ const createHotel = async (req, res) => {
 
   // }
 
-  // add hotel with uploaded image urls to database
-  // try {
-  //   const images = req.files.map(file => ({
-  //     url: file.path,
-  //     public_id: file.filename
-  //   }))
-  //   const newHotel = new Hotel({
-  //     ...req.body,
-  //     photos: images
-  //   });
-  //   const savedHotel = await newHotel.save();
-  //   return res.status(201).json({ success: true, message: "Hotel created successful", data: savedHotel });
-  // } catch (error) {
-  //   return res.status(500).json({ success: false, message: error.message })
-  // }
+
 
 };
 

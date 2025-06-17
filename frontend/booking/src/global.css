@@ -33,7 +33,7 @@ body {
   }
 
   .btn {
-    @apply px-4 py-2 bg-blue-600 rounded-md text-white text-base font-roboto hover:bg-blue-800;
+    @apply px-4 py-2 bg-blue-600 rounded-md text-white text-base font-roboto hover:bg-blue-800 flex justify-center items-center;
   }
 
   .table-border {
