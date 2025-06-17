@@ -4,6 +4,8 @@ import { base_url, spinner } from "../lib/helper";
 import { useForm } from "react-hook-form";
 import { hotelAmenities, hotelInputValidation, hotelTypes } from "../config/createHotel";
 import { showToast } from "../context/ToastProvider";
+import { FaX } from "react-icons/fa6";
+import { MdOutlineCloudUpload } from "react-icons/md";
 
 
 type CreateHotelFormType = {
@@ -22,6 +24,8 @@ type CreateHotelFormType = {
 const CreateHotel = () => {
 
   const [photoArray, setPhotoArray] = useState<File[]>([]);
+  const [previewImg, setPreviewImg] = useState<string[]>([])
+  const [errorMessage, setErrorMessage] = useState()
 
   const [loading, setLoading] = useState(false)
   const navigate = useNavigate()
@@ -29,6 +33,27 @@ const CreateHotel = () => {
   const selectType = watch('type');
   const selectAmenities = watch("amenities", []) || [];
 
+  const handlePhotoChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const files = e.target.files
+    if (files) {
+
+      const photos = Array.from(files)
+      setPhotoArray(photos)
+      const preview = photos.map((img) => URL.createObjectURL(img))
+      setPreviewImg(preview)
+    }
+  }
+
+  const removePhoto = (i: number) => {
+    const images = [...photoArray]
+    const previewImages = [...previewImg]
+    images.splice(i, 1)
+    previewImages.splice(i, 1)
+    setPreviewImg(previewImages)
+    setPhotoArray(images)
+  }
+
+  // Upload form data to server
   const onSubmit = handleSubmit(async (data) => {
 
     const formData = new FormData();
@@ -52,12 +77,13 @@ const CreateHotel = () => {
       });
       const data = await res.json();
       if (!res.ok || data.success === false) {
+        setErrorMessage(data.message)
         showToast("error", data.message)
         throw new Error(data.message);
       }
 
 
-      console.log(data.message);
+      showToast("success", data.message)
       navigate("/admin/hotels")
       setLoading(false)
     } catch (error) {
@@ -77,6 +103,9 @@ const CreateHotel = () => {
   return (
     <form onSubmit={onSubmit} encType="multipart/form-data" className=" bg-white border py-8 px-4 md:px-6 min-w-96  mx-auto mt-20 flex flex-col gap-4 font-roboto">
       <h1 className="font-roboto text-2xl md:text-3xl font-bold text-center">Create Hotel Form</h1>
+      {
+        errorMessage && <p className="text-center text-red-400 font-roboto">{errorMessage}</p>
+      }
       {
         hotelInputValidation.map(field => (
           <div className="flex flex-col gap-1 " key={field.name}>
@@ -161,14 +190,33 @@ const CreateHotel = () => {
         }
       </div>
 
-      <input
-        type="file"
-        name="photos"
-        multiple
-        onChange={e => setPhotoArray(e.target.files ? Array.from(e.target.files) : [])}
-        className="input_con"
-      />
-      <button disabled={loading} className="btn flex justify-center items-center self-end " type="submit">{loading ? spinner : "creating"}</button>
+      <div className="flex items-center flex-wrap gap-4">
+        <div>
+          <label htmlFor="photos" className="w-60 h-40 rounded-lg bg-neutral-200 border border-gray-300 hover:border-blue-400 flex justify-center items-center">
+            <MdOutlineCloudUpload className="text-4xl" />
+          </label>
+          <input
+            type="file"
+            name="photos"
+            id="photos"
+            multiple
+            onChange={handlePhotoChange}
+            className="hidden"
+          />
+        </div>
+        {
+          previewImg.length > 0 && previewImg.map((img, i) => (
+            <div key={i} className="relative">
+
+              <img src={img} alt="preview photo" className="w-60 h-40 rounded-lg" />
+              <div
+                onClick={() => removePhoto(i)}
+                className="absolute top-1 right-1 bg-white text-red-500 font-semibold text-xl border border-gray-400 hover:border-red-500 w-10 h-10 rounded-full z-10 flex justify-center items-center cursor-pointer"><FaX /></div>
+            </div>
+          ))
+        }
+      </div>
+      <button disabled={loading} className="btn flex justify-center items-center self-end " type="submit">{loading ? spinner : "Create"}</button>
     </form>
   );
 };
