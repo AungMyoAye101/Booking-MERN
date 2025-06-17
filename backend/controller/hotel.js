@@ -207,6 +207,26 @@ const hotelsByType = async (req, res) => {
   }
 }
 
+const getSuggestion = async (req, res) => {
+  const { query } = req.query
+  if (!query) {
+    return res.status(400).json({ success: false, meassage: "No query!" })
+  }
+
+  try {
+
+    const data = await Hotel.distinct("city", {
+      city: { $regex: query, $options: "i" }
+    })
+
+
+    res.status(200).json({ success: true, meassage: "Get city suggestion", data })
+  } catch (error) {
+    console.log(error.message)
+    return res.status(500).json({ success: false, meassage: error.meassage })
+  }
+}
+
 
 module.exports = {
   createHotel,
@@ -216,5 +236,6 @@ module.exports = {
   getHotelById,
   getHotelByType,
   getHotelByCity,
-  hotelsByType
+  hotelsByType,
+  getSuggestion
 };

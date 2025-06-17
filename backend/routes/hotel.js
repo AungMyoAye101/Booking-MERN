@@ -9,12 +9,14 @@ const {
   getHotelByType,
   getHotelByCity,
   hotelsByType,
+  getSuggestion,
 } = require("../controller/hotel");
 const { upload } = require("../utils/cloudinary");
 
 const router = express.Router();
 
 router.get("/", getAllHotels);
+router.get("/suggestion", getSuggestion);
 router.post("/create-hotel", upload.array("photos", 4), createHotel);
 router.put("/:id", updateHotel);
 router.delete("/:id", deleteHotel);

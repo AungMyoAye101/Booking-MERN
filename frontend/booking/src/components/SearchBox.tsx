@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { DateRange } from "react-date-range";
 import { IoBedOutline } from "react-icons/io5";
 import "react-date-range/dist/styles.css"; // main css file
@@ -6,6 +6,8 @@ import "react-date-range/dist/theme/default.css"; // theme css file
 import { format } from "date-fns";
 import { MdCalendarMonth } from "react-icons/md";
 import { useNavigate } from "react-router-dom";
+import { base_url } from "../lib/helper";
+
 
 const SearchBox = () => {
 
@@ -13,6 +15,8 @@ const SearchBox = () => {
   const [destination, setDestination] = useState<string>("");
   const [adultCount, setAdultCount] = useState<number>(1);
   const [childrenCount, setChildrenCount] = useState<number>(0);
+
+  const [suggestion, setSuggestion] = useState<string[]>([])
 
   const navigate = useNavigate();
   const [isDateOpen, setIsDateOpen] = useState(false);
@@ -41,20 +45,71 @@ const SearchBox = () => {
     navigate(`/search?destination=${destination}&checkIn=${checkIn}&checkOut=${checkOut}&guests=${guest}&limit=${4}&page=${1}`)
   }
 
+  const getSuggestion = async (query: string) => {
+    if (!query || query === '') return
+    try {
+      const res = await fetch(base_url + `/api/hotel/suggestion?query=${query}`,
+        {
+          method: "GET",
+          headers: {
+            "Content-type": "application/json"
+          }
+        }
+      )
+      const { success, message, data } = await res.json()
+      if (!res.ok && !success) {
+        return console.log(message)
+      }
+      setSuggestion(data)
+    } catch (error) {
+      if (error instanceof Error) console.error(error)
+    }
+
+  }
+
+  useEffect(() => {
+    const debounce = setInterval(() => {
+      getSuggestion(destination)
+
+    }, 300)
+
+    return () => {
+      clearInterval(debounce)
+    }
+  }, [destination])
+
   return (
     <form
       onSubmit={handleSearch}
       className="w-full  bg-blue-200 p-2 border-blue-300 flex flex-wrap gap-2 rounded-lg text-gray-800 "
     >
-      <div className="flex-1 min-w-60 bg-white  h-10 flex items-center rounded-md px-2">
-        <IoBedOutline className="text-xl " />
-        <input
-          type="text"
-          name="destination"
-          placeholder="Where are you going?"
-          className="h-full w-full ml-1 flex-1"
-          onChange={(e) => setDestination(e.target.value)}
-        />
+      <div className="relative">
+
+        <div className="flex-1 min-w-60 bg-white  h-10 flex items-center rounded-md px-2">
+          <IoBedOutline className="text-xl " />
+          <input
+            type="text"
+            name="destination"
+            placeholder="Where are you going?"
+            className="h-full w-full ml-1 flex-1"
+            value={destination}
+            onChange={(e) => setDestination(e.target.value)}
+          />
+        </div>
+        {
+          suggestion.length > 0 &&
+          <div className="absolute w-full top-14 bg-white p-4 rounded-lg flex flex-col gap-1">
+
+            {
+              suggestion.map((city, i) => (
+                <div key={i}
+                  onClick={() => setDestination(city)}
+                  className="font-roboto font-semibold p-1.5 bg-neutral-200 hover:bg-blue-400 hover:text-white text-center rounded-lg ">{city}</div>
+              ))
+            }
+          </div>
+        }
+
       </div>
       {/* Date picker here */}
       <div className="flex-1 min-w-60 bg-white  h-10 flex items-center gap-2 rounded-md relative">
