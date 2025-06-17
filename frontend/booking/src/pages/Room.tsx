@@ -6,7 +6,7 @@ const Room = () => {
     const { hotelId } = useParams()
 
     return (
-        <div>
+        <div className='py-12'>
             <RoomForm hotelId={hotelId!} />
         </div>
     )

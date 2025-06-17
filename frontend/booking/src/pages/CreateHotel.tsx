@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { base_url, spinner } from "../lib/helper";
 import { useForm } from "react-hook-form";
 import { hotelAmenities, hotelInputValidation, hotelTypes } from "../config/createHotel";
+import { showToast } from "../context/ToastProvider";
 
 
 type CreateHotelFormType = {
@@ -39,14 +40,9 @@ const CreateHotel = () => {
         formData.append(key, String(value));
       }
     });
-
     photoArray.forEach(img => formData.append("photos", img))
 
-
-
-
     try {
-      console.log('creating hotel...')
       setLoading(true)
 
       const res = await fetch(base_url + "/api/hotel/create-hotel", {
@@ -56,6 +52,7 @@ const CreateHotel = () => {
       });
       const data = await res.json();
       if (!res.ok || data.success === false) {
+        showToast("error", data.message)
         throw new Error(data.message);
       }
 
@@ -79,6 +76,7 @@ const CreateHotel = () => {
 
   return (
     <form onSubmit={onSubmit} encType="multipart/form-data" className=" bg-white border py-8 px-4 md:px-6 min-w-96  mx-auto mt-20 flex flex-col gap-4 font-roboto">
+      <h1 className="font-roboto text-2xl md:text-3xl font-bold text-center">Create Hotel Form</h1>
       {
         hotelInputValidation.map(field => (
           <div className="flex flex-col gap-1 " key={field.name}>
@@ -87,7 +85,7 @@ const CreateHotel = () => {
               {field.label}
             </label>
             <input
-              type="text"
+              type={field.name === "price" ? "number" : "text"}
               {...register(field.name as keyof CreateHotelFormType, field.config)}
               placeholder={field.placeholder}
               className="input_con"
@@ -142,7 +140,7 @@ const CreateHotel = () => {
 
           {
             hotelAmenities.map(field => (
-              <label htmlFor={field.label} key={field.label} className="flex items-center justify-center gap-1 text-lg cursor-pointer ">
+              <label htmlFor={field.label} key={field.label} className="flex items-center justify-center gap-2 cursor-pointer ">
 
                 <input type="checkbox"
                   value={field.value}
@@ -170,7 +168,7 @@ const CreateHotel = () => {
         onChange={e => setPhotoArray(e.target.files ? Array.from(e.target.files) : [])}
         className="input_con"
       />
-      <button disabled={loading} className="btn flex justify-center items-center " type="submit">{loading ? spinner : "Post"}</button>
+      <button disabled={loading} className="btn flex justify-center items-center self-end " type="submit">{loading ? spinner : "creating"}</button>
     </form>
   );
 };

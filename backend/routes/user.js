@@ -8,7 +8,6 @@ const {
 
 
 const { default: mongoose } = require("mongoose");
-const Booking = require('../models/booking.model');
 const { verifyUser, verifyAdmin } = require("../utils/verifyToken");
 
 const router = express.Router();

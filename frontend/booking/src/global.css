@@ -29,7 +29,7 @@ body {
   }
 
   .input_con {
-    @apply w-full bg-neutral-100 rounded p-2 border;
+    @apply w-full bg-neutral-100 rounded p-2 border focus:border-blue-400;
   }
 
   .btn {
@@ -41,7 +41,7 @@ body {
   }
 
   .error_message {
-    @apply text-red-500 font-medium
+    @apply text-red-500 font-medium capitalize
   }
 
   .font_semibold {

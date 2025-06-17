@@ -5,7 +5,7 @@ const Admin = () => {
   const pathname = location.pathname
   return (
     <section className=" gap-4 max-w-6xl mx-auto  px-4  ">
-      <div className=" sticky top-14 py-4 z-10 bg-neutral-50 px-4">
+      <div className=" sticky top-12 py-4 z-10 bg-neutral-50 px-4">
         <div className="flex border rounded-lg overflow-hidden w-fit">
 
           <Link to={"/admin"}

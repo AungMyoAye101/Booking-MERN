@@ -41,8 +41,8 @@ const RoomForm = ({ hotelId }: { hotelId: string }) => {
 
 
     return (
-        <form className="flex flex-col gap-4 py-6 px-4 bg-white border border-neutral-100 shadow rounded-md " onSubmit={onSubmit}>
-            <h1 className="text-2xl font-semibold font-roboto capitalize">Create room</h1>
+        <form className="flex flex-col gap-4 py-6 px-6 bg-white border border-neutral-200 shadow rounded-md " onSubmit={onSubmit}>
+            <h1 className="text-2xl md:text-3xl text-center font-bold font-roboto capitalize">Create room</h1>
             <label htmlFor="title" className='label input_container'>
                 Title
                 <input type="text"
@@ -58,7 +58,7 @@ const RoomForm = ({ hotelId }: { hotelId: string }) => {
                 Description
                 <textarea
                     {...register("description", { required: "Description is required", minLength: { value: 3, message: "Description must contain 3 characters" } })}
-                    className="input_con"
+                    className="input_con min-h-20 border focus:outline-none focus:border-blue-400"
                     placeholder='Enter room description'
                 />
                 {
@@ -91,7 +91,7 @@ const RoomForm = ({ hotelId }: { hotelId: string }) => {
                 <input type="text"
                     {...register("roomNumber", { required: "Room numbers are required" })}
                     className="input_con"
-                    placeholder='Add room number by comma sparated.'
+                    placeholder='Add room number by comma separated.100,101,102'
                 />
                 {
                     errors.roomNumber && <p className='error_message'>{errors.roomNumber.message}</p>
