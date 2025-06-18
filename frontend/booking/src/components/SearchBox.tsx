@@ -81,7 +81,7 @@ const SearchBox = () => {
   return (
     <form
       onSubmit={handleSearch}
-      className="w-full  bg-blue-200 p-2 border-blue-300 flex flex-wrap gap-2 rounded-lg text-gray-800 "
+      className="w-full  bg-blue-400 p-2 border-blue-300 flex flex-wrap gap-2 rounded-lg text-gray-800 "
     >
       <div className="relative">
 
@@ -136,7 +136,7 @@ const SearchBox = () => {
       {/* Room option here */}
       <div className="flex-1 min-w-60 bg-white text-gray-800  h-10 flex items-center rounded-md relative">
         <div
-          className="px-4 cursor-pointer text-xs text-nowrap line-clamp-1 font-roboto"
+          className="px-4 cursor-pointer text-sm text-nowrap line-clamp-1 font-roboto"
           onClick={() => setOpenOPtions(!openOPtions)}
         >
           {adultCount} Adult {childrenCount} Children 1 Room

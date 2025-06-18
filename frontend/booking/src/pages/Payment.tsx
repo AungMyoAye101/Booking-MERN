@@ -74,7 +74,7 @@ const Payment = () => {
             <img src="/assets/images/hotel-bg.jpg" alt="hotel background photo" className='absolute w-full h-screen object-cover -z-0' />
 
             <div>
-                <div className='bg-white shadow border rounded min-w-80 max-w-2xl px-4 py-6 relative z-10'>
+                <div className='bg-white shadow border rounded-lg min-w-80 max-w-2xl px-6 py-6 relative z-10'>
                     <h1 className='font-roboto text-2xl font-semibold mb-2'>Your Booking Summary</h1>
                     <div className='flex justify-between items-center border-b py-1.5'>
                         <h2 className='font-roboto'>Hotel</h2>
@@ -106,24 +106,27 @@ const Payment = () => {
                     </div>
 
 
+                    <div className='space-y-2'>
 
-                    <div className='input_container'>
 
-                        <label htmlFor="name" className='font-medium '>Your Name</label>
-                        <input readOnly className='input_con' type="text" name='name' value={user.name} placeholder='your name' />
-                    </div>
-                    <div className='input_container'>
-                        <label htmlFor="card " className='font-medium'>Card Number</label>
-                        <input type="text" name='card' className='input_con' placeholder='0000 0000 0000 0000' />
-                    </div>
-                    <div className='flex gap-4 items-center '>
                         <div className='input_container'>
-                            <label htmlFor="date" className='font-medium'>Expire Date</label>
-                            <input type="text" name='date' className='input_con' placeholder='mm/yy ' />
+
+                            <label htmlFor="name" className='font-medium '>Your Name</label>
+                            <input readOnly className='input_con' type="text" name='name' value={user.name} placeholder='your name' />
                         </div>
                         <div className='input_container'>
-                            <label htmlFor="scurity" className='font-medium' >CVC</label>
-                            <input type="text" name='scurity' className='input_con ' placeholder='code' />
+                            <label htmlFor="card " className='font-medium'>Card Number</label>
+                            <input type="text" name='card' className='input_con' placeholder='0000 0000 0000 0000' />
+                        </div>
+                        <div className='flex gap-4 items-center '>
+                            <div className='input_container'>
+                                <label htmlFor="date" className='font-medium'>Expire Date</label>
+                                <input type="text" name='date' className='input_con' placeholder='mm/yy ' />
+                            </div>
+                            <div className='input_container'>
+                                <label htmlFor="scurity" className='font-medium' >CVC</label>
+                                <input type="text" name='scurity' className='input_con ' placeholder='code' />
+                            </div>
                         </div>
                     </div>
 

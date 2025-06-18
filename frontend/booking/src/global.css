@@ -29,7 +29,7 @@ body {
   }
 
   .input_con {
-    @apply w-full bg-neutral-100 rounded p-2 border focus:border-blue-400;
+    @apply w-full bg-neutral-200 rounded p-2 border border-gray-200 focus:border-blue-400;
   }
 
   .btn {

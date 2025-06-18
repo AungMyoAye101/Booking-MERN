@@ -87,7 +87,7 @@ const SideBar = () => {
                     name="destination"
                     value={searchParams.get("destination") ?? ""}
                     onChange={e => handleChange(e)}
-                    className="bg-neutral-200 p-1 rounded" />
+                    className="bg-neutral-200 py-1.5 px-4 rounded-lgx   " />
             </div>
             <div className='flex flex-col gap-1 border p-4'>
                 <h3 className="font-roboto text-lg font-semibold">Property price</h3>
@@ -106,7 +106,7 @@ const SideBar = () => {
                                     placeholder="00.00"
                                     value={searchParams.get(field.name) ?? ''}
                                     onChange={(e) => handleChange(e)}
-                                    className="w-20 h-8 shadow focus:shadow-green-200 bg-neutral-200 rounded     text-sm "
+                                    className="w-20 h-8 shadow focus:shadow-green-200 bg-neutral-200 rounded-lg     text-sm "
                                 />
                             </div>
                         ))

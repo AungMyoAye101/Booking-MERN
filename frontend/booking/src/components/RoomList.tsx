@@ -5,9 +5,10 @@ import { DateRange } from "react-date-range";
 import { BsPeople } from "react-icons/bs";
 
 import { useAuth } from "../context/authContext";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { formatDate } from "../lib/helper";
 import { FaUser } from "react-icons/fa6";
+import { showToast } from "../context/ToastProvider";
 
 
 const RoomList = ({ hotelId, hotelName }: { hotelId: string, hotelName: string }) => {
@@ -19,7 +20,7 @@ const RoomList = ({ hotelId, hotelName }: { hotelId: string, hotelName: string }
         guests: 0,
         hotel: hotelId
     })
-    const { user } = useAuth()
+
     const [adultCount, setAdultCount] = useState<number>(1);
     const [childrenCount, setChildrenCount] = useState<number>(0);
     const [isDateOpen, setIsDateOpen] = useState(false);
@@ -33,6 +34,9 @@ const RoomList = ({ hotelId, hotelName }: { hotelId: string, hotelName: string }
 
     //option
     const [openOPtions, setOpenOPtions] = useState(false);
+    const navigate = useNavigate()
+    const { user } = useAuth()
+
 
     //Set room search data for check available rooms
 
@@ -74,6 +78,12 @@ const RoomList = ({ hotelId, hotelName }: { hotelId: string, hotelName: string }
     }, [roomSearch])
 
 
+    const navigateToCheckout = (hotel: string, room: string, roomId: string, roomNumber: number, userId: string, checkIn: Date, checkOut: Date, price: number) => {
+        if (!user._id) {
+            return showToast("info", "You need to login first.")
+        }
+        navigate(`/payment?hotel=${hotel}&room=${room}&roomId=${roomId}&user=${userId}&checkIn=${checkIn}&checkOut=${checkOut}&roomNumber=${roomNumber}&price=${price}`)
+    }
 
     return (
         <section className="w-full space-y-4" id="room">
@@ -201,8 +211,11 @@ const RoomList = ({ hotelId, hotelName }: { hotelId: string, hotelName: string }
                                         <td className="table-border"> {room.maxPeople}</td>
                                         <td className="table-border text-amber-600 font-semibold text-lg"> ${room.price}</td>
                                         <td className="table-border">
-                                            <Link to={`/payment?hotel=${hotelName}&room=${room.title}&roomId=${room._id}&user=${user._id}&checkIn=${roomSearch.checkIn}&checkOut=${roomSearch.checkOut}&roomNumber=${r.number}&price=${room.price}`} className="btn"
-                                            >Reserve</Link>
+                                            <button onClick={() => navigateToCheckout(hotelName, room.title, room._id, r.number, user._id, roomSearch.checkIn, roomSearch.checkOut, room.price)}>
+                                                Reserve
+                                            </button>
+                                            {/* <Link to={`/payment?hotel=${hotelName}&room=${room.title}&roomId=${room._id}&user=${user._id}&checkIn=${roomSearch.checkIn}&checkOut=${roomSearch.checkOut}&roomNumber=${r.number}&price=${room.price}`} className="btn"
+                                            >Reserve</Link> */}
                                         </td>
                                     </tr>
                                 ))
