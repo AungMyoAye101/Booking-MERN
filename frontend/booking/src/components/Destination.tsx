@@ -7,7 +7,7 @@ import { Link } from "react-router-dom";
 
 const Destination = () => {
   const containerRef = useRef<HTMLDivElement>(null);
-  const [data, setData] = useState<HotelType[][]>([])
+  const [data, setData] = useState<HotelType[]>([])
   const [loading, setLoading] = useState(false)
 
 
@@ -35,7 +35,7 @@ const Destination = () => {
     fetchHotelBytype()
   }, [])
 
-
+  console.log(data)
 
   const loadingElem = [1, 2, 3].map((i) => <div key={i} className="border shadow bg-white flex-1 p-2 rounded min-w-[200px] aspect-video">
     <div className="bg-neutral-200 rounded w-full h-full p-2">
@@ -60,25 +60,25 @@ const Destination = () => {
           ref={containerRef}
           className="flex gap-4 flex-wrap relative"
         >
-          {loading ? loadingElem : data.map((field) => (
-            field.map((item) => (
-              <Link
-                to={`/search?destination=${item.city}`}
-                key={item._id}
-                className="min-w-[200px]  flex-1 h-auto  aspect-video rounded-lg overflow-hidden relative bg-white"
-              >
-                <img
-                  src={item.photos[0]}
-                  alt="image"
-                  className="w-full h-auto hover:scale-125 transition-transform ease-in-out "
-                />
-                <h2 className="absolute top-4 left-4 text-white font-roboto text-2xl font-bold">
-                  {item.city}
-                </h2>
-              </Link>
-            ))
+          {loading ? loadingElem : data.map((item) => (
+            <Link
+              to={`/search?destination=${item.city}`}
+              key={item._id}
+              className="min-w-[200px]  flex-1 h-auto  aspect-video rounded-lg overflow-hidden relative bg-white"
+            >
+              <img
+                src={item.photos[0]}
+                alt="image"
+                className="w-full h-auto hover:scale-125 transition-transform ease-in-out "
+              />
+              <h2 className="absolute top-4 left-4 text-white font-roboto text-2xl font-bold">
+                {item.city}
+              </h2>
+            </Link>
+          ))
+          }
 
-          ))}
+
         </main>
       </div>
     </section>

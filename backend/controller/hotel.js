@@ -160,13 +160,23 @@ const getHotelByType = async (req, res) => {
 
 const getHotelByCity = async (req, res) => {
 
-  const cities = req.query.city.split(',')
-  try {
 
-    const hotel = await Promise.all(cities.map((data) =>
-      Hotel.find({ city: { $in: data } })
+  try {
+    const cities = await Hotel.aggregate([
+      {
+        $group: { _id: "$city" }
+      },
+      {
+        $sample: { size: 3 }
+      }
+    ])
+    const names = cities.map(c => c._id)
+
+    const hotels = await Promise.all(names.map((city) =>
+      Hotel.findOne({ city }).lean()
     ))
-    res.status(200).json({ success: true, message: "Get hotel by city success.", data: hotel })
+    console.log(hotels)
+    res.status(200).json({ success: true, message: "Get hotel by city success.", data: hotels })
   } catch (error) {
     res.status(500).json({ success: false, message: error.message })
   }
