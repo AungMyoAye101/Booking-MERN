@@ -8,7 +8,7 @@ import { FaX } from "react-icons/fa6";
 import { MdOutlineCloudUpload } from "react-icons/md";
 
 
-type CreateHotelFormType = {
+export interface CreateHotelFormType {
   name: string;
   title: string;
   description: string;

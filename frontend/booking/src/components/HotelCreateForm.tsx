@@ -1,6 +1,6 @@
 
 import { CreateHotelType } from "../lib/types";
-import { hotelAmenities, hotelInput, hotelInputValidation, hotelTypes } from "../config/createHotel";
+import { hotelAmenities, hotelInputValidation, hotelTypes } from "../config/createHotel";
 import { MdOutlineCloudUpload } from "react-icons/md";
 import { spinner } from "../lib/helper";
 
@@ -37,22 +37,7 @@ const HotelCreateForm = ({ hotel, setHotel, loading, handleSubmit, setPhotoArray
         const { files } = e.target;
         if (!files) return console.error("no photo")
         setPhotoArray(Array.from(files))
-        // const files = Array.from(e.target.files || []);
 
-        // if (files.length === 0) return;
-
-        // const promise = files.map((file) => {
-        //     const reader = new FileReader();
-        //     return new Promise<string | ArrayBuffer | null>((resolve, reject) => {
-        //         reader.onloadend = () => {
-        //             resolve(reader.result);
-        //         };
-        //         reader.onerror = () => reject(new Error("Failed to read file"));
-        //         reader.readAsDataURL(file);
-        //     });
-        // });
-
-        // Promise.all(promise).then((result) => setPhotoArray((pre: any) => [...pre, ...result]));
     };
 
     return (
@@ -132,10 +117,10 @@ const HotelCreateForm = ({ hotel, setHotel, loading, handleSubmit, setPhotoArray
 
                     {
                         hotelAmenities.map((item) => (
-                            <label key={item} className={`font-serif px-4 py-1.5 text-sm flex items-center gap-1`}>
+                            <label key={item.value} className={`font-serif px-4 py-1.5 text-sm flex items-center gap-1`}>
 
-                                <input type="checkbox" value={item} name="amenities" checked={hotel.amenities.includes(item) || amenities.includes(item)} onChange={() => handleAmenitesChange(item)} />
-                                <span>{item}</span>
+                                <input type="checkbox" value={item.value} name="amenities" checked={hotel.amenities.includes(item.value) || amenities.includes(item.value)} onChange={() => handleAmenitesChange(item.value)} />
+                                <span>{item.value}</span>
                             </label>
                         ))
                     }
