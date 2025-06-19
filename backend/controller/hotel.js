@@ -1,3 +1,4 @@
+const { default: mongoose } = require("mongoose");
 const Hotel = require("../models/hotel.model");
 
 const cloudinary = require("cloudinary").v2;
@@ -53,34 +54,34 @@ const createHotel = async (req, res) => {
 
 const updateHotel = async (req, res) => {
   // Removed console.log statement for cleaner production logs
-  const { photos, amenities } = req.body
 
-
-  let urls;
-
-  try {
-    const uploadedImages = photos.map((img) => {
-      return cloudinary.uploader.upload(img, { folder: "hotels" })
-    })
-    const uploadResponse = await Promise.all(uploadedImages)
-    urls = uploadResponse.map((img) => img.secure_url)
-    // Removed console.log statement for cleaner production logs
-    if (urls.length === 0) {
-      return res.status(400).json({ success: false, message: "Please upload at least one image" })
-    }
-  } catch (error) {
-    return res.status(500).json({ success: false, message: error.message })
-
+  const { id } = req.params
+  if (!mongoose.Types.ObjectId.isValid(id)) {
+    return res.status(400).json({ success: false, message: "Hotel id is not valid." })
   }
+
+  const photos = req.files
+  const urls = photos.map(img => img.path);
+  let { existingPhotos } = req.body
+  if (!existingPhotos) existingPhotos = []
+  if (typeof existingPhotos === 'string') {
+    existingPhotos = [existingPhotos]
+  }
+
+
+  const updatePhotos = [...existingPhotos, ...urls]
+
+
+
+
   try {
     const updatedHotel = await Hotel.findByIdAndUpdate(
       req.params.id,
-      { ...req.body, photos: urls },
+      { ...req.body, photos: updatePhotos },
       { new: true }
-
     );
 
-    return res.status(200).json({ success: true, message: "Hotel updated successful", data: updatedHotel });
+    return res.status(200).json({ success: true, message: "Hotel updated successful", data: updateHotel });
   } catch (error) {
     return res.status(500).json({ success: false, message: error.message });
   }
@@ -220,7 +221,7 @@ const hotelsByType = async (req, res) => {
 const getSuggestion = async (req, res) => {
   const { query } = req.query
   if (!query) {
-    return res.status(400).json({ success: false, meassage: "No query!" })
+    return res.status(400).json({ success: false, message: "No query!" })
   }
 
   try {
@@ -233,7 +234,7 @@ const getSuggestion = async (req, res) => {
     res.status(200).json({ success: true, meassage: "Get city suggestion", data })
   } catch (error) {
     console.log(error.message)
-    return res.status(500).json({ success: false, meassage: error.meassage })
+    return res.status(500).json({ success: false, message: error.message })
   }
 }
 

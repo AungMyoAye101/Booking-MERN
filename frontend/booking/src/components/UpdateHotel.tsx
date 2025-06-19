@@ -16,13 +16,15 @@ const UpdateHotel = () => {
   const [loading, setLoading] = useState(false)
   const [photoArray, setPhotoArray] = useState<File[]>([]);
   const [previewImg, setPreviewImg] = useState<string[]>([])
+  const [existingPhotos, setExistingPhotos] = useState<string[]>([])
   const [errorMessage, setErrorMessage] = useState()
 
   const { register, handleSubmit, setValue, watch, formState: { errors } } = useForm<CreateHotelFormType>();
   const selectType = watch('type');
   const selectAmenities = watch("amenities", []) || [];
 
-
+  // console.log(photoArray)
+  // console.log(existingPhotos, "exist")
   const navigate = useNavigate()
 
 
@@ -39,6 +41,7 @@ const UpdateHotel = () => {
         }
       });
       setPreviewImg(data.photos);
+      setExistingPhotos(data.photos)
     };
     fetchHotel()
   }, []);
@@ -48,9 +51,9 @@ const UpdateHotel = () => {
     if (files) {
 
       const photos = Array.from(files)
-      setPhotoArray(photos)
+      setPhotoArray([...photoArray, ...photos])
       const preview = photos.map((img) => URL.createObjectURL(img))
-      setPreviewImg(preview)
+      setPreviewImg([...previewImg, ...preview])
     }
   }
 
@@ -121,6 +124,7 @@ const UpdateHotel = () => {
         formData.append(key, String(value));
       }
     });
+    existingPhotos.forEach(photo => formData.append("existingPhotos", photo))
     photoArray.forEach(img => formData.append("photos", img))
 
     try {
@@ -138,14 +142,14 @@ const UpdateHotel = () => {
         throw new Error(data.message);
       }
 
-
+      console.log(data)
       showToast("success", data.message)
       navigate("/admin/hotels")
       setLoading(false)
     } catch (error) {
 
       console.log(error);
-      throw new Error("Failed to create !")
+      throw new Error("Failed to update!")
     } finally {
 
       setLoading(false)
@@ -156,7 +160,7 @@ const UpdateHotel = () => {
 
   return (
     <form onSubmit={onSubmit} encType="multipart/form-data" className=" bg-white border py-8 px-4 md:px-6 min-w-96  mx-auto mt-20 flex flex-col gap-4 font-roboto">
-      <h1 className="font-roboto text-2xl md:text-3xl font-bold text-center">Create Hotel Form</h1>
+      <h1 className="font-roboto text-2xl md:text-3xl font-bold text-center">Update Hotel Form</h1>
       {
         errorMessage && <p className="text-center text-red-400 font-roboto">{errorMessage}</p>
       }
@@ -258,6 +262,20 @@ const UpdateHotel = () => {
             className="hidden"
           />
         </div>
+        {
+          existingPhotos.map((img, i) => (
+            <div key={i} className="relative">
+
+              <img src={img} alt="preview photo" className="w-60 h-40 rounded-lg" />
+              <div
+                onClick={() =>
+
+                  setExistingPhotos(existingPhotos.filter(url => url !== img))
+                }
+                className="absolute top-1 right-1 bg-white text-red-500 font-semibold text-xl border border-gray-400 hover:border-red-500 w-10 h-10 rounded-full z-10 flex justify-center items-center cursor-pointer"><FaX /></div>
+            </div>
+          ))
+        }
         {
           previewImg.length > 0 && previewImg.map((img, i) => (
             <div key={i} className="relative">
