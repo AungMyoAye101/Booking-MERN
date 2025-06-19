@@ -1,6 +1,5 @@
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import Home from "./pages/Home";
-import List from "./pages/List";
 import NavBar from "./components/NavBar";
 import Login from "./pages/Login";
 import Signup from "./pages/Signup";
@@ -15,6 +14,7 @@ import MyBooking from "./pages/MyBooking";
 import Payment from "./pages/Payment";
 import TypeResult from "./pages/TypeResult";
 import Footer from "./components/Footer";
+import List from "./pages/List";
 
 
 function App() {
