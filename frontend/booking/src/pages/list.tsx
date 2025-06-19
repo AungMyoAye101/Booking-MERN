@@ -5,7 +5,7 @@ import { base_url, loadingElem } from "../lib/helper";
 import Pagination, { PaginationType } from "../components/Pagination";
 import { showToast } from "../context/ToastProvider";
 import { RiHotelLine } from "react-icons/ri";
-const List = () => {
+const HotelList = () => {
 
   const [search] = useSearchParams()
   const page = search.get("page") || "1";
@@ -153,4 +153,4 @@ const List = () => {
   );
 };
 
-export default List;
+export default HotelList;

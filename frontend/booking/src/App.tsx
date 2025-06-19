@@ -14,7 +14,8 @@ import MyBooking from "./pages/MyBooking";
 import Payment from "./pages/Payment";
 import TypeResult from "./pages/TypeResult";
 import Footer from "./components/Footer";
-import List from "./pages/List";
+import HotelList from "./pages/List";
+
 
 
 function App() {
@@ -26,7 +27,7 @@ function App() {
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/hotel/:id" element={<HotelDetail />} />
-        <Route path="/list" element={<List />} />
+        <Route path="/list" element={<HotelList />} />
         <Route path="/search" element={<Search />} />
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<Signup />} />
@@ -36,7 +37,7 @@ function App() {
         <Route path="/admin" element={<Admin />}>
           <Route path="" element={<Dashboard />} />
           <Route path="room/:hotelId" element={<Room />} />
-          <Route path="hotels" element={<List />} />
+          <Route path="hotels" element={<HotelList />} />
           <Route path="createHotel" element={<CreateHotel />} />
           <Route path="updateHotel/:id" element={<UpdateHotel />} />
         </Route>
