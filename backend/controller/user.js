@@ -43,16 +43,7 @@ const getUserById = async (req, res, next) => {
   }
 };
 
-// const verifyMe = async (req, res,) => {
-//   try {
-//     const me = await User.find({})
-//     res.status(200).json({ userId: me._id })
 
-//   } catch (error) {
-//     console.log(error.message)
-//     res.status(500).json(error.message)
-//   }
-// }
 
 module.exports = {
   updateUser,

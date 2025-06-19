@@ -47,7 +47,6 @@ const searchController = async (req, res) => {
         const totalPages = Math.ceil(total / limit)
         const hasNextPage = page < totalPages
         const hasPrevPage = page > 1
-        console.log(totalPages)
         return res.status(200).json({
             success: true, message: "Success", data: hotel, pagination: {
                 totalPages,
@@ -58,7 +57,6 @@ const searchController = async (req, res) => {
         });
 
     } catch (error) {
-        console.log(error);
         return res.status(500).json({ message: "Failed to search!" });
     }
 

@@ -15,7 +15,6 @@ import MyBooking from "./pages/MyBooking";
 import Payment from "./pages/Payment";
 import TypeResult from "./pages/TypeResult";
 import Footer from "./components/Footer";
-import Test from "./pages/test";
 
 
 function App() {
@@ -26,8 +25,6 @@ function App() {
 
       <Routes>
         <Route path="/" element={<Home />} />
-        <Route path="/test" element={<Test />} />
-
         <Route path="/hotel/:id" element={<HotelDetail />} />
         <Route path="/list" element={<List />} />
         <Route path="/search" element={<Search />} />

@@ -1,7 +1,6 @@
 const { default: mongoose } = require("mongoose");
 const Hotel = require("../models/hotel.model");
 
-const cloudinary = require("cloudinary").v2;
 //Create hotel
 const createHotel = async (req, res) => {
 
@@ -9,44 +8,21 @@ const createHotel = async (req, res) => {
   if (!photos) {
     return res.status(400).json({ success: false, message: "No images!" })
   }
+
+  const url = photos.map(img => img.path)
+
+  // add hotel with uploaded image urls to database
   try {
-    const url = photos.map(img => img.path)
 
-    // add hotel with uploaded image urls to database
-    try {
-
-      const newHotel = new Hotel({
-        ...req.body,
-        photos: url
-      });
-      const savedHotel = await newHotel.save();
-      return res.status(201).json({ success: true, message: "Hotel created successful", data: savedHotel });
-    } catch (error) {
-      return res.status(500).json({ success: false, message: error.message })
-    }
-
-    res.status(200).json({ message: "uploaded" })
+    const newHotel = new Hotel({
+      ...req.body,
+      photos: url
+    });
+    const savedHotel = await newHotel.save();
+    return res.status(201).json({ success: true, message: "Hotel created successful", data: savedHotel });
   } catch (error) {
-    res.status(500).json({ message: error.message })
+    return res.status(500).json({ success: false, message: error.message })
   }
-
-
-
-  // const { photos } = req.body;
-  // let urls;
-  // try {
-  //   const uploadedImages = photos.map((img) => {
-  //     return cloudinary.uploader.upload(img, { folder: "hotels" })
-  //   })
-  //   const uploadResponse = await Promise.all(uploadedImages)
-  //   urls = uploadResponse.map((img) => img.secure_url)
-  //   console.log("image uploaded")
-  // } catch (error) {
-  //   return res.status(500).json({ success: false, message: error.message })
-
-  // }
-
-
 
 };
 
@@ -81,7 +57,7 @@ const updateHotel = async (req, res) => {
       { new: true }
     );
 
-    return res.status(200).json({ success: true, message: "Hotel updated successful", data: updateHotel });
+    return res.status(200).json({ success: true, message: "Hotel updated successful", data: updatedHotel });
   } catch (error) {
     return res.status(500).json({ success: false, message: error.message });
   }

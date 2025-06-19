@@ -93,7 +93,7 @@ const getAllRoomsByHotelId = async (req, res,) => {
 
       let availableRoomNumbers = []
       for (const rn of room.roomNumbers) {
-        console.log(rn)
+
         const hasBooking = await Booking.exists({
           roomId: room._id,
           roomNumber: rn.number,
@@ -122,7 +122,6 @@ const getAllRoomsByHotelId = async (req, res,) => {
 
     return res.status(200).json({ success: true, message: "Get all rooms", data: result });
   } catch (error) {
-    console.log(error)
     return res.status(500).json({ success: false, message: error });
   }
 };
