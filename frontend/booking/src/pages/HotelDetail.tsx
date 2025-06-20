@@ -7,6 +7,7 @@ import { useEffect, useState } from "react";
 import { HotelType } from "../lib/types";
 import RoomList from "../components/RoomList";
 import ReviewForm from "../components/ReviewForm";
+import { base_url } from "../lib/helper";
 
 const HotelDetail = () => {
   const [hotel, setHotel] = useState<HotelType>({
@@ -26,7 +27,7 @@ const HotelDetail = () => {
   });
   const { id } = useParams();
   const fetchHotel = async () => {
-    const res = await fetch(`http://localhost:5000/api/hotel/${id}`);
+    const res = await fetch(base_url + `/api/hotel/${id}`);
     const { data } = await res.json();
     setHotel(data);
   };

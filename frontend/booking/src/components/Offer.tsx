@@ -1,7 +1,7 @@
 
 const Offer = () => {
   return (
-    <section className="py-10 max-w-6xl  m-auto  ">
+    <section className="hidden md:block py-10 max-w-6xl  m-auto  ">
       <div className="my-4">
         <h1 className="text-3xl font-bold font-roboto">Offers</h1>
         <p className="font-roboto">

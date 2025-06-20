@@ -55,7 +55,7 @@ const Search = () => {
 
   return (
     <section className=" py-20 flex gap-4   max-w-6xl mx-auto relative">
-      <div className="relative">
+      <div className="relative hidden md:block">
         <SideBar />
       </div>
 

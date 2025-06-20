@@ -26,7 +26,7 @@ const Contact = () => {
         <img
           src="https://img.freepik.com/free-vector/contact-us-concept-illustration_114360-1850.jpg?t=st=1740412639~exp=1740416239~hmac=19e15cf593ca784c3fffc9a21f78d834893a2c6672e164763def9a10bb283cce&w=740"
           alt="contact girl"
-          className="w-44 sm:w-56 md:w-96 h-auto aspect-square"
+          className="w-44 sm:w-56 md:w-96 h-auto aspect-square hidden md:block"
         />
       </div>
     </section>

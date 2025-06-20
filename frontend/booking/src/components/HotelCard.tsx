@@ -12,12 +12,12 @@ const HotelCard = ({ item }: { item: HotelType }) => {
 
     <div
       key={item._id}
-      className="flex-1 flex gap-4 bg-white rounded-lg p-4 shadow-lg border h-fit"
+      className="flex-1 flex flex-col md:flex-row gap-4 bg-white rounded-lg p-4 shadow-lg border h-fit"
 
     >
       <Link
         to={`/hotel/${item._id}`}
-        className="w-40 aspect-square rounded-lg overflow-hidden "
+        className="w-full md:w-40 aspect-video md:aspect-square rounded-lg overflow-hidden "
       >
         <img src={item.photos[0]} alt="hotel image" className="w-full h-full object-cover" />
       </Link>

@@ -15,10 +15,14 @@ import Payment from "./pages/Payment";
 import TypeResult from "./pages/TypeResult";
 import Footer from "./components/Footer";
 import HotelList from "./pages/HotelList";
+import ProtectiveRoute from "./components/ProtectiveRoute";
+
 
 
 
 function App() {
+
+
   return (
     <BrowserRouter>
 
@@ -33,14 +37,20 @@ function App() {
         <Route path="/signup" element={<Signup />} />
         <Route path="/payment" element={<Payment />} />
         <Route path="/type/:type" element={<TypeResult />} />
-        <Route path="/mybooking/:id" element={<MyBooking />} />
-        <Route path="/admin" element={<Admin />}>
+        <Route path="/mybooking/:id" element={<ProtectiveRoute><MyBooking /></ProtectiveRoute>} />
+
+
+        <Route path="/admin" element={<ProtectiveRoute><Admin /></ProtectiveRoute>}>
+
+
           <Route path="" element={<Dashboard />} />
+
           <Route path="room/:hotelId" element={<Room />} />
           <Route path="hotels" element={<HotelList />} />
           <Route path="createHotel" element={<CreateHotel />} />
           <Route path="updateHotel/:id" element={<UpdateHotel />} />
         </Route>
+
       </Routes>
       <Footer />
 

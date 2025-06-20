@@ -85,7 +85,7 @@ const SearchBox = () => {
     >
       <div className="relative">
 
-        <div className="flex-1 min-w-60 bg-white  h-10 flex items-center rounded-md px-2">
+        <div className="flex-1 min-w-60  bg-white  h-10 flex items-center rounded-md px-2">
           <IoBedOutline className="text-xl " />
           <input
             type="text"
@@ -98,7 +98,7 @@ const SearchBox = () => {
         </div>
         {
           suggestion.length > 0 &&
-          <div className="absolute w-full top-14 bg-white p-4 rounded-lg flex flex-col gap-1">
+          <div className="absolute w-full z-40 top-14 bg-white p-4 rounded-lg flex flex-col gap-1">
 
             {
               suggestion.map((city, i) => (

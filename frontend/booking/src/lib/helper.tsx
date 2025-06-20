@@ -1,5 +1,7 @@
 
-export const base_url = 'https://booking-mern-ama.onrender.com'
+export const base_url = import.meta.env.VITE_BASE_API_URI || 'http://localhost:5000'
+
+
 export const formatDate = (date: Date) => {
     const d = new Date(date)
     const day = String(d.getDate()).padStart(2, "0")
@@ -10,8 +12,8 @@ export const formatDate = (date: Date) => {
 
 
 export const spinner = <div className="w-6 h-6 rounded-full border-2 border-white border-r-0 bg-transparent animate-spin"></div>
-export const loadingElem = [1, 2, 3, 4, 5, 6,].map(i => (<div key={i} className="flex-1 flex gap-4 bg-white rounded-lg p-4 shadow-lg border">
-    <div className="w-40 aspect-square rounded-lg bg-neutral-200"></div>
+export const loadingElem = [1, 2, 3, 4, 5, 6,].map(i => (<div key={i} className="w-full  flex flex-col md:flex-row gap-4 bg-white rounded-lg p-4 shadow-lg border">
+    <div className="w-full md:w-40 aspect-video md:aspect-square rounded-lg bg-neutral-200"></div>
     <div className="flex justify-between flex-1 ">
 
         <div className="flex flex-col gap-2">

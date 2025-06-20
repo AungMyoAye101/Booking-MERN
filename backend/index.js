@@ -23,7 +23,7 @@ app.use(express.urlencoded({ limit: "50mb", extended: true }));
 //Middleware for route handler
 app.use(cookieParser());
 app.use(cors({
-  origin: 'https://bookingbyama.vercel.app',
+  origin: 'http://localhost:5173',
   credentials: true,
 }
 ));

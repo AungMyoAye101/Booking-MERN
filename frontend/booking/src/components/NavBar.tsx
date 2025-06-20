@@ -2,6 +2,7 @@ import { Link, useLocation } from "react-router-dom";
 import { useAuth } from "../context/authContext";
 import { useEffect, useState } from "react";
 import MobileMenubar from "./MobileMenubar";
+import { showToast } from "../context/ToastProvider";
 
 
 const NavBar = () => {
@@ -34,6 +35,8 @@ const NavBar = () => {
         const errorData = await res.json();
         throw new Error(errorData.message || "Logout failed");
       }
+      showToast("info", "logout")
+
       dispatch({ type: "LOGOUT" });
     } catch (error) {
 
