@@ -1,5 +1,5 @@
 
-export const base_url = 'http://localhost:5000'
+export const base_url = 'https://booking-mern-ama.onrender.com'
 export const formatDate = (date: Date) => {
     const d = new Date(date)
     const day = String(d.getDate()).padStart(2, "0")
