@@ -64,7 +64,7 @@ const Signup = () => {
             <input
               type="text"
               id="name"
-              {...register("name", { required: "This field is required.", minLength: { value: 1, message: "Name at least 1 character." } })}
+              {...register("name", { required: "This field is required.", minLength: { value: 3, message: "Name at least 3 character." } })}
               placeholder="Jhon Doe"
               className="input_con"
             />

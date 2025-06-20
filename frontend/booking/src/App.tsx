@@ -14,7 +14,7 @@ import MyBooking from "./pages/MyBooking";
 import Payment from "./pages/Payment";
 import TypeResult from "./pages/TypeResult";
 import Footer from "./components/Footer";
-import HotelList from "./pages/List";
+import HotelList from "./pages/HotelList";
 
 
 

@@ -276,6 +276,10 @@ const UpdateHotel = () => {
             </div>
           ))
         }
+        <div>
+          <h2 className="text-2xl font-semibold font-roboto">Preview for new images</h2>
+
+        </div>
         {
           previewImg.length > 0 && previewImg.map((img, i) => (
             <div key={i} className="relative">

@@ -152,7 +152,6 @@ const getHotelByCity = async (req, res) => {
     const hotels = await Promise.all(names.map((city) =>
       Hotel.findOne({ city }).lean()
     ))
-    console.log(hotels)
     res.status(200).json({ success: true, message: "Get hotel by city success.", data: hotels })
   } catch (error) {
     res.status(500).json({ success: false, message: error.message })

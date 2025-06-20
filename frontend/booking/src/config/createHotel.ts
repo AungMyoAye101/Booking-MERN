@@ -14,7 +14,8 @@ export const hotelInputValidation = [
         placeholder: "Enter your name.",
         label: "Name",
         config: {
-            required: "Name is required."
+            required: "Name is required.",
+            minLength: { value: 3, message: "Name must be at least 3 character." }
         }
     },
     {
@@ -22,7 +23,9 @@ export const hotelInputValidation = [
         placeholder: "Enter  title.",
         label: "Title",
         config: {
-            required: "Title is required."
+            required: "Title is required.",
+            minLength: { value: 3, message: "Title must be at least 3 characters." }
+
         }
     },
     {
@@ -39,7 +42,8 @@ export const hotelInputValidation = [
         placeholder: "Enter address.",
         label: "Address",
         config: {
-            required: "Address is required."
+            required: "Address is required.",
+            minLength: { value: 1, message: "Address must be at least 1 character." }
         }
     },
     {
@@ -47,7 +51,8 @@ export const hotelInputValidation = [
         placeholder: "Enter distance.",
         label: "distance",
         config: {
-            required: "distance is required."
+            required: "distance is required.",
+            minLength: { value: 3, message: "Distance at least 3 characters." }
         }
     },
     {
@@ -55,7 +60,8 @@ export const hotelInputValidation = [
         placeholder: "Enter city.",
         label: "City",
         config: {
-            required: "City is required."
+            required: "City is required.",
+            minLength: { value: 1, message: "City must be at least 1 character." }
         }
     },
 
