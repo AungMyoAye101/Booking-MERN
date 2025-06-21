@@ -18,6 +18,7 @@ const SearchBox = () => {
 
   const [suggestion, setSuggestion] = useState<string[]>([])
 
+
   const navigate = useNavigate();
   const [isDateOpen, setIsDateOpen] = useState(false);
   const [datePicker, setDatePicker] = useState([
@@ -60,6 +61,7 @@ const SearchBox = () => {
       if (!res.ok && !success) {
         return console.log(message)
       }
+
       setSuggestion(data)
     } catch (error) {
       if (error instanceof Error) console.error(error)
@@ -77,6 +79,7 @@ const SearchBox = () => {
       clearInterval(debounce)
     }
   }, [destination])
+
 
   return (
     <form
@@ -98,12 +101,12 @@ const SearchBox = () => {
         </div>
         {
           suggestion.length > 0 &&
-          <div className="absolute w-full z-40 top-14 bg-white p-4 rounded-lg flex flex-col gap-1">
+          <div className="absolute w-full z-40 bottom-14 md:top-14 bg-white p-4 rounded-lg flex flex-col gap-1">
 
             {
               suggestion.map((city, i) => (
                 <div key={i}
-                  onClick={() => setDestination(city)}
+                  onClick={() => (setDestination(city))}
                   className="font-roboto font-semibold p-1.5 bg-neutral-200 hover:bg-blue-400 hover:text-white text-center rounded-lg ">{city}</div>
               ))
             }

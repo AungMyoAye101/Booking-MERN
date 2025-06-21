@@ -211,7 +211,10 @@ const RoomList = ({ hotelId, hotelName }: { hotelId: string, hotelName: string }
                                         <td className="table-border"> {room.maxPeople}</td>
                                         <td className="table-border text-amber-600 font-semibold text-lg"> ${room.price}</td>
                                         <td className="table-border">
-                                            <button onClick={() => navigateToCheckout(hotelName, room.title, room._id, r.number, user._id, roomSearch.checkIn, roomSearch.checkOut, room.price)}>
+                                            <button
+                                                onClick={() => navigateToCheckout(hotelName, room.title, room._id, r.number, user._id, roomSearch.checkIn, roomSearch.checkOut, room.price)}
+                                                className="bg-blue-400 text-white hover:bg-amber-500"
+                                            >
                                                 Reserve
                                             </button>
                                             {/* <Link to={`/payment?hotel=${hotelName}&room=${room.title}&roomId=${room._id}&user=${user._id}&checkIn=${roomSearch.checkIn}&checkOut=${roomSearch.checkOut}&roomNumber=${r.number}&price=${room.price}`} className="btn"
@@ -244,8 +247,12 @@ const RoomList = ({ hotelId, hotelName }: { hotelId: string, hotelName: string }
                                     <p className="font-semibold  font-roboto">Room No : {r.number}</p>
                                     <p className="text-xl font-bold  text-amber-600">${room.price}/night</p>
                                 </div>
-                                <Link to={`/payment?hotel=${hotelName}&room=${room.title}&roomId=${room._id}&user=${user._id}&checkIn=${roomSearch.checkIn}&checkOut=${roomSearch.checkOut}&roomNumber=${r.number}&price=${room.price}`} className="btn"
-                                >Reserve</Link>
+                                <button
+                                    onClick={() => navigateToCheckout(hotelName, room.title, room._id, r.number, user._id, roomSearch.checkIn, roomSearch.checkOut, room.price)}
+                                    className="bg-blue-400 text-white hover:bg-amber-500 px-4 py-1.5 rounded-md"
+                                >
+                                    Reserve
+                                </button>
                             </div>
                         ))
                     ))

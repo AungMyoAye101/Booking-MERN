@@ -22,12 +22,12 @@ app.use(express.json({ limit: "50mb" }));
 app.use(express.urlencoded({ limit: "50mb", extended: true }));
 //Middleware for route handler
 app.use(cookieParser());
-// app.use(cors({
-//   origin: process.env.ORIGIN_URL,
-//   credentials: true,
-// }
-// ));
-// console.log(process.env.ORIGIN_URL)
+app.use(cors({
+  // origin: process.env.ORIGIN_URL,
+  credentials: true,
+}
+));
+console.log(process.env.ORIGIN_URL)
 
 const port = process.env.PORT || 8080;
 const DB_URI = process.env.MONGODB_URI;
