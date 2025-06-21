@@ -1,5 +1,6 @@
 
-export const base_url = import.meta.env.VITE_BASE_API_URI || 'http://localhost:5000'
+export const base_url = import.meta.env.VITE_BASE_API_URI
+
 
 
 export const formatDate = (date: Date) => {

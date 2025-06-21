@@ -1,6 +1,8 @@
 import SearchBox from "./SearchBox";
 
+
 const Hero = () => {
+
   return (
     <section className="h-[100vh] relative ">
       <div className="max-w-6xl m-auto p-4 w-full h-full flex flex-col gap-1 justify-center text-white relative z-10">
