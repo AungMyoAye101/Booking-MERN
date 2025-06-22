@@ -141,8 +141,6 @@ const UpdateHotel = () => {
         showToast("error", data.message)
         throw new Error(data.message);
       }
-
-      console.log(data)
       showToast("success", data.message)
       navigate("/admin/hotels")
       setLoading(false)

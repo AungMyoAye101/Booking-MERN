@@ -68,7 +68,7 @@ const HotelList = () => {
 
   const handleDelete = async (id: string) => {
     try {
-      const res = await fetch(`http://localhost:5000/api/hotel/${id}`, {
+      const res = await fetch(`${base_url}/api/hotel/${id}`, {
         method: "DELETE",
       });
       if (!res.ok) {

@@ -2,6 +2,7 @@ import { useState } from "react"
 import { FaStar } from "react-icons/fa6"
 import { useAuth } from "../context/authContext"
 import { showToast } from "../context/ToastProvider"
+import { base_url } from "../lib/helper"
 
 
 const ReviewForm = ({ hotelId }: { hotelId: string }) => {
@@ -29,7 +30,7 @@ const ReviewForm = ({ hotelId }: { hotelId: string }) => {
 
         try {
             setLoading(true)
-            const res = await fetch("http://localhost:5000/api/review", {
+            const res = await fetch(base_url + "/api/review", {
                 method: "POST",
                 headers: {
                     "Content-type": "application/json"
@@ -58,7 +59,7 @@ const ReviewForm = ({ hotelId }: { hotelId: string }) => {
 
 
     return (
-        <form onSubmit={onSubmit} className='flex flex-col gap-2  w-64 py-4 bg-white p-2 rounded-lg shadow-lg border'>
+        <form onSubmit={onSubmit} className='flex flex-col gap-2  w-72 py-6 px-4 bg-white  rounded-lg shadow-lg border border-gray-300'>
             <h1 className="font-roboto text-lg font-medium">Please Leave your review</h1>
             {/* Stars rating for reviews */}
             <div className="flex items-center  gap-1 text-xl">

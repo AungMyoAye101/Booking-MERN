@@ -5,6 +5,7 @@ import { useForm } from "react-hook-form";
 import { LoginUserType } from "../lib/types";
 import { showToast } from "../context/ToastProvider";
 import { FaEye, FaEyeSlash } from "react-icons/fa6";
+import { base_url } from "../lib/helper";
 
 
 
@@ -22,7 +23,7 @@ const Login = () => {
 
     setLoading(true);
     try {
-      const res = await fetch("/api/auth/login", {
+      const res = await fetch(base_url + "/api/auth/login", {
         method: "POST",
         headers: { "Content-type": "application/json" },
         credentials: "include",

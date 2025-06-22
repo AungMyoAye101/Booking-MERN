@@ -92,7 +92,7 @@ const HotelDetail = () => {
           <div className="flex flex-wrap gap-2 items-center">
 
             {
-              hotel.amenities.map((item) => (<div key={item} className="font-serif text-sm bg-blue-600 text-white py-1 px-2 rounded">{item}</div>))
+              hotel.amenities.map((item) => (<div key={item} className="font-serif  bg-blue-600 text-white py-1 px-3 rounded-md">{item}</div>))
             }
           </div>
         </div>

@@ -2,7 +2,7 @@
 import { useNavigate, useSearchParams } from 'react-router-dom'
 import { showToast } from '../context/ToastProvider'
 import { useAuth } from '../context/authContext'
-import { formatDate, spinner } from '../lib/helper'
+import { base_url, formatDate, spinner } from '../lib/helper'
 import { useState } from 'react'
 
 
@@ -39,7 +39,7 @@ const Payment = () => {
         }
         try {
             setLoading(true)
-            const res = await fetch("http://localhost:5000/api/booking", {
+            const res = await fetch(base_url + "/api/booking", {
                 method: "POST",
                 headers: {
                     'Content-Type': 'application/json'

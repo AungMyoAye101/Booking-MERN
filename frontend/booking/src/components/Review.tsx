@@ -1,12 +1,14 @@
 
 import { useEffect, useState } from "react";
 import { ReviewType } from "../lib/types";
+import { base_url } from "../lib/helper";
+import { FaUser } from "react-icons/fa6";
 
 const Review = ({ hotelId }: { hotelId: string }) => {
   const [reviews, setReviews] = useState<ReviewType[]>([])
   const fetchReviews = async () => {
     try {
-      const res = await fetch(`http://localhost:5000/api/review/${hotelId}`, {
+      const res = await fetch(base_url + `/api/review/${hotelId}`, {
         method: "GET",
         headers: {
           "Content-type": "application/json"
@@ -41,14 +43,18 @@ const Review = ({ hotelId }: { hotelId: string }) => {
             <div key={i} className="bg-white rounded-lg shadow-lg w-64 border border-gray-300">
               <div className="flex flex-col gap-2 p-2">
                 <div className=" flex items-center gap-2">
-                  <img
+                  {/* <img
                     src="/assets/images/user-icon.svg"
                     alt="user profile photo"
                     className="w-10 h-10 rounded-full "
-                  />
-                  <div className="font-roboto flex flex-col ">
-                    <h2 className="text-sm font-semibold">{item.userId.name}</h2>
-                    <p className="text-xs">{item.userId.email}</p>
+                  /> */}
+                  <div className="w-10 h-10 flex justify-center items-center bg-neutral-300 rounded-full">
+
+                    <FaUser className="text-2xl" />
+                  </div>
+                  <div className="font-roboto flex flex-col  ">
+                    <h2 className="font-semibold">{item.userId.name}</h2>
+                    <p className="text-sm">{item.userId.email}</p>
                   </div>
                 </div>
                 <p className="font-roboto px-2">

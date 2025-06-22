@@ -5,7 +5,7 @@ import { DateRange } from "react-date-range";
 import { BsPeople } from "react-icons/bs";
 
 import { useAuth } from "../context/authContext";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { formatDate } from "../lib/helper";
 import { FaUser } from "react-icons/fa6";
 import { showToast } from "../context/ToastProvider";
@@ -196,7 +196,7 @@ const RoomList = ({ hotelId, hotelName }: { hotelId: string, hotelName: string }
                                     <tr key={i} className="text-center rounded-lg">
                                         {
                                             i === 0 && (<td rowSpan={room.roomNumbers.length} className="table-border max-w-20">
-                                                <div className="font-roboto text-xl font-semibold ">
+                                                <div className="font-roboto text-2xl font-semibold ">
                                                     {room.title}
                                                 </div>
                                                 <div className="">
@@ -209,11 +209,11 @@ const RoomList = ({ hotelId, hotelName }: { hotelId: string, hotelName: string }
 
                                         <td className="table-border"> {r.number}</td>
                                         <td className="table-border"> {room.maxPeople}</td>
-                                        <td className="table-border text-amber-600 font-semibold text-lg"> ${room.price}</td>
+                                        <td className="table-border text-amber-500 font-semibold text-lg"> ${room.price}</td>
                                         <td className="table-border">
                                             <button
                                                 onClick={() => navigateToCheckout(hotelName, room.title, room._id, r.number, user._id, roomSearch.checkIn, roomSearch.checkOut, room.price)}
-                                                className="bg-blue-400 text-white hover:bg-amber-500"
+                                                className="bg-blue-600 text-white hover:bg-amber-500 px-4 py-2 rounded-md font-roboto"
                                             >
                                                 Reserve
                                             </button>
