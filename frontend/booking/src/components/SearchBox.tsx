@@ -101,7 +101,7 @@ const SearchBox = () => {
         </div>
         {
           suggestion.length > 0 &&
-          <div className="absolute w-full z-40 bottom-14 md:top-14 bg-white p-4 rounded-lg flex flex-col gap-1">
+          <div className="absolute w-full z-40 bottom-14 md:top-14 bg-white p-4 rounded-lg flex flex-col gap-1 h-fit">
 
             {
               suggestion.map((city, i) => (

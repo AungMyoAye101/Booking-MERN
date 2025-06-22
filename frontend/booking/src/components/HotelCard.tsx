@@ -12,7 +12,7 @@ const HotelCard = ({ item }: { item: HotelType }) => {
 
     <div
       key={item._id}
-      className="flex-1 flex flex-col md:flex-row gap-4 bg-white rounded-lg p-4 shadow-lg border h-fit"
+      className="flex-1 flex flex-col md:flex-row gap-4 bg-white rounded-lg p-4 shadow-lg border border-gray-300 h-fit"
 
     >
       <Link
@@ -31,11 +31,11 @@ const HotelCard = ({ item }: { item: HotelType }) => {
             }
           </div>
           <h2 className=" text-sm opacity-85 ">{item.title} </h2>
-          <div className="flex items-center gap-1 ">
+          <div className="flex items-center gap-1 text-gray-600 text-lg">
             <FaLocationDot /> <span>{item.city}</span>
           </div>
-          <p className="  line-clamp-3 opacity-90">{item.description}</p>
-          <div className="text-lg text-blue-600">
+          {/* <p className="  line-clamp-3 opacity-90">{item.description}</p> */}
+          <div className="text-xl text-blue-600">
             <b>$ {item.price} </b>/night
           </div>
 

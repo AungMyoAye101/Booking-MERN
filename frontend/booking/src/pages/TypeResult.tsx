@@ -67,7 +67,7 @@ const TypeResult = () => {
                                 ))
                             }
                             <Pagination
-                                page={Number(pagination?.page)}
+                                page={Number(pagination?.page) || 1}
                                 hasNextPage={pagination?.hasNextPage ?? false}
                                 hasPrevPage={pagination?.hasPrevPage ?? false}
                             />
