@@ -6,6 +6,7 @@ import { HotelType } from "../lib/types";
 import NotFound from "./NotFound";
 import Pagination, { PaginationType } from "../components/Pagination";
 import HotelCard from "../components/HotelCard";
+import MobileSideBar from "../components/MobileSideBar";
 
 
 
@@ -54,10 +55,11 @@ const Search = () => {
   }
 
   return (
-    <section className=" py-20 flex gap-4   max-w-6xl mx-auto relative">
+    <section className=" py-20 flex flex-col  gap-4   max-w-6xl mx-auto relative">
       <div className="relative hidden md:block">
         <SideBar />
       </div>
+      <MobileSideBar />
 
 
 

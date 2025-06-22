@@ -1,4 +1,5 @@
 import { useSearchParams } from "react-router-dom"
+import { priceRange, ratingInputElems, sortingElems } from "../lib/helper"
 
 
 const SideBar = () => {
@@ -28,51 +29,6 @@ const SideBar = () => {
         setSearchParams(updateParams)
     }
 
-
-    const priceRange = [{
-        name: "minPrice",
-        label: "Min price"
-    }, {
-        name: "maxPrice",
-        label: "Max price"
-    }]
-
-    const ratingInputElems = {
-        name: "rating",
-        fields: [{ value: 5, label: "5 Stars" }, { value: 4, label: "4 Stars" }, { value: 3, label: "3 Stars" }, { value: 2, label: "2 Stars" }, { value: 1, label: "1 Stars" }]
-    }
-
-    const sortingElems = [
-        {
-            fieldsName: "sortByPrice",
-            fieldData: [{
-                placeholder: "Highest to lowest price",
-                value: "highestPrice",
-                label: "sortbyHighestPrice"
-            }, {
-
-                placeholder: "Lowest to highest price",
-                value: "lowestPrice",
-                label: "sortByLowestPrice",
-
-            }]
-        },
-        {
-            fieldsName: "sortByRating",
-            fieldData: [{
-                placeholder: "Highest to lowest rating",
-                value: "highestRating",
-                label: "sortbyHighestRating"
-            }, {
-
-                placeholder: "Lowest to highest rating",
-                value: "lowestRating",
-                label: "sortByLowestRating",
-
-            }]
-        }
-
-    ]
 
 
 
