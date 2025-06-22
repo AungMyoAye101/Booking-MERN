@@ -68,7 +68,7 @@ const HotelList = () => {
                     className="flex gap-4 overflow-hidden flex-nowrap  relative py-4"
                 >
                     {
-                        loading ? [1, 2, 3, 4, 5, 6, 7, 8, 9].map(i => (<div key={i} className="min-w-60 w-72 bg-white border border-white shadow-md p-2 rounded">
+                        loading ? [1, 2, 3, 4, 5, 6, 7, 8, 9].map(i => (<div key={i} className="min-w-60 max-w-80 bg-white border border-white shadow-md p-2 rounded">
                             <div className="w-full h-52 bg-neutral-200 rounded-md"></div>
                             <div className="flex flex-col mt-1 gap-1">
                                 <div className="flex items-center justify-between gap-4">
@@ -83,16 +83,16 @@ const HotelList = () => {
                             <Link
                                 to={`hotel/${item._id}`}
                                 key={i}
-                                className=" min-w-[250px] w-fit border   relative rounded-lg overflow-hidden shadow-md cursor-pointer bg-white hover:shadow-lg "
+                                className=" min-w-[300px] w-fit border   relative rounded-lg overflow-hidden shadow-md cursor-pointer bg-white hover:shadow-lg "
                             >
                                 <div className="h-48  overflow-hidden  ">
                                     <img
                                         src={item.photos[0]}
                                         alt="image"
-                                        className="w-full h-full hover:scale-125 transition-transform ease-in-out "
+                                        className="w-full h-full hover:scale-125 transition-transform ease-in-out  object-cover"
                                     />
                                 </div>
-                                <div className="p-2 flex flex-col ">
+                                <div className="px-3 py-2 flex flex-col ">
                                     <div className="flex justify-between items-center gap-4">
                                         <p className="text-sm opacity-90">{item.type}</p>
                                         <div className="flex items-center gap-1">
@@ -100,18 +100,18 @@ const HotelList = () => {
                                         </div>
                                     </div>
 
-                                    <h2 className="  font-roboto text-lg font-semibold">
+                                    <h2 className="  font-roboto text-xl font-semibold">
                                         {item.name}
                                     </h2>
-                                    <h2 className="  font-roboto text-xs opacity-80 flex  items-center gap-1">
+                                    <h2 className="  font-roboto text-sm opacity-80 flex  items-center gap-1">
                                         <FaLocationDot /> {item.city}
                                     </h2>
 
-                                    <div className="self-end font-roboto">
+                                    <div className="self-end font-roboto text-xl">
                                         <span className="font-semibold ">
                                             ${item.price}
                                         </span>
-                                        <span className="text-sm opacity-90">/night</span>
+                                        <span className=" opacity-90">/night</span>
                                     </div>
                                 </div>
                             </Link>

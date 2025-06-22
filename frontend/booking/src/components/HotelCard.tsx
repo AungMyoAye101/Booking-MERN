@@ -17,7 +17,7 @@ const HotelCard = ({ item }: { item: HotelType }) => {
     >
       <Link
         to={`/hotel/${item._id}`}
-        className="w-full md:w-40 aspect-video md:aspect-square rounded-lg overflow-hidden "
+        className="w-full md:w-48 aspect-video md:aspect-square rounded-lg overflow-hidden "
       >
         <img src={item.photos[0]} alt="hotel image" className="w-full h-full object-cover" />
       </Link>

@@ -1,14 +1,14 @@
 
 const Offer = () => {
   return (
-    <section className="hidden md:block py-10 max-w-6xl  m-auto  ">
+    <section className="hidden md:block py-10 max-w-6xl  mx-auto  ">
       <div className="my-4">
         <h1 className="text-3xl font-bold font-roboto">Offers</h1>
         <p className="font-roboto">
           Promotions, deals and special offers for you
         </p>
       </div>
-      <div className=" w-full  border bg-white border-gray-100 rounded-lg shadow-lg flex justify-between  gap-4  relative overflow-hidden">
+      <div className=" w-full h-60 border bg-white border-gray-100 rounded-lg shadow-lg flex justify-between  gap-4  relative overflow-hidden">
         <div className="w-20 h-20 rounded-full bg-blue-500 absolute -left-6 top-10 "></div>
         <div className="w-20 h-20 rounded-full bg-blue-500 absolute right-96 -bottom-10 "></div>
         <div className="  flex justify-center w-full overflow-hidden text-black relative z-10  p-4">
