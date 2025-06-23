@@ -1,6 +1,7 @@
 
 import { useForm } from 'react-hook-form'
 import { showToast } from '../context/ToastProvider'
+import { base_url } from '../lib/helper'
 
 type RoomType = {
     title: string,
@@ -19,7 +20,7 @@ const RoomForm = ({ hotelId }: { hotelId: string }) => {
 
 
         try {
-            const res = await fetch(`http://localhost:5000/api/room/${hotelId}`, {
+            const res = await fetch(`${base_url}/api/room/${hotelId}`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'

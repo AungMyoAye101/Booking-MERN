@@ -6,7 +6,7 @@ import { BsPeople } from "react-icons/bs";
 
 import { useAuth } from "../context/authContext";
 import { useNavigate } from "react-router-dom";
-import { formatDate } from "../lib/helper";
+import { base_url, formatDate } from "../lib/helper";
 import { FaUser } from "react-icons/fa6";
 import { showToast } from "../context/ToastProvider";
 
@@ -54,7 +54,7 @@ const RoomList = ({ hotelId, hotelName }: { hotelId: string, hotelName: string }
     useEffect(() => {
         const checkAvalibleRoom = async () => {
             try {
-                const res = await fetch(`http://localhost:5000/api/room/${hotelId}?guest=${roomSearch.guests}&checkIn=${roomSearch.checkIn.toISOString()}&checkOut=${roomSearch.checkOut.toISOString()}`, {
+                const res = await fetch(`${base_url}/api/room/${hotelId}?guest=${roomSearch.guests}&checkIn=${roomSearch.checkIn.toISOString()}&checkOut=${roomSearch.checkOut.toISOString()}`, {
                     method: "GET",
                     headers: {
                         'Content-Type': 'application/json'

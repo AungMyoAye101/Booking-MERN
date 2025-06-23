@@ -5,6 +5,8 @@ const Hotel = require("../models/hotel.model");
 const createHotel = async (req, res) => {
 
   const photos = req.files
+
+
   if (!photos) {
     return res.status(400).json({ success: false, message: "No images!" })
   }
@@ -29,7 +31,7 @@ const createHotel = async (req, res) => {
 //Update hotel
 
 const updateHotel = async (req, res) => {
-  // Removed console.log statement for cleaner production logs
+
 
   const { id } = req.params
   if (!mongoose.Types.ObjectId.isValid(id)) {
@@ -43,13 +45,7 @@ const updateHotel = async (req, res) => {
   if (typeof existingPhotos === 'string') {
     existingPhotos = [existingPhotos]
   }
-
-
   const updatePhotos = [...existingPhotos, ...urls]
-
-
-
-
   try {
     const updatedHotel = await Hotel.findByIdAndUpdate(
       req.params.id,
@@ -206,7 +202,7 @@ const getSuggestion = async (req, res) => {
     })
 
 
-    res.status(200).json({ success: true, meassage: "Get city suggestion", data })
+    res.status(200).json({ success: true, message: "Get city suggestion", data })
   } catch (error) {
     console.log(error.message)
     return res.status(500).json({ success: false, message: error.message })

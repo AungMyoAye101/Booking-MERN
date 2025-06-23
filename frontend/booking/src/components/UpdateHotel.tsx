@@ -11,6 +11,11 @@ import { base_url, spinner } from "../lib/helper";
 import { hotelAmenities, hotelInputValidation, hotelTypes } from "../config/createHotel";
 import { FaX } from "react-icons/fa6";
 
+interface UpdateHotelType extends CreateHotelFormType {
+  reviews: any[],
+  rooms: any[]
+}
+
 const UpdateHotel = () => {
   const { id } = useParams();
   const [loading, setLoading] = useState(false)
@@ -19,28 +24,24 @@ const UpdateHotel = () => {
   const [existingPhotos, setExistingPhotos] = useState<string[]>([])
   const [errorMessage, setErrorMessage] = useState()
 
-  const { register, handleSubmit, setValue, watch, formState: { errors } } = useForm<CreateHotelFormType>();
+  const { register, handleSubmit, setValue, watch, formState: { errors } } = useForm<UpdateHotelType>();
   const selectType = watch('type');
   const selectAmenities = watch("amenities", []) || [];
-
-  // console.log(photoArray)
-  // console.log(existingPhotos, "exist")
   const navigate = useNavigate()
 
 
 
   useEffect(() => {
     const fetchHotel = async () => {
-      const res = await fetch(`http://localhost:5000/api/hotel/${id}`);
+      const res = await fetch(`${base_url}/api/hotel/${id}`);
       const { data } = await res.json();
       Object.entries(data).forEach(([key, value]) => {
         if (Array.isArray(value)) {
-          setValue(key as keyof CreateHotelFormType, value);
+          setValue(key as keyof UpdateHotelType, value);
         } else {
-          setValue(key as keyof CreateHotelFormType, String(value));
+          setValue(key as keyof UpdateHotelType, String(value));
         }
       });
-      setPreviewImg(data.photos);
       setExistingPhotos(data.photos)
     };
     fetchHotel()
@@ -67,57 +68,14 @@ const UpdateHotel = () => {
   }
 
 
-  // const handleSubmit = async (e: React.FormEvent) => {
 
-  //   e.preventDefault();
-
-
-  //   setHotel((pre) => ({ ...pre, amenities: amenities, photos: photoArray.filter((item: any): item is string => typeof item === "string") }));
-
-  //   if (hotel.photos.length === 0) return
-
-  //   // const validateHotel = createHotelValidation.safeParse(hotel);
-  //   // if (!validateHotel.success) {
-  //   //   console.log(validateHotel.error);
-  //   //   return;
-  //   // }
-
-  //   try {
-  //     console.log('updating hotel...')
-  //     setLoading(true)
-
-  //     const res = await fetch(`http://localhost:5000/api/hotel/${id}`, {
-  //       method: "PUT",
-  //       headers: { "Content-Type": "application/json", },
-  //       body: JSON.stringify(hotel),
-  //     });
-  //     if (!res.ok) {
-  //       throw new Error("Failed to create hotel");
-  //     }
-
-  //     const data = await res.json();
-  //     console.log("hotel updated successfullly", data);
-  //     navigate("/admin/hotels")
-  //     setLoading(false)
-
-  //   }
-  //   catch (error) {
-
-  //     console.log(error);
-  //     setLoading(false)
-  //     throw new Error("Failed to update !")
-  //   } finally {
-
-  //     setLoading(false)
-  //   }
-
-
-  // };
   const onSubmit = handleSubmit(async (data) => {
+    const { rooms, reviews, ...updatedData } = data
+    console.log(data)
 
     const formData = new FormData();
     // Add data object with key ,value pair
-    Object.entries(data).forEach(([key, value]) => {
+    Object.entries(updatedData).forEach(([key, value]) => {
       if (Array.isArray(value)) {
         value.forEach((item) => formData.append(key, item));
       } else {
@@ -130,7 +88,7 @@ const UpdateHotel = () => {
     try {
       setLoading(true)
 
-      const res = await fetch(base_url + `/api/hotel/${id}`, {
+      const res = await fetch(`${base_url}/api/hotel/${id}`, {
         method: "PUT",
         body: formData
 
@@ -192,6 +150,34 @@ const UpdateHotel = () => {
         {
           errors.description && <p className="error_message" >{errors.description.message as string}</p>
         }
+      </div>
+
+      {/* Rating */}
+      <div>
+        <h2 className="font-roboto text-lg font-medium">Rating</h2>
+        <div className="flex gap-4">
+
+
+          {
+            [1, 2, 3, 4, 5].map(item => (
+              <label key={item} htmlFor={item.toString()} className="text-lg font-roboto font-medium ">
+
+                <input
+                  type="radio"
+                  id={item.toString()}
+                  value={item}
+                  {...register("rating", { required: "Rating is required." })}
+                  className="w-4 h-4 mr-1"
+                />
+                {item}
+              </label>
+            ))
+          }
+        </div>
+        {
+          errors.rating && <p className="error_message">{errors.rating.message as string}</p>
+        }
+
       </div>
 
       {/* Hotel type */}
@@ -274,10 +260,7 @@ const UpdateHotel = () => {
             </div>
           ))
         }
-        <div>
-          <h2 className="text-2xl font-semibold font-roboto">Preview for new images</h2>
 
-        </div>
         {
           previewImg.length > 0 && previewImg.map((img, i) => (
             <div key={i} className="relative">
@@ -290,7 +273,7 @@ const UpdateHotel = () => {
           ))
         }
       </div>
-      <button disabled={loading} className="btn flex justify-center items-center self-end " type="submit">{loading ? spinner : "Update"}</button>
+      <button disabled={loading} className={`btn w-20 h-10  flex justify-center items-center self-end ${loading ? "cursor-not-allowed" : "cursor-pointer"}`} type="submit">{loading ? spinner : "Update"}</button>
     </form>
   )
 

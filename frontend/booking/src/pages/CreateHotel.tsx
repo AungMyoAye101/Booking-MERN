@@ -38,7 +38,7 @@ const CreateHotel = () => {
     if (files) {
 
       const photos = Array.from(files)
-      setPhotoArray(photos)
+      setPhotoArray(pre => [...pre, ...photos])
       const preview = photos.map((img) => URL.createObjectURL(img))
       setPreviewImg(preview)
     }
@@ -55,7 +55,7 @@ const CreateHotel = () => {
 
   // Upload form data to server
   const onSubmit = handleSubmit(async (data) => {
-
+    console.log(data)
     const formData = new FormData();
     // Add data object with key ,value pair
     Object.entries(data).forEach(([key, value]) => {
@@ -127,6 +127,7 @@ const CreateHotel = () => {
         ))
 
       }
+      {/* Description */}
       <div className="flex flex-col gap-1">
         <label htmlFor="description" className="font-roboto text-lg font-medium">Description</label>
         <textarea
@@ -136,6 +137,33 @@ const CreateHotel = () => {
         {
           errors.description && <p className="error_message" >{errors.description.message as string}</p>
         }
+      </div>
+      {/* Rating */}
+      <div>
+        <h2 className="font-roboto text-lg font-medium">Rating</h2>
+        <div className="flex gap-4">
+
+
+          {
+            [1, 2, 3, 4, 5].map(item => (
+              <label key={item} htmlFor={item.toString()} className="text-lg font-roboto font-medium ">
+
+                <input
+                  type="radio"
+                  id={item.toString()}
+                  value={item}
+                  {...register("rating", { required: "Rating is required." })}
+                  className="w-4 h-4 mr-1"
+                />
+                {item}
+              </label>
+            ))
+          }
+        </div>
+        {
+          errors.rating && <p className="error_message">{errors.rating.message as string}</p>
+        }
+
       </div>
 
       {/* Hotel type */}
@@ -216,7 +244,7 @@ const CreateHotel = () => {
           ))
         }
       </div>
-      <button disabled={loading} className="btn flex justify-center items-center self-end " type="submit">{loading ? spinner : "Create"}</button>
+      <button disabled={loading} className={`btn w-20 h-10  flex justify-center items-center self-end ${loading ? "cursor-not-allowed" : "cursor-pointer"}`} type="submit">{loading ? spinner : "Create"}</button>
     </form>
   );
 };

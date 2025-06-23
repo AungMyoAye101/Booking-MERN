@@ -70,11 +70,11 @@ const Payment = () => {
 
 
     return (
-        <section className=" min-h-screen flex justify-center items-center  max-w-6xl mx-auto ">
+        <section className=" min-h-screen flex justify-center items-center  max-w-6xl mx-auto px-4">
             <img src="/assets/images/hotel-bg.jpg" alt="hotel background photo" className='absolute w-full h-screen object-cover -z-0' />
 
             <div>
-                <div className='bg-white shadow border rounded-lg min-w-80 max-w-2xl px-6 py-6 relative z-10'>
+                <div className='bg-white shadow border rounded-lg min-w-[300] max-w-2xl px-6 py-6 relative z-10'>
                     <h1 className='font-roboto text-2xl font-semibold mb-2'>Your Booking Summary</h1>
                     <div className='flex justify-between items-center border-b py-1.5'>
                         <h2 className='font-roboto'>Hotel</h2>
@@ -124,8 +124,8 @@ const Payment = () => {
                                 <input type="text" name='date' className='input_con' placeholder='mm/yy ' />
                             </div>
                             <div className='input_container'>
-                                <label htmlFor="scurity" className='font-medium' >CVC</label>
-                                <input type="text" name='scurity' className='input_con ' placeholder='code' />
+                                <label htmlFor="security" className='font-medium' >CVC</label>
+                                <input type="text" name='security' className='input_con ' placeholder='code' />
                             </div>
                         </div>
                     </div>
