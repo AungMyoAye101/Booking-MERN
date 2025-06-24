@@ -40,9 +40,10 @@ const CreateHotel = () => {
       const photos = Array.from(files)
       setPhotoArray(pre => [...pre, ...photos])
       const preview = photos.map((img) => URL.createObjectURL(img))
-      setPreviewImg(preview)
+      setPreviewImg(pre => [...pre, ...preview])
     }
   }
+
 
   const removePhoto = (i: number) => {
     const images = [...photoArray]
@@ -87,9 +88,8 @@ const CreateHotel = () => {
       navigate("/admin/hotels")
       setLoading(false)
     } catch (error) {
+      if (error instanceof Error) console.log(error.message)
 
-      console.log(error);
-      throw new Error("Failed to create !")
     } finally {
 
       setLoading(false)
