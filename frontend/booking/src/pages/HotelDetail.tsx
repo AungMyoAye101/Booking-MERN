@@ -54,7 +54,7 @@ const HotelDetail = () => {
             }
           </div>
         </div>
-        <div className="flex items-center gap-4">
+        <div className="hidden sm:flex items-center gap-4">
           <BiHeart className="text-2xl cursor-pointer" />{" "}
           <BiShareAlt className="text-2xl cursor-pointer" />
           <a href="#room" className=" bg-blue-700 hover:bg-blue-300 text-white font-roboto text-sm px-4 py-2 rounded-md">
@@ -68,14 +68,14 @@ const HotelDetail = () => {
       <div className="flex flex-col gap-4">
 
 
-        <div className="mt-4 grid grid-cols-1 md:grid-cols-2 gap-1">
+        <div className="mt-4 overflow-hidden overflow-x-scroll  flex flex-nowrap  md:flex-wrap gap-3">
           {hotel.photos.map((img, i) => (
             <img
               key={i}
               src={img}
               alt={hotel.name + " room photo"}
               className={`
-                  w-full h-full rounded-lg object-cover aspect-video `}
+                  min-w-[300px] max-w-[550px] rounded-lg object-cover aspect-video `}
             />
           ))}
         </div>
@@ -83,9 +83,9 @@ const HotelDetail = () => {
 
         <div className="space-y-2">
           <div className="flex flex-col md:flex-row  justify-between">
-            <h1 className=" font-roboto text-2xl  ">{hotel.title}</h1>
+            <h1 className=" font-roboto text-2xl  font-medium">{hotel.title}</h1>
             <p className="font-roboto text-2xl font-bold text-black">
-              $ {hotel.price} / night
+              $ {hotel.price}/night
             </p>
           </div>
           <p className=" font-roboto text-lg ">{hotel.description}</p>

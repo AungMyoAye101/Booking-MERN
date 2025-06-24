@@ -1,5 +1,4 @@
 import { Link } from "react-router-dom";
-// import useFetch from "../hooks/useFetch";
 import { useEffect, useRef, useState } from "react";
 import { PiGreaterThan, PiLessThan } from "react-icons/pi";
 import { base_url } from "../lib/helper";

@@ -84,9 +84,9 @@ const logout = (req, res) => {
 
 //check current user
 const currentUser = async (req, res) => {
-
   try {
-    const user = await User.findById(req.user.id)
+    const user = await User.findById(req.id)
+    console.log(user)
     if (!user) {
       return res.status(404).json({ success: false, message: "User not found" })
     }

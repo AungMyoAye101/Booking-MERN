@@ -42,7 +42,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
             const res = await fetch(base_url + '/api/auth/me', {
                 method: "GET",
                 headers: {
-                    "Content-type": "application/json"
+                    "Content-Type": "application/json"
                 },
                 credentials: "include"
 

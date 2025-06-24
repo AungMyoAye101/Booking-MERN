@@ -35,7 +35,7 @@ const Destination = () => {
     fetchHotelBytype()
   }, [])
 
-  console.log(data)
+
 
   const loadingElem = [1, 2, 3].map((i) => <div key={i} className="border shadow bg-white flex-1 p-2 rounded min-w-[200px] aspect-video">
     <div className="bg-neutral-200 rounded w-full h-full p-2">
