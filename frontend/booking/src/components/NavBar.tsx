@@ -3,6 +3,7 @@ import { useAuth } from "../context/authContext";
 import { useEffect, useState } from "react";
 import MobileMenubar from "./MobileMenubar";
 import { showToast } from "../context/ToastProvider";
+import { base_url } from "../lib/helper";
 
 
 const NavBar = () => {
@@ -26,7 +27,7 @@ const NavBar = () => {
 
   const handleLogout = async () => {
     try {
-      const res = await fetch(`http://localhost:5000/api/auth/logout`, {
+      const res = await fetch(`${base_url}/api/auth/logout`, {
         method: "POST",
         credentials: "include",
       });

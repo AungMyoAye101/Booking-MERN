@@ -55,40 +55,48 @@ const Search = () => {
   }
 
   return (
-    <section className=" py-20 flex flex-col  gap-4   max-w-6xl mx-auto relative">
-      <div className="relative hidden md:block">
-        <SideBar />
+    <section className=" py-20 gap-4   max-w-6xl mx-auto relative overflow-hidden space-y-4">
+
+      <div className="md:hidden">
+
+        <MobileSideBar />
       </div>
-      <MobileSideBar />
 
+      <div className="flex ">
+        <div className="relative hidden md:block">
+          <SideBar />
+        </div>
+        {
+          error ? <NotFound /> : <>
+            <div className="w-full">
 
+              <div className="w-full flex flex-col gap-4">
+                {
+                  loading ? loadingElem : <div className="space-y-4 px-4 ">
+                    {
+                      hotel?.map((item) => (
+                        <HotelCard item={item} key={item._id} />
+                      ))
+                    }
+                    <Pagination
+                      page={Number(pagination?.page) || 1}
+                      hasNextPage={pagination?.hasNextPage ?? false}
+                      hasPrevPage={pagination?.hasPrevPage ?? false}
+                    />
+                  </div>
+                }
 
-      {
-        error ? <NotFound /> : <>
-          <div className="w-full">
-
-            <div className="w-full flex flex-col gap-4">
-              {
-                loading ? loadingElem : <div className="space-y-4 px-4 ">
-                  {
-                    hotel?.map((item) => (
-                      <HotelCard item={item} key={item._id} />
-                    ))
-                  }
-                  <Pagination
-                    page={Number(pagination?.page) || 1}
-                    hasNextPage={pagination?.hasNextPage ?? false}
-                    hasPrevPage={pagination?.hasPrevPage ?? false}
-                  />
-                </div>
-              }
+              </div>
 
             </div>
 
-          </div>
+          </>
+        }
 
-        </>
-      }
+      </div>
+
+
+
 
 
     </section>

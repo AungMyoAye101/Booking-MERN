@@ -35,7 +35,7 @@ const MobileSideBar = () => {
 
 
     return (
-        <section>
+        <>
             <div className='flex flex-wrap gap-1 px-4 relative'>
                 <input type="text"
                     id="destination"
@@ -45,7 +45,7 @@ const MobileSideBar = () => {
                     className='h-10 border border-gray-300 rounded-md' placeholder='Destination' />
                 <button
                     onClick={() => setIsOpen(pre => !pre)}
-                    className='flex justify-center items-center gap-1 border border-gray-300 bg-neutral-200 w-20 h-10 rounded-md'>
+                    className={`flex justify-center items-center gap-1 border border-gray-300  w-20 h-10 rounded-md ${isOpen ? "bg-blue-400 text-white" : "bg-neutral-200"}`}>
                     Filter
                     {
                         isOpen ? <MdKeyboardArrowUp className='text-lg' /> : <MdKeyboardArrowDown className='text-lg' />
@@ -124,7 +124,7 @@ const MobileSideBar = () => {
                 </div>
             </div>
 
-        </section>
+        </>
     )
 }
 

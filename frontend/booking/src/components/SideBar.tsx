@@ -33,7 +33,7 @@ const SideBar = () => {
 
 
     return (
-        <section className='w-64  rounded-lg bg-white  shadow-md sticky top-20 left-0 '>
+        <section className='w-64  rounded-lg bg-white  shadow-md sticky  left-0 '>
 
             <div className='flex flex-col gap-1 border p-4'>
                 <label htmlFor="destination">Destination</label>

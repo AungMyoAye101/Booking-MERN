@@ -70,11 +70,11 @@ const Payment = () => {
 
 
     return (
-        <section className=" min-h-screen flex justify-center items-center  max-w-6xl mx-auto px-4">
+        <section className=" h-screen flex justify-center items-center  max-w-6xl mx-auto px-2">
             <img src="/assets/images/hotel-bg.jpg" alt="hotel background photo" className='absolute w-full h-screen object-cover -z-0' />
 
             <div>
-                <div className='bg-white shadow border rounded-lg min-w-[300] max-w-2xl px-6 py-6 relative z-10'>
+                <div className='bg-white shadow border rounded-lg min-w-[310] max-w-2xl px-6 py-6 relative z-10'>
                     <h1 className='font-roboto text-2xl font-semibold mb-2'>Your Booking Summary</h1>
                     <div className='flex justify-between items-center border-b py-1.5'>
                         <h2 className='font-roboto'>Hotel</h2>

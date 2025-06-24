@@ -1,7 +1,7 @@
 import { Link, useNavigate } from "react-router-dom";
 import { CreateUserType } from "../lib/types";
 import { FaEye, FaEyeSlash } from "react-icons/fa6";
-import { base_url } from "../lib/helper";
+import { base_url, spinner } from "../lib/helper";
 import { useAuth } from "../context/authContext";
 import { useForm } from "react-hook-form";
 import { showToast } from "../context/ToastProvider";
@@ -127,9 +127,9 @@ const Signup = () => {
         <button
           type="submit"
           disabled={loading}
-          className={`bg-blue-800  px-4 py-2 rounded-lg font-roboto  text-white hover:bg-blue-500  ${loading ? 'cursor-wait' : "cursor-pointer"}`}
+          className={`bg-blue-800  px-4 py-2 rounded-lg font-roboto  text-white hover:bg-blue-500  ${loading ? 'cursor-not-allowed' : "cursor-pointer"}`}
         >
-          {loading ? "Submitting..." : "Submit"}
+          {loading ? spinner : "Submit"}
         </button>
         <Link to={'/login'} className="font-roboto text-sm hover:text-purple-500">Already have an account? Login</Link>
         {

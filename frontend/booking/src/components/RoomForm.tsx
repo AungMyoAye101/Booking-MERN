@@ -1,7 +1,7 @@
 
 import { useForm } from 'react-hook-form'
 import { showToast } from '../context/ToastProvider'
-import { base_url } from '../lib/helper'
+import { base_url, spinner } from '../lib/helper'
 
 type RoomType = {
     title: string,
@@ -99,7 +99,7 @@ const RoomForm = ({ hotelId }: { hotelId: string }) => {
                 }
             </label>
 
-            <button type='submit' disabled={isLoading} className='btn self-end'>{isLoading ? "Creating..." : "Create room"}</button>
+            <button type='submit' disabled={isLoading} className={`btn self-end ${isLoading ? "cursor-not-allowed" : ""}`}>{isLoading ? spinner : "Create room"}</button>
         </form >
     )
 }
