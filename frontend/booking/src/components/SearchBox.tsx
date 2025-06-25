@@ -86,9 +86,9 @@ const SearchBox = () => {
       onSubmit={handleSearch}
       className="w-full  bg-blue-400 p-2 border-blue-300 flex flex-wrap gap-2 rounded-lg text-gray-800 "
     >
-      <div className="relative">
+      <div className="relative flex-1">
 
-        <div className="flex-1 min-w-60  bg-white  h-10 flex items-center rounded-md px-2">
+        <div className=" min-w-60 w-full bg-white  h-10 flex items-center rounded-md px-2">
           <IoBedOutline className="text-xl " />
           <input
             type="text"

@@ -70,10 +70,10 @@ const Payment = () => {
 
 
     return (
-        <section className=" h-screen flex justify-center items-center  max-w-6xl mx-auto px-2">
-            <img src="/assets/images/hotel-bg.jpg" alt="hotel background photo" className='absolute w-full h-screen object-cover -z-0' />
+        <section className=" py-16 flex justify-center items-center  max-w-6xl mx-auto px-2 bg-gradient-to-b from-blue-50 to-blue-300 ">
 
-            <div>
+
+            <div >
                 <div className='bg-white shadow border rounded-lg min-w-[310] max-w-2xl px-6 py-6 relative z-10'>
                     <h1 className='font-roboto text-2xl font-semibold mb-2'>Your Booking Summary</h1>
                     <div className='flex justify-between items-center border-b py-1.5'>

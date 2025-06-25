@@ -1,4 +1,4 @@
-import Contact from "../components/Contact";
+
 import Destination from "../components/Destination";
 import Hero from "../components/Hero";
 import ListByType from "../components/ListByType";
@@ -18,7 +18,7 @@ const Home = () => {
         <ListByType />
         <Offer />
         <HotelList />
-        <Contact />
+
       </div>
 
 
