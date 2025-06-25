@@ -20,6 +20,7 @@ const RoomList = ({ hotelId, hotelName }: { hotelId: string, hotelName: string }
         guests: 0,
         hotel: hotelId
     })
+    const [loading, setLoading] = useState(false)
 
     const [adultCount, setAdultCount] = useState<number>(1);
     const [childrenCount, setChildrenCount] = useState<number>(0);
@@ -41,7 +42,6 @@ const RoomList = ({ hotelId, hotelName }: { hotelId: string, hotelName: string }
     //Set room search data for check available rooms
 
     const handleRoomSearch = () => {
-        console.log("changed..")
         setRoomSearch((pre) => ({
             ...pre,
             checkIn: datePicker[0].startDate,
@@ -54,6 +54,7 @@ const RoomList = ({ hotelId, hotelName }: { hotelId: string, hotelName: string }
     useEffect(() => {
         const checkAvalibleRoom = async () => {
             try {
+                setLoading(true)
                 const res = await fetch(`${base_url}/api/room/${hotelId}?guest=${roomSearch.guests}&checkIn=${roomSearch.checkIn.toISOString()}&checkOut=${roomSearch.checkOut.toISOString()}`, {
                     method: "GET",
                     headers: {
@@ -65,11 +66,12 @@ const RoomList = ({ hotelId, hotelName }: { hotelId: string, hotelName: string }
                 if (!res.ok && success === false) {
                     throw new Error(message)
                 }
-                console.log(data)
                 setRooms(data)
 
             } catch (error) {
                 if (error instanceof Error) console.log(error.message)
+            } finally {
+                setLoading(false)
             }
 
         }
@@ -172,8 +174,8 @@ const RoomList = ({ hotelId, hotelName }: { hotelId: string, hotelName: string }
                         </div>
                     )}
                 </div>
-                <button className="btn flex items-center gap-1" onClick={handleRoomSearch}>
-                    <MdOutlinePublishedWithChanges />  Change Search
+                <button disabled={loading} className="btn flex items-center gap-1" onClick={handleRoomSearch}>
+                    {loading ? <div className="bg-transparent border border-white border-t-transparent animate-spin w-4 h-4 rounded-full"></div> : <MdOutlinePublishedWithChanges />} Change Search
                 </button>
             </div>
             {/* Room List table */}

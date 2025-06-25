@@ -54,7 +54,7 @@ const MobileSideBar = () => {
                 </button>
             </div>
 
-            <div className={`h-screen px-4 py-4 rounded-lg bg-white w-full absolute mt-4 z-10 transition-all duration-500 ease-in-out ${isOpen ? "translate-x-0" : "-translate-x-full"}`}>
+            <div className={`h-screen px-4 py-4 rounded-lg bg-white w-full absolute mt-4 z-20 transition-all duration-500 ease-in-out ${isOpen ? "translate-x-0" : "-translate-x-full"}`}>
                 <div className=' flex flex-col gap-4 rounded '>
                     <div className='flex flex-col gap-1 border p-4 rounded'>
                         <h3 className="font-roboto text-lg font-semibold">Property price</h3>

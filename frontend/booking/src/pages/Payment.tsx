@@ -116,16 +116,16 @@ const Payment = () => {
                         </div>
                         <div className='input_container'>
                             <label htmlFor="card " className='font-medium'>Card Number</label>
-                            <input type="text" name='card' className='input_con' placeholder='0000 0000 0000 0000' />
+                            <input type="text" name='card' className='input_con' placeholder='0000 0000 0000 0000' value={"4444 5555 6666 7777"} readOnly />
                         </div>
                         <div className='flex gap-4 items-center '>
                             <div className='input_container'>
                                 <label htmlFor="date" className='font-medium'>Expire Date</label>
-                                <input type="text" name='date' className='input_con' placeholder='mm/yy ' />
+                                <input readOnly value={'05/29'} type="text" name='date' className='input_con' placeholder='mm/yy ' />
                             </div>
                             <div className='input_container'>
                                 <label htmlFor="security" className='font-medium' >CVC</label>
-                                <input type="text" name='security' className='input_con ' placeholder='code' />
+                                <input readOnly value={'012'} type="text" name='security' className='input_con ' placeholder='code' />
                             </div>
                         </div>
                     </div>
