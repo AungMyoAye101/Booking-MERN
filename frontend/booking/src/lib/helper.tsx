@@ -20,8 +20,8 @@ export const loadingElem = [1, 2, 3, 4, 5, 6,].map(i => (<div key={i} className=
         <div className="flex flex-col gap-2">
             <div className="w-40 h-4 rounded bg-neutral-200"></div>
             <div className="w-40 h-4 rounded bg-neutral-200"></div>
-            <div className="w-80 h-4 rounded bg-neutral-200"></div>
-            <div className="w-80 h-4 rounded bg-neutral-200"></div>
+            <div className="w-64 h-4 rounded bg-neutral-200"></div>
+            <div className="w-64 h-4 rounded bg-neutral-200"></div>
         </div>
         <div className="flex flex-col justify-between">
 

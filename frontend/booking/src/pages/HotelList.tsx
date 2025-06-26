@@ -93,7 +93,7 @@ const HotelList = () => {
           data.map((item) => (
             <div
               key={item._id}
-              className="flex-1 flex flex-col md:flex-row gap-4 bg-white rounded-lg p-4 shadow-lg border  "
+              className="flex-1 flex flex-col md:flex-row gap-4 bg-white rounded-lg p-4 shadow-lg border relative "
 
             >
               <Link
@@ -124,17 +124,17 @@ const HotelList = () => {
               </div>
 
               {
-                toggleDelete && (<div className="absolute z-50 inset-0 flex justify-center items-center bg-black bg-opacity-10">
-                  <div className="flex flex-col  gap-4 p-4 rounded-xl shadow-lg w-96 bg-white">
+                toggleDelete && (<div className="absolute z-10 px-4 inset-0 flex justify-center items-center bg-black bg-opacity-25">
+                  <div className="flex flex-col  gap-4 p-4 rounded-lg shadow-lg  bg-white">
                     <h2 className="font-roboto text-center text-xl ">
                       Are you sure,you want to delete this <i className="font-semibold">{selection.name}
                       </i> {selection.type}.
                     </h2>
                     <div className="flex items-center gap-4 self-end">
-                      <button className="btn bg-neutral-400"
+                      <button className="btn text-sm bg-neutral-400"
                         onClick={() => setToggleDelete(false)}
                       >Cancel</button>
-                      <button className="btn bg-red-600"
+                      <button className="btn text-sm bg-red-600"
                         onClick={() => handleDelete(selection._id)}
                       >Delete</button>
                     </div>
