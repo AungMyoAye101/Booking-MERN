@@ -59,7 +59,7 @@ const TypeResult = () => {
             <div className='flex flex-col gap-4 '>
                 {
                     error ? <div className='h-[calc(100vh-200px)] flex justify-center items-center'><NotFound /></div> :
-                        <div className='mt-4'>
+                        <div className='mt-4 space-y-4'>
                             {
 
                                 loading ? loadingElem : hotel.map((data) => (

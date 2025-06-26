@@ -23,7 +23,7 @@ export const loadingElem = [1, 2, 3, 4, 5, 6,].map(i => (<div key={i} className=
             <div className="w-64 h-4 rounded bg-neutral-200"></div>
             <div className="w-64 h-4 rounded bg-neutral-200"></div>
         </div>
-        <div className="flex flex-col justify-between">
+        <div className="hidden md:flex flex-col justify-between">
 
             <div className="w-10 h-10 bg-neutral-200 rounded-lg self-end"></div>
             <div className="w-40 h-10 bg-neutral-200 rounded-lg self-end"></div>
