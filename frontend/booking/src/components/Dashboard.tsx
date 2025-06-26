@@ -31,7 +31,7 @@ const Dashboard = () => {
   }, [])
   return (
     <section className="flex flex-col md:flex-row gap-4 font-roboto mt-14 h-screen">
-      <div className="border border-gray-300 bg-white w-96 h-60 rounded-lg shadow-lg p-4 relative">
+      <div className="border border-gray-300 bg-white w-72 h-60 rounded-lg shadow-lg p-4 relative">
         <h2 className="font-semibold text-lg absolute left-4 top-4  ">Total Hotels </h2>
 
         <div className="flex h-full items-center justify-center ">
@@ -40,7 +40,7 @@ const Dashboard = () => {
         </div>
         <h2 className="font-semibold text-lg  absolute bottom-4 right-4"> Hotels </h2>
       </div>
-      <div className="border border-gray-300 bg-white w-96 h-60 rounded-lg shadow-lg p-4 relative">
+      <div className="border border-gray-300 bg-white w-72 h-60 rounded-lg shadow-lg p-4 relative">
         <h2 className="font-semibold text-lg absolute left-4 top-4  ">Total Users </h2>
 
         <div className="flex h-full items-center justify-center ">

@@ -56,7 +56,10 @@ const CreateHotel = () => {
 
   // Upload form data to server
   const onSubmit = handleSubmit(async (data) => {
-    console.log(data)
+    if (photoArray.length > 4) {
+      showToast('info', "Photo reached maximum rate.")
+      return;
+    }
     const formData = new FormData();
     // Add data object with key ,value pair
     Object.entries(data).forEach(([key, value]) => {
@@ -101,7 +104,7 @@ const CreateHotel = () => {
 
 
   return (
-    <form onSubmit={onSubmit} encType="multipart/form-data" className=" bg-white border py-8 px-4 md:px-6 min-w-96  mx-auto mt-20 flex flex-col gap-4 font-roboto">
+    <form onSubmit={onSubmit} encType="multipart/form-data" className=" bg-white border py-8 px-4 md:px-6 min-w-72  mx-auto mt-20 flex flex-col gap-4 font-roboto">
       <h1 className="font-roboto text-2xl md:text-3xl font-bold text-center">Create Hotel Form</h1>
       {
         errorMessage && <p className="text-center text-red-400 font-roboto">{errorMessage}</p>
@@ -219,6 +222,11 @@ const CreateHotel = () => {
       </div>
 
       <div className="flex items-center flex-wrap gap-4">
+        <h2 className="font-roboto text-lg font-medium">Upload Photo</h2>
+        {
+          photoArray.length > 4 ? <p className="text-sm font-roboto text-red-500 ">Photos are reached maximun rate.</p> : <p className="text-sm font-roboto ">You can upload up to 4 photos</p>
+        }
+
         <div>
           <label htmlFor="photos" className="w-60 h-40 rounded-lg bg-neutral-200 border border-gray-300 hover:border-blue-400 flex justify-center items-center">
             <MdOutlineCloudUpload className="text-4xl" />
@@ -230,6 +238,7 @@ const CreateHotel = () => {
             multiple
             onChange={handlePhotoChange}
             className="hidden"
+            disabled={photoArray.length > 4}
           />
         </div>
         {

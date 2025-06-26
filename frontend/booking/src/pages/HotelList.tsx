@@ -98,7 +98,7 @@ const HotelList = () => {
             >
               <Link
                 to={`/hotel/${item._id}`}
-                className="w-fll aspect-video md:w-40 md:aspect-square rounded-lg overflow-hidden "
+                className="w-full aspect-video md:w-40 md:aspect-square rounded-lg overflow-hidden "
               >
                 <img src={item.photos[0]} alt="hotel image" className="w-full h-full object-cover" />
               </Link>
@@ -111,13 +111,13 @@ const HotelList = () => {
 
                 </div>
                 <div className="self-end flex gap-4">
-                  <Link to={`/admin/updateHotel/${item._id}`} className="btn">
+                  <Link to={`/admin/updateHotel/${item._id}`} className="btn text-xs md:text-sm">
                     Update
                   </Link>
-                  <Link to={`/admin/room/${item._id}`} className="btn">
+                  <Link to={`/admin/room/${item._id}`} className="btn text-xs md:text-sm">
                     Add room
                   </Link>
-                  <button onClick={() => handleOpen(item._id, item.name, item.type)} className="btn bg-rose-600">
+                  <button onClick={() => handleOpen(item._id, item.name, item.type)} className="btn text-xs md:text-sm bg-rose-600">
                     Delete
                   </button>
                 </div>
@@ -133,7 +133,7 @@ const HotelList = () => {
                     <div className="flex items-center gap-4 self-end">
                       <button className="btn bg-neutral-400"
                         onClick={() => setToggleDelete(false)}
-                      >Cencel</button>
+                      >Cancel</button>
                       <button className="btn bg-red-600"
                         onClick={() => handleDelete(selection._id)}
                       >Delete</button>

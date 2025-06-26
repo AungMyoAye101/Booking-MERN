@@ -27,7 +27,6 @@ app.use(cors({
   credentials: true,
 }
 ));
-console.log(process.env.ORIGIN_URL)
 
 const port = process.env.PORT || 8080;
 const DB_URI = process.env.MONGODB_URI;
@@ -52,7 +51,7 @@ app.post('/post', upload.array('photo', 4), async (req, res) => {
 })
 const connectToDb = async () => {
   if (!DB_URI) {
-    throw error("Mongodb uri is invalid");
+    throw new Error("Mongodb uri is invalid");
   }
   try {
     await mongoose.connect(DB_URI);
@@ -84,13 +83,13 @@ app.get("/api/total", async (req, res) => {
     const hotelCount = await Hotel.countDocuments()
     const usersCount = await User.countDocuments()
     res.status(200).json({
-      sucess: true, message: "successfull", data: {
+      success: true, message: "successful", data: {
         totalUsers: usersCount,
         totalHotels: hotelCount
       }
     })
   } catch (error) {
-    res.status(500).json({ sucess: false, message: error.message })
+    res.status(500).json({ success: false, message: error.message })
   }
 })
 
