@@ -1,33 +1,12 @@
-import { useSearchParams } from "react-router-dom"
+
 import { priceRange, ratingInputElems, sortingElems } from "../lib/helper"
+export interface SearchPropsType {
+    searchParams: URLSearchParams,
+    handleChange: (e: React.ChangeEvent<HTMLInputElement>) => void
+}
 
+const SideBar = ({ searchParams, handleChange }: SearchPropsType) => {
 
-const SideBar = () => {
-    const [searchParams, setSearchParams] = useSearchParams()
-
-
-    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const updateParams = new URLSearchParams(searchParams)
-        const { name, value, checked } = e.target
-
-        if (name === 'rating') {
-            const currentRating = searchParams.get('rating')?.split(',') || []
-            let updateRating = checked ? [...currentRating, value] : currentRating.filter(r => r !== value)
-            updateRating = [...new Set(updateRating)].sort()
-            console.log("update rating", updateRating)
-
-            if (updateRating.length > 0) {
-                updateParams.set("rating", updateRating.join(','))
-            } else {
-                updateParams.delete("rating")
-            }
-        } else if (!value || value === '') {
-            updateParams.delete(name)
-        } else {
-            updateParams.set(name, value)
-        }
-        setSearchParams(updateParams)
-    }
 
 
 
@@ -43,7 +22,7 @@ const SideBar = () => {
                     name="destination"
                     value={searchParams.get("destination") ?? ""}
                     onChange={e => handleChange(e)}
-                    className="bg-neutral-200 py-1.5 px-4 rounded-lgx   " />
+                    className="bg-neutral-200 py-1.5 px-4 rounded-lg   " />
             </div>
             <div className='flex flex-col gap-1 border p-4'>
                 <h3 className="font-roboto text-lg font-semibold">Property price</h3>

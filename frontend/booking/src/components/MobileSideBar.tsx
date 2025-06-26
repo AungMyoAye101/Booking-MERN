@@ -1,37 +1,11 @@
 
 import { useState } from 'react'
 import { MdKeyboardArrowDown, MdKeyboardArrowUp } from 'react-icons/md'
-import { useSearchParams } from 'react-router-dom'
 import { priceRange, ratingInputElems, sortingElems } from '../lib/helper'
+import { SearchPropsType } from './SideBar'
 
-const MobileSideBar = () => {
+const MobileSideBar = ({ searchParams, handleChange }: SearchPropsType) => {
     const [isOpen, setIsOpen] = useState(false)
-    const [searchParams, setSearchParams] = useSearchParams()
-
-
-    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const updateParams = new URLSearchParams(searchParams)
-        const { name, value, checked } = e.target
-
-        if (name === 'rating') {
-            const currentRating = searchParams.get('rating')?.split(',') || []
-            let updateRating = checked ? [...currentRating, value] : currentRating.filter(r => r !== value)
-            updateRating = [...new Set(updateRating)].sort()
-            console.log("update rating", updateRating)
-
-            if (updateRating.length > 0) {
-                updateParams.set("rating", updateRating.join(','))
-            } else {
-                updateParams.delete("rating")
-            }
-        } else if (!value || value === '') {
-            updateParams.delete(name)
-        } else {
-            updateParams.set(name, value)
-        }
-        setSearchParams(updateParams)
-    }
-
 
 
     return (
@@ -54,7 +28,7 @@ const MobileSideBar = () => {
                 </button>
             </div>
 
-            <div className={`h-screen px-4 py-4 rounded-lg bg-white w-full absolute mt-4 z-20 transition-all duration-500 ease-in-out ${isOpen ? "translate-x-0" : "-translate-x-full"}`}>
+            <div className={`h-full px-4 py-4 rounded-lg bg-white w-full absolute mt-4 z-20 transition-all duration-500 ease-in-out ${isOpen ? "translate-x-0" : "-translate-x-full"}`}>
                 <div className=' flex flex-col gap-4 rounded '>
                     <div className='flex flex-col gap-1 border p-4 rounded'>
                         <h3 className="font-roboto text-lg font-semibold">Property price</h3>

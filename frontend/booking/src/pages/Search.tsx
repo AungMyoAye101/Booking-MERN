@@ -12,26 +12,52 @@ import MobileSideBar from "../components/MobileSideBar";
 
 const Search = () => {
   const [hotel, setHotel] = useState<HotelType[]>([])
-  const [searchParam] = useSearchParams()
   const [pagination, setPagination] = useState<PaginationType>()
   const [error, setError] = useState(false)
   const [loading, setLoading] = useState(false)
 
 
+  const [searchParams, setSearchParams] = useSearchParams()
+
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const updateParams = new URLSearchParams(searchParams)
+    const { name, value, checked } = e.target
+
+    if (name === 'rating') {
+      const currentRating = searchParams.get('rating')?.split(',') || []
+      let updateRating = checked ? [...currentRating, value] : currentRating.filter(r => r !== value)
+      updateRating = [...new Set(updateRating)].sort()
+      console.log("update rating", updateRating)
+
+      if (updateRating.length > 0) {
+        updateParams.set("rating", updateRating.join(','))
+      } else {
+        updateParams.delete("rating")
+      }
+    } else if (!value || value === '') {
+      updateParams.delete(name)
+    } else {
+      updateParams.set(name, value)
+    }
+    setSearchParams(updateParams)
+  }
+
+
   useEffect(() => {
-    const debonceFunc = setTimeout(() => {
+    const debounceFunc = setTimeout(() => {
       searchHotel()
     }, 2000)
 
-    return () => clearTimeout(debonceFunc)
+    return () => clearTimeout(debounceFunc)
 
-  }, [searchParam.toString()])
+  }, [searchParams.toString()])
 
   const searchHotel = async () => {
     try {
       setLoading(true)
-      const querySring = searchParam.toString()
-      const res = await fetch(base_url + `/api/search?${querySring}`, {
+      const queryString = searchParams.toString()
+      const res = await fetch(base_url + `/api/search?${queryString}`, {
         method: "GET",
         headers: {
           "Content-type": "application/json"
@@ -59,12 +85,12 @@ const Search = () => {
 
       <div className="md:hidden">
 
-        <MobileSideBar />
+        <MobileSideBar searchParams={searchParams} handleChange={handleChange} />
       </div>
 
       <div className="flex ">
         <div className="relative hidden md:block">
-          <SideBar />
+          <SideBar searchParams={searchParams} handleChange={handleChange} />
         </div>
         {
           error ? <NotFound /> : <>
