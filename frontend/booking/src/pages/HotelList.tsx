@@ -107,7 +107,7 @@ const HotelList = () => {
                   <h1 className="text-2xl font-roboto font-semibold">{item.name}</h1>
                   <div className="flex gap-1 items-center "><RiHotelLine /> <span>{item.type}</span></div>
                   <h2 className="font-roboto text-neutral-600 text-lg ">{item.title} </h2>
-                  <p className="">{item.description}</p>
+                  <p className="line-clamp-3 text-sm">{item.description}</p>
 
                 </div>
                 <div className="self-end flex gap-4">
