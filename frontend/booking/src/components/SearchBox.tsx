@@ -17,6 +17,8 @@ const SearchBox = () => {
   const [childrenCount, setChildrenCount] = useState<number>(0);
 
   const [suggestion, setSuggestion] = useState<string[]>([])
+  const [showSuggeston, setShowSuggeston] = useState(false)
+
 
 
   const navigate = useNavigate();
@@ -48,7 +50,14 @@ const SearchBox = () => {
 
   const getSuggestion = async (query: string) => {
     if (!query || query === '') return
+    setShowSuggeston(true)
+
+    if (suggestion.includes(query)) {
+      setShowSuggeston(false)
+      return
+    }
     try {
+
       const res = await fetch(base_url + `/api/hotel/suggestion?query=${query}`,
         {
           method: "GET",
@@ -66,7 +75,6 @@ const SearchBox = () => {
     } catch (error) {
       if (error instanceof Error) console.error(error)
     }
-
   }
 
   useEffect(() => {
@@ -100,7 +108,7 @@ const SearchBox = () => {
           />
         </div>
         {
-          suggestion.length > 0 &&
+          showSuggeston &&
           <div className="absolute w-full z-40 bottom-14 md:top-14 bg-white p-4 rounded-lg flex flex-col gap-1 h-fit">
 
             {
@@ -150,7 +158,7 @@ const SearchBox = () => {
               <h3 className="font-semibold font-roboto">Adults</h3>
               <div className="flex items-center gap-2">
                 <button
-
+                  type="button"
                   onClick={() => setAdultCount((pre) => pre <= 1 ? pre : pre - 1)}
                   className="bg-transparent text-blue-700 border border-blue-700 rounded hover:bg-blue-200 w-6 h-8  flex justify-center items-center"
                 >
@@ -160,6 +168,7 @@ const SearchBox = () => {
                   {adultCount}
                 </span>
                 <button
+                  type="button"
                   onClick={() => setAdultCount((pre) => pre + 1)}
                   className="bg-transparent text-blue-700 border border-blue-700 rounded hover:bg-blue-200 w-6 h-8  flex justify-center items-center"
                 >
@@ -171,6 +180,7 @@ const SearchBox = () => {
               <h3 className="font-semibold font-roboto">Children</h3>
               <div className="flex items-center gap-2">
                 <button
+                  type="button"
                   // disabled={options.children <= 0}
                   onClick={() => setChildrenCount((pre) => pre <= 0 ? pre : pre - 1)}
                   className="bg-transparent text-blue-700 border border-blue-700 rounded hover:bg-blue-200 w-6 h-8  flex justify-center items-center"
@@ -181,6 +191,7 @@ const SearchBox = () => {
                   {childrenCount}
                 </span>
                 <button
+                  type="button"
                   onClick={() => setChildrenCount((pre) => pre + 1)}
                   className="bg-transparent text-blue-700 border border-blue-700 rounded hover:bg-blue-200 w-6 h-8  flex justify-center items-center"
                 >
