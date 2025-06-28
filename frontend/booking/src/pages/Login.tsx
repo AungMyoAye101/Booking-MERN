@@ -5,7 +5,7 @@ import { useForm } from "react-hook-form";
 import { LoginUserType } from "../lib/types";
 import { showToast } from "../context/ToastProvider";
 import { FaEye, FaEyeSlash } from "react-icons/fa6";
-import { base_url } from "../lib/helper";
+import { base_url, spinner } from "../lib/helper";
 
 
 
@@ -95,9 +95,13 @@ const Login = () => {
           onClick={onSubmitHandle}
           disabled={loading}
           style={{ cursor: loading ? "not-allowed" : "pointer" }}
-          className="bg-blue-800  p-2 rounded-lg font-roboto  text-white hover:bg-blue-500"
+          className="bg-blue-800  p-2 rounded-lg font-roboto  text-white hover:bg-blue-500 flex justify-center items-center"
         >
-          Submit
+          {
+            loading ? spinner : "  Submit"
+
+
+          }
         </button>
         {error && (
           <p className="bg-rose-500 text-white rounded-lg p-2">
