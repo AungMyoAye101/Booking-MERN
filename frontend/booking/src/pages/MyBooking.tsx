@@ -3,6 +3,7 @@ import { base_url } from "../lib/helper"
 import { Link, useParams } from "react-router-dom"
 import { showToast } from "../context/ToastProvider"
 import { MdBed } from "react-icons/md"
+import { RiHotelLine } from "react-icons/ri"
 
 interface MyBookingTypes {
     _id: string,
@@ -50,7 +51,7 @@ const MyBooking = () => {
         fetchMyBooking()
     }, [])
 
-    console.log(booking)
+
     const cancelBooking = async (bookingId: string, userId: string, roomId: string) => {
         try {
             const res = await fetch(base_url + '/api/booking/cancel-booking', {
@@ -77,12 +78,12 @@ const MyBooking = () => {
     }
 
 
-    const not_found = <div className="mx-auto py-12 text-center space-y-4">
-
+    const not_found = <div className="mx-auto py-12 text-center space-y-2">
+        <RiHotelLine className="text-center text-6xl mx-auto" />
         <h1 className="font-roboto text-2xl md:text-4xl font-semibold ">You have not booked a room yet.</h1>
 
         <p className="font-roboto ">Please book a room from your interest hotel.</p>
-        <div>
+        <div className="mx-auto w-fit">
 
             <Link to={'/'} className="btn">Go to home page</Link>
         </div>

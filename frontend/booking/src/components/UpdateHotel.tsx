@@ -236,51 +236,55 @@ const UpdateHotel = () => {
         }
       </div>
 
-      <div className="flex items-center flex-wrap gap-4">
+      <div className="flex flex-col gap-2">
         <h2 className="font-roboto text-lg font-medium">Upload Photo</h2>
         {
           photoArray.length > 4 ? <p className="text-sm font-roboto text-red-500 ">Photos are reached maximun rate.</p> : <p className="text-sm font-roboto ">You can upload up to 4 photos</p>
         }
-        <div>
-          <label htmlFor="photos" className="w-60 h-40 rounded-lg bg-neutral-200 border border-gray-300 hover:border-blue-400 flex justify-center items-center">
-            <MdOutlineCloudUpload className="text-4xl" />
-          </label>
-          <input
-            type="file"
-            name="photos"
-            id="photos"
-            multiple
-            onChange={handlePhotoChange}
-            className="hidden"
-            disabled={photoArray.length > 4}
-          />
+        <div className="flex flex-wrap gap-4">
+
+
+          <div>
+            <label htmlFor="photos" className="w-60 h-40 rounded-lg bg-neutral-200 border border-gray-300 hover:border-blue-400 flex justify-center items-center">
+              <MdOutlineCloudUpload className="text-4xl" />
+            </label>
+            <input
+              type="file"
+              name="photos"
+              id="photos"
+              multiple
+              onChange={handlePhotoChange}
+              className="hidden"
+              disabled={photoArray.length > 4}
+            />
+          </div>
+          {
+            existingPhotos.map((img, i) => (
+              <div key={i} className="relative">
+
+                <img src={img} alt="preview photo" className="w-60 h-40 rounded-lg" />
+                <div
+                  onClick={() =>
+
+                    setExistingPhotos(existingPhotos.filter(url => url !== img))
+                  }
+                  className="absolute top-1 right-1 bg-neutral-200 text-red-500 font-semibold  shadow hover:border-red-500 w-8 h-8 rounded-full z-10 flex justify-center items-center cursor-pointer"><FaX /></div>
+              </div>
+            ))
+          }
+
+          {
+            previewImg.length > 0 && previewImg.map((img, i) => (
+              <div key={i} className="relative">
+
+                <img src={img} alt="preview photo" className="w-60 h-40 rounded-lg" />
+                <div
+                  onClick={() => removePhoto(i)}
+                  className="absolute top-1 right-1 bg-neutral-200 text-red-500 font-semibold shadow hover:border-red-500 w-6 h-6 rounded-full z-10 flex justify-center items-center cursor-pointer"><FaX /></div>
+              </div>
+            ))
+          }
         </div>
-        {
-          existingPhotos.map((img, i) => (
-            <div key={i} className="relative">
-
-              <img src={img} alt="preview photo" className="w-60 h-40 rounded-lg" />
-              <div
-                onClick={() =>
-
-                  setExistingPhotos(existingPhotos.filter(url => url !== img))
-                }
-                className="absolute top-1 right-1 bg-white text-red-500 font-semibold text-xl border border-gray-400 hover:border-red-500 w-10 h-10 rounded-full z-10 flex justify-center items-center cursor-pointer"><FaX /></div>
-            </div>
-          ))
-        }
-
-        {
-          previewImg.length > 0 && previewImg.map((img, i) => (
-            <div key={i} className="relative">
-
-              <img src={img} alt="preview photo" className="w-60 h-40 rounded-lg" />
-              <div
-                onClick={() => removePhoto(i)}
-                className="absolute top-1 right-1 bg-white text-red-500 font-semibold text-xl border border-gray-400 hover:border-red-500 w-10 h-10 rounded-full z-10 flex justify-center items-center cursor-pointer"><FaX /></div>
-            </div>
-          ))
-        }
       </div>
       <button disabled={loading} className={`btn w-20 h-10  flex justify-center items-center self-end ${loading ? "cursor-not-allowed" : "cursor-pointer"}`} type="submit">{loading ? spinner : "Update"}</button>
     </form>

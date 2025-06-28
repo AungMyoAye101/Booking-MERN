@@ -210,7 +210,14 @@ const RoomList = ({ hotelId, hotelName }: { hotelId: string, hotelName: string }
                                         }
 
                                         <td className="table-border"> {r.number}</td>
-                                        <td className="table-border"> {room.maxPeople}</td>
+                                        <td className="table-border">
+                                            <div className="flex justify-center ">
+
+                                                {Array(room.maxPeople).fill(null).map((_, i) => (
+                                                    <FaUser key={i} className="text-lg" />
+                                                ))}
+                                            </div>
+                                        </td>
                                         <td className="table-border text-amber-500 font-semibold text-lg"> ${room.price}</td>
                                         <td className="table-border">
                                             <button

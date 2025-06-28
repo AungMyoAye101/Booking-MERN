@@ -47,7 +47,8 @@ const NavBar = () => {
   return (
     <nav className={`fixed top-0 left-0 w-full  z-50 transition-all duration-500 ease-in-out  ${navBg}`}>
       <div className="flex justify-between items-center max-w-6xl px-4 py-2 m-auto relative">
-        <Link to="/">
+        <Link to="/" >
+
           <h1 className="text-3xl font-bold uppercase text-white font-roboto">
             Booking
           </h1>

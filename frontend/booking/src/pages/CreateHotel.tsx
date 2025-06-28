@@ -252,7 +252,7 @@ const CreateHotel = () => {
                   <img src={img} alt="preview photo" className="w-60 h-40 rounded-lg" />
                   <div
                     onClick={() => removePhoto(i)}
-                    className="absolute top-1 right-1 bg-white text-red-500 font-semibold text-xl border border-gray-400 hover:border-red-500 w-10 h-10 rounded-full z-10 flex justify-center items-center cursor-pointer"><FaX /></div>
+                    className="absolute top-1 right-1 bg-neutral-200 text-red-500 font-semibold  shadow hover:border-red-500 w-8 h-8 rounded-full z-10 flex justify-center items-center cursor-pointer"><FaX /></div>
                 </div>
               ))
             }
