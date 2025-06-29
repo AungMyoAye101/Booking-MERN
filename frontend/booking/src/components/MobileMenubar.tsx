@@ -16,7 +16,7 @@ const MobileMenubar: FC<MenuBarPropsType> = ({ userId, handleLogout }) => {
             <button onClick={() => setIsOpen(pre => !pre)} className="bg-white p-2 rounded-full">
                 <FaBars className="text-lg text-gray-600" />
             </button >
-            <div className={`flex flex-col justify-center gap-2 absolute z-20 top-0 w-[60%] right-0 bg-gray-100 p-4 rounded-lg h-screen  transform transition-all duration-300
+            <div className={`flex flex-col justify-center gap-2 absolute z-20 top-0 w-full right-0 bg-gray-100 p-4 h-screen overflow-y-auto transform transition-all duration-300
           ${isOpen ? "translate-x-0 opacity-100" : "translate-x-full opacity-0"}`}>
                 <button onClick={() => setIsOpen(false)} className="absolute top-2 left-2 bg-white shadow-md border w-8 h-8 rounded-full flex justify-center items-center hover:text-red-400 "><FaX /></button>
 
