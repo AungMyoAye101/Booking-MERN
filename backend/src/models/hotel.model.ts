@@ -1,4 +1,20 @@
-const mongoose = require("mongoose");
+import mongoose, { Document } from "mongoose";
+
+export interface IHotel extends Document {
+  name: string,
+  title: string,
+  description: string,
+  photos: string[],
+  rating: number,
+  type: string,
+  address: string,
+  rooms: string[]
+  reviews: string[]
+  price: number
+  amenities: string[]
+  distance: string,
+  city: string,
+}
 
 const hotelSchema = new mongoose.Schema(
   {
@@ -62,5 +78,5 @@ const hotelSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
-const Hotel = mongoose.model("Hotel", hotelSchema);
-module.exports = Hotel;
+const Hotel = mongoose.model<IHotel>("Hotel", hotelSchema);
+export default Hotel;

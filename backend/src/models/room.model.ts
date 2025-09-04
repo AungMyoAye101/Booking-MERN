@@ -1,5 +1,20 @@
-const mongoose = require("mongoose");
-const Booking = require("./booking.model");
+import mongoose, { Document } from "mongoose";
+import { IBooking } from "./booking.model";
+
+export interface IRoom extends Document {
+  title: string,
+  description: string,
+
+  maxPeople: number,
+
+  price: number,
+  hotel: string,
+  roomNumbers: {
+    number: number,
+    booking: IBooking
+  }
+
+}
 
 const roomSchema = new mongoose.Schema(
   {

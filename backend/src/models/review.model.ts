@@ -1,5 +1,11 @@
-const mongoose = require("mongoose");
+import mongoose, { Document } from "mongoose"
 
+export interface IReview extends Document {
+    userId: string,
+    hotelId: string,
+    review: string,
+    ratings: number
+}
 const reviewSchema = new mongoose.Schema(
     {
         userId: {
@@ -27,6 +33,6 @@ const reviewSchema = new mongoose.Schema(
     { timestamps: true }
 )
 
-const Review = mongoose.model("Review", reviewSchema)
+const Review = mongoose.model<IReview>("Review", reviewSchema)
 
-module.exports = Review
+export default Review

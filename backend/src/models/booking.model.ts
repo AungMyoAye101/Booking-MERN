@@ -1,5 +1,13 @@
-const mongoose = require("mongoose")
+import mongoose, { Document } from "mongoose"
 
+export interface IBooking extends Document {
+    user: string,
+    room: string,
+    roomNumber: number,
+    totalPrice: number,
+    checkIn: Date,
+    checkOut: Date
+}
 const bookingSchema = new mongoose.Schema({
     user: {
         type: mongoose.Schema.Types.ObjectId,
@@ -28,5 +36,5 @@ const bookingSchema = new mongoose.Schema({
         required: true,
     },
 }, { timestamps: true });
-const Booking = mongoose.model("Booking", bookingSchema)
-module.exports = Booking
+const Booking = mongoose.model<IBooking>("Booking", bookingSchema)
+export default Booking
