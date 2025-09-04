@@ -14,6 +14,7 @@ const Hotel = require("./models/hotel.model");
 const User = require("./models/user.model");
 const cloudinary = require("cloudinary").v2
 const { upload } = require("./utils/cloudinary")
+import { Request, Response } from "express";
 const app = express();
 
 dotenv.config();
@@ -37,12 +38,12 @@ cloudinary.config({
 })
 
 
-app.post('/post', upload.array('photo', 4), async (req, res) => {
+app.post('/post', upload.array('photo', 4), async (req: any, res: Response) => {
   console.log(req.files)
   if (!req.files) {
     return res.status(400).json({ message: "failed" })
   }
-  const images = req.files.map(file => ({
+  const images = req.files.map((file: any) => ({
     url: file.path,
     public_id: file.filename,
   }));
@@ -78,7 +79,7 @@ app.use("/api/search", searchRouter);
 app.use("/api/room", roomRouter);
 app.use("/api/review", reviewRouter)
 app.use("/api/booking", bookingRouter)
-app.get("/api/total", async (req, res) => {
+app.get("/api/total", async (req: Request, res: Response) => {
   try {
     const hotelCount = await Hotel.countDocuments()
     const usersCount = await User.countDocuments()
@@ -89,11 +90,12 @@ app.get("/api/total", async (req, res) => {
       }
     })
   } catch (error) {
-    res.status(500).json({ success: false, message: error.message })
+    if (error instanceof Error)
+      return res.status(500).json({ success: false, message: error.message })
   }
 })
 
-app.get('/', (req, res) => {
+app.get('/', (req: Request, res: Response) => {
   res.send("Server is running on port 5000")
 })
 
