@@ -1,9 +1,10 @@
-const User = require("../models/user.model");
-const bcrypt = require("bcrypt");
-const jwt = require("jsonwebtoken");
 
+import { Request, Response } from "express";
+import User from "../models/user.model";
+import { Jwt } from "jsonwebtoken"
+import { bcrypt } from "bcrypt"
 //Redister new user
-const register = async (req, res, next) => {
+const register = async (req: Request, res: Response) => {
   try {
     const { name, email, password } = req.body;
     const userExist = await User.findOne({ email });
@@ -32,12 +33,13 @@ const register = async (req, res, next) => {
     });
     return res.status(201).json({ success: true, message: "User created successfully.", user: newUser });
   } catch (error) {
-    return res.status(500).json({ success: false, message: error.message })
+    if (error instanceof Error)
+      return res.status(500).json({ success: false, message: error.message })
   }
 };
 
 //login
-const login = async (req, res) => {
+const login = async (req: Request, res: Response) => {
   const { email, password } = req.body
   try {
     const user = await User.findOne({ email });
@@ -71,7 +73,7 @@ const login = async (req, res) => {
   }
 };
 
-const logout = (req, res) => {
+const logout = (req: Request, res: Response) => {
   try {
 
     res.clearCookie("token");
@@ -83,7 +85,7 @@ const logout = (req, res) => {
 
 
 //check current user
-const currentUser = async (req, res) => {
+const currentUser = async (req: Request, res: Response) => {
   try {
     const user = await User.findById(req.id)
     if (!user) {
