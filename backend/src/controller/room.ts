@@ -1,11 +1,16 @@
-const Room = require("../models/room.model");
-const Booking = require("../models/booking.model");
-const Hotel = require("../models/hotel.model");
-const { default: mongoose } = require("mongoose");
-//Create Room
-const createRoom = async (req, res) => {
+import { Request, Response } from "express";
+import Room from "../models/room.model";
+import Booking from "../models/booking.model";
 
-  const { title, description, maxPeople, price, roomNumber } = req.body;
+//Create Room
+interface RoomNumberType {
+  number: string[]
+}
+export const createRoom = async (req: Request, res: Response) => {
+
+  const { title, description, maxPeople, price, roomNumber } = req.body as {
+    title: string, description: string, maxPeople: number, price: number, roomNumber: string
+  };
   const hotelId = req.params.hotelId;
 
   try {
@@ -29,11 +34,12 @@ const createRoom = async (req, res) => {
 
     return res.status(201).json({ success: true, message: "Room created successfully", data: newRoom });
   } catch (error) {
-    return res.status(500).json({ success: false, message: error.message });
+    if (error instanceof Error)
+      return res.status(500).json({ success: false, message: error.message });
   }
 };
 //update room
-const updateRoom = async (req, res, next) => {
+export const updateRoom = async (req: Request, res: Response) => {
   try {
     const updatedRoom = await Room.findByIdAndUpdate(
       req.params.id,
@@ -46,11 +52,12 @@ const updateRoom = async (req, res, next) => {
     );
     res.status(201).json({ success: true, message: "Room updated.", data: updatedRoom });
   } catch (error) {
-    return res.status(500).json({ success: false, message: error.message });
+    if (error instanceof Error)
+      return res.status(500).json({ success: false, message: error.message });
   }
 };
 //Delete room
-const deleteRoom = async (req, res, next) => {
+export const deleteRoom = async (req: Request, res: Response) => {
   const roomId = req.params.id;
   const hotelId = req.params.hotelId.trim().replace(/\s/g, "");
   console.log("hotel id is " + hotelId + "room id " + roomId);
@@ -70,13 +77,14 @@ const deleteRoom = async (req, res, next) => {
     );
     res.status(200).json({ success: true, message: "Room was deleted." });
   } catch (error) {
-    return res.status(500).json({ success: false, message: error.message });
+    if (error instanceof Error)
+      return res.status(500).json({ success: false, message: error.message });
   }
 };
 
 //Get all room
 
-const getAllRoomsByHotelId = async (req, res,) => {
+export const getAllRoomsByHotelId = async (req: Request, res: Response,) => {
   const { hotelId } = req.params
   const { guest, checkIn, checkOut } = req.query
   const checkInDate = new Date(checkIn)
@@ -127,21 +135,22 @@ const getAllRoomsByHotelId = async (req, res,) => {
 };
 
 //Get room by id
-const getRoomById = async (req, res, next) => {
+export const getRoomById = async (req: Request, res: Response) => {
   try {
     const room = await Room.findById(req.params.id);
     res.status(200).json(room);
   } catch (error) {
-    return res.status(500).json({ success: false, message: error.message });
+    if (error instanceof Error)
+      return res.status(500).json({ success: false, message: error.message });
   }
 };
 // Booking Room
 
 
 
-const checkAvailability = async (req, res) => {
+export const checkAvailability = async (req: Request, res: Response) => {
   const { roomId } = req.params
-  const { checkIn, checkOut, guests } = req.query
+  const { checkIn, checkOut } = req.query
   const from = checkIn
   const to = checkOut
 
@@ -155,22 +164,16 @@ const checkAvailability = async (req, res) => {
     }
 
     const availableRooms = room.roomNumbers.filter((roomNumber) => {
-      const isAvailable = roomNumber.booking.every(b => (
+      const isAvailable = roomNumber.booking.every((b: any) => (
         to <= b.checkIn || from >= b.checkOut
       ))
       return isAvailable
     })
     return res.status(200).json({ success: true, message: "Room checked successfull", data: availableRooms })
   } catch (error) {
-    return res.status(500).json({ success: false, message: error.message });
+    if (error instanceof Error)
+      return res.status(500).json({ success: false, message: error.message });
   }
 }
 
-module.exports = {
-  createRoom,
-  updateRoom,
-  deleteRoom,
-  getAllRoomsByHotelId,
-  getRoomById,
-  checkAvailability
-};
+

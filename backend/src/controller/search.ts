@@ -1,29 +1,45 @@
+import { Request, Response } from "express";
 
-const Hotel = require("../models/hotel.model");
+export const searchController = async (req: Request, res: Response) => {
 
-const searchController = async (req, res) => {
+    const { destination, minPrice, maxPrice, page = '1', limit = '4', rating, sortByPrice, sortByRating } = req.query as {
+        destination?: string;
+        minPrice?: string;
+        maxPrice?: string;
+        page?: string;
+        limit?: string;
+        rating?: string;
+        sortByPrice?: string;
+        sortByRating?: string;
+    };
 
-    const { destination, minPrice, maxPrice, page = 1, limit = 4, rating, sortByPrice, sortByRating } = req.query;
-
-    if (destination === "") {
+    if (!destination || destination.trim() === "") {
         return res.status(400).json({ success: false, message: "Destination is required and cannot be empty!" });
     }
-    const searchQuery = {
+
+    //Search query 
+    const searchQuery: Record<string, any> = {
         city: { $regex: new RegExp(destination, 'i') },
     }
 
+    //For Rating
     if (rating) {
         const ratingNum = rating.split(',').map(Number)
         searchQuery.rating = { $in: ratingNum }
     }
 
+    //For price 
     if (minPrice || maxPrice) {
         searchQuery.price = {}
         if (minPrice) searchQuery.price.$gte = parseInt(minPrice) || 1
         if (maxPrice) searchQuery.price.$lte = parseInt(maxPrice) || 999999
     }
+
+    //For pagination 
     const skip = (parseInt(page) - 1) * parseInt(limit)
-    let sortOption = {}
+
+    //For sorting
+    let sortOption: Record<string, 1 | -1> = {}
 
     if (sortByPrice === "highestPrice") {
         sortOption.price = -1
@@ -44,9 +60,10 @@ const searchController = async (req, res) => {
             return res.status(404).json({ success: false, message: "No destination found!" });
         }
         const total = await Hotel.countDocuments(searchQuery)
-        const totalPages = Math.ceil(total / limit)
-        const hasNextPage = page < totalPages
-        const hasPrevPage = page > 1
+        const totalPages = Math.ceil(total / parseInt(limit))
+        const hasNextPage = parseInt(page) < totalPages
+        const hasPrevPage = parseInt(page) > 1
+
         return res.status(200).json({
             success: true, message: "Success", data: hotel, pagination: {
                 totalPages,
@@ -57,10 +74,10 @@ const searchController = async (req, res) => {
         });
 
     } catch (error) {
+        console.log(error)
         return res.status(500).json({ message: "Failed to search!" });
     }
 
 }
 
 
-module.exports = { searchController };
