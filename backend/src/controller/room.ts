@@ -1,6 +1,8 @@
 import { Request, Response } from "express";
 import Room from "../models/room.model";
 import Booking from "../models/booking.model";
+import Hotel from "../models/hotel.model";
+import mongoose from "mongoose";
 
 //Create Room
 interface RoomNumberType {
@@ -86,7 +88,14 @@ export const deleteRoom = async (req: Request, res: Response) => {
 
 export const getAllRoomsByHotelId = async (req: Request, res: Response,) => {
   const { hotelId } = req.params
-  const { guest, checkIn, checkOut } = req.query
+  const { guest, checkIn, checkOut } = req.query as {
+    guest?: number,
+    checkIn?: string,
+    checkOut?: string
+  };
+  if (!checkIn || !checkOut) {
+    return res.status(400).json({ success: false, message: "Check-in and check-out dates are required" });
+  }
   const checkInDate = new Date(checkIn)
   const checkOutDate = new Date(checkOut)
   if (!mongoose.Types.ObjectId.isValid(hotelId)) {
@@ -94,6 +103,9 @@ export const getAllRoomsByHotelId = async (req: Request, res: Response,) => {
   }
   try {
     const hotel = await Hotel.findById(hotelId).populate("rooms")
+    if (!hotel) {
+      return res.status(400).json({ success: false, message: "Failed to fetch hotel." });
+    }
 
     const result = []
     for (const room of hotel.rooms) {
