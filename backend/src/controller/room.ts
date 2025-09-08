@@ -196,7 +196,7 @@ export const checkAvailability = async (req: Request, res: Response) => {
 
     const availableRooms = room.roomNumbers.filter((roomNumber) => {
       const isAvailable = roomNumber.booking.every((b) => (
-        to <= b.checkIn || from >= b.checkOut
+        to.getTime() <= new Date(b.checkIn).getTime() || from.getTime() >= new Date(b.checkOut).getTime()
       ))
       return isAvailable
 

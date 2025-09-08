@@ -1,4 +1,5 @@
 import { Request, Response } from "express";
+import Hotel from "../models/hotel.model";
 
 export const searchController = async (req: Request, res: Response) => {
 
@@ -54,7 +55,7 @@ export const searchController = async (req: Request, res: Response) => {
     }
 
     try {
-        const hotel = await Hotel.find(searchQuery).sort(sortOption).skip(skip).limit(limit);
+        const hotel = await Hotel.find(searchQuery).sort(sortOption).skip(skip).limit(Number(limit));
 
         if (hotel.length === 0) {
             return res.status(404).json({ success: false, message: "No destination found!" });

@@ -1,10 +1,10 @@
 
 import { Request, Response } from "express";
 import User from "../models/user.model";
-import { Jwt } from "jsonwebtoken"
-import { bcrypt } from "bcrypt"
+import bcrypt from "bcryptjs"
+import jwt from "jsonwebtoken"
 //Redister new user
-const register = async (req: Request, res: Response) => {
+export const register = async (req: Request, res: Response) => {
   try {
     const { name, email, password } = req.body;
     const userExist = await User.findOne({ email });
@@ -21,7 +21,7 @@ const register = async (req: Request, res: Response) => {
     await newUser.save();
     const token = jwt.sign(
       { id: newUser._id, isAdmin: newUser.isAdmin },
-      process.env.SECRET_KEY,
+      process.env.SECRET_KEY as string,
       { expiresIn: '1d' }
     );
 
@@ -39,7 +39,7 @@ const register = async (req: Request, res: Response) => {
 };
 
 //login
-const login = async (req: Request, res: Response) => {
+export const login = async (req: Request, res: Response) => {
   const { email, password } = req.body
   try {
     const user = await User.findOne({ email });
@@ -57,7 +57,7 @@ const login = async (req: Request, res: Response) => {
 
     const token = jwt.sign(
       { id: user._id, isAdmin: user.isAdmin },
-      process.env.SECRET_KEY,
+      process.env.SECRET_KEY as string,
       { expiresIn: '1d' }
     );
 
@@ -69,23 +69,25 @@ const login = async (req: Request, res: Response) => {
     });
     return res.status(201).json({ success: true, message: "Login successful", data: user });
   } catch (error) {
-    return res.status(500).json({ success: false, message: error.message })
+    if (error instanceof Error)
+      return res.status(500).json({ success: false, message: error.message })
   }
 };
 
-const logout = (req: Request, res: Response) => {
+export const logout = (req: Request, res: Response) => {
   try {
 
     res.clearCookie("token");
     return res.status(200).json({ success: true, message: "user logout" });
   } catch (error) {
-    return res.status(500).json({ success: false, message: error.message })
+    if (error instanceof Error)
+      return res.status(500).json({ success: false, message: error.message })
   }
 };
 
 
 //check current user
-const currentUser = async (req: Request, res: Response) => {
+export const currentUser = async (req: any, res: Response) => {
   try {
     const user = await User.findById(req.id)
     if (!user) {
@@ -94,8 +96,9 @@ const currentUser = async (req: Request, res: Response) => {
 
     res.status(200).json({ success: true, message: "success", data: user })
   } catch (error) {
-    res.status(500).json({ success: false, message: error.message })
+    if (error instanceof Error)
+      res.status(500).json({ success: false, message: error.message })
   }
 }
 
-module.exports = { register, login, logout, currentUser };
+
