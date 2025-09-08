@@ -1,4 +1,6 @@
-import mongoose, { Document } from "mongoose";
+import mongoose, { Document, Types } from "mongoose";
+import { IRoom } from "./room.model";
+import { IReview } from "./review.model";
 
 export interface IHotel extends Document {
   name: string,
@@ -8,8 +10,8 @@ export interface IHotel extends Document {
   rating: number,
   type: string,
   address: string,
-  rooms: string[]
-  reviews: string[]
+  rooms: Types.ObjectId[] | IRoom[]
+  reviews: Types.ObjectId[] | IReview[]
   price: number
   amenities: string[]
   distance: string,

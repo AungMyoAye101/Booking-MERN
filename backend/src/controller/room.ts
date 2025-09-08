@@ -1,13 +1,29 @@
 import { Request, Response } from "express";
-import Room from "../models/room.model";
-import Booking from "../models/booking.model";
-import Hotel from "../models/hotel.model";
-import mongoose from "mongoose";
+import Room, { IRoom } from "../models/room.model";
+import Booking, { IBooking } from "../models/booking.model";
+import Hotel, { IHotel } from "../models/hotel.model";
+import mongoose, { Types } from "mongoose";
+
+
+type HotelWithRoomType = Omit<IHotel, "rooms"> & { rooms: IRoom[] }
+
+interface RoomNumbers {
+  number: number,
+  booking: IBooking[]
+}
+export interface RoomWithBookingType {
+  title: string,
+  description: string,
+  maxPeople: number,
+  price: number,
+  hotel: Types.ObjectId,
+  roomNumbers: RoomNumbers[]
+
+}
+
 
 //Create Room
-interface RoomNumberType {
-  number: string[]
-}
+
 export const createRoom = async (req: Request, res: Response) => {
 
   const { title, description, maxPeople, price, roomNumber } = req.body as {
@@ -85,7 +101,6 @@ export const deleteRoom = async (req: Request, res: Response) => {
 };
 
 //Get all room
-
 export const getAllRoomsByHotelId = async (req: Request, res: Response,) => {
   const { hotelId } = req.params
   const { guest, checkIn, checkOut } = req.query as {
@@ -102,7 +117,7 @@ export const getAllRoomsByHotelId = async (req: Request, res: Response,) => {
     return res.status(400).json({ success: false, message: "Invalid hotel id!" })
   }
   try {
-    const hotel = await Hotel.findById(hotelId).populate("rooms")
+    const hotel = (await Hotel.findById(hotelId).populate("rooms")) as HotelWithRoomType
     if (!hotel) {
       return res.status(400).json({ success: false, message: "Failed to fetch hotel." });
     }
@@ -146,6 +161,7 @@ export const getAllRoomsByHotelId = async (req: Request, res: Response,) => {
   }
 };
 
+
 //Get room by id
 export const getRoomById = async (req: Request, res: Response) => {
   try {
@@ -162,24 +178,28 @@ export const getRoomById = async (req: Request, res: Response) => {
 
 export const checkAvailability = async (req: Request, res: Response) => {
   const { roomId } = req.params
-  const { checkIn, checkOut } = req.query
-  const from = checkIn
-  const to = checkOut
-
+  const { checkIn, checkOut } = req.query as { checkIn?: string, checkOut?: string }
   if (!mongoose.Types.ObjectId.isValid(roomId)) {
     return res.status(400).json("hotel Id is not valid")
   }
+  if (!checkIn || !checkOut) {
+    return res.status(400).json("CheckIn and CheckOut date are required.")
+  }
+  const from = new Date(checkIn)
+  const to = new Date(checkOut)
+
   try {
-    const room = await Room.findById(roomId)
+    const room = await Room.findById(roomId) as RoomWithBookingType
     if (!room) {
       return res.status(404).json({ success: false, message: "Room not found." })
     }
 
     const availableRooms = room.roomNumbers.filter((roomNumber) => {
-      const isAvailable = roomNumber.booking.every((b: any) => (
+      const isAvailable = roomNumber.booking.every((b) => (
         to <= b.checkIn || from >= b.checkOut
       ))
       return isAvailable
+
     })
     return res.status(200).json({ success: true, message: "Room checked successfull", data: availableRooms })
   } catch (error) {

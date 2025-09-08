@@ -1,18 +1,17 @@
-import mongoose, { Document } from "mongoose";
+import mongoose, { Document, Types } from "mongoose";
 import { IBooking } from "./booking.model";
 
+interface RoomNumbers {
+  number: number,
+  booking: Types.ObjectId[] | IBooking[]
+}
 export interface IRoom extends Document {
   title: string,
   description: string,
-
   maxPeople: number,
-
   price: number,
-  hotel: string,
-  roomNumbers: {
-    number: number,
-    booking: IBooking
-  }
+  hotel: Types.ObjectId,
+  roomNumbers: RoomNumbers[]
 
 }
 

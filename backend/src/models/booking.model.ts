@@ -1,8 +1,8 @@
-import mongoose, { Document } from "mongoose"
+import mongoose, { Document, Types } from "mongoose"
 
 export interface IBooking extends Document {
-    user: string,
-    room: string,
+    user: Types.ObjectId,
+    room: Types.ObjectId,
     roomNumber: number,
     totalPrice: number,
     checkIn: Date,
