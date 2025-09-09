@@ -1,22 +1,15 @@
 import { Request, Response } from "express";
 import Hotel from "../models/hotel.model";
 import mongoose from "mongoose";
-// export interface UploadedFile {
-//   fieldname: string;
-//   originalname: string;
-//   encoding: string;
-//   mimetype: string;
-//   destination: string;
-//   filename: string;
-//   path: string;
-//   size: number;
-// }
-// interface FilesRequest extends Request {
-//   files?: UploadedFile[]
-// }
+import { FilesRequest, UploadedFile } from "../types";
+
+
+
+
+
 //Create hotel
-export const createHotel = async (req: any, res: Response) => {
-  const photos = req.files as any[]
+export const createHotel = async (req: FilesRequest, res: Response) => {
+  const photos = req.files
   if (!photos) {
     return res.status(400).json({ success: false, message: "No images!" })
   }
@@ -41,37 +34,35 @@ export const createHotel = async (req: any, res: Response) => {
 
 //Update hotel
 
-// export const updateHotel = async (req: FilesRequest, res: Response) => {
-//   const { id } = req.params
-//   if (!mongoose.Types.ObjectId.isValid(id)) {
-//     return res.status(400).json({ success: false, message: "Hotel id is not valid." })
-//   }
+export const updateHotel = async (req: Request, res: Response) => {
+  const { id } = req.params
+  if (!mongoose.Types.ObjectId.isValid(id)) {
+    return res.status(400).json({ success: false, message: "Hotel id is not valid." })
+  }
 
-//   const photos = req.files
-//   if (photos) {
+  const photos = req.files as UploadedFile[]
 
-//     const urls = photos.map(img => img.path);
-//   }
+  const urls = photos.map(img => img.path);
 
-//   let { existingPhotos } = req.body
-//   if (!existingPhotos) existingPhotos = []
-//   if (typeof existingPhotos === 'string') {
-//     existingPhotos = [existingPhotos]
-//   }
-//   const updatePhotos = [...existingPhotos, ...urls]
-//   try {
-//     const updatedHotel = await Hotel.findByIdAndUpdate(
-//       req.params.id,
-//       { ...req.body, photos: updatePhotos },
-//       { new: true }
-//     );
+  let { existingPhotos } = req.body
+  if (!existingPhotos) existingPhotos = []
+  if (typeof existingPhotos === 'string') {
+    existingPhotos = [existingPhotos]
+  }
+  const updatePhotos = [...existingPhotos, ...urls]
+  try {
+    const updatedHotel = await Hotel.findByIdAndUpdate(
+      req.params.id,
+      { ...req.body, photos: updatePhotos },
+      { new: true }
+    );
 
-//     return res.status(200).json({ success: true, message: "Hotel updated successful", data: updatedHotel });
-//   } catch (error) {
-//     if (error instanceof Error)
-//       return res.status(500).json({ success: false, message: error.message });
-//   }
-// };
+    return res.status(200).json({ success: true, message: "Hotel updated successful", data: updatedHotel });
+  } catch (error) {
+    if (error instanceof Error)
+      return res.status(500).json({ success: false, message: error.message });
+  }
+};
 
 export const deleteHotel = async (req: Request, res: Response) => {
   try {
