@@ -3,6 +3,7 @@ import { Request, Response } from "express";
 import User from "../models/user.model";
 import bcrypt from "bcryptjs"
 import jwt from "jsonwebtoken"
+import { RequestWithUser } from "../types";
 //Redister new user
 export const register = async (req: Request, res: Response) => {
   try {
@@ -87,9 +88,9 @@ export const logout = (req: Request, res: Response) => {
 
 
 //check current user
-export const currentUser = async (req: any, res: Response) => {
+export const currentUser = async (req: RequestWithUser, res: Response) => {
   try {
-    const user = await User.findById(req.id)
+    const user = await User.findById(req.user?.id)
     if (!user) {
       return res.status(404).json({ success: false, message: "User not found" })
     }

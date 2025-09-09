@@ -1,22 +1,22 @@
 import { Request, Response } from "express";
 import Hotel from "../models/hotel.model";
 import mongoose from "mongoose";
-export interface UploadedFile {
-  fieldname: string;
-  originalname: string;
-  encoding: string;
-  mimetype: string;
-  destination: string;
-  filename: string;
-  path: string;
-  size: number;
-}
-interface FilesRequest extends Request {
-  files?: UploadedFile[]
-}
+// export interface UploadedFile {
+//   fieldname: string;
+//   originalname: string;
+//   encoding: string;
+//   mimetype: string;
+//   destination: string;
+//   filename: string;
+//   path: string;
+//   size: number;
+// }
+// interface FilesRequest extends Request {
+//   files?: UploadedFile[]
+// }
 //Create hotel
-export const createHotel = async (req: FilesRequest, res: Response) => {
-  const photos = req.files
+export const createHotel = async (req: any, res: Response) => {
+  const photos = req.files as any[]
   if (!photos) {
     return res.status(400).json({ success: false, message: "No images!" })
   }
