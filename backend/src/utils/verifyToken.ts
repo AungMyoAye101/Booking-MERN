@@ -1,5 +1,5 @@
 import jwt, { JwtPayload } from "jsonwebtoken"
-import { Request, Response, NextFunction } from "express";
+import { Request, Response, NextFunction, RequestHandler } from "express";
 import { JWTPayloadType, RequestWithUser } from "../types";
 
 
@@ -9,14 +9,16 @@ const verifyToken = (token: string) => {
 
 };
 
-export const verifyUser = (req: RequestWithUser, res: Response, next: NextFunction) => {
+export const verifyUser: RequestHandler = (req: RequestWithUser, res: Response, next: NextFunction) => {
   const { token } = req.cookies
   if (!token) {
-    return res.status(400).json("Your token is invalid!")
+    res.status(401).json({ message: "Your token is invalid!" });
+    return;
   };
   const user = verifyToken(token) as JWTPayloadType
   if (!user.id) {
-    return res.status(400).json({ success: false, message: "You are not authorized!" })
+    res.status(400).json({ success: false, message: "You are not authorized!" });
+    return;
   }
 
   req.user = user
@@ -26,11 +28,13 @@ export const verifyUser = (req: RequestWithUser, res: Response, next: NextFuncti
 export const verifyAdmin = (req: RequestWithUser, res: Response, next: NextFunction) => {
   const { token } = req.cookies
   if (!token) {
-    return res.status(400).json("Your token is invalid!")
+    res.status(400).json("Your token is invalid!")
+    return
   };
   const user = verifyToken(token) as JWTPayloadType
   if (user.isAdmin === false) {
-    return res.status(400).json({ success: false, message: "You are not allowed!" })
+    res.status(400).json({ success: false, message: "You are not allowed!" })
+    return
   }
   req.user = user as JWTPayloadType
   next()

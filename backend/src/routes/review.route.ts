@@ -1,11 +1,11 @@
-const { default: mongoose } = require("mongoose")
-const Review = require("../models/review.model")
-
-const express = require("express")
-const Hotel = require("../models/hotel.model")
+import { Request, Response } from "express"
+import express from "express"
+import mongoose from "mongoose"
+import Review from "../models/review.model"
+import Hotel from "../models/hotel.model"
 const router = express.Router()
 
-router.post('/', async (req, res) => {
+router.post('/', async (req: Request, res: Response) => {
     const { userId, hotelId } = req.body
 
     try {
@@ -20,11 +20,11 @@ router.post('/', async (req, res) => {
 
         res.status(201).json({ sucess: true, message: "Review created successfull." })
     } catch (error) {
-        res.status(500).json({ success: false, message: error.message })
+        res.status(500).json({ success: false, message: "Internal server error" })
     }
 })
 
-router.get('/:id', async (req, res) => {
+router.get('/:id', async (req: Request, res: Response) => {
     const hotelId = req.params.id
 
     try {
@@ -37,8 +37,8 @@ router.get('/:id', async (req, res) => {
         }
         return res.status(200).json({ success: true, message: "Get review successfull.", data: reviews })
     } catch (error) {
-        return res.status(500).json({ success: false, message: error.message })
+        return res.status(500).json({ success: false, message: "Internal server error" })
     }
 })
 
-module.exports = router
+export default router

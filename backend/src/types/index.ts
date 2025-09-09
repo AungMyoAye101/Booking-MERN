@@ -1,3 +1,4 @@
+import { Request } from "express";
 export interface JWTPayloadType {
     id: string,
     isAdmin: boolean,

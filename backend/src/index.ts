@@ -1,20 +1,21 @@
-const express = require("express");
-const dotenv = require("dotenv");
-const authRouter = require("./routes/auth");
-const userRouter = require("./routes/user");
-const hotelRouter = require("./routes/hotel");
-const searchRouter = require("./routes/search");
-const roomRouter = require("./routes/room");
-const reviewRouter = require("./routes/review.route");
-const bookingRouter = require("./routes/booking.route");
-const { default: mongoose } = require("mongoose");
-const cookieParser = require("cookie-parser");
-const cors = require("cors");
-const Hotel = require("./models/hotel.model");
-const User = require("./models/user.model");
-const cloudinary = require("cloudinary").v2
-const { upload } = require("./utils/cloudinary")
+import express from "express"
+import dotenv from "dotenv"
+import { v2 as cloudinary } from "cloudinary";
+// const dotenv = require("dotenv");
+import authRouter from "./routes/auth.route";
+import userRouter from "./routes/user.route";
+import hotelRouter from "./routes/hotel.route";
+import searchRouter from "./routes/search.route";
+import roomRouter from "./routes/room.route";
+import reviewRouter from "./routes/review.route"
+import bookingRouter from "./routes/booking.route";
+import mongoose from "mongoose";
+
+import cookieParser from "cookie-parser"
+import cors from "cors"
 import { Request, Response } from "express";
+import Hotel from "./models/hotel.model";
+import User from "./models/user.model";
 const app = express();
 
 dotenv.config();
@@ -38,18 +39,7 @@ cloudinary.config({
 })
 
 
-app.post('/post', upload.array('photo', 4), async (req: any, res: Response) => {
-  console.log(req.files)
-  if (!req.files) {
-    return res.status(400).json({ message: "failed" })
-  }
-  const images = req.files.map((file: any) => ({
-    url: file.path,
-    public_id: file.filename,
-  }));
-  console.log(images)
-  res.status(200).json({ message: "success" })
-})
+
 const connectToDb = async () => {
   if (!DB_URI) {
     throw new Error("Mongodb uri is invalid");

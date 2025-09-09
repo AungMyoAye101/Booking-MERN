@@ -27,8 +27,9 @@ export const createHotel = async (req: FilesRequest, res: Response) => {
     return res.status(201).json({ success: true, message: "Hotel created successful", data: savedHotel });
   } catch (error) {
     if (error instanceof Error)
-      return res.status(500).json({ success: false, message: error.message })
+      console.log(error.message)
   }
+  return res.status(500).json({ success: false, message: "Internal server error" })
 
 };
 

@@ -1,17 +1,11 @@
-const express = require("express");
+import express from "express"
 
-const {
-  getAllHotels,
-  updateHotel,
-  createHotel,
-  deleteHotel,
-  getHotelById,
-  getHotelByType,
-  getHotelByCity,
-  hotelsByType,
-  getSuggestion,
-} = require("../controller/hotel");
-const { upload } = require("../utils/cloudinary");
+import { upload } from "../utils/cloudinary";
+import { createHotel, deleteHotel, getAllHotels, getHotelByCity, getHotelById, getHotelByType, getSuggestion, hotelsByType, updateHotel } from "../controller/hotel";
+
+
+// const { upload } = require("../utils/cloudinary");
+
 
 const router = express.Router();
 
@@ -27,4 +21,4 @@ router.get("/type/:type", hotelsByType)
 
 
 
-module.exports = router;
+export default router;
