@@ -8,17 +8,16 @@ import { FilesRequest, UploadedFile } from "../types";
 
 
 //Create hotel
-export const createHotel = async (req: FilesRequest, res: Response) => {
+export const createHotel = async (req: any, res: Response) => {
   const photos = req.files
   if (!photos) {
     return res.status(400).json({ success: false, message: "No images!" })
   }
 
-  const url = photos.map(img => img.path)
+  const url = photos.map((img: any) => img.path)
 
   // add hotel with uploaded image urls to database
   try {
-
     const newHotel = new Hotel({
       ...req.body,
       photos: url
