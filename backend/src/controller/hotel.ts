@@ -8,8 +8,8 @@ import { FilesRequest, UploadedFile } from "../types";
 
 
 //Create hotel
-export const createHotel = async (req: any, res: Response) => {
-  const photos = req.files
+export const createHotel = async (req: Request, res: Response) => {
+  const photos = req.files as UploadedFile[]
   if (!photos) {
     return res.status(400).json({ success: false, message: "No images!" })
   }
