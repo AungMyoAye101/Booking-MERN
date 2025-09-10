@@ -14,6 +14,7 @@ import cors from "cors"
 import { Request, Response } from "express";
 import Hotel from "./models/hotel.model";
 import User from "./models/user.model";
+import { connectToDb } from "./utils/connectToDb";
 const app = express();
 
 dotenv.config();
@@ -29,7 +30,7 @@ app.use(cors({
 ));
 
 const port = process.env.PORT || 8080;
-const DB_URI = process.env.MONGODB_URI;
+
 cloudinary.config({
   cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
   api_key: process.env.CLOUDINARY_API_KEY,
@@ -38,18 +39,7 @@ cloudinary.config({
 
 
 
-const connectToDb = async () => {
-  if (!DB_URI) {
-    throw new Error("Mongodb uri is invalid");
-  }
-  try {
-    await mongoose.connect(DB_URI);
-    console.log("mongo db connected.");
-  } catch (error) {
-    throw error;
-  }
-};
-
+connectToDb()
 
 // DB connection error
 mongoose.connection.on("disconnected", () => {

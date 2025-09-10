@@ -1,6 +1,6 @@
 import express from "express"
 import { deleteUser, getAllUsers, getUserById, updateUser } from "../controller/user";
-import { verifyUser } from "../utils/verifyToken";
+import { verifyUser } from "../middleware/verifyToken";
 
 
 
