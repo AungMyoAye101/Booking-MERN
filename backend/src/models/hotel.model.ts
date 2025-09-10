@@ -1,12 +1,13 @@
 import mongoose, { Document, Types } from "mongoose";
 import { IRoom } from "./room.model";
 import { IReview } from "./review.model";
+import { IImage } from "./image.model";
 
 export interface IHotel extends Document {
   name: string,
   title: string,
   description: string,
-  photos: string[],
+  photos: mongoose.Types.ObjectId[] | IImage[],
   rating: number,
   type: string,
   address: string,
@@ -32,9 +33,10 @@ const hotelSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
-    photos: {
-      type: [String],
-    },
+    photos: [{
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Image",
+    }],
     rating: {
       type: Number,
       min: 0,

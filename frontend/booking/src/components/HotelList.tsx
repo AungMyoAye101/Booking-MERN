@@ -67,7 +67,7 @@ const HotelList = () => {
                     className="flex gap-4 overflow-hidden flex-nowrap  relative py-4"
                 >
                     {
-                        loading ? [1, 2, 3, 4, 5, 6,].map(i => (<div key={i} className="min-w-60 max-w-80 bg-white border border-white shadow-md p-2 rounded">
+                        data && loading ? [1, 2, 3, 4, 5, 6,].map(i => (<div key={i} className="min-w-60 max-w-80 bg-white border border-white shadow-md p-2 rounded">
                             <div className="w-full h-52 bg-neutral-200 rounded-md"></div>
                             <div className="flex flex-col mt-1 gap-1">
                                 <div className="flex items-center justify-between gap-4">

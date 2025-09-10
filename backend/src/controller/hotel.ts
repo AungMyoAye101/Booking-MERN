@@ -4,7 +4,7 @@ import mongoose from "mongoose";
 import { FilesRequest, UploadedFile } from "../types";
 
 
-
+import { v2 as cloudinary } from "cloudinary"
 
 
 //Create hotel
@@ -14,13 +14,18 @@ export const createHotel = async (req: Request, res: Response) => {
     return res.status(400).json({ success: false, message: "No images!" })
   }
 
-  const url = photos.map((img: any) => img.path)
+
+
+  // const url = photos.map((img: any) => img.path)
 
   // add hotel with uploaded image urls to database
   try {
+    const urls = await Promise.all(photos.map(img => (
+      cloudinary.uploader.upload(img.path, { folder: "mern-images", })
+    )))
     const newHotel = new Hotel({
       ...req.body,
-      photos: url
+      photos: urls
     });
     const savedHotel = await newHotel.save();
     return res.status(201).json({ success: true, message: "Hotel created successful", data: savedHotel });

@@ -3,10 +3,10 @@ import multer from "multer"
 import { v2 as cloudinary } from "cloudinary"
 
 const storage = multer.diskStorage({
-    destination: (req, file, cb) => {
+    destination: (_req, _file, cb) => {
         cb(null, 'upload/')
     },
-    filename: (req, file, cb) => {
+    filename: (_req, file, cb) => {
         cb(null, Date.now() + '_' + file.originalname)
     }
 })
@@ -19,5 +19,5 @@ const storage = multer.diskStorage({
 //     },
 // });
 
-export const upload = multer({ storage: storage })
+export const upload = multer({ storage })
 
