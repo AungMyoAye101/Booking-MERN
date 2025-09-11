@@ -20,15 +20,18 @@ export const createHotel = async (req: Request, res: Response) => {
 
   // add hotel with uploaded image urls to database
   try {
-    const urls = await Promise.all(photos.map(img => (
+    const uploaded = await Promise.all(photos.map(img => (
       cloudinary.uploader.upload(img.path, { folder: "mern-images", })
     )))
+
+    const images = uploaded.map(img => ({ "secure_url": img.secure_url, "public_id": img.public_id }))
+    console.log(images)
     const newHotel = new Hotel({
       ...req.body,
-      photos: urls
+      photos: images
     });
-    const savedHotel = await newHotel.save();
-    return res.status(201).json({ success: true, message: "Hotel created successful", data: savedHotel });
+    // const savedHotel = await newHotel.save();
+    return res.status(201).json({ success: true, message: "Hotel created successful", data: newHotel });
   } catch (error) {
     if (error instanceof Error)
       console.log(error.message)

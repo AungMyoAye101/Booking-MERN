@@ -16,7 +16,7 @@ const ListByType = () => {
   const [data, setData] = useState<HotelList[]>([])
   const [loading, setLoading] = useState(false)
   const containerRef = useRef<HTMLDivElement>(null);
-
+  console.log(data)
   const handleSlide = (isRight: boolean) => {
     if (containerRef.current) {
       containerRef.current.scrollBy({
