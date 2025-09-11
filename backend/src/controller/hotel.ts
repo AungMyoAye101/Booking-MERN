@@ -2,35 +2,40 @@ import { Request, Response } from "express";
 import Hotel from "../models/hotel.model";
 import mongoose from "mongoose";
 import { FilesRequest, UploadedFile } from "../types";
-
+import fs from "fs/promises"
 
 import { v2 as cloudinary } from "cloudinary"
+import Image from "../models/image.model";
 
 
 //Create hotel
 export const createHotel = async (req: Request, res: Response) => {
+  console.log("creating....")
   const photos = req.files as UploadedFile[]
+
   if (!photos) {
     return res.status(400).json({ success: false, message: "No images!" })
   }
 
-
-
-  // const url = photos.map((img: any) => img.path)
-
-  // add hotel with uploaded image urls to database
   try {
     const uploaded = await Promise.all(photos.map(img => (
       cloudinary.uploader.upload(img.path, { folder: "mern-images", })
     )))
-
+    console.log("uploaded to cloud")
     const images = uploaded.map(img => ({ "secure_url": img.secure_url, "public_id": img.public_id }))
-    console.log(images)
+    const uploadedImage = await Image.create(images)
     const newHotel = new Hotel({
       ...req.body,
-      photos: images
+      photos: uploadedImage.map(m => m._id)
     });
-    // const savedHotel = await newHotel.save();
+    await newHotel.save();
+    console.log("save hotel .")
+    await Promise.all(photos.map(img => (
+      fs.unlink(img.path)
+    )))
+
+    console.log("delete files")
+
     return res.status(201).json({ success: true, message: "Hotel created successful", data: newHotel });
   } catch (error) {
     if (error instanceof Error)

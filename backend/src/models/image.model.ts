@@ -1,12 +1,12 @@
 import mongoose, { Document } from "mongoose";
 
 export interface IImage extends Document {
-    url: string,
+    secure_url: string,
     public_id: string
 }
 
 const imageSchema = new mongoose.Schema<IImage>({
-    url: {
+    secure_url: {
         type: String,
         required: true,
     },
