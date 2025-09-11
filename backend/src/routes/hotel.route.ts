@@ -21,23 +21,6 @@ router.get("/type/hotelType", getHotelByType)
 router.get("/type/getHotelByCity", getHotelByCity)
 router.get("/type/:type", hotelsByType)
 
-router.post("/test/upload", upload.array("photos"), async (req: Request, res: Response) => {
-    console.log("testing...")
-    const photos = req.files as UploadedFile[];
-
-    try {
-        const uploaded = await Promise.all(photos.map(img => (
-            v2.uploader.upload(img.path, { folder: "mern-images", })
-        )))
-
-        const photo = uploaded.map(img => ({ "secure_url": img.secure_url, "public_id": img.public_id }))
-
-        res.status(200).json(photo)
-    } catch (error) {
-        res.status(500).json(error)
-    }
-
-})
 
 
 

@@ -22,8 +22,8 @@ export const createHotel = async (req: Request, res: Response) => {
       cloudinary.uploader.upload(img.path, { folder: "mern-images", })
     )))
     console.log("uploaded to cloud")
-    const images = uploaded.map(img => ({ "secure_url": img.secure_url, "public_id": img.public_id }))
-    const uploadedImage = await Image.create(images)
+
+    const uploadedImage = await Image.insertMany(uploaded.map(img => ({ "secure_url": img.secure_url, "public_id": img.public_id })))
     const newHotel = new Hotel({
       ...req.body,
       photos: uploadedImage.map(m => m._id)
@@ -56,8 +56,7 @@ export const updateHotel = async (req: Request, res: Response) => {
   const { existingPhotos } = req.body
 
   try {
-    console.log(req.body)
-    console.log(photos)
+
     await Promise.all(photos.map(img => (
       fs.unlink(img.path)
     )))
@@ -87,10 +86,11 @@ export const updateHotel = async (req: Request, res: Response) => {
     await hotel.save()
     return res.status(200).json({ success: true, message: "Hotel updated successful", data: hotel });
   } catch (error) {
-    if (error instanceof Error)
-      return res.status(500).json({ success: false, message: error.message });
-  }
-};
+    console.log(error)
+    return res.status(500).json({ success: false, message: "Internal server error" });
+
+  };
+}
 
 export const deleteHotel = async (req: Request, res: Response) => {
   try {
@@ -109,10 +109,11 @@ export const getAllHotels = async (req: Request, res: Response,) => {
   const { page = '1', limit = '6' } = req.query
   try {
     const skip = (Number(page) - 1) * Number(limit)
-    const hotels = await Hotel.find().populate("photos",).skip(skip).limit(Number(limit));
+    const hotels = await Hotel.find().populate("photos").skip(skip).limit(Number(limit));
     if (!hotels) {
       return res.status(404).json({ success: false, message: "No hotels found!" })
     }
+    console.log(hotels)
     const total = await Hotel.countDocuments()
     const totalPage = Math.ceil(total / Number(limit))
 
@@ -124,10 +125,11 @@ export const getAllHotels = async (req: Request, res: Response,) => {
       }
     });
   } catch (error) {
-    if (error instanceof Error)
-      return res.status(500).json({ success: false, message: error.message });
-  }
-};
+    console.log(error)
+    return res.status(500).json({ success: false, message: "Internal server error" });
+
+  };
+}
 
 //get hotel by specific id
 export const getHotelById = async (req: Request, res: Response) => {

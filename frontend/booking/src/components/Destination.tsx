@@ -67,7 +67,7 @@ const Destination = () => {
               className="min-w-[200px]  flex-1 h-auto  aspect-video rounded-lg overflow-hidden relative bg-white"
             >
               <img
-                src={item.photos[0]}
+                src={item.photos[0].secure_url}
                 alt="image"
                 className="w-full h-auto hover:scale-125 transition-transform ease-in-out "
               />

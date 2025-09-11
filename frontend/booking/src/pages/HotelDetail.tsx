@@ -72,7 +72,7 @@ const HotelDetail = () => {
           {hotel.photos.map((img, i) => (
             <img
               key={i}
-              src={img}
+              src={img.secure_url}
               alt={hotel.name + " room photo"}
               className={`
                   min-w-[300px] max-w-[550px] rounded-lg object-cover aspect-video `}

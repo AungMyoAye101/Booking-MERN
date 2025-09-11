@@ -10,6 +10,7 @@ const HotelList = () => {
     const containerRef = useRef<HTMLDivElement>(null);
 
     const [data, setData] = useState<HotelType[]>([])
+
     const [loading, setLoading] = useState(false)
     const handleSlide = (isRight: boolean) => {
         if (containerRef.current) {
@@ -86,7 +87,7 @@ const HotelList = () => {
                             >
                                 <div className="h-48  overflow-hidden  ">
                                     <img
-                                        src={item.photos[0]}
+                                        src={item.photos[0].secure_url}
                                         alt="image"
                                         className="w-full h-full hover:scale-125 transition-transform ease-in-out  object-cover"
                                     />
