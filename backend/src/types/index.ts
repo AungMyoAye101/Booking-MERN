@@ -1,4 +1,6 @@
 import { Request } from "express";
+import { IHotel } from "../models/hotel.model";
+import { IImage } from "../models/image.model";
 export interface JWTPayloadType {
     id: string,
     isAdmin: boolean,
@@ -32,4 +34,8 @@ export interface BookingType {
     checkIn: string;
     checkOut: string;
 
+}
+
+export interface HotelWithImage extends IHotel {
+    photos: IImage[]
 }

@@ -1,11 +1,11 @@
 import { Request, Response } from "express";
 import Hotel from "../models/hotel.model";
 import mongoose from "mongoose";
-import { FilesRequest, UploadedFile } from "../types";
+import { FilesRequest, HotelWithImage, UploadedFile } from "../types";
 import fs from "fs/promises"
 
-import { v2 as cloudinary } from "cloudinary"
-import Image from "../models/image.model";
+import { v2 as cloudinary, v2 } from "cloudinary"
+import Image, { IImage } from "../models/image.model";
 
 
 //Create hotel
@@ -38,13 +38,12 @@ export const createHotel = async (req: Request, res: Response) => {
 
     return res.status(201).json({ success: true, message: "Hotel created successful", data: newHotel });
   } catch (error) {
-    if (error instanceof Error)
-      console.log(error.message)
-  }
-  return res.status(500).json({ success: false, message: "Internal server error" })
 
-};
+    console.log(error)
+    return res.status(500).json({ success: false, message: "Internal server error" })
 
+  };
+}
 //Update hotel
 
 export const updateHotel = async (req: Request, res: Response) => {
@@ -54,23 +53,39 @@ export const updateHotel = async (req: Request, res: Response) => {
   }
 
   const photos = req.files as UploadedFile[]
+  const { existingPhotos } = req.body
 
-  const urls = photos.map(img => img.path);
-
-  let { existingPhotos } = req.body
-  if (!existingPhotos) existingPhotos = []
-  if (typeof existingPhotos === 'string') {
-    existingPhotos = [existingPhotos]
-  }
-  const updatePhotos = [...existingPhotos, ...urls]
   try {
-    const updatedHotel = await Hotel.findByIdAndUpdate(
-      req.params.id,
-      { ...req.body, photos: updatePhotos },
-      { new: true }
-    );
+    console.log(req.body)
+    console.log(photos)
+    await Promise.all(photos.map(img => (
+      fs.unlink(img.path)
+    )))
+    const hotel = await Hotel.findById(id).populate("photos") as HotelWithImage
+    const photosToDelete = hotel.photos.filter(img => !existingPhotos.includes(img._id))
 
-    return res.status(200).json({ success: true, message: "Hotel updated successful", data: updatedHotel });
+    if (photosToDelete) {
+      await Promise.all(photosToDelete.map(async (img) => {
+        await v2.uploader.destroy(img.public_id)
+        await Image.findByIdAndDelete(img._id)
+      }))
+    }
+
+    let newPhotos: IImage[] = []
+    if (photos) {
+      const uploaded = await Promise.all(photos.map(img => (
+        cloudinary.uploader.upload(img.path, { folder: "mern-images", })
+      )))
+
+      newPhotos = await Image.insertMany(uploaded.map(img => ({ "secure_url": img.secure_url, "public_id": img.public_id })))
+
+      await Promise.all(photos.map(img => (fs.unlink(img.path))))
+    }
+
+    const finalPhotos = [...existingPhotos, ...newPhotos.map(m => m._id)]
+    hotel.photos = finalPhotos;
+    await hotel.save()
+    return res.status(200).json({ success: true, message: "Hotel updated successful", data: hotel });
   } catch (error) {
     if (error instanceof Error)
       return res.status(500).json({ success: false, message: error.message });
@@ -79,7 +94,10 @@ export const updateHotel = async (req: Request, res: Response) => {
 
 export const deleteHotel = async (req: Request, res: Response) => {
   try {
-    await Hotel.findByIdAndDelete(req.params.id);
+    const hotel = await Hotel.findByIdAndDelete(req.params.id).populate("photos") as HotelWithImage;
+    await Promise.all(hotel?.photos.map(img => (
+      v2.uploader.destroy(img.public_id)
+    )))
     return res.status(200).json({ success: true, message: "Hotel is successfully deleted." });
   } catch (error) {
     if (error instanceof Error)
@@ -91,7 +109,7 @@ export const getAllHotels = async (req: Request, res: Response,) => {
   const { page = '1', limit = '6' } = req.query
   try {
     const skip = (Number(page) - 1) * Number(limit)
-    const hotels = await Hotel.find().skip(skip).limit(Number(limit));
+    const hotels = await Hotel.find().populate("photos",).skip(skip).limit(Number(limit));
     if (!hotels) {
       return res.status(404).json({ success: false, message: "No hotels found!" })
     }
@@ -114,7 +132,7 @@ export const getAllHotels = async (req: Request, res: Response,) => {
 //get hotel by specific id
 export const getHotelById = async (req: Request, res: Response) => {
   try {
-    const hotel = await Hotel.findById(req.params.id).populate("rooms");
+    const hotel = await Hotel.findById(req.params.id).populate("photos rooms");
     return res.status(200).json({ success: true, message: "Success to get hotel by id", data: hotel });
   } catch (error) {
     if (error instanceof Error)
@@ -133,11 +151,11 @@ export const getHotelByType = async (req: Request, res: Response) => {
     const results = await Promise.all(
       types.map(async (type) => {
         const count = await Hotel.countDocuments({ type: { $regex: type, $options: 'i' } })
-        const hotel = await Hotel.findOne({ type: { $regex: type, $options: 'i' } })
+        const hotel = await Hotel.findOne({ type: { $regex: type, $options: 'i' } }).populate("photos") as HotelWithImage
         return {
           type,
           count,
-          photo: hotel && hotel.photos && hotel.photos.length >= 1 ? hotel.photos[0] : null
+          photo: hotel && hotel.photos.length >= 1 ? hotel.photos[0].secure_url : null
         }
 
       })
@@ -168,7 +186,7 @@ export const getHotelByCity = async (req: Request, res: Response) => {
     const names = cities.map(c => c._id)
 
     const hotels = await Promise.all(names.map((city) =>
-      Hotel.findOne({ city }).lean()
+      Hotel.findOne({ city }).populate("photos").lean()
     ))
     return res.status(200).json({ success: true, message: "Get hotel by city success.", data: hotels })
   } catch (error) {
@@ -189,7 +207,7 @@ export const hotelsByType = async (req: Request, res: Response) => {
   const skip = (Number(page) - 1) * Number(limit)
   try {
 
-    const hotel = await Hotel.find({ type: { $regex: type, $options: "i" } }).skip(skip).limit(Number(limit))
+    const hotel = await Hotel.find({ type: { $regex: type, $options: "i" } }).populate("photos").skip(skip).limit(Number(limit))
 
     if (hotel.length === 0) {
       return res.status(404).json({ success: false, message: "No hotel found in this type." })
@@ -223,7 +241,7 @@ export const getSuggestion = async (req: Request, res: Response) => {
 
     const data = await Hotel.distinct("city", {
       city: { $regex: query, $options: "i" }
-    })
+    }).populate("photos")
 
 
     res.status(200).json({ success: true, message: "Get city suggestion", data })

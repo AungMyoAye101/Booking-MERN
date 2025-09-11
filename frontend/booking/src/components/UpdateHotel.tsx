@@ -1,19 +1,18 @@
 
 import { useNavigate, useParams } from "react-router-dom";
-
-
 import { useEffect, useState } from "react";
 import { MdOutlineCloudUpload } from "react-icons/md";
 import { showToast } from "../context/ToastProvider";
 import { useForm } from "react-hook-form";
-import { CreateHotelFormType } from "../pages/CreateHotel";
 import { base_url, spinner } from "../lib/helper";
 import { hotelAmenities, hotelInputValidation, hotelTypes } from "../config/createHotel";
 import { FaX } from "react-icons/fa6";
+import { CreateHotelFormType, ImageType } from "../lib/types";
 
 interface UpdateHotelType extends CreateHotelFormType {
   reviews: any[],
-  rooms: any[]
+  rooms: any[],
+
 }
 
 const UpdateHotel = () => {
@@ -21,9 +20,8 @@ const UpdateHotel = () => {
   const [loading, setLoading] = useState(false)
   const [photoArray, setPhotoArray] = useState<File[]>([]);
   const [previewImg, setPreviewImg] = useState<string[]>([])
-  const [existingPhotos, setExistingPhotos] = useState<string[]>([])
+  const [existingPhotos, setExistingPhotos] = useState<ImageType[]>([])
   const [errorMessage, setErrorMessage] = useState()
-
   const { register, handleSubmit, setValue, watch, formState: { errors } } = useForm<UpdateHotelType>();
   const selectType = watch('type');
   const selectAmenities = watch("amenities", []) || [];
@@ -86,7 +84,7 @@ const UpdateHotel = () => {
         formData.append(key, String(value));
       }
     });
-    existingPhotos.forEach(photo => formData.append("existingPhotos", photo))
+    existingPhotos.forEach(photo => (formData.append("existingPhotos", photo.secure_url)))
     photoArray.forEach(img => formData.append("photos", img))
 
     try {
@@ -262,7 +260,7 @@ const UpdateHotel = () => {
             existingPhotos.map((img, i) => (
               <div key={i} className="relative">
 
-                <img src={img} alt="preview photo" className="w-60 h-40 rounded-lg" />
+                <img src={img.secure_url} alt="preview photo" className="w-60 h-40 rounded-lg" />
                 <div
                   onClick={() =>
 

@@ -1,9 +1,25 @@
+export interface ImageType {
+  secure_url: string,
+  public_id: string,
+}
+export interface CreateHotelFormType {
+  name: string;
+  title: string;
+  description: string;
+  address: string;
+  price: number;
+  city: string;
+  rating: number;
+  distance: string;
+  amenities: string[];
+  type: string;
+};
 export interface HotelType {
   _id: string;
   name: string;
   title: string;
   description: string;
-  photos: string[];
+  photos: ImageType[];
   address: string;
   price: number;
   city: string;

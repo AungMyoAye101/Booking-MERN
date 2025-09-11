@@ -6,20 +6,10 @@ import { hotelAmenities, hotelInputValidation, hotelTypes } from "../config/crea
 import { showToast } from "../context/ToastProvider";
 import { FaX } from "react-icons/fa6";
 import { MdOutlineCloudUpload } from "react-icons/md";
+import { CreateHotelFormType } from "../lib/types";
 
 
-export interface CreateHotelFormType {
-  name: string;
-  title: string;
-  description: string;
-  address: string;
-  price: number;
-  city: string;
-  rating: number;
-  distance: string;
-  amenities: string[];
-  type: string;
-};
+
 
 const CreateHotel = () => {
 
@@ -242,7 +232,7 @@ const CreateHotel = () => {
               disabled={photoArray.length > 4}
             />
           </div>
-          <div className="flex flex-wrap items-center">
+          <div className="flex flex-wrap gap-1 items-center">
 
 
             {

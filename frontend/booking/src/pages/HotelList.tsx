@@ -5,8 +5,8 @@ import { base_url, loadingElem } from "../lib/helper";
 import Pagination, { PaginationType } from "../components/Pagination";
 import { showToast } from "../context/ToastProvider";
 import { RiHotelLine } from "react-icons/ri";
-const HotelList = () => {
 
+const HotelList = () => {
   const [search] = useSearchParams()
   const page = search.get("page") || "1";
   const limit = search.get("limit") || "4";
@@ -16,6 +16,8 @@ const HotelList = () => {
     hasNextPage: false,
     hasPrevPage: false
   })
+
+
   const [loading, setLoading] = useState(false)
   const [toggleDelete, setToggleDelete] = useState(false)
   const [selection, setSelection] = useState({
@@ -23,6 +25,7 @@ const HotelList = () => {
     name: "",
     type: "",
   })
+
   const fetchHotel = async () => {
     try {
       setLoading(true)
@@ -100,7 +103,7 @@ const HotelList = () => {
                 to={`/hotel/${item._id}`}
                 className="w-full aspect-video md:w-40 md:aspect-square rounded-lg overflow-hidden "
               >
-                <img src={item.photos[0]} alt="hotel image" className="w-full h-full object-cover" />
+                <img src={item.photos[0].secure_url} alt="hotel image" className="w-full h-full object-cover" />
               </Link>
               <div className="flex flex-col gap-2 flex-1">
                 <div className="w-full md:w-[50%]">

@@ -127,7 +127,7 @@ const Signup = () => {
         <button
           type="submit"
           disabled={loading}
-          className={`bg-blue-800  px-4 py-2 rounded-lg font-roboto  text-white hover:bg-blue-500  ${loading ? 'cursor-not-allowed' : "cursor-pointer"}`}
+          className={`bg-blue-800  px-4 py-2 rounded-lg font-roboto  text-white hover:bg-blue-500  flex justify-center items-center ${loading ? 'cursor-not-allowed' : "cursor-pointer"}`}
         >
           {loading ? spinner : "Submit"}
         </button>
