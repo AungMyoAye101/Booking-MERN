@@ -4,12 +4,8 @@ import { HotelType } from "../lib/types";
 import { FaLocationDot, FaStar } from "react-icons/fa6";
 
 const HotelCard = ({ item }: { item: HotelType }) => {
-
-
   const stars = [1, 2, 3, 4, 5]
-
   return (
-
     <div
       key={item._id}
       className="flex-1 flex flex-col md:flex-row gap-4 bg-white rounded-lg p-4 shadow-lg border border-gray-300 h-fit"
@@ -19,7 +15,7 @@ const HotelCard = ({ item }: { item: HotelType }) => {
         to={`/hotel/${item._id}`}
         className="w-full md:w-48 aspect-video md:aspect-square rounded-lg overflow-hidden "
       >
-        <img src={item.photos[0]} alt="hotel image" className="w-full h-full object-cover" />
+        <img src={item.photos[0].secure_url} alt="hotel image" className="w-full h-full object-cover" />
       </Link>
       <div className="flex justify-between gap-4 flex-1">
         <div className="flex flex-col gap-1 flex-1 font-roboto">
