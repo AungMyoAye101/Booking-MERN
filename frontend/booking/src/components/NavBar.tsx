@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import MobileMenubar from "./MobileMenubar";
 import { showToast } from "../context/ToastProvider";
 import { base_url } from "../lib/helper";
+import { Button } from "./ui/button";
 
 
 const NavBar = () => {
@@ -76,12 +77,16 @@ const NavBar = () => {
             </>
           ) : (
             <>
-              <Link to={"/login"} className="btn bg-white text-blue-800 hover:bg-blue-200">
-                Login
-              </Link>
-              <Link to={"/signup"} className="btn bg-white text-blue-800 hover:bg-blue-200">
-                Signup
-              </Link>
+              <Button>
+                <Link to={"/login"}>
+                  Login
+                </Link>
+              </Button>
+              <Button>
+                <Link to={"/signup"} >
+                  Signup
+                </Link>
+              </Button>
             </>
           )}
 
