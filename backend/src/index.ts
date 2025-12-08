@@ -15,6 +15,7 @@ import { Request, Response } from "express";
 import Hotel from "./models/hotel.model";
 import User from "./models/user.model";
 import { connectToDb } from "./utils/connectToDb";
+import { limiter } from "./utils/limiter";
 const app = express();
 
 dotenv.config();
@@ -28,7 +29,7 @@ app.use(cors({
   credentials: true,
 }
 ));
-
+app.use(limiter);
 const port = process.env.PORT || 8080;
 
 cloudinary.config({
@@ -46,10 +47,7 @@ mongoose.connection.on("disconnected", () => {
   console.log("Mongo DB is disconnected !");
 });
 
-
-
-
-
+//roures
 app.use("/api/auth", authRouter);
 app.use("/api/user", userRouter);
 app.use("/api/hotel", hotelRouter);
