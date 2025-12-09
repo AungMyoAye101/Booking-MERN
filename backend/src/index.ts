@@ -16,6 +16,7 @@ import Hotel from "./models/hotel.model";
 import User from "./models/user.model";
 import { connectToDb } from "./utils/connectToDb";
 import { limiter } from "./utils/limiter";
+import { errorHandler } from "./middleware/errorHandler.middleware";
 const app = express();
 
 dotenv.config();
@@ -70,10 +71,13 @@ app.get("/api/total", async (req: Request, res: Response) => {
       return res.status(500).json({ success: false, message: error.message })
   }
 })
+app.use(errorHandler);
 
-app.get('/', (req: Request, res: Response) => {
-  res.send("Server is running on port 5000")
+
+app.get('/', (_req: Request, res: Response) => {
+  res.json("Server is running on port " + port)
 })
+
 
 app.listen(port, () => {
   connectToDb();
