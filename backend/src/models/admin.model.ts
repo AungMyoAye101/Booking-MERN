@@ -3,9 +3,10 @@ export interface IAdmin extends Document {
     name: string,
     email: string,
     password: string,
-    role: "admin" | "staff"
+    role: "admin" | "staff",
+    token?: string
 }
-const UserSchema = new mongoose.Schema(
+const AdminSchema = new mongoose.Schema(
     {
         name: {
             type: String,
@@ -24,10 +25,14 @@ const UserSchema = new mongoose.Schema(
             type: String,
             required: true,
             default: "staff",
+        },
+        token: {
+            type: String,
         }
+
     },
     { timestamps: true }
 );
 
-const Admin = mongoose.model<IAdmin>("User", UserSchema);
+const Admin = mongoose.model<IAdmin>("Admin", AdminSchema);
 export default Admin;

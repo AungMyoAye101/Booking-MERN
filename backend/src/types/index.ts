@@ -1,6 +1,13 @@
 import { Request } from "express";
 import { IHotel } from "../models/hotel.model";
 import { IImage } from "../models/image.model";
+
+export interface TokenPayload {
+    id: string,
+    email: string,
+    role: "admin" | "staff" | null
+}
+
 export interface JWTPayloadType {
     id: string,
     isAdmin: boolean,
