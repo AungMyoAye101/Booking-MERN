@@ -1,8 +1,9 @@
 import { BadRequestError, NotFoundError } from "../common/errors";
-import { generateAccessToken, generateRefreshToken } from "../common/jwt";
+import { generateAccessToken, generateRefreshToken, verifyRefreshToken } from "../common/jwt";
 import { comparedPassword, hashPassword } from "../common/password";
 import User from "../models/user.model"
 import { loginType, registerType } from "../validation/authSchema";
+import { Request } from "express";
 
 export const registerService = async (
     { name, email, password }: registerType
@@ -52,3 +53,32 @@ export const logoutService = async (id: string) => {
         token: null
     })
 }
+
+export const refreshService = async (
+    req: Request
+) => {
+    const token = req.cookies.refresh_token
+    if (!token) {
+        throw new BadRequestError("Token is required.")
+    }
+    const decoded = await verifyRefreshToken(token);
+
+    const user = await User.findOne({ id: decoded._id })
+
+    if (!user) {
+        throw new NotFoundError("User not found.")
+    }
+    const access_token = generateAccessToken({
+        id: user._id,
+        email: user.email,
+        role: null
+    })
+    const refresh_token = generateRefreshToken({
+        id: user._id,
+        email: user.email,
+        role: null
+    })
+    user.token = refresh_token;
+    return { user, access_token, refresh_token }
+}
+

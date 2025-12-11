@@ -3,7 +3,7 @@ import { IHotel } from "../models/hotel.model";
 import { IImage } from "../models/image.model";
 
 export interface TokenPayload {
-    id: string,
+    _id: string,
     email: string,
     role: "admin" | "staff" | null
 }

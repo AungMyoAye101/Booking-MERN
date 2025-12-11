@@ -1,22 +1,25 @@
-import express from "express"
-import dotenv from "dotenv"
+import express from "express";
+import dotenv from "dotenv";
 import { v2 as cloudinary } from "cloudinary";
-import authRouter from "./routes/auth.route";
-import userRouter from "./routes/user.route";
-import hotelRouter from "./routes/hotel.route";
-import searchRouter from "./routes/search.route";
-import roomRouter from "./routes/room.route";
-import reviewRouter from "./routes/review.route"
-import bookingRouter from "./routes/booking.route";
 import mongoose from "mongoose";
-import cookieParser from "cookie-parser"
-import cors from "cors"
+import cookieParser from "cookie-parser";
+import cors from "cors";
 import { Request, Response } from "express";
 import Hotel from "./models/hotel.model";
 import User from "./models/user.model";
 import { connectToDb } from "./utils/connectToDb";
 import { limiter } from "./utils/limiter";
 import { errorHandler } from "./middleware/errorHandler.middleware";
+//routers 
+import adminRouter from "./routes/admin.auth.route";
+import authRouter from "./routes/auth.route";
+import userRouter from "./routes/user.route";
+import hotelRouter from "./routes/hotel.route";
+import searchRouter from "./routes/search.route";
+import roomRouter from "./routes/room.route";
+import reviewRouter from "./routes/review.route";
+import bookingRouter from "./routes/booking.route";
+
 const app = express();
 
 dotenv.config();
@@ -49,14 +52,15 @@ mongoose.connection.on("disconnected", () => {
 });
 
 //roures
-app.use("/api/auth", authRouter);
-app.use("/api/user", userRouter);
-app.use("/api/hotel", hotelRouter);
-app.use("/api/search", searchRouter);
-app.use("/api/room", roomRouter);
-app.use("/api/review", reviewRouter)
-app.use("/api/booking", bookingRouter)
-app.get("/api/total", async (req: Request, res: Response) => {
+app.use("/api/v1/admin", adminRouter)
+app.use("/api/v1/auth", authRouter);
+app.use("/api/v1/user", userRouter);
+app.use("/api/v1/hotel", hotelRouter);
+app.use("/api/v1/search", searchRouter);
+app.use("/api/v1/room", roomRouter);
+app.use("/api/v1/review", reviewRouter)
+app.use("/api/v1/booking", bookingRouter)
+app.get("/api/v1/total", async (req: Request, res: Response) => {
   try {
     const hotelCount = await Hotel.countDocuments()
     const usersCount = await User.countDocuments()

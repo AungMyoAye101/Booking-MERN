@@ -1,6 +1,7 @@
 import { Request, Response, NextFunction } from "express";
 import { successResponse } from "../common/successResponse";
-import { adminLogoutService, adminRegisterService } from "../service/auth.admin.service";
+import { adminLogoutService, adminRefreshService, adminRegisterService } from "../service/auth.admin.service";
+import { genterateCookie } from "../common/generateCookie";
 
 export const adminRegisterController = async (
     req: Request,
@@ -67,11 +68,27 @@ export const adminLoginController = async (
     }
 }
 
-export const adminLogoutController = async (req: Request, res: Response, next: NextFunction) => {
+export const adminLogoutController = async (
+    req: Request,
+    res: Response,
+    next: NextFunction) => {
     try {
         await adminLogoutService(req.user._id)
         res.clearCookie("refresh_token");
         successResponse(res, 200, "Admin logout successfull.", {})
+
+    } catch (error) {
+        return next(error)
+    }
+}
+export const refrehTokenController = async (
+    req: Request,
+    res: Response,
+    next: NextFunction) => {
+    try {
+        const { user, access_token, refresh_token } = await adminRefreshService(req);
+        genterateCookie(res, refresh_token);
+        successResponse(res, 200, "Token refresh successfull.", { user, token: access_token })
 
     } catch (error) {
         return next(error)
