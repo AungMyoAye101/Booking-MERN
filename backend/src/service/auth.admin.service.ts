@@ -2,10 +2,11 @@ import { BadRequestError, NotFoundError } from "../common/errors";
 import { generateAccessToken, generateRefreshToken } from "../common/jwt";
 import { comparedPassword, hashPassword } from "../common/password";
 import Admin from "../models/admin.model";
-import { adminLoginType, adminRegisterType } from "../validation/auth.admin";
+import { loginType, registerType } from "../validation/authSchema";
+
 
 export const adminRegisterService = async (
-    { name, email, password }: adminRegisterType
+    { name, email, password }: registerType
 ) => {
     const exitingUser = await Admin.find({ email });
     if (exitingUser) {
@@ -32,7 +33,7 @@ export const adminRegisterService = async (
     return { user, access_token, refresh_token }
 }
 export const adminLoginService = async (
-    { email, password }: adminLoginType
+    { email, password }: loginType
 ) => {
     const user = await Admin.findOne({ email })
     if (!user) {
@@ -55,4 +56,9 @@ export const adminLoginService = async (
     user.token = refresh_token;
     await user.save()
     return { user, access_token, refresh_token }
+}
+export const adminLogoutService = async (id: string) => {
+    return await Admin.findByIdAndUpdate(id, {
+        token: null
+    })
 }

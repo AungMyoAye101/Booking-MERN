@@ -1,12 +1,12 @@
-import express from "express"
-import { currentUser, login, logout, register } from "../controller/auth";
-import { verifyUser } from "../middleware/verifyToken";
+import { Router } from "express";
+import { loginController, logoutController, registerController } from "../controller/auth.controller";
+import { validateRequestBody } from "../middleware/validation.middleware";
+import { loginSchema, registerSchema } from "../validation/authSchema";
 
-const router = express.Router();
+const router = Router();
 
-router.post("/register", register);
-router.post("/login", login);
-router.post("/logout", logout);
-router.get("/me", verifyUser, currentUser);
+router.post("/register", validateRequestBody(registerSchema), registerController);
+router.post("/login", validateRequestBody(loginSchema), loginController);
+router.post("/logout", logoutController);
 
 export default router

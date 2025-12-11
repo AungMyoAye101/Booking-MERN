@@ -3,11 +3,10 @@ export interface IUser extends Document {
   name: string,
   email: string,
   password: string,
-  image: string,
   city: string,
   country: string,
   phone: string,
-  isAdmin: boolean
+  token?: string,
 
 }
 const UserSchema = new mongoose.Schema(
@@ -25,9 +24,6 @@ const UserSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
-    image: {
-      type: String,
-    },
     city: {
       type: String,
     },
@@ -37,11 +33,10 @@ const UserSchema = new mongoose.Schema(
     phone: {
       type: String,
     },
-    isAdmin: {
-      type: Boolean,
-      required: true,
-      default: false,
-    },
+    token: {
+      type: String
+    }
+    ,
   },
   { timestamps: true }
 );
