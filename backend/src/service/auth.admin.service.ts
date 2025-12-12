@@ -8,7 +8,7 @@ import { Request } from "express";
 export const adminRegisterService = async (
     { name, email, password }: registerType
 ) => {
-    const exitingUser = await Admin.find({ email });
+    const exitingUser = await Admin.findOne({ email });
     if (exitingUser) {
         throw new BadRequestError("Email is already exit.")
     }

@@ -18,7 +18,12 @@ export const generateAccessToken = (
 export const verifyAccessToken = (
     token: string
 ): TokenPayload => {
-    return jwt.verify(token, ACCESS_TOKEN) as TokenPayload
+    try {
+        return jwt.verify(token, ACCESS_TOKEN) as TokenPayload;
+    } catch (error) {
+        throw new Error("verfiy error")
+    }
+
 }
 export const generateRefreshToken = (
     payload: any
@@ -29,5 +34,10 @@ export const generateRefreshToken = (
 export const verifyRefreshToken = (
     token: string
 ): TokenPayload => {
-    return jwt.verify(token, REFRESH_TOKEN) as TokenPayload
+    try {
+        return jwt.verify(token, REFRESH_TOKEN) as TokenPayload
+    } catch (error) {
+        throw new Error("Token verify error.")
+    }
+
 }
