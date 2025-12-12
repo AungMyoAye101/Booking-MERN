@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 import Hotel from "../models/hotel.model";
 import mongoose from "mongoose";
-import { FilesRequest, HotelWithImage, UploadedFile } from "../types";
+import { FilesRequest, HotelWithImage, UploadedFile } from "../types/type";
 import fs from "fs/promises"
 
 import { v2 as cloudinary, v2 } from "cloudinary"

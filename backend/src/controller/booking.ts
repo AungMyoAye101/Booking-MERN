@@ -2,7 +2,7 @@ import mongoose from "mongoose";
 import Booking, { IBooking } from "../models/booking.model";
 import Room from "../models/room.model";
 import { Request, Response } from "express";
-import { BookingType } from "../types";
+import { BookingType } from "../types/type";
 
 interface BookingRoomType {
     number: number,

@@ -2,7 +2,7 @@ import express from "express"
 import { Request, Response } from "express";
 import { upload } from "../utils/cloudinary";
 import { createHotel, deleteHotel, getAllHotels, getHotelByCity, getHotelById, getHotelByType, getSuggestion, hotelsByType, updateHotel } from "../controller/hotel";
-import { UploadedFile } from "../types";
+import { UploadedFile } from "../types/type";
 import { v2 } from "cloudinary";
 
 

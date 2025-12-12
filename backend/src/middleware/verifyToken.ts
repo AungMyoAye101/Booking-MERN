@@ -1,6 +1,6 @@
 import jwt, { JwtPayload } from "jsonwebtoken"
 import { Request, Response, NextFunction, RequestHandler } from "express";
-import { JWTPayloadType, RequestWithUser } from "../types";
+import { JWTPayloadType, RequestWithUser } from "../types/type";
 
 
 const verifyToken = (token: string) => {

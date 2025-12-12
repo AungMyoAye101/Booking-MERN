@@ -1,7 +1,8 @@
 import dotenv from "dotenv"
 import mongoose from "mongoose";
 dotenv.config();
-const db_url = process.env.MONGODB_URI as string
+const db_url = process.env.MONGODB_URI as string;
+
 export const connectToDb = async () => {
     try {
         if (!db_url) {
@@ -10,6 +11,6 @@ export const connectToDb = async () => {
         await mongoose.connect(db_url)
         console.log("MongoDb connected.")
     } catch (error) {
-        console.warn(error)
+        throw new Error("Mongodb disconnect.")
     }
 }
