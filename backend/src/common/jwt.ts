@@ -1,5 +1,7 @@
 import jwt from "jsonwebtoken";
 import { TokenPayload } from "../types/type";
+import dotenv from "dotenv";
+dotenv.config();
 const ACCESS_TOKEN = process.env.ACCESS_SECRET_KEY;
 const REFRESH_TOKEN = process.env.REFRESH_SECRET_KEY;
 const access_token_expire = process.env.NODE_ENV === "production" ? "15min" : "1day"

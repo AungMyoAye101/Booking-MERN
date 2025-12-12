@@ -1,4 +1,4 @@
-import express from "express";
+
 import dotenv from "dotenv";
 import { Request, Response } from "express";
 import app from "./app";
@@ -16,5 +16,5 @@ app.get('/', (_req: Request, res: Response) => {
 
 app.listen(port, () => {
   connectToDb();
-  console.log("server is listening on port " + port);
+  console.log(`server is listening on  http://localhost:${port}`);
 });
