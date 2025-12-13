@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 import Hotel from "../models/hotel.model";
 import mongoose from "mongoose";
-import { FilesRequest, HotelWithImage, UploadedFile } from "../types/type";
+import { HotelWithImage, UploadedFile } from "../types/type";
 import fs from "fs/promises"
 
 import { v2 as cloudinary, v2 } from "cloudinary"
@@ -60,7 +60,7 @@ export const updateHotel = async (req: Request, res: Response) => {
     await Promise.all(photos.map(img => (
       fs.unlink(img.path)
     )))
-    const hotel = await Hotel.findById(id).populate("photos") as HotelWithImage
+    const hotel = await Hotel.findById(id).populate("photos") as any
     const photosToDelete = hotel.photos.filter(img => !existingPhotos.includes(img._id))
 
     if (photosToDelete) {

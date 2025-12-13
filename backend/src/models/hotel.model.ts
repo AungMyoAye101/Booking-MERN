@@ -7,7 +7,7 @@ export interface IHotel extends Document {
   name: string,
   title: string,
   description: string,
-  photos: mongoose.Types.ObjectId[] | IImage[],
+  photo: mongoose.Types.ObjectId | IImage,
   rating: number,
   star: number,
   type: "hotel" | "motel" | "guest-house",
@@ -34,10 +34,10 @@ const hotelSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
-    photos: [{
+    photo: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "Image",
-    }],
+    },
     rating: {
       type: Number,
       min: 1,

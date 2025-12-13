@@ -8,15 +8,15 @@ export interface TokenPayload {
     role: "admin" | "staff" | null
 }
 
-export interface JWTPayloadType {
-    id: string,
-    isAdmin: boolean,
-}
+// export interface JWTPayloadType {
+//     id: string,
+//     isAdmin: boolean,
+// }
 
-export interface RequestWithUser extends Request {
-    user?: JWTPayloadType,
-    cookies: { token?: string },
-}
+// export interface RequestWithUser extends Request {
+//     user?: JWTPayloadType,
+//     cookies: { token?: string },
+// }
 
 export interface UploadedFile {
     fieldname: string;
@@ -29,9 +29,9 @@ export interface UploadedFile {
     size: number;
 }
 
-export interface FilesRequest extends Request {
-    files?: any[]
-}
+// export interface FilesRequest extends Request {
+//     files?: any[]
+// }
 
 export interface BookingType {
     _id: string,
@@ -43,6 +43,6 @@ export interface BookingType {
 
 }
 
-export interface HotelWithImage extends IHotel {
-    photos: IImage[]
+export interface HotelWithImageType extends IHotel {
+    photo: IImage[]
 }

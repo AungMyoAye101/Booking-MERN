@@ -1,6 +1,5 @@
 
 import multer from "multer"
-import { v2 as cloudinary } from "cloudinary"
 
 const storage = multer.diskStorage({
     destination: (_req, _file, cb) => {
