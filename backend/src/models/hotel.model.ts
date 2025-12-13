@@ -9,14 +9,15 @@ export interface IHotel extends Document {
   description: string,
   photos: mongoose.Types.ObjectId[] | IImage[],
   rating: number,
-  type: string,
+  star: number,
+  type: "hotel" | "motel" | "guest-house",
   address: string,
-  rooms: Types.ObjectId[] | IRoom[]
-  reviews: Types.ObjectId[] | IReview[]
   price: number
   amenities: string[]
   distance: string,
   city: string,
+  rooms: Types.ObjectId[] | IRoom[]
+  reviews: Types.ObjectId[] | IReview[]
 }
 
 const hotelSchema = new mongoose.Schema(
@@ -39,12 +40,18 @@ const hotelSchema = new mongoose.Schema(
     }],
     rating: {
       type: Number,
-      min: 0,
+      min: 1,
+      max: 10,
+    },
+    star: {
+      type: Number,
+      min: 1,
       max: 5,
     },
     type: {
       type: String,
       required: true,
+      default: "hotel"
     },
     address: {
       type: String,
