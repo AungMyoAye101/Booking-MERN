@@ -11,5 +11,6 @@ export const checkMongoIdValid = (
             path: "id"
         }])
     }
+    return id;
 }
 

@@ -15,6 +15,7 @@ import searchRouter from "./routes/search.route";
 import roomRouter from "./routes/room.route";
 import reviewRouter from "./routes/review.route";
 import bookingRouter from "./routes/booking.route";
+import { isAuthenticated } from "./middleware/isAuthenticated";
 
 const app = express();
 
@@ -45,7 +46,7 @@ cloudinary.config({
 app.use("/api/v1/admin", adminRouter)
 app.use("/api/v1/auth", authRouter);
 app.use("/api/v1/user", userRouter);
-app.use("/api/v1/hotel", hotelRouter);
+app.use("/api/v1/hotel", isAuthenticated, hotelRouter);
 app.use("/api/v1/search", searchRouter);
 app.use("/api/v1/room", roomRouter);
 app.use("/api/v1/review", reviewRouter)
