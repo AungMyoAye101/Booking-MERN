@@ -2,7 +2,7 @@ import { v2 as cloudinary } from "cloudinary";
 import { Request } from "express"
 import { HotelWithImageType, UploadedFile } from "../types/type"
 import { checkMongoIdValid } from "../common/helper";
-import { BadRequestError, NotFoundError } from "../common/errors";
+import { BadRequestError, NotFoundError, ValidationError } from "../common/errors";
 import Image from "../models/image.model";
 import Hotel from "../models/hotel.model";
 import fs from "fs/promises";
@@ -11,7 +11,10 @@ export const uploadHotelImgService = async (
     req: Request
 ) => {
     if (!req.file) {
-        throw new BadRequestError("Image is required.")
+        throw new ValidationError([{
+            message: "Image is required.",
+            path: "image"
+        }]);
     }
     const file = req.file;
     //upload img to cloudinary 
@@ -43,19 +46,39 @@ export const uploadHotelImgService = async (
 
 //remove image from hotel
 
-// export const removeHotelImgService = async (
-//     req: Request
-// ) => {
-//     const hotelId = checkMongoIdValid(req.validatedParams.id);
-//     const hotel = await Hotel.findById(hotelId).populate("photo") as any;
-//     if (!hotel) {
-//         throw new NotFoundError("Hotel was not found.")
-//     }
+export const updateHotelImgService = async (
+    req: Request
+) => {
+    if (!req.file) {
+        throw new ValidationError([{
+            message: "Image is required.",
+            path: "image"
+        }]);
+    };
+    const file = req.file;
 
-//     const deletePhoto = await Promise.all([
-//         v2.uploader.destroy(hotel.photo.public_id),
-//         Image.findByIdAndDelete(hotel.photo._id)
-//     ])
-//     hotel.photo = {};
-//     return hotel;
-// }
+
+    const hotelId = checkMongoIdValid(req.validatedParams.hotelId);
+    const imageId = checkMongoIdValid(req.validatedParams.imageId)
+    const hotel = await Hotel.findById(hotelId).populate("photo") as any;
+
+    if (!hotel) {
+        throw new NotFoundError("Hotel was not found.")
+    }
+
+    const [deletePhoto, uploaded] = await Promise.all([
+        cloudinary.uploader.destroy(hotel.photo.public_id),
+        cloudinary.uploader.upload(file.path, {
+            folder: "Booking",
+            resource_type: "image"
+        })
+    ]);
+    if (!uploaded) {
+        throw new BadRequestError("Failed to upload image to cloudinary.")
+    };
+    const updateImage = await Image.findByIdAndUpdate(imageId, { secure_url: uploaded.secure_url, public_id: uploaded.public_id })
+    hotel.photo = updateImage?._id;
+    await hotel.save()
+    await fs.unlink(file.path);
+    return hotel;
+}

@@ -32,4 +32,9 @@ export const hotelSchema = z.object({
 
 })
 
+export const hotelIdSchema = z.object({
+    imageId: z.string("Image id is required."),
+    hotelId: z.string("Hotel id is required.")
+})
+
 export type hotelType = z.infer<typeof hotelSchema>
