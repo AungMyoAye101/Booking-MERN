@@ -1,10 +1,20 @@
 
-import { createHotelController, deleteHotelController, getAllHotelController, getHotelByIdController, updateHotelController } from "../controller/hotel.controller";
-import { validateRequestBody, validateRequestParams } from "../middleware/validation.middleware";
-import { upload } from "../utils/cloudinary";
+import {
+    createHotelController,
+    deleteHotelController,
+    getAllHotelController,
+    getHotelByIdController,
+    updateHotelController
+} from "../controller/hotel.controller";
+import {
+    validateRequestBody,
+    validateRequestParams,
+    validateRequestQuery,
+} from "../middleware/validation.middleware";
 import { Router } from "express";
 import { hotelSchema } from "../validation/hotelSchema";
 import { IDSchema } from "../validation/authSchema";
+import { paginationSchmea } from "../validation/pagination";
 // import {
 //     createHotel,
 //     deleteHotel,
@@ -34,6 +44,7 @@ const router = Router();
 
 router.get(
     '/',
+    validateRequestQuery(paginationSchmea),
     getAllHotelController);
 router.get(
     '/:id',
