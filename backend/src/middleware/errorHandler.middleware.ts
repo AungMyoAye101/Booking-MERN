@@ -1,5 +1,6 @@
 import { Request, Response, NextFunction } from "express";
 import { CustomError, ValidationError } from "../common/errors";
+import multer from "multer";
 
 export const errorHandler = async (
     err: Error,
@@ -13,6 +14,13 @@ export const errorHandler = async (
             message: err.message,
             status: err.statusCode,
             error: err.generateErrors()
+        })
+    } else if (err instanceof multer.MulterError) {
+        return res.status(400).json({
+            success: false,
+            message: err.message,
+            status: 400,
+
         })
     } else if (err instanceof CustomError) {
         return res.status(err.statusCode).json({

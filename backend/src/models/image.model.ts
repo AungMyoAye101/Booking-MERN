@@ -3,8 +3,6 @@ import mongoose, { Document } from "mongoose";
 export interface IImage extends Document {
     secure_url: string,
     public_id: string,
-    placeholder: string,
-    metadata: string,
 }
 
 const imageSchema = new mongoose.Schema<IImage>({
@@ -16,12 +14,6 @@ const imageSchema = new mongoose.Schema<IImage>({
         type: String,
         required: true,
     },
-    placeholder: {
-        type: String,
-    },
-    metadata: {
-        type: String,
-    }
 })
 
 const Image = mongoose.model<IImage>("Image", imageSchema)
