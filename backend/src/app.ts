@@ -3,7 +3,6 @@ import dotenv from "dotenv";
 import { v2 as cloudinary } from "cloudinary";
 import cookieParser from "cookie-parser";
 import cors from "cors";
-import { Request, Response } from "express";
 import { limiter } from "./utils/limiter";
 import { errorHandler } from "./middleware/errorHandler.middleware";
 //routers 

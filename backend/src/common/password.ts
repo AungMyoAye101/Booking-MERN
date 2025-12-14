@@ -6,5 +6,6 @@ export const comparedPassword = (
     newPassword: string,
     password: string
 ) => {
+    console.log(newPassword, password)
     return bcrypt.compare(newPassword, password)
 }

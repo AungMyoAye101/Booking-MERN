@@ -37,11 +37,12 @@ export const adminLoginService = async (
 ) => {
     const user = await Admin.findOne({ email })
     if (!user) {
-        throw new NotFoundError("Invalid email or paddword,")
+        throw new NotFoundError("Invalid email or password,")
     }
-    const isMatch = await comparedPassword(user.password, password);
+    const isMatch = await comparedPassword(password, user.password);
+    console.log(isMatch)
     if (!isMatch) {
-        throw new BadRequestError("Invalid email or paddword,")
+        throw new BadRequestError("Invalid email or password,")
     }
     const access_token = generateAccessToken({
         id: user._id,

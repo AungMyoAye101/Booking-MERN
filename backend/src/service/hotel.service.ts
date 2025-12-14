@@ -6,7 +6,7 @@ import { hotelType } from "../validation/hotelSchema";
 export const createHotelService = async (
     data: hotelType
 ) => {
-    return await Hotel.create({ data });
+    return await Hotel.create(data);
 }
 //update hotel
 export const updateHotelService = async (
@@ -18,7 +18,7 @@ export const updateHotelService = async (
     if (!hotel) {
         throw new NotFoundError("Hotel not found.")
     }
-    await Hotel.findByIdAndUpdate(hotel._id, { data })
+    return await Hotel.findByIdAndUpdate(hotel._id, { data })
 }
 
 export const deleteHotelService = async (id: string) => {

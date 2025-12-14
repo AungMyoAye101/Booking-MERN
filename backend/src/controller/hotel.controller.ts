@@ -8,13 +8,13 @@ export const createHotelController = async (
     next: NextFunction
 ) => {
     try {
-        const data = await createHotelService(req.validatedBody)
+        const hotel = await createHotelService(req.validatedBody)
 
         successResponse(
             res,
             201,
             "Hotel created succefull.",
-            { data }
+            { hotel }
         )
     } catch (error) {
         return next(error);
@@ -26,12 +26,12 @@ export const updateHotelController = async (
     next: NextFunction
 ) => {
     try {
-        const data = await updateHotelService(req.validatedParams, req.validatedBody)
+        const hotel = await updateHotelService(req.validatedParams.id, req.validatedBody)
         successResponse(
             res,
             201,
             "Hotel updated succefull.",
-            { data }
+            { hotel }
         )
     } catch (error) {
         return next(error);
@@ -43,12 +43,12 @@ export const deleteHotelController = async (
     next: NextFunction
 ) => {
     try {
-        const data = await deleteHotelService(req.validatedParams);
+        const hotel = await deleteHotelService(req.validatedParams.id);
         successResponse(
             res,
             200,
-            "Hotel deleted succefull.",
-            { data }
+            "Hotel deleted successfull.",
+            { hotel }
         )
     } catch (error) {
         return next(error);
@@ -60,13 +60,13 @@ export const getHotelByIdController = async (
     next: NextFunction
 ) => {
     try {
-        const data = await getHotelByIdService(req.validatedParams);
+        const hotel = await getHotelByIdService(req.validatedParams.id);
 
         successResponse(
             res,
-            201,
-            "Get hotel by id succefull.",
-            { data }
+            200,
+            "Get hotel by id successfull.",
+            { hotel }
         )
     } catch (error) {
         return next(error);
@@ -78,12 +78,12 @@ export const getAllHotelController = async (
     next: NextFunction
 ) => {
     try {
-        const data = await getAllHotelsService()
+        const hotels = await getAllHotelsService()
         successResponse(
             res,
-            201,
-            "Hotel created succefull.",
-            { data }
+            200,
+            "Get all hotels successfull.",
+            { hotels }
         )
     } catch (error) {
         return next(error);

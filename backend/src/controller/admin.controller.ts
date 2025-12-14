@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction } from "express";
 import { successResponse } from "../common/successResponse";
-import { adminLogoutService, adminRefreshService, adminRegisterService } from "../service/auth.admin.service";
+import { adminLoginService, adminLogoutService, adminRefreshService, adminRegisterService } from "../service/auth.admin.service";
 import { genterateCookie } from "../common/generateCookie";
 
 export const adminRegisterController = async (
@@ -41,7 +41,7 @@ export const adminLoginController = async (
     next: NextFunction
 ) => {
     try {
-        const { user, access_token, refresh_token } = await adminRegisterService(req.validatedBody);
+        const { user, access_token, refresh_token } = await adminLoginService(req.validatedBody);
         res.cookie(
             "refreh_token",
             refresh_token,
