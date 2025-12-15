@@ -25,10 +25,12 @@ const hotelSchema = new mongoose.Schema(
     name: {
       type: String,
       required: true,
+      index: true
     },
     title: {
       type: String,
       required: true,
+      index: true
     },
     description: {
       type: String,
@@ -42,16 +44,19 @@ const hotelSchema = new mongoose.Schema(
       type: Number,
       min: 1,
       max: 10,
+      index: true
     },
     star: {
       type: Number,
       min: 1,
       max: 5,
+      index: true
     },
     type: {
       type: String,
       required: true,
-      default: "hotel"
+      default: "hotel",
+      index: true
     },
     address: {
       type: String,
@@ -75,7 +80,8 @@ const hotelSchema = new mongoose.Schema(
     },
     amenities: {
       type: [String],
-      requried: true
+      requried: true,
+      index: true
     },
     distance: {
       type: String,
@@ -84,6 +90,7 @@ const hotelSchema = new mongoose.Schema(
     city: {
       type: String,
       required: true,
+      index: true
     },
   },
   { timestamps: true }

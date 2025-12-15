@@ -8,7 +8,7 @@ import { Request } from "express";
 export const adminRegisterService = async (
     { name, email, password }: registerType
 ) => {
-    const exitingUser = await Admin.findOne({ email });
+    const exitingUser = await Admin.exists({ email });
     if (exitingUser) {
         throw new BadRequestError("Email is already exit.")
     }
@@ -30,7 +30,13 @@ export const adminRegisterService = async (
     })
     user.token = refresh_token;
     await user.save()
-    return { user, access_token, refresh_token }
+    return {
+        user: {
+            _id: user._id,
+            name: user.name,
+            email: user.email
+        }, access_token, refresh_token
+    }
 }
 export const adminLoginService = async (
     { email, password }: loginType
@@ -56,11 +62,17 @@ export const adminLoginService = async (
     })
     user.token = refresh_token;
     await user.save()
-    return { user, access_token, refresh_token }
+    return {
+        user: {
+            _id: user._id,
+            name: user.name,
+            email: user.email
+        }, access_token, refresh_token
+    }
 }
 export const adminLogoutService = async (id: string) => {
     return await Admin.findByIdAndUpdate(id, {
-        token: null
+        $unset: { token: "" }
     })
 }
 
@@ -87,5 +99,12 @@ export const adminRefreshService = async (
         role: "admin"
     })
     user.token = refresh_token;
-    return { user, access_token, refresh_token }
+    await user.save();
+    return {
+        user: {
+            _id: user._id,
+            name: user.name,
+            email: user.email
+        }, access_token, refresh_token
+    }
 }

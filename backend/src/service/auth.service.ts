@@ -8,7 +8,7 @@ import { Request } from "express";
 export const registerService = async (
     { name, email, password }: registerType
 ) => {
-    const exitUser = await User.findOne({ email });
+    const exitUser = await User.exists({ email });
     if (exitUser) {
         throw new BadRequestError("User already exit.");
     }
@@ -23,13 +23,22 @@ export const registerService = async (
 
     user.token = refresh_token;
     await user.save();
-    return { user, access_token, refresh_token }
+    return {
+        user: {
+            _id: user._id,
+            name: user.name,
+            email: user.email,
+
+        },
+        access_token,
+        refresh_token
+    }
 
 }
 export const loginService = async (
     { email, password }: loginType
 ) => {
-    const user = await User.findOne({ email });
+    const user = await User.findOne({ email }).select("_id password name email ")
     if (!user) {
         throw new NotFoundError("User not found.")
     }
@@ -43,15 +52,23 @@ export const loginService = async (
     user.token = refresh_token;
     await user.save();
     return {
-        user, access_token, refresh_token
+        user: {
+            _id: user._id,
+            name: user.name,
+            email: user.email,
+        },
+        access_token,
+        refresh_token
     }
 
 }
 
 export const logoutService = async (id: string) => {
-    return await User.findByIdAndUpdate(id, {
-        token: null
-    })
+    return await User.updateOne(
+        { _id: id },
+        {
+            $unset: { token: "" }
+        })
 }
 
 export const refreshService = async (
@@ -63,7 +80,7 @@ export const refreshService = async (
     }
     const decoded = await verifyRefreshToken(token);
 
-    const user = await User.findOne({ id: decoded._id })
+    const user = await User.findOne({ id: decoded._id }).select("+token")
 
     if (!user) {
         throw new NotFoundError("User not found.")
@@ -79,6 +96,13 @@ export const refreshService = async (
         role: null
     })
     user.token = refresh_token;
-    return { user, access_token, refresh_token }
+    await user.save();
+    return {
+        user: {
+            _id: user._id,
+            name: user.name,
+            email: user.email,
+        }, access_token, refresh_token
+    }
 }
 

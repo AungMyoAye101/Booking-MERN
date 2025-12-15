@@ -14,11 +14,13 @@ const UserSchema = new mongoose.Schema(
     name: {
       type: String,
       required: true,
+      index: true
     },
     email: {
       type: String,
       required: true,
       unique: true,
+      index: true,
     },
     password: {
       type: String,
@@ -26,15 +28,18 @@ const UserSchema = new mongoose.Schema(
     },
     city: {
       type: String,
+      index: true
     },
     country: {
       type: String,
+      index: true
     },
     phone: {
       type: String,
     },
     token: {
-      type: String
+      type: String,
+      select: false
     }
     ,
   },

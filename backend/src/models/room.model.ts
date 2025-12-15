@@ -11,7 +11,8 @@ export interface IRoom extends Document {
   maxPeople: number,
   price: number,
   hotel: Types.ObjectId,
-  roomNumbers: RoomNumbers[]
+  roomNumbers: RoomNumbers[],
+  photo: Types.ObjectId,
 
 }
 
@@ -20,6 +21,7 @@ const roomSchema = new mongoose.Schema(
     title: {
       type: String,
       required: true,
+      index: true
     },
     description: {
       type: String,
@@ -50,6 +52,10 @@ const roomSchema = new mongoose.Schema(
       ref: "Hotel",
       required: true,
     },
+    photo: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Image",
+    }
   },
   { timestamps: true }
 );
