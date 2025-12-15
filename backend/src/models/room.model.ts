@@ -1,17 +1,15 @@
 import mongoose, { Document, Types } from "mongoose";
 import { IBooking } from "./booking.model";
 
-interface RoomNumbers {
-  number: number,
-  booking: Types.ObjectId[] | IBooking[]
-}
+
 export interface IRoom extends Document {
   title: string,
   description: string,
   maxPeople: number,
   price: number,
   hotel: Types.ObjectId,
-  roomNumbers: RoomNumbers[],
+  roomNo: number,
+  booking: Types.ObjectId[] | IBooking[]
   photo: Types.ObjectId,
 
 }
@@ -38,14 +36,13 @@ const roomSchema = new mongoose.Schema(
       required: true,
     },
 
-    roomNumbers: [{
-      number: {
-        type: Number, required: true
-      },
-      booking: [{
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "Booking",
-      }]
+    roomNo: {
+      type: Number,
+      required: true
+    },
+    booking: [{
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Booking",
     }],
     hotel: {
       type: mongoose.Schema.Types.ObjectId,
