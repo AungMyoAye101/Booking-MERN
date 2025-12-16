@@ -1,6 +1,8 @@
 import { Request, Response, NextFunction } from "express";
 import { UnAuthorizedError } from "../common/errors";
 import { verifyAccessToken } from "../common/jwt";
+type roleType = "admin" | "staff";
+
 
 export const isAuthenticated = async (
     req: Request,
@@ -18,5 +20,14 @@ export const isAuthenticated = async (
         next();
     } catch (error) {
         return next(error)
+    }
+};
+
+export const hasRole = (role: roleType[]) => {
+    return (req: Request, _res: Response, next: NextFunction) => {
+        if (!role.includes(req.user.role)) {
+            throw new UnAuthorizedError("Your are not authorized.")
+        }
+        next();
     }
 }

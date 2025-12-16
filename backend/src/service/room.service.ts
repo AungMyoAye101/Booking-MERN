@@ -2,10 +2,8 @@ import { BadRequestError, NotFoundError } from "../common/errors";
 import Hotel from "../models/hotel.model"
 import Room from "../models/room.model";
 import { createRoomType } from "../validation/roomSchema";
-import {
-    Request
+import { Request } from "express";
 
-} from "express";
 export const createRoomService = async (
     hotelId: string,
     data: createRoomType
@@ -60,13 +58,8 @@ export const getRoomByIdService = async (id: string) => {
     return await Room.findById(id).lean();
 }
 
-export const getRoomByHotelIdService = async (
+export const getRoomsByHotelIdService = async (
     hotelId: string,
 ) => {
-    const hotel = await Hotel.exists({ _id: hotelId });
-    if (!hotel) {
-        throw new NotFoundError("Hotel not found.");
-    };
-
-    return await Room.find({ _id: hotelId }).lean();
+    return await Room.find({ hotel: hotelId }).lean();
 }

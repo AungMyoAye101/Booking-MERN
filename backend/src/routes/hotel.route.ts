@@ -7,6 +7,7 @@ import {
     updateHotelController
 } from "../controller/hotel.controller";
 import {
+    checkMongoDBId,
     validateRequestBody,
     validateRequestParams,
     validateRequestQuery,
@@ -15,6 +16,7 @@ import { Router } from "express";
 import { hotelSchema } from "../validation/hotelSchema";
 import { IDSchema } from "../validation/authSchema";
 import { paginationSchmea } from "../validation/pagination";
+import { hasRole } from "../middleware/isAuthenticated";
 // import {
 //     createHotel,
 //     deleteHotel,
@@ -48,20 +50,23 @@ router.get(
     getAllHotelController);
 router.get(
     '/:id',
-    validateRequestParams(IDSchema),
+    checkMongoDBId(["id"]),
     getHotelByIdController)
 router.post(
     "/create",
+    hasRole(['admin', 'staff']),
     validateRequestBody(hotelSchema),
     createHotelController);
 router.put(
     "/update/:id",
-    validateRequestParams(IDSchema),
+    hasRole(['admin', 'staff']),
+    checkMongoDBId(["id"]),
     validateRequestBody(hotelSchema),
     updateHotelController);
 router.delete(
     '/delete/:id',
-    validateRequestParams(IDSchema),
+    hasRole(['admin', 'staff']),
+    checkMongoDBId(["id"]),
     deleteHotelController)
 
 export default router;

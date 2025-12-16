@@ -15,27 +15,16 @@ export const updateHotelService = async (
     id: string,
     data: hotelType
 ) => {
-    checkMongoIdValid(id);
-    const hotel = await Hotel.findById(id);
-    if (!hotel) {
-        throw new NotFoundError("Hotel not found.")
-    }
-    return await Hotel.findByIdAndUpdate(hotel._id, { data })
+    return await Hotel.findByIdAndUpdate(id, { data })
 }
 
 export const deleteHotelService = async (id: string) => {
-    checkMongoIdValid(id);
-    const hotel = await Hotel.findById(id);
-    if (!hotel) {
-        throw new NotFoundError("Hotel not found.")
-    };
-
-    return await Hotel.findByIdAndDelete(hotel._id);
+    return await Hotel.findByIdAndDelete(id);
 }
 //get hotel by id
 export const getHotelByIdService = async (id: string) => {
-    checkMongoIdValid(id);
-    const hotel = await Hotel.findById(id);
+
+    const hotel = await Hotel.findById(id).lean();
     if (!hotel) {
         throw new NotFoundError("Hotel not found.")
     }
@@ -49,7 +38,7 @@ export const getAllHotelsService = async (
     const page = pagination.page || 1;
     const limit = pagination.limit || 10;
     const skip = (page - 1) * limit;
-    const hotels = await Hotel.find().skip(skip).limit(limit);
+    const hotels = await Hotel.find().skip(skip).limit(limit).lean();
 
     const total = await Hotel.countDocuments();
     const meta = paginationResponseFormater(page, limit, total)

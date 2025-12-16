@@ -45,8 +45,8 @@ app.use("/api/v1/auth", authRouter);
 app.use("/api/v1/user", userRouter);
 app.use("/api/v1/hotel", isAuthenticated, hotelRouter);
 app.use("/api/v1/image", imageRouter)
-app.use("/api/v1/search", searchRouter);
 app.use("/api/v1/room", roomRouter);
+app.use("/api/v1/search", searchRouter);
 app.use("/api/v1/review", reviewRouter)
 app.use("/api/v1/booking", bookingRouter)
 

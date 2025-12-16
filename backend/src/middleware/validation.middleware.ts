@@ -1,6 +1,7 @@
 import * as z from "zod";
 import { Request, Response, NextFunction } from "express"
 import { ValidationError } from "../common/errors";
+import mongoose from "mongoose";
 
 
 type validationPropsType = {
@@ -49,3 +50,20 @@ export const validateRequestParams = (schema: z.Schema<any>) => {
 export const validateRequestQuery = (schema: z.Schema<any>) => {
     return validation({ schema, target: "QUERY", })
 }
+
+export const checkMongoDBId = (ids: string[]) => {
+    return (req: Request, _res: Response, next: NextFunction) => {
+        ids.map(id => {
+            const mongoId = req.params.id;
+            if (!mongoose.Types.ObjectId.isValid(mongoId)) {
+                throw new ValidationError([{
+                    "message": "Invalid mongoId error.",
+                    "path": mongoId,
+                }]);
+
+            };
+            req.validatedParams = mongoId;
+        });
+        next()
+    };
+};
