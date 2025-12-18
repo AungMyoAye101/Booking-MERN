@@ -8,16 +8,9 @@ export const createRoomService = async (
     hotelId: string,
     data: createRoomType
 ) => {
-    const hotel = await Hotel.exists({ _id: hotelId });
-    if (!hotel) {
-        throw new NotFoundError("Hotel not found.")
-    };
-    const room = await Room.create({ data, hotel: hotelId });
-    if (!room) {
-        throw new BadRequestError("Faild to create room.")
-    }
-    const update = await Hotel.findByIdAndUpdate(hotelId, { rooms: { $push: room._id } }, { new: true })
-    return { room, hotel: update }
+
+    return await Room.create({ ...data, hotel: hotelId });
+
 };
 
 export const updateRoomService = async (

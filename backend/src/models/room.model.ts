@@ -1,15 +1,14 @@
 import mongoose, { Document, Types } from "mongoose";
-import { IBooking } from "./booking.model";
 
 
 export interface IRoom extends Document {
   title: string,
   description: string,
+  type: string,
   maxPeople: number,
   price: number,
   hotel: Types.ObjectId,
   roomNo: number,
-  booking: Types.ObjectId[] | IBooking[]
   photo: Types.ObjectId,
 
 }
@@ -25,7 +24,10 @@ const roomSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
-
+    type: {
+      type: String,
+      required: true
+    },
     maxPeople: {
       type: Number,
       required: true,
@@ -40,10 +42,6 @@ const roomSchema = new mongoose.Schema(
       type: Number,
       required: true
     },
-    booking: [{
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "Booking",
-    }],
     hotel: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "Hotel",

@@ -34,7 +34,15 @@ router.post(
     "/:hotelId/create",
     isAuthenticated,
     hasRole(["admin", "staff"]),
-    checkMongoDBId(["roomId"]),
+    checkMongoDBId(["hotelId"]),
+    validateRequestBody(roomSchema),
+    createRoomController
+)
+router.post(
+    "/:hotelId/update",
+    isAuthenticated,
+    hasRole(["admin", "staff"]),
+    checkMongoDBId(["hotelId"]),
     validateRequestBody(roomSchema),
     updateRoomController
 )

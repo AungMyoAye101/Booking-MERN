@@ -16,8 +16,6 @@ export interface IHotel extends Document {
   amenities: string[]
   distance: string,
   city: string,
-  rooms: Types.ObjectId[] | IRoom[]
-  reviews: Types.ObjectId[] | IReview[]
 }
 
 const hotelSchema = new mongoose.Schema(
@@ -62,18 +60,6 @@ const hotelSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
-    rooms: [
-      {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "Room",
-      },
-    ],
-    reviews: [
-      {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "Review",
-      },
-    ],
     price: {
       type: Number,
       requried: true,

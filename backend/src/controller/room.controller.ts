@@ -15,12 +15,13 @@ export const createRoomController = async (
     next: NextFunction
 ) => {
     try {
-        const data = await createRoomService(req.validatedParams.hotelId, req.validatedBody);
+
+        const room = await createRoomService(req.validatedParams.hotelId, req.validatedBody);
         successResponse(
             res,
             201,
             "Room  created successfull.",
-            { data }
+            { room }
         )
     } catch (error) {
         return next(error)

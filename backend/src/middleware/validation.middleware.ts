@@ -53,17 +53,20 @@ export const validateRequestQuery = (schema: z.Schema<any>) => {
 
 export const checkMongoDBId = (ids: string[]) => {
     return (req: Request, _res: Response, next: NextFunction) => {
-        ids.map(id => {
-            const mongoId = req.params.id;
+        for (const id of ids) {
+
+            const mongoId = req.params[id];
+
             if (!mongoose.Types.ObjectId.isValid(mongoId)) {
                 throw new ValidationError([{
                     "message": "Invalid mongoId error.",
-                    "path": mongoId,
+                    "path": `Mogodb Id ${mongoId}`,
                 }]);
 
             };
-            req.validatedParams = mongoId;
-        });
+            req.validatedParams = { [id]: mongoId };
+
+        };
         next()
     };
 };
