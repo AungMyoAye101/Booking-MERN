@@ -33,12 +33,12 @@ export const updateRoomController = async (
     next: NextFunction
 ) => {
     try {
-        const data = await updateRoomService(req);
+        const room = await updateRoomService(req);
         successResponse(
             res,
             201,
             "Room  updated successfull.",
-            { data }
+            { room }
         )
     } catch (error) {
         return next(error)
@@ -50,12 +50,12 @@ export const deleteRoomController = async (
     next: NextFunction
 ) => {
     try {
-        const data = await deleteRoomService(req);
+        const room = await deleteRoomService(req);
         successResponse(
             res,
             201,
             "Room  deleted successfull.",
-            { data }
+            { room }
         )
     } catch (error) {
         return next(error)
@@ -67,7 +67,7 @@ export const getAllRoomByHotelIdController = async (
     next: NextFunction
 ) => {
     try {
-        const data = await getRoomsByHotelIdService(req.validatedParams.hotelId);
+        const data = await getRoomsByHotelIdService(req);
         successResponse(
             res,
             20,
@@ -84,12 +84,12 @@ export const getRoomByIdController = async (
     next: NextFunction
 ) => {
     try {
-        const data = await getRoomByIdService(req.validatedParams.id);
+        const room = await getRoomByIdService(req.validatedParams.id);
         successResponse(
             res,
-            20,
+            200,
             "Room  get by id successfull.",
-            { data }
+            { room }
         )
     } catch (error) {
         return next(error)
