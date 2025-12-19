@@ -1,9 +1,8 @@
 import { Router } from "express";
 import { checkMongoDBId, validateRequestParams } from "../middleware/validation.middleware";
-import { IDSchema } from "../validation/authSchema";
 import upload from "../config/multer";
 import { hotelImageUpdateController, hotelImageUploadController, roomImageUpdateController, roomImageUploadController } from "../controller/image.controller";
-import { hotelIdSchema } from "../validation/hotelSchema";
+
 
 const router = Router();
 
@@ -14,8 +13,8 @@ router.post(
     hotelImageUploadController);
 
 router.put(
-    '/update/:imageId/hotel/:hotelId',
-    checkMongoDBId(['imageId', 'hotelId']),
+    '/update/hotel/:hotelId',
+    checkMongoDBId(['hotelId']),
     upload.single("image"),
     hotelImageUpdateController);
 router.post(
@@ -25,9 +24,9 @@ router.post(
     roomImageUploadController);
 
 router.put(
-    '/update/:imageId/hotel/:hotelId',
+    '/update/hotel/:hotelId',
     upload.single("image"),
-    checkMongoDBId(['imageId', 'roomId']),
+    checkMongoDBId(['roomId']),
     roomImageUpdateController);
 
 

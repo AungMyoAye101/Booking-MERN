@@ -7,6 +7,7 @@ import Image from "../models/image.model";
 import Hotel from "../models/hotel.model";
 import fs from "fs/promises";
 import Room from "../models/room.model";
+import mongoose from "mongoose";
 
 export const uploadHotelImgService = async (
     req: Request
@@ -18,32 +19,53 @@ export const uploadHotelImgService = async (
         }]);
     }
     const file = req.file;
+    const { hotelId } = req.validatedParams
     //upload img to cloudinary 
+    let uploaded;
 
-    const uploaded = await cloudinary.uploader.upload(
-        file.path,
-        {
-            folder: "Booking",
-            resource_type: "image"
-        });
+    const session = await mongoose.startSession();
+    try {
+        uploaded = await cloudinary.uploader.upload(
+            file.path,
+            {
+                folder: "Booking",
+                resource_type: "image"
+            });
 
-    if (!uploaded) {
-        throw new BadRequestError("Failed to upload image to cloudinary.")
+        if (!uploaded) {
+            throw new BadRequestError("Failed to upload image to cloudinary.")
+        }
+
+        //start mogoose transticaton
+        session.startTransaction();
+
+        const hotel = await Hotel.findById(hotelId).session(session);
+        if (!hotel) {
+            throw new NotFoundError("Hotel was not found.");
+        }
+        const image = await Image.create([{
+            secure_url: uploaded.secure_url,
+            public_id: uploaded.public_id,
+        }], { session });
+
+        hotel.photo = image[0]._id as mongoose.Types.ObjectId;
+        await hotel.save({ session });
+        await session.commitTransaction();
+        return hotel;
+    } catch (error) {
+        await session.abortTransaction();
+        if (uploaded?.public_id) {
+            await cloudinary.uploader.destroy(uploaded.public_id).catch(() => { });
+        }
+        throw error;
+    } finally {
+        await session.endSession();
+        await fs.unlink(file.path);
     }
-    const hotelId = checkMongoIdValid(req.params.id);
-    const image = await Image.create({
-        secure_url: uploaded.secure_url,
-        public_id: uploaded.public_id,
-    });
+}
 
-    const updatedHotel = await Hotel.findByIdAndUpdate(hotelId, { photo: image._id })
 
-    if (!updatedHotel) {
-        throw new NotFoundError("Hotel was not found.");
-    }
-    await fs.unlink(file.path);
-    return updatedHotel;
-};
+
 
 //remove image from hotel
 
@@ -57,32 +79,52 @@ export const updateHotelImgService = async (
         }]);
     };
     const file = req.file;
-
-
-    const hotelId = checkMongoIdValid(req.validatedParams.hotelId);
-    const imageId = checkMongoIdValid(req.validatedParams.imageId)
-    const hotel = await Hotel.findById(hotelId).populate("photo") as any;
-
-    if (!hotel) {
-        throw new NotFoundError("Hotel was not found.")
+    const { hotelId } = req.validatedParams
+    if (!hotelId) {
+        throw new BadRequestError("Hotel Id is required.")
     }
-
-    const [deletePhoto, uploaded] = await Promise.all([
-        cloudinary.uploader.destroy(hotel.photo.public_id),
-        cloudinary.uploader.upload(file.path, {
+    let uploaded;
+    const session = await mongoose.startSession()
+    try {
+        uploaded = await cloudinary.uploader.upload(file.path, {
             folder: "Booking",
             resource_type: "image"
         })
-    ]);
-    if (!uploaded) {
-        throw new BadRequestError("Failed to upload image to cloudinary.")
-    };
-    const updateImage = await Image.findByIdAndUpdate(imageId, { secure_url: uploaded.secure_url, public_id: uploaded.public_id })
-    hotel.photo = updateImage?._id;
-    await hotel.save()
-    await fs.unlink(file.path);
-    return hotel;
+
+        if (!uploaded) {
+            throw new BadRequestError("Failed to upload image to cloudinary.")
+        };
+
+        session.startTransaction();
+        const hotel = await Hotel.findById(hotelId).session(session);
+
+        if (!hotel || !hotel.photo) {
+            throw new NotFoundError("Hotel or photo was not found.")
+        }
+        const image = await Image.findById(hotel.photo).session(session);
+        if (!image) {
+            throw new NotFoundError("Image was not found.")
+        }
+        const oldPhotoId = image.public_id;
+        image.secure_url = uploaded.secure_url;
+        image.public_id = uploaded.public_id;
+        await image.save({ session });
+
+        await cloudinary.uploader.destroy(oldPhotoId)
+        await session.commitTransaction()
+        return hotel;
+    } catch (error) {
+        await session.abortTransaction()
+        if (uploaded?.public_id) {
+            await cloudinary.uploader.destroy(uploaded.public_id)
+        }
+        throw error;
+    } finally {
+        session.endSession();
+        await fs.unlink(file.path)
+    }
 }
+
 export const uploadRoomImgService = async (
     req: Request
 ) => {
@@ -95,33 +137,55 @@ export const uploadRoomImgService = async (
     const file = req.file;
     const { roomId } = req.validatedParams;
     //upload img to cloudinary 
-
-    const uploaded = await cloudinary.uploader.upload(
-        file.path,
-        {
-            folder: "Booking",
-            resource_type: "image"
-        });
-
-    if (!uploaded) {
-        throw new BadRequestError("Failed to upload image to cloudinary.")
+    if (!roomId) {
+        throw new BadRequestError("Room id is required.")
     }
 
-    const image = await Image.create({
-        secure_url: uploaded.secure_url,
-        public_id: uploaded.public_id,
-    });
+    let uploaded;
+    const session = await mongoose.startSession()
+    try {
+        uploaded = await cloudinary.uploader.upload(
+            file.path,
+            {
+                folder: "Booking",
+                resource_type: "image"
+            });
 
-    const updateRoom = await Room.findByIdAndUpdate(roomId, { photo: image._id })
+        if (!uploaded) {
+            throw new BadRequestError("Failed to upload image to cloudinary.")
+        }
 
-    if (!updateRoom) {
-        throw new NotFoundError("Hotel was not found.");
+        //session start
+        session.startTransaction();
+        const room = await Room.findById(roomId).session(session);
+        if (!room) {
+            throw new NotFoundError("Room not found.");
+        }
+        const image = await Image.create([{
+            secure_url: uploaded.secure_url,
+            public_id: uploaded.public_id
+        }], { session });
+
+        room.photo = image[0]._id as mongoose.Types.ObjectId;
+
+        await room.save({ session })
+
+        session.commitTransaction()
+        return room;
+
+    } catch (error) {
+        session.abortTransaction();
+        if (uploaded?.public_id) {
+            await cloudinary.uploader.destroy(uploaded.public_id)
+            throw error;
+        }
+    } finally {
+        session.endSession();
+        fs.unlink(file.path)
     }
-    await fs.unlink(file.path);
-    return updateRoom;
+
 };
 
-//remove image from hotel
 
 export const updateRoomImgService = async (
     req: Request
@@ -133,27 +197,49 @@ export const updateRoomImgService = async (
         }]);
     };
     const file = req.file;
-    const { imageId, roomId } = req.validatedParams
-
-    const roomExits = await Room.findById(roomId).select("_id photo").populate("photo") as any;
-
-    if (!roomExits) {
-        throw new NotFoundError("Hotel was not found.")
+    const { roomId } = req.validatedParams
+    if (!roomId) {
+        throw new BadRequestError("Room id is required.")
     }
 
-    const [deletePhoto, uploaded] = await Promise.all([
-        cloudinary.uploader.destroy(roomExits.photo.public_id),
-        cloudinary.uploader.upload(file.path, {
+    let uploaded;
+    const session = await mongoose.startSession();
+
+    try {
+        uploaded = await cloudinary.uploader.upload(file.path, {
             folder: "Booking",
             resource_type: "image"
         })
-    ]);
-    if (!uploaded) {
-        throw new BadRequestError("Failed to upload image to cloudinary.")
-    };
-    await Image.findByIdAndUpdate(imageId, { secure_url: uploaded.secure_url, public_id: uploaded.public_id })
+        if (!uploaded) {
+            throw new BadRequestError("Failed to upload image to cloudinary.")
+        }
 
-    const room = await Room.findByIdAndUpdate(roomId, { photo: uploaded.secure_url });
-    await fs.unlink(file.path);
-    return room;
+        session.startTransaction()
+        const room = await Room.findById(roomId).session(session)
+        if (!room || !room.photo) {
+            throw new NotFoundError("Room not found.")
+        }
+        const image = await Image.findById(room.photo).session(session);
+        if (!image) {
+            throw new NotFoundError("Image not found.")
+        }
+        const oldPhotoId = image?.public_id;
+        image.secure_url = uploaded.secure_url;
+        image.public_id = uploaded.public_id;
+
+        await image.save({ session });
+        await cloudinary.uploader.destroy(oldPhotoId);
+        session.commitTransaction();
+        return room;
+
+    } catch (error) {
+        session.abortTransaction();
+        if (uploaded?.public_id) {
+            await cloudinary.uploader.destroy(uploaded?.public_id)
+        }
+        throw error;
+    } finally {
+        session.endSession();
+        await fs.unlink(file.path)
+    }
 }
