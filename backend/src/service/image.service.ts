@@ -6,6 +6,7 @@ import { BadRequestError, NotFoundError, ValidationError } from "../common/error
 import Image from "../models/image.model";
 import Hotel from "../models/hotel.model";
 import fs from "fs/promises";
+import Room from "../models/room.model";
 
 export const uploadHotelImgService = async (
     req: Request
@@ -81,4 +82,78 @@ export const updateHotelImgService = async (
     await hotel.save()
     await fs.unlink(file.path);
     return hotel;
+}
+export const uploadRoomImgService = async (
+    req: Request
+) => {
+    if (!req.file) {
+        throw new ValidationError([{
+            message: "Image is required.",
+            path: "image"
+        }]);
+    }
+    const file = req.file;
+    const { roomId } = req.validatedParams;
+    //upload img to cloudinary 
+
+    const uploaded = await cloudinary.uploader.upload(
+        file.path,
+        {
+            folder: "Booking",
+            resource_type: "image"
+        });
+
+    if (!uploaded) {
+        throw new BadRequestError("Failed to upload image to cloudinary.")
+    }
+
+    const image = await Image.create({
+        secure_url: uploaded.secure_url,
+        public_id: uploaded.public_id,
+    });
+
+    const updateRoom = await Room.findByIdAndUpdate(roomId, { photo: image._id })
+
+    if (!updateRoom) {
+        throw new NotFoundError("Hotel was not found.");
+    }
+    await fs.unlink(file.path);
+    return updateRoom;
+};
+
+//remove image from hotel
+
+export const updateRoomImgService = async (
+    req: Request
+) => {
+    if (!req.file) {
+        throw new ValidationError([{
+            message: "Image is required.",
+            path: "image"
+        }]);
+    };
+    const file = req.file;
+    const { imageId, roomId } = req.validatedParams
+
+    const roomExits = await Room.findById(roomId).select("_id photo").populate("photo") as any;
+
+    if (!roomExits) {
+        throw new NotFoundError("Hotel was not found.")
+    }
+
+    const [deletePhoto, uploaded] = await Promise.all([
+        cloudinary.uploader.destroy(roomExits.photo.public_id),
+        cloudinary.uploader.upload(file.path, {
+            folder: "Booking",
+            resource_type: "image"
+        })
+    ]);
+    if (!uploaded) {
+        throw new BadRequestError("Failed to upload image to cloudinary.")
+    };
+    await Image.findByIdAndUpdate(imageId, { secure_url: uploaded.secure_url, public_id: uploaded.public_id })
+
+    const room = await Room.findByIdAndUpdate(roomId, { photo: uploaded.secure_url });
+    await fs.unlink(file.path);
+    return room;
 }

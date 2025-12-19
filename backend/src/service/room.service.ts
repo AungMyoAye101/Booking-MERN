@@ -34,8 +34,8 @@ export const deleteRoomService = async (
 }
 
 export const getRoomByIdService = async (id: string) => {
-    console.log(id)
-    const room = await Room.findById(id);
+
+    const room = await Room.findById(id).lean();
     if (!room) {
         throw new NotFoundError("Room not found.")
     }
@@ -47,7 +47,6 @@ export const getRoomsByHotelIdService = async (
 ) => {
     const hotelId = req.validatedParams.hotelId;
     const { page = 1, limit = 10 } = req.validatedQuery;
-    console.log(page, limit, hotelId)
     const skip = (page - 1) * limit;
     const rooms = await Room.find({ hotel: hotelId })
         .skip(skip)
@@ -58,9 +57,6 @@ export const getRoomsByHotelIdService = async (
     }
 
     const total = await Room.countDocuments({ hotel: hotelId });
-
     const meta = paginationResponseFormater(page, limit, total);
     return { rooms, meta }
-
-
 }

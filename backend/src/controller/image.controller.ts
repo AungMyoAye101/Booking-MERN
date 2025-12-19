@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction } from "express";
 import { successResponse } from "../common/successResponse";
-import { updateHotelImgService, uploadHotelImgService } from "../service/image.service";
+import { updateHotelImgService, updateRoomImgService, uploadHotelImgService, uploadRoomImgService } from "../service/image.service";
 
 export const hotelImageUploadController = async (
     req: Request,
@@ -33,6 +33,42 @@ export const hotelImageUpdateController = async (
             201,
             "Hotel image u success.",
             { hotel }
+        )
+    } catch (error) {
+        return next(error)
+    }
+}
+export const roomImageUploadController = async (
+    req: Request,
+    res: Response,
+    next: NextFunction
+) => {
+    try {
+
+        const room = await uploadRoomImgService(req)
+        successResponse(
+            res,
+            201,
+            "Room image upload success.",
+            { room }
+        )
+    } catch (error) {
+        return next(error)
+    }
+}
+export const roomImageUpdateController = async (
+    req: Request,
+    res: Response,
+    next: NextFunction
+) => {
+    try {
+
+        const room = await updateRoomImgService(req)
+        successResponse(
+            res,
+            201,
+            "Hotel image u success.",
+            { room }
         )
     } catch (error) {
         return next(error)
