@@ -34,23 +34,33 @@ export const deleteRoomService = async (
 }
 
 export const getRoomByIdService = async (id: string) => {
-    return await Room.findById(id).lean();
+    console.log(id)
+    const room = await Room.findById(id);
+    if (!room) {
+        throw new NotFoundError("Room not found.")
+    }
+    return room;
 }
 
 export const getRoomsByHotelIdService = async (
     req: Request
 ) => {
-    const { hotelId } = req.validatedParams;
-    const { page, limit } = req.validatedQuery;
+    const hotelId = req.validatedParams.hotelId;
+    const { page = 1, limit = 10 } = req.validatedQuery;
+    console.log(page, limit, hotelId)
     const skip = (page - 1) * limit;
     const rooms = await Room.find({ hotel: hotelId })
-        .sort({ createdAt: - 1 })
         .skip(skip)
         .limit(limit)
         .lean();
+    if (!rooms) {
+        throw new NotFoundError("Rooms not found.")
+    }
 
     const total = await Room.countDocuments({ hotel: hotelId });
 
     const meta = paginationResponseFormater(page, limit, total);
     return { rooms, meta }
+
+
 }

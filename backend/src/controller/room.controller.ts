@@ -70,9 +70,9 @@ export const getAllRoomByHotelIdController = async (
         const data = await getRoomsByHotelIdService(req);
         successResponse(
             res,
-            20,
+            200,
             "Room  get successfull.",
-            { data }
+            data
         )
     } catch (error) {
         return next(error)
@@ -84,7 +84,7 @@ export const getRoomByIdController = async (
     next: NextFunction
 ) => {
     try {
-        const room = await getRoomByIdService(req.validatedParams.id);
+        const room = await getRoomByIdService(req.validatedParams.roomId);
         successResponse(
             res,
             200,

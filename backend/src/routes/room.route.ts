@@ -2,10 +2,11 @@
 // import { checkAvailability, createRoom, deleteRoom, getAllRoomsByHotelId, getRoomById, updateRoom } from "../controller/room";
 
 import { Router } from "express";
-import { checkMongoDBId, validateRequestBody } from "../middleware/validation.middleware";
+import { checkMongoDBId, validateRequestBody, validateRequestQuery } from "../middleware/validation.middleware";
 import { createRoomController, deleteRoomController, getAllRoomByHotelIdController, getRoomByIdController, updateRoomController } from "../controller/room.controller";
 import { roomSchema } from "../validation/roomSchema";
 import { hasRole, isAuthenticated } from "../middleware/isAuthenticated";
+import { paginationSchmea } from "../validation/pagination";
 
 
 // const router = express.Router();
@@ -21,14 +22,15 @@ import { hasRole, isAuthenticated } from "../middleware/isAuthenticated";
 const router = Router();
 
 router.get(
-    "/:hotelId",
-    checkMongoDBId(["hotelId"]),
-    getAllRoomByHotelIdController
-);
-router.get(
     "/:roomId",
     checkMongoDBId(["roomId"]),
     getRoomByIdController
+);
+router.get(
+    "/hotel/:hotelId",
+    checkMongoDBId(["hotelId"]),
+    validateRequestQuery(paginationSchmea),
+    getAllRoomByHotelIdController
 );
 router.post(
     "/:hotelId/create",

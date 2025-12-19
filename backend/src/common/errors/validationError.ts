@@ -7,7 +7,7 @@ interface ValidationErrorDetails {
 
 
 export class ValidationError extends CustomError {
-    statusCode = 400;
+    statusCode = 422;
     constructor(public details: ValidationErrorDetails[]) {
         super("Validation error")
     }

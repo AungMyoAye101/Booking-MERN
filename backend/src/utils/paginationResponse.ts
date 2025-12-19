@@ -6,7 +6,7 @@ export const paginationResponseFormater = (
     return {
         currentpage: page,
         hasPrev: page > 1,
-        hasNext: page < total,
+        hasNext: page * limit < total,
         page,
         limit,
         total,
