@@ -1,3 +1,4 @@
+
 import mongoose, { Document } from "mongoose";
 export interface IUser extends Document {
   name: string,
@@ -14,13 +15,12 @@ const UserSchema = new mongoose.Schema(
     name: {
       type: String,
       required: true,
-      index: true
     },
     email: {
       type: String,
       required: true,
       unique: true,
-      index: true,
+
     },
     password: {
       type: String,
@@ -28,11 +28,10 @@ const UserSchema = new mongoose.Schema(
     },
     city: {
       type: String,
-      index: true
+
     },
     country: {
       type: String,
-      index: true
     },
     phone: {
       type: String,
@@ -45,6 +44,9 @@ const UserSchema = new mongoose.Schema(
   },
   { timestamps: true }
 );
+
+UserSchema.index({ email: 1 });
+UserSchema.index({ createdAt: -1 });
 
 const User = mongoose.model<IUser>("User", UserSchema);
 export default User
