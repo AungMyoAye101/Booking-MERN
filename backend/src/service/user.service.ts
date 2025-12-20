@@ -2,6 +2,8 @@ import { Request } from "express"
 import User from "../models/user.model";
 import { NotFoundError } from "../common/errors";
 import { paginationResponseFormater } from "../utils/paginationResponse";
+import { userType } from "../validation/userSchmea";
+
 export const getAllUsersService = async (
     req: Request
 ) => {
@@ -25,4 +27,27 @@ export const getAllUsersService = async (
 
     return { users, meta }
 
+}
+
+export const getUserByIdService = async (
+    userId: string
+) => {
+    console.log(userId);
+    const user = await User.findById(userId).select("-password").lean();
+    if (!user) {
+        throw new NotFoundError("User not found.")
+    }
+    return user;
+}
+export const updateUserService = async (
+    userId: string,
+    data: userType
+) => {
+    const user = await User.findByIdAndUpdate(userId, data, { new: true });
+    console.log(user)
+    if (!user) {
+        throw new NotFoundError("User not found.")
+    }
+
+    return user;
 }

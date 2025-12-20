@@ -1,6 +1,6 @@
 import * as z from "zod";
 
-const userSchmea = z.object({
+export const userSchmea = z.object({
     name: z
         .string()
         .min(3, "Name must be contain 3 characters.")
@@ -8,10 +8,6 @@ const userSchmea = z.object({
     email: z
         .email("Inavlid email")
         .transform(v => v.toLocaleLowerCase())
-        .optional(),
-    password: z
-        .string()
-        .min(6, "Password must be 6 characters long.")
         .optional(),
     city: z
         .string()
