@@ -1,0 +1,30 @@
+import * as z from "zod";
+
+const userSchmea = z.object({
+    name: z
+        .string()
+        .min(3, "Name must be contain 3 characters.")
+        .optional(),
+    email: z
+        .email("Inavlid email")
+        .transform(v => v.toLocaleLowerCase())
+        .optional(),
+    password: z
+        .string()
+        .min(6, "Password must be 6 characters long.")
+        .optional(),
+    city: z
+        .string()
+        .min(1, "City is required.")
+        .optional(),
+    country: z
+        .string()
+        .min(1, "Country is required.")
+        .optional(),
+    phone: z
+        .string()
+        .regex(/^\+?[1-9]\d{7,14}$/, "Invalid phone number")
+        .optional(),
+})
+
+export type userType = z.infer<typeof userSchmea>

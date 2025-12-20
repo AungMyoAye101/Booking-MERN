@@ -42,7 +42,7 @@ app.use(limiter);
 //roures
 app.use("/api/v1/admin", adminRouter)
 app.use("/api/v1/auth", authRouter);
-app.use("/api/v1/user", userRouter);
+app.use("/api/v1/users", userRouter);
 app.use("/api/v1/hotel", isAuthenticated, hotelRouter);
 app.use("/api/v1/image", imageRouter)
 app.use("/api/v1/room", roomRouter);

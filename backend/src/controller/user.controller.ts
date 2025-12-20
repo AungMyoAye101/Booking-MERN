@@ -1,13 +1,14 @@
 import { Request, Response } from "express";
 import { successResponse } from "../common/successResponse";
 import { asyncCatchFn } from "../utils/asyncFunction";
+import { getAllUsersService } from "../service/user.service";
 
 export const getAllUsersController =
     asyncCatchFn(async (
         req: Request,
         res: Response,
     ) => {
-        const data = "";
+        const data = await getAllUsersService(req);
         successResponse(
             res,
             200,
