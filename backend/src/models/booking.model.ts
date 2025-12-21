@@ -1,26 +1,29 @@
 import mongoose, { Document, Types } from "mongoose"
 
 export interface IBooking extends Document {
-    user: Types.ObjectId,
-    room: Types.ObjectId,
-    roomNumber: number,
+    userId: Types.ObjectId,
+    roomId: Types.ObjectId,
+    hotelId: Types.ObjectId,
     totalPrice: number,
+    quantty: number,
+    status: "PENDING" | "CONFIRMED" | "CANCELLED" | "EXPIRED",
     checkIn: Date,
     checkOut: Date
 }
 const bookingSchema = new mongoose.Schema({
-    user: {
+    userId: {
         type: mongoose.Schema.Types.ObjectId,
         ref: "User",
         required: true,
     },
-    room: {
+    roomId: {
         type: mongoose.Schema.Types.ObjectId,
         ref: "Room",
         required: true,
     },
-    roomNumber: {
-        type: Number,
+    hotelId: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "hotel",
         required: true,
     },
     checkIn: {
@@ -31,10 +34,25 @@ const bookingSchema = new mongoose.Schema({
         type: Date,
         required: true,
     },
+    quantity: {
+        type: Number,
+        required: true
+    },
+    status: {
+        type: String,
+        enum: ["PENDING", "CONFIRMED", "CANCELLED", "EXPIRED"]
+    },
     totalPrice: {
         type: Number,
         required: true,
     },
 }, { timestamps: true });
+
+bookingSchema.index({
+    roomId: 1,
+    checkIn: 1,
+    checkOut: 1,
+    status: 1
+})
 const Booking = mongoose.model<IBooking>("Booking", bookingSchema)
 export default Booking

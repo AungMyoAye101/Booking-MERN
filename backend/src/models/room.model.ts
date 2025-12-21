@@ -2,31 +2,21 @@ import mongoose, { Document, Types } from "mongoose";
 
 
 export interface IRoom extends Document {
-  title: string,
-  description: string,
-  type: string,
+  name: string,
   maxPeople: number,
   price: number,
-  hotel: Types.ObjectId,
-  roomNo: number,
+  hotelId: Types.ObjectId,
+  totalRooms: number,
   photo: Types.ObjectId,
 
 }
 
 const roomSchema = new mongoose.Schema(
   {
-    title: {
+    name: {
       type: String,
       required: true,
       index: true
-    },
-    description: {
-      type: String,
-      required: true,
-    },
-    type: {
-      type: String,
-      required: true
     },
     maxPeople: {
       type: Number,
@@ -38,11 +28,11 @@ const roomSchema = new mongoose.Schema(
       required: true,
     },
 
-    roomNo: {
+    totalRooms: {
       type: Number,
       required: true
     },
-    hotel: {
+    hotelId: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "Hotel",
       required: true,
@@ -55,5 +45,6 @@ const roomSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
+roomSchema.index({ hotelId: 1 })
 const Room = mongoose.model("Room", roomSchema);
 export default Room

@@ -1,7 +1,11 @@
 import { Request, Response } from "express";
 import { successResponse } from "../common/successResponse";
 import { asyncCatchFn } from "../utils/asyncFunction";
-import { getAllUsersService, getUserByIdService, updateUserService } from "../service/user.service";
+import {
+    getAllUsersService,
+    getUserByIdService,
+    updateUserService
+} from "../service/user.service";
 
 export const getAllUsersController =
     asyncCatchFn(async (
