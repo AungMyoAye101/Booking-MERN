@@ -1,44 +1,30 @@
-import { Request, Response } from "express"
-import express from "express"
-import mongoose from "mongoose"
-import Review from "../models/review.model"
-import Hotel from "../models/hotel.model"
-const router = express.Router()
+import { Router } from "express";
+import { checkMongoDBId, validateRequestBody, validateRequestQuery } from "../middleware/validation.middleware";
+import { paginationSchmea } from "../validation/pagination";
+import { createReviewController, getReviewByHotelIDController, updateReviewController } from "../controller/review.controller";
+import { isAuthenticated } from "../middleware/isAuthenticated";
+import { reviewSchema } from "../validation/reviewSchema";
 
-router.post('/', async (req: Request, res: Response) => {
-    const { userId, hotelId } = req.body
+const router = Router();
 
-    try {
-        if (!mongoose.Types.ObjectId.isValid(userId) || !mongoose.Types.ObjectId.isValid(hotelId)) {
-            return res.status(400).json("userid or hotelId is not valid!")
-        }
+router.get(
+    "/:hotelId",
+    checkMongoDBId(['hotelId']),
+    validateRequestQuery(paginationSchmea),
+    getReviewByHotelIDController
+);
+router.post(
+    "/create",
+    isAuthenticated,
+    validateRequestBody(reviewSchema),
+    createReviewController
+)
+router.put(
+    "/update/:id",
+    isAuthenticated,
+    checkMongoDBId(['id']),
+    validateRequestBody(reviewSchema),
+    updateReviewController
+)
 
-        const newReview = await Review.create({ ...req.body })
-        await Hotel.findByIdAndUpdate(hotelId, {
-            $push: { reviews: newReview._id }
-        })
-
-        res.status(201).json({ sucess: true, message: "Review created successfull." })
-    } catch (error) {
-        res.status(500).json({ success: false, message: "Internal server error" })
-    }
-})
-
-router.get('/:id', async (req: Request, res: Response) => {
-    const hotelId = req.params.id
-
-    try {
-        if (!mongoose.Types.ObjectId.isValid(hotelId)) {
-            return res.status(400).json('hotel id is not valid!')
-        }
-        const reviews = await Review.find({ hotelId }).populate("userId", "name email").sort({ createdAt: -1 }).limit(4)
-        if (!reviews) {
-            return res.status(400).json('No reviews found!')
-        }
-        return res.status(200).json({ success: true, message: "Get review successfull.", data: reviews })
-    } catch (error) {
-        return res.status(500).json({ success: false, message: "Internal server error" })
-    }
-})
-
-export default router
+export default router;

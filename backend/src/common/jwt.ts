@@ -10,7 +10,7 @@ if (!ACCESS_TOKEN || !REFRESH_TOKEN) {
 }
 
 export const generateAccessToken = (
-    payload: any
+    payload: TokenPayload
 ) => {
     return jwt.sign(payload, ACCESS_TOKEN, { expiresIn: access_token_expire })
 }
@@ -18,15 +18,10 @@ export const generateAccessToken = (
 export const verifyAccessToken = (
     token: string
 ): TokenPayload => {
-    try {
-        return jwt.verify(token, ACCESS_TOKEN) as TokenPayload;
-    } catch (error) {
-        throw new Error("verfiy error")
-    }
-
+    return jwt.verify(token, ACCESS_TOKEN) as TokenPayload;
 }
 export const generateRefreshToken = (
-    payload: any
+    payload: TokenPayload
 ) => {
     return jwt.sign(payload, ACCESS_TOKEN, { expiresIn: access_token_expire })
 }
@@ -34,10 +29,5 @@ export const generateRefreshToken = (
 export const verifyRefreshToken = (
     token: string
 ): TokenPayload => {
-    try {
-        return jwt.verify(token, REFRESH_TOKEN) as TokenPayload
-    } catch (error) {
-        throw new Error("Token verify error.")
-    }
-
+    return jwt.verify(token, REFRESH_TOKEN) as TokenPayload
 }

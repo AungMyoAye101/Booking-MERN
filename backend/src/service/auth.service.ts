@@ -18,8 +18,14 @@ export const registerService = async (
         email,
         password: hashed
     })
-    const access_token = await generateAccessToken({ id: user._id, email: user.email, role: null })
-    const refresh_token = await generateRefreshToken({ id: user._id, email: user.email, role: null })
+    const access_token = await generateAccessToken({
+        id: user._id as string
+        , email: user.email,
+    })
+    const refresh_token = await generateRefreshToken({
+        id: user._id as string
+        , email: user.email,
+    })
 
     user.token = refresh_token;
     await user.save();
@@ -46,8 +52,8 @@ export const loginService = async (
     if (!isMatch) {
         throw new BadRequestError("Invalid credential");
     }
-    const access_token = await generateAccessToken({ id: user._id, email: user.email, role: null })
-    const refresh_token = await generateRefreshToken({ id: user._id, email: user.email, role: null })
+    const access_token = await generateAccessToken({ id: user._id as string, email: user.email, })
+    const refresh_token = await generateRefreshToken({ id: user._id as string, email: user.email, })
 
     user.token = refresh_token;
     await user.save();
@@ -80,20 +86,20 @@ export const refreshService = async (
     }
     const decoded = await verifyRefreshToken(token);
 
-    const user = await User.findOne({ id: decoded._id }).select("+token")
+    const user = await User.findOne({ id: decoded.id }).select("+token")
 
     if (!user) {
         throw new NotFoundError("User not found.")
     }
     const access_token = generateAccessToken({
-        id: user._id,
+        id: user._id as string,
         email: user.email,
-        role: null
+
     })
     const refresh_token = generateRefreshToken({
-        id: user._id,
+        id: user._id as string,
         email: user.email,
-        role: null
+
     })
     user.token = refresh_token;
     await user.save();

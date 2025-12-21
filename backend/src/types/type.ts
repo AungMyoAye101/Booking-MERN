@@ -1,11 +1,9 @@
-import { Request } from "express";
-import { IHotel } from "../models/hotel.model";
-import { IImage } from "../models/image.model";
+
 
 export interface TokenPayload {
-    _id: string,
+    id: string,
     email: string,
-    role: "admin" | "staff" | null
+    role?: "admin" | "staff"
 }
 
 // export interface JWTPayloadType {
@@ -43,6 +41,4 @@ export interface BookingType {
 
 }
 
-export interface HotelWithImageType extends IHotel {
-    photo: IImage[]
-}
+
