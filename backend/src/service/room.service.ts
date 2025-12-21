@@ -10,7 +10,7 @@ export const createRoomService = async (
     data: createRoomType
 ) => {
 
-    return await Room.create({ ...data, hotel: hotelId });
+    return await Room.create({ ...data, hotelId });
 
 };
 

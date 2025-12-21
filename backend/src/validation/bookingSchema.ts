@@ -5,8 +5,8 @@ export const bookingSchema = z.object({
     roomId: z.string(),
     hotelId: z.string(),
     totalPrice: z.number().positive(),
-    quantity: z.number().positive,
-    status: z.enum(["PENDING", "CONFIRMED", "CANCELLED", "EXPIRED"]),
+    quantity: z.number().positive(),
+    status: z.enum(["PENDING", "CONFIRMED", "CANCELLED", "EXPIRED"]).default("PENDING"),
     checkIn: z.date(),
     checkOut: z.date()
 })

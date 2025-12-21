@@ -1,13 +1,19 @@
 import { Router } from "express";
+import { validateRequestBody } from "../middleware/validation.middleware";
+import { bookingSchema } from "../validation/bookingSchema";
+import { createBookingController } from "../controller/booking.controller";
+import { hasRole } from "../middleware/isAuthenticated";
 
 const router = Router();
 
-router.get('/')
+// router.get('/')
 router.post(
-    "/create"
+    "/create",
+    validateRequestBody(bookingSchema),
+    createBookingController
 )
-router.put(
-    "/update/:id"
-)
+// router.put(
+//     "/update/:id"
+// )
 
 export default router;

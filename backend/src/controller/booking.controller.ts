@@ -1,13 +1,14 @@
 import { Request, Response } from "express";
 import { asyncCatchFn } from "../utils/asyncFunction";
 import { successResponse } from "../common/successResponse";
+import { createBookingService } from "../service/booking.service";
 
-export const bookingCreateController = asyncCatchFn(
+export const createBookingController = asyncCatchFn(
     async (
         req: Request,
         res: Response
     ) => {
-        const data = "";
+        const data = await createBookingService(req.validatedBody);
         successResponse(
             res,
             201,
