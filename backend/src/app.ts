@@ -10,7 +10,6 @@ import adminRouter from "./routes/admin.auth.route";
 import authRouter from "./routes/auth.route";
 import userRouter from "./routes/user.route";
 import hotelRouter from "./routes/hotel.route";
-import searchRouter from "./routes/search.route";
 import roomRouter from "./routes/room.route";
 import reviewRouter from "./routes/review.route";
 import bookingRouter from "./routes/booking.route";
@@ -47,7 +46,6 @@ app.use("/api/v1/hotel", isAuthenticated, hotelRouter);
 app.use("/api/v1/image", isAuthenticated, imageRouter)
 app.use("/api/v1/review", reviewRouter)
 app.use("/api/v1/room", roomRouter);
-app.use("/api/v1/search", searchRouter);
 app.use("/api/v1/booking", bookingRouter)
 
 //error handler middleware.

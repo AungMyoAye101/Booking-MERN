@@ -3,7 +3,7 @@ import { checkMongoDBId, validateRequestBody, validateRequestQuery } from "../mi
 import { paginationSchmea } from "../validation/pagination";
 import { createReviewController, getReviewByHotelIDController, updateReviewController } from "../controller/review.controller";
 import { isAuthenticated } from "../middleware/isAuthenticated";
-import { reviewSchema } from "../validation/reviewSchema";
+import { createReviewSchema, updateReviewSchema } from "../validation/reviewSchema";
 
 const router = Router();
 
@@ -16,14 +16,14 @@ router.get(
 router.post(
     "/create",
     isAuthenticated,
-    validateRequestBody(reviewSchema),
+    validateRequestBody(createReviewSchema),
     createReviewController
 )
 router.put(
     "/update/:id",
     isAuthenticated,
     checkMongoDBId(['id']),
-    validateRequestBody(reviewSchema),
+    validateRequestBody(updateReviewSchema),
     updateReviewController
 )
 
