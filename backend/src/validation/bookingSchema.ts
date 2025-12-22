@@ -17,5 +17,9 @@ export const bookingSchema = z.object({
     message: "Check out must be at least one day after check-in",
     path: ['checkOut']
 })
+export const updateBookingSchema = z.object({
+    status: z.enum(["PENDING", "CONFIRMED", "CANCELLED", "EXPIRED"]).default("PENDING"),
+})
 
 export type bookingType = z.infer<typeof bookingSchema>
+export type updateBookingType = z.infer<typeof updateBookingSchema>
