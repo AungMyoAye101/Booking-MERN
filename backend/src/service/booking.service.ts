@@ -3,22 +3,20 @@ import { bookingType } from "../validation/bookingSchema";
 import Booking from "../models/booking.model";
 import Room, { IRoom } from "../models/room.model";
 import { BadRequestError } from "../common/errors";
+import { checkMongoDbId } from "../utils/checkMongoDbId";
 
 export const createBookingService = async (
     data: bookingType
 ) => {
+    const [roomId] = checkMongoDbId([data.roomId]);
 
     const booked = await Booking.aggregate([
         {
             $match: {
-                roomId: data.roomId,
+                roomId,
                 status: { $in: ['PENDING', 'CONFRIMED'] },
-                $expr: {
-                    $and: [
-                        { $lt: ["$checkIn", data.checkOut] },
-                        { $gt: ['$checkOut', data.checkIn] }
-                    ]
-                }
+                checkIn: { $lt: new Date(data.checkOut) },
+                checkOut: { $gt: new Date(data.checkIn) },
             }
         },
         {
@@ -29,13 +27,8 @@ export const createBookingService = async (
         }
     ])
 
-    console.log(booked, "booked");
     const bookedCount = booked.length > 0 ? booked[0].bookedCount : 0;
-    console.log(bookedCount);
-
-
     const room = await Room.findById(data.roomId) as IRoom;
-    console.log(room)
     if (room.totalRooms - bookedCount < data.quantity) {
         throw new BadRequestError("Failed to book this room.");
     }
