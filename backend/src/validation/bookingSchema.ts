@@ -7,8 +7,8 @@ export const bookingSchema = z.object({
     totalPrice: z.number().positive(),
     quantity: z.number().positive(),
     status: z.enum(["PENDING", "CONFIRMED", "CANCELLED", "EXPIRED"]).default("PENDING"),
-    checkIn: z.date(),
-    checkOut: z.date()
+    checkIn: z.iso.date(),
+    checkOut: z.iso.date()
 })
 
 export type bookingType = z.infer<typeof bookingSchema>

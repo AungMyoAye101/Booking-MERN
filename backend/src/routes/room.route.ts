@@ -3,7 +3,13 @@
 
 import { Router } from "express";
 import { checkMongoDBId, validateRequestBody, validateRequestQuery } from "../middleware/validation.middleware";
-import { createRoomController, deleteRoomController, getAllRoomByHotelIdController, getRoomByIdController, updateRoomController } from "../controller/room.controller";
+import {
+    createRoomController,
+    deleteRoomController,
+    getAllRoomByHotelIdController,
+    getRoomByIdController,
+    updateRoomController
+} from "../controller/room.controller";
 import { roomSchema } from "../validation/roomSchema";
 import { hasRole, isAuthenticated } from "../middleware/isAuthenticated";
 import { paginationSchmea } from "../validation/pagination";

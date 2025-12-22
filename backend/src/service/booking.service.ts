@@ -30,9 +30,12 @@ export const createBookingService = async (
     ])
 
     console.log(booked, "booked");
-    const bookedCount = booked[0].bookedCount || 0;
+    const bookedCount = booked.length > 0 ? booked[0].bookedCount : 0;
+    console.log(bookedCount);
+
 
     const room = await Room.findById(data.roomId) as IRoom;
+    console.log(room)
     if (room.totalRooms - bookedCount < data.quantity) {
         throw new BadRequestError("Failed to book this room.");
     }

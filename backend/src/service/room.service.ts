@@ -47,11 +47,13 @@ export const getRoomsByHotelIdService = async (
 ) => {
     const hotelId = req.validatedParams.hotelId;
     const { page = 1, limit = 10 } = req.validatedQuery;
+
     const skip = (page - 1) * limit;
-    const rooms = await Room.find({ hotel: hotelId })
+    const rooms = await Room.find({ hotelId })
         .skip(skip)
         .limit(limit)
         .lean();
+
     if (!rooms) {
         throw new NotFoundError("Rooms not found.")
     }
