@@ -4,7 +4,7 @@ import {
     updatePaymnetController
 } from "../controller/payment.controller";
 import { validateRequestBody } from "../middleware/validation.middleware";
-import { createPaymentSchema } from "../validation/paymentSchema";
+import { createPaymentSchema, updatePaymnetSchema } from "../validation/paymentSchema";
 
 const router = Router();
 
@@ -14,7 +14,8 @@ router.post(
     createPaymnetController,
 )
 router.put(
-    "/:paymentId/update",
+    "/update",
+    validateRequestBody(updatePaymnetSchema),
     updatePaymnetController,
 )
 

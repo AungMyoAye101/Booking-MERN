@@ -5,7 +5,8 @@ export interface IPaymentType extends Document {
     userId: Types.ObjectId,
     paymentMethod: "MOBILE_BANKING" | "CARD" | "BANK",
     status: "PENDING" | "PAID" | "FAILED",
-    amount: number
+    amount: number,
+    paidAt: Date
 }
 
 

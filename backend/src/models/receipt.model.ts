@@ -1,4 +1,4 @@
-import mongoose, { Document, Double, model, Schema, Types } from "mongoose";
+import { Document, model, Schema, Types } from "mongoose";
 
 export interface IReceipt extends Document {
     receiptNo: string,
