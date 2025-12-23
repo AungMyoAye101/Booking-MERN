@@ -1,6 +1,4 @@
-import mongoose, { Document, Types } from "mongoose";
-import { IRoom } from "./room.model";
-import { IReview } from "./review.model";
+import mongoose, { Document } from "mongoose";
 import { IImage } from "./image.model";
 
 export interface IHotel extends Document {
