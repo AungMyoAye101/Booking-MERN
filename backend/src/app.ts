@@ -15,6 +15,7 @@ import reviewRouter from "./routes/review.route";
 import bookingRouter from "./routes/booking.route";
 import imageRouter from "./routes/image.route";
 import paymentRouter from "./routes/payment.route";
+import receiptRouter from "./routes/receipt.route";
 import { isAuthenticated } from "./middleware/isAuthenticated";
 
 
@@ -48,6 +49,7 @@ app.use("/api/v1/image", isAuthenticated, imageRouter);
 app.use("/api/v1/review", isAuthenticated, reviewRouter);
 app.use("/api/v1/booking", isAuthenticated, bookingRouter);
 app.use("/api/v1/payment", isAuthenticated, paymentRouter);
+app.use("/api/v1/payment", isAuthenticated, receiptRouter);
 app.use("/api/v1/room", roomRouter);
 
 //error handler middleware.
