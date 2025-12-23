@@ -1,6 +1,6 @@
 import mongoose, { Document, model, Types } from "mongoose";
 
-interface IPaymentType extends Document {
+export interface IPaymentType extends Document {
     bookingId: Types.ObjectId,
     userId: Types.ObjectId,
     paymentMethod: "MOBILE_BANKING" | "CARD" | "BANK",
