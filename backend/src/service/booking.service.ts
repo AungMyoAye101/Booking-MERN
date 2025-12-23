@@ -5,37 +5,52 @@ import Room, { IRoom } from "../models/room.model";
 import { BadRequestError, NotFoundError } from "../common/errors";
 import { checkMongoDbId } from "../utils/checkMongoDbId";
 import { paginationResponseFormater } from "../utils/paginationResponse";
+import mongoose from "mongoose";
 
 export const createBookingService = async (
     data: bookingType
 ) => {
     const [roomId] = checkMongoDbId([data.roomId]);
 
-    const booked = await Booking.aggregate([
-        {
-            $match: {
-                roomId,
-                status: { $in: ['PENDING', 'CONFRIMED'] },
-                checkIn: { $lt: new Date(data.checkOut) },
-                checkOut: { $gt: new Date(data.checkIn) },
+    const session = await mongoose.startSession();
+    session.startTransaction();
+    try {
+        const booked = await Booking.aggregate([
+            {
+                $match: {
+                    roomId,
+                    status: { $in: ['PENDING', 'CONFRIMED'] },
+                    checkIn: { $lt: new Date(data.checkOut) },
+                    checkOut: { $gt: new Date(data.checkIn) },
+                }
+            },
+            {
+                $group: {
+                    _id: null,
+                    bookedCount: { $sum: "$quantity" }
+                }
             }
-        },
-        {
-            $group: {
-                _id: null,
-                bookedCount: { $sum: "$quantity" }
-            }
+        ]).session(session);
+
+        const bookedCount = booked.length > 0 ? booked[0].bookedCount : 0;
+        const room = await Room.findById(data.roomId).session(session) as IRoom;
+        if (room.totalRooms - bookedCount < data.quantity) {
+            throw new BadRequestError("Not enoungh room .");
         }
-    ])
+        const booking = await Booking.create([data], { session });
 
-    const bookedCount = booked.length > 0 ? booked[0].bookedCount : 0;
-    const room = await Room.findById(data.roomId) as IRoom;
-    if (room.totalRooms - bookedCount < data.quantity) {
-        throw new BadRequestError("Failed to book this room.");
+        session.commitTransaction();
+
+        return booking;
+
+    } catch (error) {
+        session.abortTransaction();
+        throw error;
+    } finally {
+        session.endSession()
     }
-    const booking = await Booking.create(data);
 
-    return booking;
+
 };
 
 export const updateBookingService = async (
