@@ -1,6 +1,7 @@
 import { Request, Response, NextFunction } from "express";
 import { successResponse } from "../common/successResponse";
-import { createHotelService, deleteHotelService, getAllHotelsService, getHotelByIdService, updateHotelService } from "../service/hotel.service";
+import { createHotelService, deleteHotelService, getAllHotelsService, getHotelByIdService, getHotelByTypesService, updateHotelService } from "../service/hotel.service";
+import { asyncCatchFn } from "../utils/asyncFunction";
 
 export const createHotelController = async (
     req: Request,
@@ -89,3 +90,15 @@ export const getAllHotelController = async (
         return next(error);
     }
 }
+export const getHotelByTypesController = asyncCatchFn(
+    async (req: Request, res: Response) => {
+        const data = await getHotelByTypesService();
+
+        successResponse(
+            res,
+            200,
+            "Get hotel by types successfull.",
+            { data }
+        )
+    }
+)

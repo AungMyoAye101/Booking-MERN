@@ -49,7 +49,7 @@ app.use("/api/v1/image", isAuthenticated, imageRouter);
 app.use("/api/v1/review", isAuthenticated, reviewRouter);
 app.use("/api/v1/booking", isAuthenticated, bookingRouter);
 app.use("/api/v1/payment", isAuthenticated, paymentRouter);
-app.use("/api/v1/payment", isAuthenticated, receiptRouter);
+app.use("/api/v1/receipt", isAuthenticated, receiptRouter);
 app.use("/api/v1/room", roomRouter);
 
 //error handler middleware.

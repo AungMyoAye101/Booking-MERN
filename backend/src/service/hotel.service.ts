@@ -48,3 +48,35 @@ export const getAllHotelsService = async (
     }
     return { hotels, meta };
 }
+
+export const getHotelByTypesService = async () => {
+
+    const deafult_types = ["hotel", "motel", "guest_house"];
+    const result = await Hotel.aggregate([
+        {
+            $group: {
+                _id: "$type",
+                count: { $sum: 1 }
+            }
+        },
+        {
+            $project: {
+                _id: 0,
+                type: "$_id",
+                count: 1
+            }
+        }
+    ]);
+
+    if (!result) {
+        throw new NotFoundError("Hotel types are not found.")
+    }
+
+    const map = Object.fromEntries(result.map(v => [v.type, v.count]));
+
+    return deafult_types.map(type => ({
+        type,
+        count: map[type] || 0
+    }
+    ));
+}

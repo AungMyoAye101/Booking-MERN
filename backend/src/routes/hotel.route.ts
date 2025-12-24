@@ -4,6 +4,7 @@ import {
     deleteHotelController,
     getAllHotelController,
     getHotelByIdController,
+    getHotelByTypesController,
     updateHotelController
 } from "../controller/hotel.controller";
 import {
@@ -48,10 +49,16 @@ router.get(
     '/',
     validateRequestQuery(paginationSchmea),
     getAllHotelController);
+
+
+router.get(
+    '/types',
+    getHotelByTypesController)
 router.get(
     '/:id',
     checkMongoDBId(["id"]),
-    getHotelByIdController)
+    getHotelByIdController);
+
 router.post(
     "/create",
     hasRole(['admin', 'staff']),
