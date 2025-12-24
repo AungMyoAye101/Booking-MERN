@@ -79,7 +79,7 @@ export const getAllHotelController = async (
     next: NextFunction
 ) => {
     try {
-        const data = await getAllHotelsService(req.validatedQuery)
+        const data = await getAllHotelsService(req)
         successResponse(
             res,
             200,

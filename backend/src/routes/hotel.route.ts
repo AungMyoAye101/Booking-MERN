@@ -1,4 +1,3 @@
-
 import {
     createHotelController,
     deleteHotelController,
@@ -10,46 +9,22 @@ import {
 import {
     checkMongoDBId,
     validateRequestBody,
-    validateRequestParams,
     validateRequestQuery,
 } from "../middleware/validation.middleware";
 import { Router } from "express";
 import { hotelSchema } from "../validation/hotelSchema";
-import { IDSchema } from "../validation/authSchema";
-import { paginationSchmea } from "../validation/pagination";
-import { hasRole } from "../middleware/isAuthenticated";
-// import {
-//     createHotel,
-//     deleteHotel,
-//     getAllHotels,
-//     getHotelByCity,
-//     getHotelById,
-//     getHotelByType,
-//     getSuggestion,
-//     hotelsByType,
-//     updateHotel
-// } from "../controller/hotel";
+import { hasRole, isAuthenticated } from "../middleware/isAuthenticated";
+import { hotelSerachSchema } from "../validation/searchSchema";
 
-// const router = Router();
-
-// router.get("/", getAllHotels);
-// router.get("/suggestion", getSuggestion);
-// router.post("/create-hotel", upload.array("photos", 4), createHotel);
-// router.put("/:id", upload.array("photos", 4), updateHotel);
-// router.delete("/:id", deleteHotel);
-// router.get("/:id", getHotelById);
-// router.get("/type/hotelType", getHotelByType)
-// router.get("/type/getHotelByCity", getHotelByCity)
-// router.get("/type/:type", hotelsByType)
 
 
 const router = Router();
 
 router.get(
     '/',
-    validateRequestQuery(paginationSchmea),
-    getAllHotelController);
-
+    validateRequestQuery(hotelSerachSchema),
+    getAllHotelController
+);
 
 router.get(
     '/types',
@@ -61,17 +36,20 @@ router.get(
 
 router.post(
     "/create",
+    isAuthenticated,
     hasRole(['admin', 'staff']),
     validateRequestBody(hotelSchema),
     createHotelController);
 router.put(
     "/update/:id",
+    isAuthenticated,
     hasRole(['admin', 'staff']),
     checkMongoDBId(["id"]),
     validateRequestBody(hotelSchema),
     updateHotelController);
 router.delete(
     '/delete/:id',
+    isAuthenticated,
     hasRole(['admin', 'staff']),
     checkMongoDBId(["id"]),
     deleteHotelController)
