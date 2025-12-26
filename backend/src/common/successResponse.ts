@@ -7,6 +7,7 @@ export const successResponse = (
     result: any
 ) => {
     return res.status(statusCode).json({
+        success:true,
         statusCode,
         message,
         result

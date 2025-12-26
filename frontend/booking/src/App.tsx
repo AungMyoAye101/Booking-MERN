@@ -37,13 +37,8 @@ function App() {
         <Route path="/payment" element={<Payment />} />
         <Route path="/type/:type" element={<TypeResult />} />
         <Route path="/mybooking/:id" element={<ProtectiveRoute><MyBooking /></ProtectiveRoute>} />
-
-
         <Route path="/admin" element={<ProtectiveRoute><Admin /></ProtectiveRoute>}>
-
-
           <Route path="" element={<Dashboard />} />
-
           <Route path="room/:hotelId" element={<Room />} />
           <Route path="hotels" element={<HotelList />} />
           <Route path="createHotel" element={<CreateHotel />} />

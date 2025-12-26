@@ -1,4 +1,4 @@
-import { BadRequestError, NotFoundError } from "../common/errors";
+import { BadRequestError, NotFoundError, UnAuthorizedError } from "../common/errors";
 import { generateAccessToken, generateRefreshToken, verifyRefreshToken } from "../common/jwt";
 import { comparedPassword, hashPassword } from "../common/password";
 import User from "../models/user.model"
@@ -80,13 +80,16 @@ export const logoutService = async (id: string) => {
 export const refreshService = async (
     req: Request
 ) => {
-    const token = req.cookies.refresh_token
+    const token = req.cookies.refresh_token;
     if (!token) {
         throw new BadRequestError("Token is required.")
     }
     const decoded = await verifyRefreshToken(token);
-
-    const user = await User.findOne({ id: decoded.id }).select("+token")
+    if (!decoded) {
+        throw new UnAuthorizedError("Your are not authenticated.")
+    }
+    console.log(decoded)
+    const user = await User.findById(decoded.id).select("+token");
 
     if (!user) {
         throw new NotFoundError("User not found.")

@@ -1,0 +1,11 @@
+{
+  "ExpandedNodes": [
+    "",
+    "\\backend",
+    "\\backend\\src",
+    "\\backend\\src\\controller",
+    "\\backend\\src\\routes"
+  ],
+  "SelectedNode": "\\backend\\src\\controller\\auth.controller.ts",
+  "PreviewInSolutionExplorer": false
+}

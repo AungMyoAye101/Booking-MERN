@@ -1,9 +1,9 @@
+import HotelLoading from "@/components/HotelLoading";
+import { hotelTypes } from "@/config/createHotel";
+import { useGetHotelByTypes } from "@/hooks.ts/use-hotel";
 import { useEffect, useRef, useState } from "react";
 import { PiGreaterThan, PiLessThan } from "react-icons/pi";
-import { base_url } from "../lib/helper";
-import HotelLoading from "./HotelLoading";
 import { Link } from "react-router-dom";
-import { hotelTypes } from "../config/createHotel";
 
 type HotelList = {
   type: string,
@@ -13,8 +13,11 @@ type HotelList = {
 const hotelListTypes = hotelTypes.join(',')
 
 const ListByType = () => {
-  const [data, setData] = useState<HotelList[]>([])
-  const [loading, setLoading] = useState(false)
+
+  const data = useGetHotelByTypes()
+  console.log(data);
+
+  const loading = true;
   const containerRef = useRef<HTMLDivElement>(null);
 
   const handleSlide = (isRight: boolean) => {
@@ -27,29 +30,8 @@ const ListByType = () => {
   };
 
 
-  const fetchHotelBytype = async () => {
-    try {
-      setLoading(true)
-      const res = await fetch(base_url + `/api/hotel/type/hotelType?type=${hotelListTypes}`, {
-        method: "GET",
-        headers: {
-          "Content-type": "application/json"
-        }
-      })
-      const { success, message, data } = await res.json()
-      if (!res.ok && success === false) {
-        throw new Error(message)
-      }
-      setData(data)
-    } catch (error) {
-      if (error instanceof Error) console.error(error.message)
-    } finally {
-      setLoading(false)
-    }
-  }
-  useEffect(() => {
-    fetchHotelBytype()
-  }, [])
+
+
 
   return (
     <section className="my-4 py-10">
@@ -73,7 +55,7 @@ const ListByType = () => {
           ref={containerRef}
           className="flex gap-4 overflow-hidden flex-nowrap  relative py-4"
         >
-          {loading ? <HotelLoading /> : data.map((item) => (
+          {/* {loading ? <HotelLoading /> : data.map((item) => (
             <Link
               to={`/type/${item.type}?limit=6&page=1`}
               key={item.type}
@@ -93,7 +75,7 @@ const ListByType = () => {
                 <p className="text-sm "> <b>{item.count}</b> properties</p>
               </div>
             </Link>
-          ))}
+          ))} */}
         </main>
       </div>
     </section>
