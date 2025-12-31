@@ -4,11 +4,13 @@ export const paginationResponseFormater = (
     total: number
 ) => {
     return {
-        currentpage: page,
+        page: page,
+        limit:limit,
+        total:total,
+        totalPages:Math.ceil(total / limit),
         hasPrev: page > 1,
         hasNext: page * limit < total,
-        page,
-        limit,
-        total,
+
+      
     }
 }

@@ -32,7 +32,6 @@ export const getAllUsersService = async (
 export const getUserByIdService = async (
     userId: string
 ) => {
-    console.log(userId);
     const user = await User.findById(userId).select("-password").lean();
     if (!user) {
         throw new NotFoundError("User not found.")

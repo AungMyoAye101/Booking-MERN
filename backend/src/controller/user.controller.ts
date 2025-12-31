@@ -25,12 +25,12 @@ export const getUserByIdController =
         req: Request,
         res: Response,
     ) => {
-        const data = await getUserByIdService(req.validatedParams.userId);
+        const user = await getUserByIdService(req.validatedParams.userId);
         successResponse(
             res,
             200,
             "Get  user by id  success.",
-            data
+            { user }
         )
     });
 export const updateUserController =
@@ -38,11 +38,11 @@ export const updateUserController =
         req: Request,
         res: Response,
     ) => {
-        const data = await updateUserService(req.validatedParams.userId, req.validatedBody);
+        const user = await updateUserService(req.validatedParams.userId, req.validatedBody);
         successResponse(
             res,
             201,
             "Update  user by id  successful.",
-            data
+            { user }
         )
     });

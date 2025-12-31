@@ -88,7 +88,6 @@ export const refreshService = async (
     if (!decoded) {
         throw new UnAuthorizedError("Your are not authenticated.")
     }
-    console.log(decoded)
     const user = await User.findById(decoded.id).select("+token");
 
     if (!user) {

@@ -40,6 +40,6 @@ export const verifyRefreshToken = async (
 
     } catch (error) {
         console.log(error)
-        throw new UnAuthorizedError("Your are")
+        throw new UnAuthorizedError("Your are not authorized.")
     }
 }
