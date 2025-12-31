@@ -3,7 +3,7 @@ import { paginationSchmea } from "./pagination";
 
 export const searchSchema = z.object({
     search: z.string().trim().max(25, "Serach cannot be long 25 characters.").optional()
-})
+}).merge(paginationSchmea);
 
 export const hotelSerachSchema = z.object({
     search: z

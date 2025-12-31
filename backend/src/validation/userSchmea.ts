@@ -1,4 +1,5 @@
 import * as z from "zod";
+import { paginationSchmea } from "./pagination";
 
 export const userSchmea = z.object({
     name: z
@@ -23,4 +24,10 @@ export const userSchmea = z.object({
         .optional(),
 })
 
-export type userType = z.infer<typeof userSchmea>
+export const userQuerySchema = z.object({
+    search: z.string().optional(),
+    sort: z.enum(["asc", "desc"]).optional().default("desc"),
+}).merge(paginationSchmea);
+
+export type userType = z.infer<typeof userSchmea>;
+export type userQueryType = z.infer<typeof userQuerySchema>;

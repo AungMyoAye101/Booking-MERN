@@ -2,26 +2,20 @@ import { Request } from "express"
 import User from "../models/user.model";
 import { NotFoundError } from "../common/errors";
 import { paginationResponseFormater } from "../utils/paginationResponse";
-import { userType } from "../validation/userSchmea";
+import { userQueryType, userType } from "../validation/userSchmea";
 
 export const getAllUsersService = async (
     req: Request
 ) => {
-    const { page = 1, limit = 10 } = req.validatedQuery;
+    const { page = 1, limit = 10,search,sort="desc" } = req.validatedQuery as userQueryType;
     const skip = (page - 1) * limit;
+    const query: any = {};
+if(search){
+    query.name = { $regex: search, $options: "i" }
+}
+    const users = await User.find(query).sort({ createdAt: sort === "asc" ? 1 : -1 }).skip(skip).limit(limit).lean();
 
-    const users = await User.find()
-        .select("-password")
-        .sort({ createdAt: -1 })
-        .skip(skip)
-        .limit(limit)
-        .lean();
-
-    if (!users) {
-        throw new NotFoundError("No user found.")
-    }
-
-    const total = await User.countDocuments();
+    const total = await User.countDocuments(query);
 
     const meta = paginationResponseFormater(page, limit, total)
 

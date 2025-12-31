@@ -2,13 +2,13 @@ import { Router } from "express";
 import { checkMongoDBId, validateRequestBody, validateRequestQuery } from "../middleware/validation.middleware";
 import { paginationSchmea } from "../validation/pagination";
 import { getAllUsersController, getUserByIdController, updateUserController } from "../controller/user.controller";
-import { userSchmea } from "../validation/userSchmea";
+import { userQuerySchema, userSchmea } from "../validation/userSchmea";
 
 const router = Router();
 
 router.get(
     "/",
-    validateRequestQuery(paginationSchmea),
+    validateRequestQuery(userQuerySchema),
     getAllUsersController
 );
 router.get(

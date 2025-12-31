@@ -1,4 +1,4 @@
-import { BadRequestError, NotFoundError } from "../common/errors";
+import { BadRequestError, NotFoundError, UnAuthorizedError } from "../common/errors";
 import { generateAccessToken, generateRefreshToken, verifyRefreshToken } from "../common/jwt";
 import { comparedPassword, hashPassword } from "../common/password";
 import Admin from "../models/admin.model";
@@ -46,19 +46,18 @@ export const adminLoginService = async (
         throw new NotFoundError("Invalid email or password,")
     }
     const isMatch = await comparedPassword(password, user.password);
-    console.log(isMatch)
     if (!isMatch) {
         throw new BadRequestError("Invalid email or password,")
     }
     const access_token = generateAccessToken({
         id: user._id as string,
         email: user.email,
-        role: "admin"
+        role:user.role,
     })
     const refresh_token = generateRefreshToken({
         id: user._id as string,
         email: user.email,
-        role: "admin"
+        role: user.role,
     })
     user.token = refresh_token;
     await user.save()
@@ -66,7 +65,8 @@ export const adminLoginService = async (
         user: {
             _id: user._id,
             name: user.name,
-            email: user.email
+            email: user.email,
+        role: user.role,
         }, access_token, refresh_token
     }
 }
@@ -81,22 +81,24 @@ export const adminRefreshService = async (
 ) => {
     const token = req.cookies.refresh_token
     if (!token) {
-        throw new BadRequestError("Token is required.")
+        throw new UnAuthorizedError("Token is required.");
     }
     const decoded = await verifyRefreshToken(token);
     const user = await Admin.findOne({ id: decoded.id })
     if (!user) {
-        throw new NotFoundError("Admin not found.")
+        throw new UnAuthorizedError("Admin not found.")
     }
     const access_token = generateAccessToken({
         id: user._id as string,
         email: user.email,
-        role: "admin"
+        role: user.role,
+        
     })
     const refresh_token = generateRefreshToken({
         id: user._id as string,
         email: user.email,
-        role: "admin"
+        role: user.role,
+       
     })
     user.token = refresh_token;
     await user.save();

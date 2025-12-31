@@ -2,7 +2,7 @@ import { Request, Response, NextFunction } from "express";
 import { CustomError, ValidationError } from "../common/errors";
 import multer from "multer";
 
-export const errorHandler = async (
+export const errorHandler =  (
     err: Error,
     req: Request,
     res: Response,
