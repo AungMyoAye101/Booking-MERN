@@ -52,7 +52,7 @@ export const adminLoginService = async (
     const access_token = generateAccessToken({
         id: user._id as string,
         email: user.email,
-        role:user.role,
+        role: user.role,
     })
     const refresh_token = generateRefreshToken({
         id: user._id as string,
@@ -66,7 +66,7 @@ export const adminLoginService = async (
             _id: user._id,
             name: user.name,
             email: user.email,
-        role: user.role,
+            role: user.role,
         }, access_token, refresh_token
     }
 }
@@ -79,12 +79,14 @@ export const adminLogoutService = async (id: string) => {
 export const adminRefreshService = async (
     req: Request
 ) => {
-    const token = req.cookies.refresh_token
+    const token = req.cookies.refresh_token;
+
     if (!token) {
         throw new UnAuthorizedError("Token is required.");
     }
     const decoded = await verifyRefreshToken(token);
-    const user = await Admin.findOne({ id: decoded.id })
+    const user = await Admin.findById(decoded.id).select("-password -token");
+
     if (!user) {
         throw new UnAuthorizedError("Admin not found.")
     }
@@ -92,13 +94,13 @@ export const adminRefreshService = async (
         id: user._id as string,
         email: user.email,
         role: user.role,
-        
+
     })
     const refresh_token = generateRefreshToken({
         id: user._id as string,
         email: user.email,
         role: user.role,
-       
+
     })
     user.token = refresh_token;
     await user.save();

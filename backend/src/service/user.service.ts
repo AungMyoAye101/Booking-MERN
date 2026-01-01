@@ -10,6 +10,7 @@ export const getAllUsersService = async (
     const { page = 1, limit = 10,search,sort="desc" } = req.validatedQuery as userQueryType;
     const skip = (page - 1) * limit;
     const query: any = {};
+    console.log(req.validatedQuery);
 if(search){
     query.name = { $regex: search, $options: "i" }
 }

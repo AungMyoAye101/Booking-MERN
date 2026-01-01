@@ -2,6 +2,9 @@ import { Request, Response, NextFunction } from "express";
 import { successResponse } from "../common/successResponse";
 import { adminLoginService, adminLogoutService, adminRefreshService, adminRegisterService } from "../service/auth.admin.service";
 import { genterateCookie } from "../common/generateCookie";
+import { asyncCatchFn } from "../utils/asyncFunction";
+import Admin from "../models/admin.model";
+import { UnAuthorizedError } from "../common/errors";
 
 export const adminRegisterController = async (
     req: Request,
@@ -42,17 +45,8 @@ export const adminLoginController = async (
 ) => {
     try {
         const { user, access_token, refresh_token } = await adminLoginService(req.validatedBody);
-        res.cookie(
-            "refreh_token",
-            refresh_token,
-            {
-                httpOnly: true,
-                sameSite: 'lax',
-                secure: true,
-                maxAge: 7 * 24 * 60 * 60 * 1000
-            }
-        )
 
+        genterateCookie(res, refresh_token);
         successResponse(
             res,
             201,
@@ -94,3 +88,15 @@ export const refrehTokenController = async (
         return next(error)
     }
 }
+
+export const adminMeController = asyncCatchFn(
+    async (req: Request, res: Response) => {
+        console.log(req.user);
+        const user = await Admin.findById(req.user.id).select("-password -token");
+        console.log(user);
+        if (!user) {
+            throw new UnAuthorizedError("Admin not found.");
+        }
+        successResponse(res, 200, "Admin me successfull.", { user })
+
+    })
