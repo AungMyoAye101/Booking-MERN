@@ -4,8 +4,6 @@ import * as z from "zod";
 export const hotelSchema = z.object({
     name: z.string("Name is required.")
         .min(3, "Name must be at least 3 characters ."),
-    title: z.string("Title is required.")
-        .min(3, "Title must be at least 3 characters ."),
     description: z.string("Title is required.")
         .min(10, "Description must be at least 10 characters ."),
     rating: z.number()
@@ -25,11 +23,10 @@ export const hotelSchema = z.object({
         .positive("Price must be positive.").min(1, "Price must be greater than 1."),
     amenities: z.array(z.string().min(1))
         .nonempty("Amenities can't be empty."),
-    distance: z.string("Title is required.")
-        .min(3, "must be at least 3 characters ."),
     city: z.string("Title is required.")
         .min(3, "must be at least 3 characters ."),
-
+    country: z.string("Country is required.")
+        .min(3, "must be at least 3 characters ."),
 })
 
 export const hotelIdSchema = z.object({

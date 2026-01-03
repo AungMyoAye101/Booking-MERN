@@ -9,6 +9,7 @@ export const createHotelController = async (
     next: NextFunction
 ) => {
     try {
+
         const hotel = await createHotelService(req.validatedBody)
 
         successResponse(
@@ -92,13 +93,13 @@ export const getAllHotelController = async (
 }
 export const getHotelByTypesController = asyncCatchFn(
     async (req: Request, res: Response) => {
-        const data = await getHotelByTypesService();
+        const hotel = await getHotelByTypesService();
 
         successResponse(
             res,
             200,
             "Get hotel by types successfull.",
-            { data }
+            { hotel }
         )
     }
 )

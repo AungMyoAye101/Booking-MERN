@@ -3,7 +3,6 @@ import { IImage } from "./image.model";
 
 export interface IHotel extends Document {
   name: string,
-  title: string,
   description: string,
   photo: mongoose.Types.ObjectId | IImage,
   rating: number,
@@ -12,8 +11,8 @@ export interface IHotel extends Document {
   address: string,
   price: number
   amenities: string[]
-  distance: string,
   city: string,
+  country: string,
 }
 
 const hotelSchema = new mongoose.Schema(
@@ -23,11 +22,7 @@ const hotelSchema = new mongoose.Schema(
       required: true,
       index: true
     },
-    title: {
-      type: String,
-      required: true,
-      index: true
-    },
+
     description: {
       type: String,
       required: true,
@@ -52,7 +47,6 @@ const hotelSchema = new mongoose.Schema(
       type: String,
       required: true,
       default: "hotel",
-      index: true
     },
     address: {
       type: String,
@@ -62,23 +56,23 @@ const hotelSchema = new mongoose.Schema(
       type: Number,
       requried: true,
     },
+    city: {
+      type: String,
+    },
+    country: {
+      type: String,
+    },
     amenities: {
       type: [String],
       requried: true,
       index: true
     },
-    distance: {
-      type: String,
-    },
 
-    city: {
-      type: String,
-      required: true,
-      index: true
-    },
   },
   { timestamps: true }
 );
+hotelSchema.index({ name: 1, city: 1, createdAt: 1 });
+
 
 const Hotel = mongoose.model<IHotel>("Hotel", hotelSchema);
 export default Hotel;
