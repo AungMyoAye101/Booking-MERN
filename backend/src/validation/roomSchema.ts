@@ -4,12 +4,6 @@ export const roomSchema = z.object({
     name: z
         .string("Title is required.")
         .min(3, "Title must be contain 3 characters."),
-    // description: z
-    //     .string("Description is required.")
-    //     .min(10, "Description must be contain 10 characters."),
-    // type: z
-    //     .string("Type is required.")
-    //     .min(3, "Type must be contain 3 characters."),
     maxPeople: z
         .number()
         .refine((val) => val > 0, "Max people must be greater than 0."),
@@ -19,6 +13,9 @@ export const roomSchema = z.object({
     totalRooms: z
         .number()
         .refine((val) => val > 0, "Room number must be greater than 0."),
+    bedTypes: z
+        .enum(["king", "queen", "full", "twin", "single"],
+            { message: "Bed type must be one of king, queen, full, twin or single" })
 })
 
 

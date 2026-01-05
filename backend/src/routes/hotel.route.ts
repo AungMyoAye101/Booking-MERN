@@ -12,7 +12,7 @@ import {
     validateRequestQuery,
 } from "../middleware/validation.middleware";
 import { Router } from "express";
-import { hotelSchema } from "../validation/hotelSchema";
+import { hotelSchema, hotelUpdateSchema } from "../validation/hotelSchema";
 import { hasRole, isAuthenticated } from "../middleware/isAuthenticated";
 import { hotelSerachSchema } from "../validation/searchSchema";
 
@@ -45,7 +45,7 @@ router.put(
     isAuthenticated,
     hasRole(['admin', 'staff']),
     checkMongoDBId(["id"]),
-    validateRequestBody(hotelSchema),
+    validateRequestBody(hotelUpdateSchema),
     updateHotelController);
 router.delete(
     '/delete/:id',

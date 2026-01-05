@@ -4,6 +4,7 @@ import User from "../models/user.model";
 import { hashPassword } from "../common/password";
 import Admin from "../models/admin.model";
 import Hotel from "../models/hotel.model";
+import Room from "../models/room.model";
 
 
 
@@ -43,23 +44,34 @@ const seed = async () => {
     // console.log("Deleting admins...");
     // await Admin.insertMany(admins);
     // console.log("Admins seeded successfully");
-    await Hotel.deleteMany();
-    console.log("Deleting hotels...");
-    const hotels = Array.from({ length: 20 }, () => ({
+    // await Hotel.deleteMany();
+    // console.log("Deleting hotels...");
+    // const hotels = Array.from({ length: 20 }, () => ({
+    //     name: faker.company.name(),
+    //     description: faker.company.catchPhrase(),
+    //     address: faker.location.streetAddress(),
+    //     price: faker.number.int({ min: 100, max: 1000 }),
+    //     amenities: faker.helpers.arrayElements(["wifi", "parking", "pool", "gym", "breakfast"]),
+    //     city: faker.location.city(),
+    //     country: faker.location.country(),
+    //     rating: faker.number.int({ min: 1, max: 10 }),
+    //     star: faker.number.int({ min: 1, max: 5 }),
+    //     type: faker.helpers.arrayElement(["hotel", "motel", "guest-house"]),
+    // }));
+    // await Hotel.insertMany(hotels);
+    // console.log("Hotels seeded successfully");
+    await Room.deleteMany();
+    console.log("Deleting rooms...");
+    const hotels = await Hotel.find();
+    const rooms = Array.from({ length: 20 }, () => ({
         name: faker.company.name(),
-        title: faker.company.catchPhrase(),
-        description: faker.company.catchPhrase(),
-        address: faker.location.streetAddress(),
+        maxPeople: faker.number.int({ min: 1, max: 10 }),
         price: faker.number.int({ min: 100, max: 1000 }),
-        amenities: faker.helpers.arrayElements(["wifi", "parking", "pool", "gym", "breakfast"]),
-        distance: faker.location.direction(),
-        city: faker.location.city(),
-        rating: faker.number.int({ min: 1, max: 10 }),
-        star: faker.number.int({ min: 1, max: 5 }),
-        type: faker.helpers.arrayElement(["hotel", "motel", "guest-house"]),
+        totalRooms: faker.number.int({ min: 1, max: 10 }),
+        hotelId: faker.helpers.arrayElement(hotels.map(hotel => hotel._id)),
     }));
-    await Hotel.insertMany(hotels);
-    console.log("Hotels seeded successfully");
+    await Room.insertMany(rooms);
+    console.log("Rooms seeded successfully");
 }
 
 seed();

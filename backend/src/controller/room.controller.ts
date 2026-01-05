@@ -3,10 +3,12 @@ import { successResponse } from "../common/successResponse";
 import {
     createRoomService,
     deleteRoomService,
+    getAllRoomsService,
     getRoomByIdService,
     getRoomsByHotelIdService,
     updateRoomService
 } from "../service/room.service";
+import { asyncCatchFn } from "../utils/asyncFunction";
 
 
 export const createRoomController = async (
@@ -95,3 +97,18 @@ export const getRoomByIdController = async (
         return next(error)
     }
 }
+
+export const getAllRoomsController = asyncCatchFn(
+    async (
+        req: Request,
+        res: Response
+    ) => {
+        const data = await getAllRoomsService(req);
+        successResponse(
+            res,
+            200,
+            "Get all rooms successfull.",
+            data
+        )
+    }
+)

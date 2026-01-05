@@ -45,6 +45,7 @@ export const deleteHotelController = async (
     next: NextFunction
 ) => {
     try {
+        console.log(req.params);
         const hotel = await deleteHotelService(req.validatedParams.id);
         successResponse(
             res,

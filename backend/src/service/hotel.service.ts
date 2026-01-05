@@ -2,7 +2,7 @@ import { MongooseQueryOptions } from "mongoose";
 import { NotFoundError } from "../common/errors";
 import Hotel from "../models/hotel.model";
 import { paginationResponseFormater } from "../utils/paginationResponse";
-import { hotelType } from "../validation/hotelSchema";
+import { hotelType, hotelUpdateType } from "../validation/hotelSchema";
 import { Request } from "express";
 
 export const createHotelService = async (
@@ -13,9 +13,15 @@ export const createHotelService = async (
 //update hotel
 export const updateHotelService = async (
     id: string,
-    data: hotelType
+    data: hotelUpdateType
 ) => {
-    return await Hotel.findByIdAndUpdate(id, { data })
+
+    const hotel = await Hotel.findOneAndUpdate({ _id: id }, data, { new: true })
+    if (!hotel) {
+        throw new NotFoundError("Hotel not found.")
+    }
+
+    return hotel;
 }
 
 export const deleteHotelService = async (id: string) => {
@@ -24,10 +30,11 @@ export const deleteHotelService = async (id: string) => {
 //get hotel by id
 export const getHotelByIdService = async (id: string) => {
 
-    const hotel = await Hotel.findById(id).lean();
+    const hotel = await Hotel.findById(id).populate("photo").lean();
     if (!hotel) {
         throw new NotFoundError("Hotel not found.")
     }
+
     return hotel;
 }
 
@@ -84,6 +91,7 @@ export const getAllHotelsService = async (
         query
     ).skip(skip)
         .limit(limit)
+        .populate("photo")
         .lean();
 
     const total = await Hotel.countDocuments(query);

@@ -1,5 +1,6 @@
 import mongoose, { Document, Types } from "mongoose";
 
+export type Bed_Types = "king" | "queen" | "full" | "twin" | "single";
 
 export interface IRoom extends Document {
   name: string,
@@ -8,7 +9,7 @@ export interface IRoom extends Document {
   hotelId: Types.ObjectId,
   totalRooms: number,
   photo: Types.ObjectId,
-
+  bedTypes: Bed_Types
 }
 
 const roomSchema = new mongoose.Schema(
@@ -40,7 +41,12 @@ const roomSchema = new mongoose.Schema(
     photo: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "Image",
-    }
+    },
+    bedTypes: {
+      type: String,
+      enum: ["king", "queen", "full", "twin", "single"],
+      required: true,
+    },
   },
   { timestamps: true }
 );

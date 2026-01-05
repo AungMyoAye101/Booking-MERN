@@ -17,6 +17,7 @@ import imageRouter from "./routes/image.route";
 import paymentRouter from "./routes/payment.route";
 import receiptRouter from "./routes/receipt.route";
 import { isAuthenticated } from "./middleware/isAuthenticated";
+import { customLogger } from "./middleware/customLogger";
 
 
 const app = express();
@@ -39,6 +40,9 @@ app.use(cors({
 }
 ));
 app.use(limiter);
+
+// Custom logger that logs to both console and file
+app.use(customLogger);
 
 //roures
 app.use("/api/v1/admin", adminRouter)

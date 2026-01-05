@@ -7,6 +7,7 @@ import {
     createRoomController,
     deleteRoomController,
     getAllRoomByHotelIdController,
+    getAllRoomsController,
     getRoomByIdController,
     updateRoomController
 } from "../controller/room.controller";
@@ -26,6 +27,12 @@ import { paginationSchmea } from "../validation/pagination";
 // export default router;
 
 const router = Router();
+
+router.get(
+    "/",
+    validateRequestQuery(paginationSchmea),
+    getAllRoomsController
+)
 
 router.get(
     "/:roomId",

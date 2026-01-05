@@ -60,5 +60,27 @@ export const getRoomsByHotelIdService = async (
 
     const total = await Room.countDocuments({ hotel: hotelId });
     const meta = paginationResponseFormater(page, limit, total);
+
     return { rooms, meta }
+}
+
+export const getAllRoomsService = async (req: Request) => {
+    const { page = 1, limit = 10, search, sort = "desc" } = req.validatedQuery;
+    const query: any = {};
+    if (search) {
+        query.name = { $regex: search, $options: "i" }
+    }
+    const skip = (page - 1) * limit;
+    const rooms = await Room.find(query)
+        .sort({ createdAt: sort === "asc" ? 1 : -1 })
+        .skip(skip).limit(limit)
+        .populate({ path: "hotelId", select: "name" })
+        .lean();
+    if (!rooms) {
+        throw new NotFoundError("Rooms not found.")
+    }
+    const total = await Room.countDocuments(query);
+    const meta = paginationResponseFormater(page, limit, total);
+
+    return { rooms, meta };
 }
