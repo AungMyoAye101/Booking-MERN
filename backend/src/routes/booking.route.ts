@@ -1,12 +1,17 @@
 import { Router } from "express";
 import { checkMongoDBId, validateRequestBody, validateRequestQuery } from "../middleware/validation.middleware";
 import { bookingSchema, updateBookingSchema } from "../validation/bookingSchema";
-import { createBookingController, getAllBookingByRoomIdController, updateBookingController } from "../controller/booking.controller";
+import { createBookingController, getAllBookingByRoomIdController, getAllBookingsController, updateBookingController } from "../controller/booking.controller";
 import { hasRole } from "../middleware/isAuthenticated";
 import { paginationSchmea } from "../validation/pagination";
 
 const router = Router();
 
+router.get(
+    '/',
+    hasRole(['admin', 'staff']),
+    validateRequestQuery(paginationSchmea),
+    getAllBookingsController)
 router.get(
     '/:roomId',
     checkMongoDBId(['roomId']),

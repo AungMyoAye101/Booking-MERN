@@ -82,3 +82,41 @@ export const getAllBookingByRoomIdService = async (
     const meta = paginationResponseFormater(page, limit, total)
     return { bookings, meta };
 }
+
+export const getALlBookingsService = async (req: Request) => {
+    const { page = 1, limit = 10, search, sort = "desc" } = req.validatedQuery;
+
+    // Ensure numeric pagination values with sane defaults
+    const pageNumber = Math.max(Number(page) || 1, 1);
+    const limitNumber = Math.max(Number(limit) || 10, 1);
+
+    // Build filter query
+    const query: Record<string, unknown> = {};
+
+    if (search) {
+        query.name = { $regex: search, $options: "i" }; // case-insensitive search
+    }
+
+    // Normalize sort direction (default: newest first)
+    const sortDirection: 1 | -1 = sort === "asc" ? 1 : -1;
+    const skip = (pageNumber - 1) * limitNumber;
+
+    // Run query and count in parallel for better performance
+    const [bookings, total] = await Promise.all([
+        Booking.find(query)
+            .sort({ createdAt: sortDirection })
+            .skip(skip)
+            .limit(limitNumber)
+            // .populate([
+            //     { path: "userId", select: "_id name" },
+            //     { path: "roomId", select: "_id name" },
+            //     { path: "hotelId", select: "_id name" },
+            // ])
+            .lean(),
+        Booking.countDocuments(query),
+    ]);
+    console.log(bookings, total)
+    const meta = paginationResponseFormater(pageNumber, limitNumber, total);
+
+    return { bookings, meta };
+}

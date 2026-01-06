@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 import { asyncCatchFn } from "../utils/asyncFunction";
 import { successResponse } from "../common/successResponse";
-import { createBookingService, getAllBookingByRoomIdService, updateBookingService } from "../service/booking.service";
+import { createBookingService, getAllBookingByRoomIdService, getALlBookingsService, updateBookingService } from "../service/booking.service";
 
 export const createBookingController = asyncCatchFn(
     async (
@@ -42,6 +42,22 @@ export const getAllBookingByRoomIdController = asyncCatchFn(
             200,
             "Get all booking  successfull.",
             data
+        )
+    }
+)
+
+export const getAllBookingsController = asyncCatchFn(
+    async (
+        req: Request,
+        res: Response,
+    ) => {
+        const data = await getALlBookingsService(req);
+
+        successResponse(
+            res,
+            200,
+            "Get all booking success.",
+            { data }
         )
     }
 )
