@@ -48,11 +48,17 @@ const bookingSchema = new mongoose.Schema({
     },
 }, { timestamps: true });
 
+// Compound index for room-specific booking queries (used in createBookingService)
 bookingSchema.index({
     roomId: 1,
     checkIn: 1,
     checkOut: 1,
     status: 1
 })
+
+// Indexes for date range queries (used in getALlBookingsService)
+// MongoDB can use these for efficient date range filtering
+bookingSchema.index({ checkIn: 1, status: 1 })
+bookingSchema.index({ checkOut: 1, status: 1 })
 const Booking = mongoose.model<IBooking>("Booking", bookingSchema)
 export default Booking

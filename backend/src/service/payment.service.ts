@@ -3,8 +3,6 @@ import { BadRequestError, NotFoundError } from "../common/errors";
 import Payment from "../models/payment.model";
 import { checkMongoDbId } from "../utils/checkMongoDbId";
 import { createPaymentType, updatePaymentType } from "../validation/paymentSchema";
-import { Request } from "express";
-import Booking from "../models/booking.model";
 import Receipt from "../models/receipt.model";
 export const createPaymentService = async (
     data: createPaymentType

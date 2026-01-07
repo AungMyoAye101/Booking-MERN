@@ -57,7 +57,7 @@ export const getAllBookingsController = asyncCatchFn(
             res,
             200,
             "Get all booking success.",
-            { data }
+            data
         )
     }
 )

@@ -84,19 +84,42 @@ export const getAllBookingByRoomIdService = async (
 }
 
 export const getALlBookingsService = async (req: Request) => {
-    const { page = 1, limit = 10, search, sort = "desc" } = req.validatedQuery;
+    const { page = 1, limit = 10, status, sort = "desc", sortBy = "date", checkIn, checkOut } = req.validatedQuery;
 
     // Ensure numeric pagination values with sane defaults
     const pageNumber = Math.max(Number(page) || 1, 1);
     const limitNumber = Math.max(Number(limit) || 10, 1);
 
+
     // Build filter query
     const query: Record<string, unknown> = {};
 
-    if (search) {
-        query.name = { $regex: search, $options: "i" }; // case-insensitive search
+    if (status) {
+        query.status = status
     }
+    // Search for bookings where checkIn date falls within the specified date range
+    if (checkIn && checkOut) {
+        // Validate that checkOut is after checkIn (defensive check, though zod also validates)
+        const checkInDate = new Date(checkIn);
+        const checkOutDate = new Date(checkOut);
 
+        if (checkOutDate <= checkInDate) {
+            throw new BadRequestError("Check-out date must be after check-in date.");
+        }
+
+        // Find bookings where checkIn is within the search date range
+        // This is optimized for index usage on checkIn field
+        query.checkIn = {
+            $gte: checkInDate,
+            $lte: checkOutDate
+        };
+    } else if (checkIn) {
+        // If only checkIn is provided, find bookings from that date onwards
+        query.checkIn = { $gte: new Date(checkIn) };
+    } else if (checkOut) {
+        // If only checkOut is provided, find bookings up to that date
+        query.checkIn = { $lte: new Date(checkOut) };
+    }
     // Normalize sort direction (default: newest first)
     const sortDirection: 1 | -1 = sort === "asc" ? 1 : -1;
     const skip = (pageNumber - 1) * limitNumber;
@@ -107,15 +130,15 @@ export const getALlBookingsService = async (req: Request) => {
             .sort({ createdAt: sortDirection })
             .skip(skip)
             .limit(limitNumber)
-            // .populate([
-            //     { path: "userId", select: "_id name" },
-            //     { path: "roomId", select: "_id name" },
-            //     { path: "hotelId", select: "_id name" },
-            // ])
+            .populate([
+                { path: "userId", select: "_id name" },
+                { path: "roomId", select: "_id name" },
+                // { path: "hotelId", select: "_id name" },
+            ])
             .lean(),
         Booking.countDocuments(query),
     ]);
-    console.log(bookings, total)
+
     const meta = paginationResponseFormater(pageNumber, limitNumber, total);
 
     return { bookings, meta };

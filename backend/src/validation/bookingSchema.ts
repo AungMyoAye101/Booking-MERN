@@ -1,4 +1,5 @@
 import * as z from "zod";
+import { paginationSchmea } from "./pagination";
 
 export const bookingSchema = z.object({
     userId: z.string(),
@@ -21,5 +22,22 @@ export const updateBookingSchema = z.object({
     status: z.enum(["PENDING", "CONFIRMED", "CANCELLED", "EXPIRED"]).default("PENDING"),
 })
 
+export const bookingQuerySchema = z.object({
+    status: z.enum(["PENDING", "CONFIRMED", "CANCELLED", "EXPIRED"], {
+        message: 'Status must be one of "PENDING" | "CONFIRMED" | "CANCELLED" | "EXPIRED"'
+    }).optional(),
+    sort: z.enum(['asc', 'desc'], {
+        message: "Sorting must be asc or desc"
+    }).optional(),
+    checkIn: z.coerce.date().refine((date) => {
+        const today = new Date();
+        today.setHours(0, 0, 0, 0);
+        return date >= today;
+    }, "Check-in cannot be in the past.").optional(),
+    checkOut: z.coerce.date().optional()
+
+}).merge(paginationSchmea)
+
 export type bookingType = z.infer<typeof bookingSchema>
 export type updateBookingType = z.infer<typeof updateBookingSchema>
+export type bookingQueryType = z.infer<typeof bookingQuerySchema>;
