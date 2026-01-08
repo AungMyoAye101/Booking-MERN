@@ -84,7 +84,8 @@ export const getAllBookingByRoomIdService = async (
 }
 
 export const getALlBookingsService = async (req: Request) => {
-    const { page = 1, limit = 10, status, sort = "desc", sortBy = "date", checkIn, checkOut } = req.validatedQuery;
+    const { page = 1, limit = 10, status, sort = "desc", checkIn, checkOut } = req.validatedQuery;
+    console.log(req.query)
 
     // Ensure numeric pagination values with sane defaults
     const pageNumber = Math.max(Number(page) || 1, 1);
@@ -140,6 +141,7 @@ export const getALlBookingsService = async (req: Request) => {
     ]);
 
     const meta = paginationResponseFormater(pageNumber, limitNumber, total);
+    console.log(meta)
 
     return { bookings, meta };
 }
