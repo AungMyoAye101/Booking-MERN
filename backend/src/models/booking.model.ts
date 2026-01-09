@@ -6,7 +6,7 @@ export interface IBooking extends Document {
     hotelId: Types.ObjectId,
     totalPrice: number,
     quantty: number,
-    status: "PENDING" | "CONFIRMED" | "CANCELLED" | "EXPIRED",
+    status: "PENDING" | "CONFIRMED" | "STAYED" | "CANCELLED" | "EXPIRED",
     checkIn: Date,
     checkOut: Date
 }
@@ -40,7 +40,7 @@ const bookingSchema = new mongoose.Schema({
     },
     status: {
         type: String,
-        enum: ["PENDING", "CONFIRMED", "CANCELLED", "EXPIRED"]
+        enum: ["PENDING", "CONFIRMED", "STAYED", "CANCELLED", "EXPIRED"]
     },
     totalPrice: {
         type: Number,

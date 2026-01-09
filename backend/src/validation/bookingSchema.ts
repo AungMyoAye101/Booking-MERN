@@ -7,7 +7,7 @@ export const bookingSchema = z.object({
     hotelId: z.string(),
     totalPrice: z.number().positive(),
     quantity: z.number().positive(),
-    status: z.enum(["PENDING", "CONFIRMED", "CANCELLED", "EXPIRED"]).default("PENDING"),
+    status: z.enum(["PENDING", "CONFIRMED", "STAYED", "CANCELLED", "EXPIRED"]).default("PENDING"),
     checkIn: z.coerce.date().refine((date) => {
         const today = new Date();
         today.setHours(0, 0, 0, 0);
@@ -19,13 +19,13 @@ export const bookingSchema = z.object({
     path: ['checkOut']
 })
 export const updateBookingSchema = z.object({
-    status: z.enum(["PENDING", "CONFIRMED", "CANCELLED", "EXPIRED"]).default("PENDING"),
+    status: z.enum(["PENDING", "CONFIRMED", "STAYED", "CANCELLED", "EXPIRED"]).default("PENDING"),
 })
 
 export const bookingQuerySchema = z.object({
     status: z.preprocess(
         (val) => (val === "" || val === "null" ? undefined : val),
-        z.enum(["PENDING", "CONFIRMED", "CANCELLED", "EXPIRED"]).optional()
+        z.enum(["PENDING", "CONFIRMED", "STAYED", "CANCELLED", "EXPIRED"]).optional()
     ),
     sort: z.enum(['asc', 'desc'], {
         message: "Sorting must be asc or desc"

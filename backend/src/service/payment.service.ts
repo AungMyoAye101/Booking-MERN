@@ -2,8 +2,12 @@ import mongoose from "mongoose";
 import { BadRequestError, NotFoundError } from "../common/errors";
 import Payment from "../models/payment.model";
 import { checkMongoDbId } from "../utils/checkMongoDbId";
-import { createPaymentType, updatePaymentType } from "../validation/paymentSchema";
+import { createPaymentType, paymentQueryType, updatePaymentType } from "../validation/paymentSchema";
 import Receipt from "../models/receipt.model";
+import { Request } from "express";
+import { paginationResponseFormater } from "../utils/paginationResponse";
+import Booking from "../models/booking.model";
+//create
 export const createPaymentService = async (
     data: createPaymentType
 ) => {
@@ -24,7 +28,7 @@ export const createPaymentService = async (
 
 }
 
-export const updatePaymnetService = async (
+export const ComfirmedPaymnetService = async (
     data: updatePaymentType
 ) => {
     const [userId, paymentId, bookingId] = checkMongoDbId([data.userId, data.paymentId, data.bookingId]);
@@ -59,4 +63,56 @@ export const updatePaymnetService = async (
         session.endSession()
     }
 
+}
+
+//get all payment
+export const getALlPaymentService = async (
+    req: Request
+) => {
+    const {
+        page = 1,
+        limit = 10,
+        sort = 'asc',
+        status } = req.validatedQuery as paymentQueryType;
+
+    console.log(sort)
+    const skip = Math.ceil((page - 1) * limit);
+
+    const sortDirection: 1 | -1 = sort === "asc" ? 1 : -1;
+
+    const query: any = {};
+    if (status) {
+        query.status = status
+    }
+    const [payments, total] = await Promise.all([
+        Payment.find(query)
+            .sort({ createdAt: sortDirection })
+            .skip(skip)
+            .limit(limit)
+            .populate([
+                { path: 'userId', select: "_id name" },
+
+            ])
+            .lean()
+        ,
+        Payment.countDocuments(query)
+    ])
+
+    const meta = paginationResponseFormater(page, limit, total);
+    return { payments, meta }
+}
+
+export const getPaymentById = async (
+    id: string
+) => {
+    const payment = await Payment.findById(id).populate([
+        { path: "userId", select: "_id name " },
+        { path: "bookingId", select: "_id checkIn checkOut" }
+    ]).lean();
+
+    if (!payment) {
+        throw new NotFoundError("No payment found.")
+    }
+
+    return payment;
 }

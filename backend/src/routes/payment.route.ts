@@ -1,12 +1,29 @@
 import { Router } from "express";
 import {
+    comfirmedPaymnetController,
     createPaymnetController,
-    updatePaymnetController
+    getAllPaymentController,
+    getPaymentByIdController,
 } from "../controller/payment.controller";
-import { validateRequestBody } from "../middleware/validation.middleware";
-import { createPaymentSchema, updatePaymnetSchema } from "../validation/paymentSchema";
+import { checkMongoDBId, validateRequestBody, validateRequestQuery } from "../middleware/validation.middleware";
+import { createPaymentSchema, paymentQuerySchema, updatePaymnetSchema } from "../validation/paymentSchema";
+import { hasRole } from "../middleware/isAuthenticated";
+
 
 const router = Router();
+
+router.get(
+    "/",
+    hasRole(['admin', 'staff']),
+    validateRequestQuery(paymentQuerySchema),
+    getAllPaymentController
+)
+//get payment by id
+router.get(
+    "/:id",
+    checkMongoDBId(["id"]),
+    getPaymentByIdController
+)
 
 router.post(
     "/create",
@@ -16,7 +33,7 @@ router.post(
 router.put(
     "/update",
     validateRequestBody(updatePaymnetSchema),
-    updatePaymnetController,
+    comfirmedPaymnetController,
 )
 
 export default router;

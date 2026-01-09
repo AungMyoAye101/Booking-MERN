@@ -1,4 +1,5 @@
 import * as z from "zod";
+import { paginationSchmea } from "./pagination";
 
 export const createPaymentSchema = z.object({
     bookingId: z.string("Booking id is required."),
@@ -14,5 +15,19 @@ export const updatePaymnetSchema = z.object({
     bookingId: z.string("Booking id is required."),
 })
 
+export const paymentQuerySchema = z.object({
+    status: z.preprocess(
+        (val) => (val === "" || val === "null" || val === "all" ? undefined : val),
+        z.enum(["PENDING", "PAID", "FAILED"]).optional()
+    ),
+    sort: z.enum(['asc', 'desc'], {
+        message: "Sorting must be asc or desc"
+    }).optional(),
+
+
+}).merge(paginationSchmea)
+
+
 export type createPaymentType = z.infer<typeof createPaymentSchema>;
 export type updatePaymentType = z.infer<typeof updatePaymnetSchema>;
+export type paymentQueryType = z.infer<typeof paymentQuerySchema>;

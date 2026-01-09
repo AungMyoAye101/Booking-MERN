@@ -22,6 +22,7 @@ export const updateBookingController = asyncCatchFn(
         req: Request,
         res: Response
     ) => {
+
         const booking = await updateBookingService(req.validatedParams.id, req.validatedBody);
         successResponse(
             res,

@@ -6,6 +6,7 @@ import Admin from "../models/admin.model";
 import Hotel from "../models/hotel.model";
 import Room from "../models/room.model";
 import Booking from "../models/booking.model";
+import Payment from "../models/payment.model";
 
 
 
@@ -61,7 +62,8 @@ const seed = async () => {
     // }));
     // await Hotel.insertMany(hotels);
     // console.log("Hotels seeded successfully");
-    seedBooking()
+    // 
+    seedPayment()
 }
 
 const seedRoom = async () => {
@@ -127,6 +129,48 @@ const seedBooking = async () => {
 
     await Booking.insertMany(bookings);
     console.log("Bookings seeded successfully");
+}
+
+const seedPayment = async () => {
+    await Payment.deleteMany();
+    console.log("Deleting payments...");
+
+    const bookings = await Booking.find();
+    const users = await User.find();
+    if (bookings.length === 0 || users.length === 0) {
+        console.log("Please seed bookings and users before seeding payments");
+        return;
+    }
+
+    // Generate payments corresponding to bookings (1:1 mapping for simplicity)
+    const payments = bookings.map(booking => {
+        // Randomly select a payment method and status
+        const paymentMethods = ["MOBILE_BANKING", "CARD", "BANK"] as const;
+        const statuses = ["PAID", "PAID", "PAID", "PENDING", "FAILED"] as const; // mostly PAID
+
+        // Paid/failed payments should have a realistic past paidAt date, pending can be future or present
+        let paidAt = new Date();
+        if (faker.helpers.arrayElement([true, false])) {
+            paidAt = faker.date.past({ years: 0.2 }); // within last ~2.5 months
+        } else if (faker.helpers.arrayElement([true, false])) {
+            paidAt = faker.date.recent({ days: 14 }); // within last 2 weeks
+        }
+
+        const status = faker.helpers.arrayElement(statuses);
+
+        // Randomize a user for the payment (should match the booking user)
+        return {
+            bookingId: booking._id,
+            userId: booking.userId,
+            paymentMethod: faker.helpers.arrayElement(paymentMethods),
+            status,
+            amount: booking.totalPrice,
+            paidAt,
+        };
+    });
+
+    await Payment.insertMany(payments);
+    console.log("Payments seeded successfully");
 }
 
 seed();

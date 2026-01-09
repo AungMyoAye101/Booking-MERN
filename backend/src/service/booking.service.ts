@@ -57,6 +57,7 @@ export const updateBookingService = async (
     id: string,
     data: updateBookingType
 ) => {
+
     const booking = await Booking.findByIdAndUpdate(id, data, { new: true })
     if (!booking) {
         throw new NotFoundError("Booking not found.")
@@ -85,7 +86,6 @@ export const getAllBookingByRoomIdService = async (
 
 export const getALlBookingsService = async (req: Request) => {
     const { page = 1, limit = 10, status, sort = "desc", checkIn, checkOut } = req.validatedQuery;
-    console.log(req.query)
 
     // Ensure numeric pagination values with sane defaults
     const pageNumber = Math.max(Number(page) || 1, 1);
