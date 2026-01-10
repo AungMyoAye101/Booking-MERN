@@ -53,11 +53,11 @@ router.post(
     validateRequestBody(roomSchema),
     createRoomController
 )
-router.post(
-    "/:hotelId/update",
+router.put(
+    "/update/:roomId",
+    checkMongoDBId(["roomId"]),
     isAuthenticated,
     hasRole(["admin", "staff"]),
-    checkMongoDBId(["hotelId"]),
     validateRequestBody(roomSchema),
     updateRoomController
 )

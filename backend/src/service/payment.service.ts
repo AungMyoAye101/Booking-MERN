@@ -75,7 +75,7 @@ export const getALlPaymentService = async (
         sort = 'asc',
         status } = req.validatedQuery as paymentQueryType;
 
-    console.log(sort)
+
     const skip = Math.ceil((page - 1) * limit);
 
     const sortDirection: 1 | -1 = sort === "asc" ? 1 : -1;

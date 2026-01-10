@@ -1,9 +1,11 @@
+import mongoose from "mongoose";
 import { BadRequestError, NotFoundError } from "../common/errors";
 import Hotel from "../models/hotel.model"
 import Room from "../models/room.model";
 import { paginationResponseFormater } from "../utils/paginationResponse";
 import { createRoomType } from "../validation/roomSchema";
 import { Request } from "express";
+import Booking from "../models/booking.model";
 
 export const createRoomService = async (
     hotelId: string,
@@ -19,18 +21,42 @@ export const updateRoomService = async (
 ) => {
     const { roomId } = req.validatedParams;
     const data = req.validatedBody;
-
-    return await Room.findOneAndUpdate(
-        { _id: roomId },
-        { data },
-        { new: true }
-    )
+    console.log(data)
+    const room = await Room.findByIdAndUpdate(roomId, data, { new: true })
+    if (!room) {
+        throw new NotFoundError("Room not found.");
+    }
+    console.log(room);
+    return room;
 }
 export const deleteRoomService = async (
     req: Request
 ) => {
+
     const { roomId } = req.validatedParams;
-    return await Room.findByIdAndDelete({ _id: roomId });
+
+    const session = await mongoose.startSession();
+    session.startTransaction()
+
+    try {
+        const room = await Room.findByIdAndDelete(roomId);
+        if (!room) {
+            throw new NotFoundError("Room not found.")
+        }
+        await Booking.deleteMany({ roomId })
+
+        session.commitTransaction();
+
+        return room;
+
+    } catch (error) {
+        session.abortTransaction();
+        console.error(error);
+        const errorMessage = error instanceof Error ? error.message : String(error);
+        throw new Error(errorMessage);
+    } finally {
+        session.endSession()
+    }
 }
 
 export const getRoomByIdService = async (id: string) => {
@@ -74,7 +100,10 @@ export const getAllRoomsService = async (req: Request) => {
     const rooms = await Room.find(query)
         .sort({ createdAt: sort === "asc" ? 1 : -1 })
         .skip(skip).limit(limit)
-        .populate({ path: "hotelId", select: "name" })
+        .populate([
+            { path: "hotelId", select: "name" },
+            { path: "photo", select: "secure_url" }
+        ])
         .lean();
     if (!rooms) {
         throw new NotFoundError("Rooms not found.")
