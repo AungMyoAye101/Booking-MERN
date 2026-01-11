@@ -16,6 +16,7 @@ import bookingRouter from "./routes/booking.route";
 import imageRouter from "./routes/image.route";
 import paymentRouter from "./routes/payment.route";
 import receiptRouter from "./routes/receipt.route";
+import analyticRouter from "./routes/analytic.route";
 import { isAuthenticated } from "./middleware/isAuthenticated";
 import { customLogger } from "./middleware/customLogger";
 
@@ -45,6 +46,7 @@ app.use(limiter);
 app.use(customLogger);
 
 //roures
+app.use("/api/v1/analytic", analyticRouter)
 app.use("/api/v1/admin", adminRouter)
 app.use("/api/v1/auth", authRouter);
 app.use("/api/v1/users", isAuthenticated, userRouter);

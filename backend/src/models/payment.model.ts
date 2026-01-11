@@ -38,13 +38,13 @@ const paymentSchmea = new mongoose.Schema({
     },
     paidAt: {
         type: Date,
-        default: Date.now()
+        default: Date.now
     }
 }, {
     timestamps: true
 })
 
-paymentSchmea.index({ status: 1 });
+paymentSchmea.index({ status: 1, paidAt: 1 });
 paymentSchmea.index({ createdAt: 1 })
 
 const Payment = model<IPaymentType>("Payment", paymentSchmea);
