@@ -1,13 +1,11 @@
 import { v2 as cloudinary } from "cloudinary";
 import { Request } from "express"
-import { HotelWithImageType, UploadedFile } from "../types/type"
-import { checkMongoIdValid } from "../common/helper";
-import { BadRequestError, NotFoundError, ValidationError } from "../common/errors";
-import Image from "../models/image.model";
 import Hotel from "../models/hotel.model";
 import fs from "fs/promises";
 import Room from "../models/room.model";
 import mongoose from "mongoose";
+import { BadRequestError, NotFoundError, ValidationError } from "../common/errors";
+import Image from "../models/image.model";
 
 export const uploadHotelImgService = async (
     req: Request

@@ -1,5 +1,5 @@
 import { successResponse } from "../common/successResponse";
-import { getTotalRevenueService } from "../service/analytic.service";
+import { getTotalBooking, getTotalRevenueService, totalService } from "../service/analytic.service";
 import { asyncCatchFn } from "../utils/asyncFunction";
 import { Request, Response } from "express";
 export const getTotalRevenueController = asyncCatchFn(
@@ -13,6 +13,35 @@ export const getTotalRevenueController = asyncCatchFn(
             res,
             200,
             "Get all payment total",
+            data
+        )
+    }
+)
+
+export const getTotalController = asyncCatchFn(
+    async (
+        req: Request,
+        res: Response
+    ) => {
+        const data = await totalService();
+        successResponse(
+            res,
+            200,
+            "Get all  total",
+            data
+        )
+    }
+)
+export const getTotalBookingController = asyncCatchFn(
+    async (
+        req: Request,
+        res: Response
+    ) => {
+        const data = await getTotalBooking();
+        successResponse(
+            res,
+            200,
+            "Get all  total Booking",
             data
         )
     }

@@ -1,11 +1,19 @@
 import { Router } from "express";
-import { getTotalRevenueController } from "../controller/analytic.controller";
+import { getTotalBookingController, getTotalController, getTotalRevenueController } from "../controller/analytic.controller";
 
 const router = Router();
 
 router.get(
-    '/revenue',
+    '/dashboard/revenue',
     getTotalRevenueController
+)
+router.get(
+    '/dashboard/total',
+    getTotalController
+)
+router.get(
+    '/dashboard/booking',
+    getTotalBookingController
 )
 
 export default router;
