@@ -24,7 +24,7 @@ import { customLogger } from "./middleware/customLogger";
 const app = express();
 
 dotenv.config();
-
+const allow_origin = process.env.ORIGIN_URL as string;
 cloudinary.config({
     cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
     api_key: process.env.CLOUDINARY_API_KEY,
@@ -36,7 +36,7 @@ app.use(express.urlencoded({ limit: "50mb", extended: true }));
 //Middleware for route handler
 app.use(cookieParser());
 app.use(cors({
-    origin: process.env.ORIGIN_URL,
+    origin: [allow_origin, "http://localhost:5173"],
     credentials: true,
 }
 ));
@@ -46,7 +46,7 @@ app.use(limiter);
 app.use(customLogger);
 
 //roures
-app.use("/api/v1/analytic", analyticRouter)
+app.use("/api/v1/analytic", isAuthenticated, analyticRouter)
 app.use("/api/v1/admin", adminRouter)
 app.use("/api/v1/auth", authRouter);
 app.use("/api/v1/users", isAuthenticated, userRouter);
