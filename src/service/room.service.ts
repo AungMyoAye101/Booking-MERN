@@ -6,6 +6,7 @@ import { paginationResponseFormater } from "../utils/paginationResponse";
 import { avaliableRoomQueryType, createRoomType } from "../validation/roomSchema";
 import { Request } from "express";
 import Booking from "../models/booking.model";
+import { availableMemory } from "process";
 
 export const createRoomService = async (
     hotelId: string,
@@ -72,30 +73,90 @@ export const getRoomsByHotelIdService = async (
     req: Request
 ) => {
     const hotelId = req.validatedParams.hotelId;
-    const { page = 1, limit = 10, checkIn, checkOut, guest } = req.validatedQuery as avaliableRoomQueryType;
+    const { checkIn, checkOut, guest } = req.validatedQuery as avaliableRoomQueryType;
 
-    const skip = (page - 1) * limit;
-    let query: Record<string, any> = {
-        hotelId,
-    };
 
-    if (guest) {
-        query.maxPeople = { $gte: guest }
+
+
+    const start = checkIn ? new Date(checkIn) : null;
+    const end = checkOut ? new Date(checkOut) : null;
+
+    const pipeline: any[] = [
+        {
+            $match: {
+                hotelId: new mongoose.Types.ObjectId(String(hotelId)),
+                ...(guest ? { maxPeople: { $gte: Number(guest) } } : {})
+
+            }
+        }
+    ]
+
+    // ----------------check room avaliable ---------
+
+    if (start && end) {
+        pipeline.push({
+            $lookup: {
+                from: "bookings",
+                let: { roomId: "$_id" },
+                pipeline: [
+                    {
+                        $match: {
+                            $expr: {
+                                $and: [
+                                    {
+                                        $eq: ['$roomId', "$$roomId"]
+                                    },
+                                    {
+                                        $in: ["$status", ["CONFIRMED", "STAYED"]]
+                                    },
+                                    {
+                                        $lt: ["$checkIn", end]
+                                    },
+                                    {
+                                        $gt: ['$checkOut', start]
+                                    }
+                                ]
+                            }
+                        }
+                    },
+                    {
+                        $project: { quantity: 1 }
+                    }
+                ], as: "overlappingBookings"
+            }
+        },
+            {
+                $addFields: {
+                    bookedCount: { $ifNull: [{ $sum: "$overlappingBookings.quantity" }, 0] }
+                }
+            },
+            {
+                $addFields: {
+                    avaliableRooms: {
+                        $subtract: ['$totalRooms', '$bookedCount']
+                    }
+                }
+            },
+            {
+                $match: {
+                    avaliableRooms: { $gt: 0 }
+                }
+            }
+
+        )
     }
-    console.log(guest, checkIn)
-    const rooms = await Room.find(query)
-        .skip(skip)
-        .limit(limit)
-        .lean();
+
+    const rooms = await Room.aggregate(pipeline)
+
 
     if (!rooms) {
         throw new NotFoundError("Rooms not found.")
     }
 
-    const total = await Room.countDocuments(query);
-    const meta = paginationResponseFormater(page, limit, total);
+    // const total = await Room.countDocuments(query);
+    // const meta = paginationResponseFormater(page, limit, total);
 
-    return { rooms, meta }
+    return rooms
 }
 
 export const getAllRoomsService = async (req: Request) => {

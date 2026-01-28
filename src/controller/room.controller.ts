@@ -63,12 +63,12 @@ export const getAllRoomByHotelIdController: RequestHandler = asyncCatchFn(
         res: Response
     ) => {
 
-        const data = await getRoomsByHotelIdService(req);
+        const rooms = await getRoomsByHotelIdService(req);
         successResponse(
             res,
             200,
             "Room  get successfull.",
-            data
+            { rooms }
         )
 
     })
