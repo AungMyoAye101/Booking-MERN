@@ -35,13 +35,16 @@ export const ComfirmedPaymnetService = async (
     const session = await mongoose.startSession();
     session.startTransaction();
     try {
-        const payment = await Payment.findById(paymentId).session(session);
-        const booking = await Booking.findById(bookingId).session(session);
+        const payment = await Payment.findByIdAndUpdate(paymentId, {
+            status: "PAID"
+        }, { new: true }).session(session);
+        const booking = await Booking.findByIdAndUpdate(bookingId, {
+            status: "CONFIRMED"
+        }, { new: true }).session(session);
         if (!payment || !booking) {
             throw new NotFoundError("Payment or Booking are not found.")
         }
-        payment.status = "PAID";
-        booking.status = "CONFIRMED";
+
 
         const receipt = await Receipt.create({
             receiptNo: "REC-" + Date.now(),
@@ -54,6 +57,7 @@ export const ComfirmedPaymnetService = async (
             paidAt: payment.paidAt,
 
         })
+
         await session.commitTransaction();
         return { payment, receipt }
     } catch (error) {
@@ -105,14 +109,23 @@ export const getALlPaymentService = async (
 export const getPaymentById = async (
     id: string
 ) => {
-    const payment = await Payment.findById(id).populate([
-        { path: "userId", select: "_id name " },
-        { path: "bookingId", select: "_id checkIn checkOut" }
-    ]).lean();
+    const payment = await Payment.findById(id)
+        .populate({ path: "userId", select: "_id name " })
+        .populate(
+            {
+                path: "bookingId",
+                select: "_id checkIn checkOut hotelId",
+                populate: ({
+                    path: "hotelId",
+                    select: "name city"
+                })
+
+            }
+        ).lean();
 
     if (!payment) {
         throw new NotFoundError("No payment found.")
     }
-
+    console.log(payment)
     return payment;
 }

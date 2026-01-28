@@ -10,7 +10,7 @@ import { createPaymentSchema, paymentQuerySchema, updatePaymnetSchema } from "..
 import { hasRole } from "../middleware/isAuthenticated";
 
 
-const router = Router();
+const router: Router = Router();
 
 router.get(
     "/",

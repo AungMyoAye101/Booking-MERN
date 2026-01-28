@@ -5,7 +5,7 @@ import { createBookingController, getAllBookingByRoomIdController, getAllBooking
 import { hasRole } from "../middleware/isAuthenticated";
 import { paginationSchmea } from "../validation/pagination";
 
-const router = Router();
+const router: Router = Router();
 
 router.get(
     '/',

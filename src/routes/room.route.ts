@@ -11,22 +11,13 @@ import {
     getRoomByIdController,
     updateRoomController
 } from "../controller/room.controller";
-import { roomSchema } from "../validation/roomSchema";
+import { avaliableRoomSchema, roomSchema } from "../validation/roomSchema";
 import { hasRole, isAuthenticated } from "../middleware/isAuthenticated";
 import { paginationSchmea } from "../validation/pagination";
 
 
-// const router = express.Router();
 
-// router.get("/:hotelId", getAllRoomsByHotelId);
-// router.get("/:roomId/available", checkAvailability)
-// router.post("/:hotelId", createRoom);
-// router.put("/:id", updateRoom);
-// router.delete("/:id/:hotelId", deleteRoom);
-// router.get("/:id", getRoomById);
-// export default router;
-
-const router = Router();
+const router: Router = Router();
 
 router.get(
     "/",
@@ -42,7 +33,7 @@ router.get(
 router.get(
     "/hotel/:hotelId",
     checkMongoDBId(["hotelId"]),
-    validateRequestQuery(paginationSchmea),
+    validateRequestQuery(avaliableRoomSchema),
     getAllRoomByHotelIdController
 );
 router.post(

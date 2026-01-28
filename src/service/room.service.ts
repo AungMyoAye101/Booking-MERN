@@ -3,7 +3,7 @@ import { BadRequestError, NotFoundError } from "../common/errors";
 import Hotel from "../models/hotel.model"
 import Room from "../models/room.model";
 import { paginationResponseFormater } from "../utils/paginationResponse";
-import { createRoomType } from "../validation/roomSchema";
+import { avaliableRoomQueryType, createRoomType } from "../validation/roomSchema";
 import { Request } from "express";
 import Booking from "../models/booking.model";
 
@@ -72,10 +72,18 @@ export const getRoomsByHotelIdService = async (
     req: Request
 ) => {
     const hotelId = req.validatedParams.hotelId;
-    const { page = 1, limit = 10 } = req.validatedQuery;
+    const { page = 1, limit = 10, checkIn, checkOut, guest } = req.validatedQuery as avaliableRoomQueryType;
 
     const skip = (page - 1) * limit;
-    const rooms = await Room.find({ hotelId })
+    let query: Record<string, any> = {
+        hotelId,
+    };
+
+    if (guest) {
+        query.maxPeople = { $gte: guest }
+    }
+    console.log(guest, checkIn)
+    const rooms = await Room.find(query)
         .skip(skip)
         .limit(limit)
         .lean();
@@ -84,7 +92,7 @@ export const getRoomsByHotelIdService = async (
         throw new NotFoundError("Rooms not found.")
     }
 
-    const total = await Room.countDocuments({ hotel: hotelId });
+    const total = await Room.countDocuments(query);
     const meta = paginationResponseFormater(page, limit, total);
 
     return { rooms, meta }

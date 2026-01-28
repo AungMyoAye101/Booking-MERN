@@ -1,9 +1,9 @@
-import { Request, Response } from "express";
+import { Request, Response, RequestHandler } from "express";
 import { asyncCatchFn } from "../utils/asyncFunction";
 import { successResponse } from "../common/successResponse";
 import { ComfirmedPaymnetService, createPaymentService, getALlPaymentService, getPaymentById } from "../service/payment.service";
 
-export const createPaymnetController = asyncCatchFn(
+export const createPaymnetController: RequestHandler = asyncCatchFn(
     async (req: Request, res: Response) => {
         const payment = await createPaymentService(req.validatedBody);
         successResponse(
@@ -14,7 +14,7 @@ export const createPaymnetController = asyncCatchFn(
         )
     }
 )
-export const comfirmedPaymnetController = asyncCatchFn(
+export const comfirmedPaymnetController: RequestHandler = asyncCatchFn(
     async (req: Request, res: Response) => {
         const data = await ComfirmedPaymnetService(req.validatedBody)
         successResponse(
@@ -28,7 +28,7 @@ export const comfirmedPaymnetController = asyncCatchFn(
 
 //get all payments
 
-export const getAllPaymentController = asyncCatchFn(
+export const getAllPaymentController: RequestHandler = asyncCatchFn(
     async (
         req: Request,
         res: Response
@@ -44,7 +44,7 @@ export const getAllPaymentController = asyncCatchFn(
         )
     }
 )
-export const getPaymentByIdController = asyncCatchFn(
+export const getPaymentByIdController: RequestHandler = asyncCatchFn(
     async (
         req: Request,
         res: Response

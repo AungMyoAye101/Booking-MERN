@@ -18,5 +18,34 @@ export const roomSchema = z.object({
             { message: "Bed type must be one of king, queen, full, twin or single" })
 })
 
+export const avaliableRoomSchema = z.object({
+    checkIn: z
+        .iso.datetime("CheckIn must be valid date string.")
+        .optional(),
+    checkOut: z
+        .iso.datetime("CheckOut must be valid date string.")
+        .optional(),
+    guest: z
+        .string()
+        .regex(/^\d+$/, "Guset must be number.")
+        .transform(Number)
+        .refine((val) => val > 0, "Guest must be greater than 1 person.")
+        .optional(),
+    page: z
+        .string()
+        .regex(/^\d+$/, "Page must be number.")
+        .transform(Number)
+        .refine((val) => val > 0, "Page must be greater than 0.")
+        .optional()
+        .default(1),
+    limit: z
+        .string()
+        .regex(/^\d+$/, "Limit must be number.")
+        .transform(Number)
+        .refine((val) => val > 0, "Limit must be greater than 0.")
+        .optional()
+        .default(10)
+})
 
 export type createRoomType = z.infer<typeof roomSchema>;
+export type avaliableRoomQueryType = z.infer<typeof avaliableRoomSchema>;

@@ -14,7 +14,7 @@ export const bookingSchema = z.object({
         return date >= today;
     }, "Check-in cannot be in the past."),
     checkOut: z.coerce.date()
-}).refine((date) => date.checkOut <= date.checkIn, {
+}).refine((date) => date.checkOut > date.checkIn, {
     message: "Check out must be at least one day after check-in",
     path: ['checkOut']
 })

@@ -3,7 +3,7 @@ import { checkMongoDBId, validateRequestBody, validateRequestQuery } from "../mi
 import { paginationSchmea } from "../validation/pagination";
 import { getAllReceiptByUserIdController, getAllReceiptController } from "../controller/receipt.controller";
 
-const router = Router();
+const router: Router = Router();
 
 router.get(
     "/",

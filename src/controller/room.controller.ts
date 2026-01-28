@@ -1,4 +1,4 @@
-import { Request, Response, NextFunction } from "express";
+import { Request, Response, NextFunction, RequestHandler } from "express";
 import { successResponse } from "../common/successResponse";
 import {
     createRoomService,
@@ -11,12 +11,12 @@ import {
 import { asyncCatchFn } from "../utils/asyncFunction";
 
 
-export const createRoomController = async (
-    req: Request,
-    res: Response,
-    next: NextFunction
-) => {
-    try {
+export const createRoomController: RequestHandler = asyncCatchFn(
+    async (
+        req: Request,
+        res: Response
+    ) => {
+
 
         const room = await createRoomService(req.validatedParams.hotelId, req.validatedBody);
         successResponse(
@@ -25,16 +25,14 @@ export const createRoomController = async (
             "Room  created successfull.",
             { room }
         )
-    } catch (error) {
-        return next(error)
-    }
-}
-export const updateRoomController = async (
-    req: Request,
-    res: Response,
-    next: NextFunction
-) => {
-    try {
+
+    })
+export const updateRoomController: RequestHandler = asyncCatchFn(
+    async (
+        req: Request,
+        res: Response
+    ) => {
+
         const room = await updateRoomService(req);
         successResponse(
             res,
@@ -42,16 +40,14 @@ export const updateRoomController = async (
             "Room  updated successfull.",
             { room }
         )
-    } catch (error) {
-        return next(error)
-    }
-}
-export const deleteRoomController = async (
-    req: Request,
-    res: Response,
-    next: NextFunction
-) => {
-    try {
+
+    })
+export const deleteRoomController: RequestHandler = asyncCatchFn(
+    async (
+        req: Request,
+        res: Response
+    ) => {
+
         const room = await deleteRoomService(req);
         successResponse(
             res,
@@ -59,16 +55,14 @@ export const deleteRoomController = async (
             "Room  deleted successfull.",
             { room }
         )
-    } catch (error) {
-        return next(error)
-    }
-}
-export const getAllRoomByHotelIdController = async (
-    req: Request,
-    res: Response,
-    next: NextFunction
-) => {
-    try {
+
+    })
+export const getAllRoomByHotelIdController: RequestHandler = asyncCatchFn(
+    async (
+        req: Request,
+        res: Response
+    ) => {
+
         const data = await getRoomsByHotelIdService(req);
         successResponse(
             res,
@@ -76,16 +70,14 @@ export const getAllRoomByHotelIdController = async (
             "Room  get successfull.",
             data
         )
-    } catch (error) {
-        return next(error)
-    }
-}
-export const getRoomByIdController = async (
-    req: Request,
-    res: Response,
-    next: NextFunction
-) => {
-    try {
+
+    })
+export const getRoomByIdController: RequestHandler = asyncCatchFn(
+    async (
+        req: Request,
+        res: Response
+    ) => {
+
         const room = await getRoomByIdService(req.validatedParams.roomId);
         successResponse(
             res,
@@ -93,12 +85,10 @@ export const getRoomByIdController = async (
             "Room  get by id successfull.",
             { room }
         )
-    } catch (error) {
-        return next(error)
-    }
-}
 
-export const getAllRoomsController = asyncCatchFn(
+    })
+
+export const getAllRoomsController: RequestHandler = asyncCatchFn(
     async (
         req: Request,
         res: Response

@@ -23,7 +23,7 @@ const bookingSchema = new mongoose.Schema({
     },
     hotelId: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: "hotel",
+        ref: "Hotel",
         required: true,
     },
     checkIn: {
