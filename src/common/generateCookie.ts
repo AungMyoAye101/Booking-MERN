@@ -11,7 +11,6 @@ export const genterateCookie = (
             httpOnly: true,
             sameSite: isproduction ? "none" : "lax",
             secure: isproduction,
-
             maxAge: 7 * 24 * 60 * 60 * 1000 // 7 days
 
         })

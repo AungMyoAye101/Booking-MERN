@@ -62,10 +62,20 @@ export const deleteRoomService = async (
 
 export const getRoomByIdService = async (id: string) => {
 
-    const room = await Room.findById(id).lean();
+    const room = await Room.findById(id)
+        .populate({
+            path: "hotelId",
+            select: "name address city country photo",
+            populate: ({
+                path: "photo",
+                select: "secure_url"
+            })
+        }
+        ).lean();
     if (!room) {
         throw new NotFoundError("Room not found.")
     }
+
     return room;
 }
 
@@ -73,7 +83,7 @@ export const getRoomsByHotelIdService = async (
     req: Request
 ) => {
     const hotelId = req.validatedParams.hotelId;
-    const { checkIn, checkOut, guest } = req.validatedQuery as avaliableRoomQueryType;
+    const { checkIn, checkOut, guest = 1 } = req.validatedQuery as avaliableRoomQueryType;
 
 
 
@@ -85,7 +95,7 @@ export const getRoomsByHotelIdService = async (
         {
             $match: {
                 hotelId: new mongoose.Types.ObjectId(String(hotelId)),
-                ...(guest ? { maxPeople: { $gte: Number(guest) } } : {})
+                maxPeople: { $gte: Number(guest) }
 
             }
         }

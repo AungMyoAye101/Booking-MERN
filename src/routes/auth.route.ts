@@ -5,7 +5,7 @@ import { loginSchema, registerSchema } from "../validation/authSchema";
 import { isAuthenticated } from "../middleware/isAuthenticated";
 import { getCurrentUserController } from "../controller/user.controller";
 
-const router = Router();
+const router: Router = Router();
 
 router.post("/register", validateRequestBody(registerSchema), registerController);
 router.post("/login", validateRequestBody(loginSchema), loginController);

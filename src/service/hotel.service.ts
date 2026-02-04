@@ -1,4 +1,4 @@
-import { MongooseQueryOptions } from "mongoose";
+
 import { NotFoundError } from "../common/errors";
 import Hotel from "../models/hotel.model";
 import { paginationResponseFormater } from "../utils/paginationResponse";
@@ -55,7 +55,7 @@ export const getAllHotelsService = async (
         limit = 10,
     } = req.validatedQuery as hotelQueryType;
 
-    console.log(destination, minPrice, maxPrice, type, stars, priceOrder, ratingOrder, page, limit)
+
 
     const skip = (page - 1) * limit;
 
@@ -124,9 +124,11 @@ export const getAllHotelsService = async (
 
     const meta = paginationResponseFormater(page, limit, total)
 
+
     if (!hotels) {
         throw new NotFoundError("Hotels are not found.")
     }
+
 
     return { hotels, meta };
 }

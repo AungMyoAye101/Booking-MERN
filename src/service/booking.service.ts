@@ -12,6 +12,7 @@ export const createBookingService = async (
 ) => {
     const [roomId] = checkMongoDbId([data.roomId]);
 
+
     const session = await mongoose.startSession();
 
     try {
@@ -20,7 +21,7 @@ export const createBookingService = async (
             {
                 $match: {
                     roomId,
-                    status: { $in: ['PENDING', 'CONFRIMED'] },
+                    status: { $in: ['PENDING', 'CONFRIMED', "STAYED"] },
                     checkIn: { $lt: new Date(data.checkOut) },
                     checkOut: { $gt: new Date(data.checkIn) },
                 }
@@ -33,16 +34,22 @@ export const createBookingService = async (
             }
         ]).session(session);
 
+
         const bookedCount = booked.length > 0 ? booked[0].bookedCount : 0;
+
         const room = await Room.findById(data.roomId).session(session) as IRoom;
+
         if (room.totalRooms - bookedCount < data.quantity) {
             throw new BadRequestError("Not enoungh room .");
         }
         const booking = await Booking.create([data], { session });
 
+        if (booking.length === 0) {
+            throw new BadRequestError("Failed to create booking")
+        }
         await session.commitTransaction();
 
-        return booking;
+        return booking[0];
 
     } catch (error) {
         session.abortTransaction();
@@ -222,6 +229,9 @@ export const getBookingById = async (id: string) => {
                 quantity: 1,
                 totalPrice: 1,
                 status: 1,
+                name: 1,
+                email: 1,
+
                 hotel: {
                     name: "$hotel.name",
                     adddress: "$hotel.address",

@@ -18,7 +18,7 @@ import { HotelQuerySchema } from "../validation/searchSchema";
 
 
 
-const router = Router();
+const router: Router = Router();
 
 router.get(
     '/',

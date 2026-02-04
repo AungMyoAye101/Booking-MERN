@@ -1,9 +1,9 @@
-import { Request, Response } from "express";
+import { Request, RequestHandler, Response } from "express";
 import { asyncCatchFn } from "../utils/asyncFunction";
 import { successResponse } from "../common/successResponse";
 import { createBookingService, getAllBookingByRoomIdService, getALlBookingsService, getBookingById, updateBookingService } from "../service/booking.service";
 
-export const createBookingController = asyncCatchFn(
+export const createBookingController: RequestHandler = asyncCatchFn(
     async (
         req: Request,
         res: Response
@@ -17,7 +17,7 @@ export const createBookingController = asyncCatchFn(
         )
     }
 )
-export const updateBookingController = asyncCatchFn(
+export const updateBookingController: RequestHandler = asyncCatchFn(
     async (
         req: Request,
         res: Response
@@ -32,7 +32,7 @@ export const updateBookingController = asyncCatchFn(
         )
     }
 )
-export const getAllBookingByRoomIdController = asyncCatchFn(
+export const getAllBookingByRoomIdController: RequestHandler = asyncCatchFn(
     async (
         req: Request,
         res: Response
@@ -47,7 +47,7 @@ export const getAllBookingByRoomIdController = asyncCatchFn(
     }
 )
 
-export const getAllBookingsController = asyncCatchFn(
+export const getAllBookingsController: RequestHandler = asyncCatchFn(
     async (
         req: Request,
         res: Response,
@@ -63,7 +63,7 @@ export const getAllBookingsController = asyncCatchFn(
     }
 )
 
-export const getBookingByIdController = asyncCatchFn(
+export const getBookingByIdController: RequestHandler = asyncCatchFn(
     async (
         req: Request,
         res: Response

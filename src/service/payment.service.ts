@@ -13,18 +13,49 @@ export const createPaymentService = async (
 ) => {
 
     const [userId, bookingId] = checkMongoDbId([data.userId, data.bookingId])
-    const payment = await Payment.create({
-        userId,
-        bookingId,
-        paymentMethod: data.paymentMethod,
-        amount: data.amount,
-        status: "PENDING"
-    })
-    if (!payment) {
-        throw new BadRequestError("Failed to create payment.")
+
+    const session = await mongoose.startSession();
+    session.startTransaction();
+    try {
+        const payment = await Payment.create({
+            userId,
+            bookingId,
+            paymentMethod: data.paymentMethod,
+            amount: data.amount,
+            status: "PENDING"
+        })
+        if (!payment) {
+            throw new BadRequestError("Failed to create payment.")
+        }
+
+        const receipt = await Receipt.create({
+            receiptNo: "REC-" + Date.now(),
+            userId,
+            paymentId: payment._id,
+            bookingId,
+            paymentMethod: payment.paymentMethod,
+            status: payment.status,
+            amount: payment.amount,
+            paidAt: payment.paidAt,
+
+        })
+        await session.commitTransaction();
+        return payment;
+
+    } catch (error) {
+
+        session.abortTransaction();
+        console.warn(error);
+        if (error instanceof Error) {
+            throw new BadRequestError(error.message)
+        }
+
+    } finally {
+        session.endSession()
+
     }
 
-    return payment;
+
 
 }
 
@@ -46,20 +77,9 @@ export const ComfirmedPaymnetService = async (
         }
 
 
-        const receipt = await Receipt.create({
-            receiptNo: "REC-" + Date.now(),
-            userId,
-            paymentId,
-            bookingId,
-            paymentMethod: payment.paymentMethod,
-            status: payment.status,
-            amount: payment.amount,
-            paidAt: payment.paidAt,
-
-        })
 
         await session.commitTransaction();
-        return { payment, receipt }
+        return payment
     } catch (error) {
         session.abortTransaction();
         throw error;
@@ -114,7 +134,7 @@ export const getPaymentById = async (
         .populate(
             {
                 path: "bookingId",
-                select: "_id checkIn checkOut hotelId",
+                select: "_id checkIn checkOut hotelId name ",
                 populate: ({
                     path: "hotelId",
                     select: "name city"

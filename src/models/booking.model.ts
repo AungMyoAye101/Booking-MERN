@@ -4,6 +4,11 @@ export interface IBooking extends Document {
     userId: Types.ObjectId,
     roomId: Types.ObjectId,
     hotelId: Types.ObjectId,
+    name: string,
+    email: string,
+    city: string,
+    country: string,
+    phone: string,
     totalPrice: number,
     quantty: number,
     status: "PENDING" | "CONFIRMED" | "STAYED" | "CANCELLED" | "EXPIRED",
@@ -25,6 +30,26 @@ const bookingSchema = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: "Hotel",
         required: true,
+    },
+    name: {
+        type: String,
+        required: true,
+    },
+    email: {
+        type: String,
+        required: true,
+
+
+    },
+    city: {
+        type: String,
+
+    },
+    country: {
+        type: String,
+    },
+    phone: {
+        type: String,
     },
     checkIn: {
         type: Date,

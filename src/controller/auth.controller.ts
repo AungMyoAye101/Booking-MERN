@@ -26,7 +26,7 @@ export const loginController = async (
   res: Response,
   next: NextFunction) => {
   try {
-
+    console.log(req.validatedBody)
     const { user, access_token, refresh_token } = await loginService(req.validatedBody)
     genterateCookie(res, refresh_token)
     successResponse(res, 200, "User login successfull.", { user, token: access_token })
